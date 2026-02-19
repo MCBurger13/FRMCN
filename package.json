@@ -1,0 +1,15 @@
+{
+  "name": "curso-ia-lottusse",
+  "version": "1.0.0",
+  "description": "Curso IA Generativa - [m].seny [labs]",
+  "scripts": {
+    "start": "vercel dev",
+    "deploy": "vercel"
+  },
+  "dependencies": {
+    "marked": "^11.1.0"
+  },
+  "devDependencies": {
+    "vercel": "^33.0.0"
+  }
+}

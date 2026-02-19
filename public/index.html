@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso IA Generativa - [m].seny [labs]</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Markdown Parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Google Fonts: Inter (Sans) & Merriweather (Serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0F172A',  // Slate 900
+                            primary: '#4F46E5', // Indigo 600
+                            accent: '#F59E0B',  // Amber 500
+                            light: '#F8FAFC'    // Slate 50
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Aesthetic Overrides */
+        body {
+            background-color: #F8FAFC;
+            color: #334155;
+        }
+        
+        h1, h2, h3, h4, h5, h6, button, .nav-link {
+            font-family: 'Inter', sans-serif;
+        }
+
+        p, li, .prose-text {
+            font-family: 'Merriweather', serif;
+            line-height: 1.8;
+        }
+
+        /* Smooth Accordion */
+        .accordion-content {
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .accordion-content.active {
+            opacity: 1;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Typing Animation */
+        .typing-indicator span {
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            background-color: #64748b;
+            border-radius: 50%;
+            animation: typing 1s infinite ease-in-out;
+            margin: 0 2px;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: 0s; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Image Gradients */
+        .image-overlay {
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.1), rgba(15, 23, 42, 0.8));
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
+        <!-- Changed container to max-w-5xl for wider margins -->
+        <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Brand Text Only -->
+            <div class="flex items-center">
+                <h1 class="text-xl font-bold tracking-tight text-brand-dark">
+                    <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+                </h1>
+            </div>
+            
+            <nav class="hidden md:flex space-x-8 text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                <a href="#overview" class="hover:text-brand-primary transition-colors nav-link">Visión</a>
+                <a href="#syllabus" class="hover:text-brand-primary transition-colors nav-link">Temario</a>
+                <a href="#ai-demo" class="hover:text-brand-primary transition-colors nav-link text-brand-primary">
+                    <i class="fa-solid fa-bolt mr-1"></i>IA Demo
+                </a>
+                <a href="#project" class="hover:text-brand-primary transition-colors nav-link">Proyecto</a>
+            </nav>
+            <button onclick="document.getElementById('syllabus').scrollIntoView({behavior: 'smooth'})" class="hidden md:block bg-brand-dark text-white px-6 py-2.5 rounded text-sm font-semibold hover:bg-gray-800 transition-all shadow-lg shadow-gray-200">
+                Ver Programa
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section with Image -->
+    <section id="overview" class="relative bg-brand-light py-20 lg:py-28 overflow-hidden">
+        <!-- Changed container to max-w-5xl for wider margins -->
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <!-- Text Content -->
+                <div class="lg:w-1/2 text-left">
+                    <span class="inline-block py-1 px-3 border border-brand-accent/30 bg-amber-50 text-brand-accent text-xs font-bold uppercase tracking-widest mb-6 rounded-sm">
+                        Formación Ejecutiva 2026
+                    </span>
+                    <h2 class="text-5xl lg:text-6xl font-extrabold text-brand-dark mb-6 leading-tight">
+                        Inteligencia Artificial <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-violet-600">Aplicada al Negocio</span>
+                    </h2>
+                    <p class="text-lg text-gray-600 mb-8 max-w-xl prose-text">
+                        No es solo tecnología, es estrategia. Una hoja de ruta diseñada por <strong>[m].seny</strong> para directivos y equipos que necesitan resultados tangibles, no teoría abstracta.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="document.getElementById('syllabus').scrollIntoView({behavior: 'smooth'})" class="bg-brand-primary text-white px-8 py-4 rounded text-sm font-bold shadow-xl shadow-indigo-200 hover:shadow-indigo-300 hover:-translate-y-1 transition-all">
+                            EXPLORAR TEMARIO
+                        </button>
+                        <button onclick="document.getElementById('ai-demo').scrollIntoView({behavior: 'smooth'})" class="bg-white text-brand-dark border border-gray-200 px-8 py-4 rounded text-sm font-bold hover:bg-gray-50 transition-all flex items-center">
+                            <i class="fa-solid fa-play mr-2 text-brand-accent"></i> PROBAR SIMULADOR
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Visual/Chart Side -->
+                <div class="lg:w-1/2 w-full relative">
+                    <!-- REMOVED: Decorative abstract image/shadow behind chart -->
+                    <div class="bg-white p-8 rounded-2xl shadow-2xl border border-gray-100 relative">
+                        <div class="flex justify-between items-end mb-6 border-b border-gray-100 pb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900">Balance del Programa</h3>
+                                <p class="text-sm text-gray-500 font-serif italic">Distribución de carga lectiva</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="block text-2xl font-bold text-brand-primary">100%</span>
+                                <span class="text-xs text-gray-400 uppercase font-sans">Práctico</span>
+                            </div>
+                        </div>
+                        <div class="chart-container h-72">
+                            <canvas id="overviewChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Syllabus Section -->
+    <section id="syllabus" class="py-20 bg-white">
+        <!-- Changed container to max-w-5xl for wider margins -->
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="mb-16 text-center">
+                <h3 class="text-3xl font-bold text-brand-dark mb-4">Índice de Contenidos</h3>
+                <div class="w-20 h-1 bg-brand-accent mx-auto mb-6"></div>
+                <!-- TEXTO CENTRADO 1 -->
+                <p class="text-gray-500 max-w-2xl mx-auto prose-text text-center">
+                    Una estructura modular diseñada para ir de la base conceptual a la ejecución experta. Haz clic para desplegar los detalles.
+                </p>
+            </div>
+
+            <!-- Modules Container -->
+            <div id="modules-container" class="space-y-4">
+                <!-- Javascript will populate this -->
+            </div>
+        </div>
+    </section>
+
+    <!-- GEMINI API SECTION -->
+    <section id="ai-demo" class="py-20 bg-brand-dark text-white relative overflow-hidden">
+        <!-- Abstract Background Image with Overlay -->
+        <div class="absolute inset-0 z-0 opacity-20">
+            <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=2000&auto=format&fit=crop" alt="AI Network" class="w-full h-full object-cover">
+        </div>
+        
+        <!-- Changed container to max-w-5xl for wider margins -->
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-12">
+                <span class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-2 block">Powered by Gemini</span>
+                <h3 class="text-4xl font-extrabold mb-6">Tu Futuro con IA</h3>
+                <!-- TEXTO CENTRADO 2 -->
+                <p class="text-gray-300 max-w-2xl mx-auto font-serif text-lg text-center">
+                    Descubre cómo este temario impacta directamente en tu carrera. Introduce tus datos y deja que nuestra IA genere un caso de uso a medida.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Input Panel -->
+                <div class="lg:col-span-4 space-y-6">
+                    <div class="bg-white/10 backdrop-blur-sm p-8 rounded-xl border border-white/10">
+                        <h4 class="text-lg font-bold text-white mb-6 flex items-center">
+                            <i class="fa-solid fa-sliders text-brand-accent mr-3"></i> Configurar Perfil
+                        </h4>
+                        
+                        <div class="space-y-5">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Sector</label>
+                                <input type="text" id="userIndustry" placeholder="Ej: Arquitectura, Banca..." class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded text-white focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none font-serif">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Cargo</label>
+                                <input type="text" id="userRole" placeholder="Ej: CEO, Project Manager..." class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded text-white focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none font-serif">
+                            </div>
+
+                            <button id="btn-simulate" onclick="generateImpact()" class="w-full bg-brand-primary hover:bg-indigo-500 text-white font-bold py-4 rounded shadow-lg transition-all mt-4 uppercase tracking-wide text-sm">
+                                Generar Informe
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Chat Trigger -->
+                    <div onclick="switchAIMode('chat')" class="bg-white/5 hover:bg-white/10 p-4 rounded-xl border border-white/10 cursor-pointer transition-colors flex items-center justify-between group">
+                        <div class="flex items-center">
+                            <div class="bg-emerald-500/20 text-emerald-400 p-2 rounded mr-3">
+                                <i class="fa-solid fa-message"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-sm text-gray-200">Asistente Virtual</h5>
+                                <p class="text-xs text-gray-400 font-serif">Preguntas y Respuestas</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-arrow-right text-gray-500 group-hover:text-white transition-colors"></i>
+                    </div>
+                </div>
+
+                <!-- Output Panel -->
+                <div id="panel-simulator" class="lg:col-span-8 bg-white text-gray-800 rounded-xl shadow-2xl overflow-hidden flex flex-col min-h-[450px]">
+                    <div class="bg-gray-50 px-8 py-4 border-b border-gray-100 flex justify-between items-center">
+                        <h4 class="font-bold text-gray-700 text-sm uppercase tracking-wide">Informe Generado</h4>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                            <span class="text-xs text-gray-400 font-mono">GEMINI-2.5-FLASH</span>
+                        </div>
+                    </div>
+                    <div id="simulation-content" class="p-10 flex-grow flex flex-col items-center justify-center text-center">
+                        <div class="max-w-md mx-auto text-gray-400">
+                            <i class="fa-solid fa-fingerprint text-6xl mb-6 text-gray-200"></i>
+                            <p class="font-serif text-lg text-gray-500">Esperando parámetros para iniciar simulación...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Panel (Hidden) -->
+                <div id="panel-chat" class="hidden lg:col-span-8 bg-white text-gray-800 rounded-xl shadow-2xl overflow-hidden flex flex-col min-h-[450px]">
+                    <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                        <h4 class="font-bold text-gray-700 text-sm uppercase tracking-wide">Chat del Curso</h4>
+                        <button onclick="switchAIMode('simulator')" class="text-xs text-brand-primary font-bold uppercase hover:underline">
+                            Volver al Simulador
+                        </button>
+                    </div>
+                    <div id="chat-history" class="p-6 flex-grow overflow-y-auto space-y-6 bg-white h-80">
+                        <!-- Welcome Msg -->
+                        <div class="flex items-start">
+                            <div class="bg-brand-light p-2 rounded-full mr-3 shrink-0 border border-gray-200">
+                                <span class="font-bold text-brand-primary text-xs">[m]</span>
+                            </div>
+                            <div class="text-sm text-gray-600 font-serif max-w-[85%] leading-relaxed">
+                                Bienvenido a [m].seny [labs]. Estoy conectado a la base de conocimiento del curso. ¿Tienes dudas sobre algún módulo?
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-gray-100 bg-gray-50">
+                        <div class="relative">
+                            <input type="text" id="chatInput" placeholder="Escribe tu pregunta..." class="w-full pl-4 pr-12 py-3 bg-white border border-gray-200 rounded text-gray-700 focus:border-brand-primary outline-none font-serif shadow-sm" onkeypress="handleChatEnter(event)">
+                            <button onclick="sendChatMessage()" class="absolute right-2 top-2 text-brand-primary hover:text-indigo-800 p-1">
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Showcase with Images -->
+    <section id="project" class="py-20 bg-brand-light border-t border-gray-200">
+        <!-- Changed container to max-w-5xl for wider margins -->
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-2 block">Portafolio</span>
+                <h3 class="text-3xl font-bold text-brand-dark">Proyecto Integrador</h3>
+                <!-- TEXTO CENTRADO 3 -->
+                <p class="text-gray-500 mt-4 max-w-2xl mx-auto font-serif text-center">
+                    Más que un ejercicio, un activo real. Al finalizar, tendrás un MVP completo.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="group bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop" alt="Strategy Report" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-brand-primary/20 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="text-lg font-bold text-gray-900 mb-2">Estrategia & Texto</h4>
+                        <p class="text-sm text-gray-500 font-serif mb-4 italic">Generado con LLMs</p>
+                        <hr class="border-gray-100 mb-4">
+                        <ul class="text-sm text-gray-600 space-y-3 font-serif">
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 bg-brand-accent rounded-full mr-2"></span>Business Plan</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 bg-brand-accent rounded-full mr-2"></span>Análisis FODA</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="group bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800&auto=format&fit=crop" alt="Visual Identity" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                         <div class="absolute inset-0 bg-brand-primary/20 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="text-lg font-bold text-gray-900 mb-2">Identidad Visual</h4>
+                        <p class="text-sm text-gray-500 font-serif mb-4 italic">Generado con Midjourney/DALL-E</p>
+                         <hr class="border-gray-100 mb-4">
+                        <ul class="text-sm text-gray-600 space-y-3 font-serif">
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 bg-brand-accent rounded-full mr-2"></span>Mockups de Producto</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 bg-brand-accent rounded-full mr-2"></span>Logotipo & Branding</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="group bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1533750349088-cd871a92f312?q=80&w=800&auto=format&fit=crop" alt="Marketing Launch" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                         <div class="absolute inset-0 bg-brand-primary/20 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="text-lg font-bold text-gray-900 mb-2">Lanzamiento</h4>
+                        <p class="text-sm text-gray-500 font-serif mb-4 italic">Marketing & Video AI</p>
+                         <hr class="border-gray-100 mb-4">
+                        <ul class="text-sm text-gray-600 space-y-3 font-serif">
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 bg-brand-accent rounded-full mr-2"></span>Landing Page Copy</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 bg-brand-accent rounded-full mr-2"></span>Video Teaser RRSS</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-dark text-white py-16 border-t border-gray-800">
+        <!-- Changed container to max-w-5xl for wider margins -->
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <!-- Brand Text Only -->
+            <h2 class="text-3xl font-bold mb-4">
+                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+            </h2>
+            <!-- TEXTO CENTRADO 4 -->
+            <p class="text-gray-400 mb-10 max-w-lg mx-auto font-serif text-center">Empoderando a la próxima generación de empresas con inteligencia artificial práctica y estratégica.</p>
+            <button class="bg-brand-accent hover:bg-amber-600 text-brand-dark px-10 py-4 rounded text-sm font-bold transition-colors shadow-lg uppercase tracking-wider">
+                Solicitar Plaza
+            </button>
+            <!-- TEXTO CENTRADO 5 -->
+            <p class="text-xs text-gray-600 mt-12 font-sans text-center">© 2026 [m].seny [labs]. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Javascript Logic -->
+    <script>
+        // --- DATA STORE ---
+        const modulesData = [
+            {
+                id: 1,
+                title: "1. El Paisaje de los LLMs",
+                subtitle: "Estrategia de Modelos",
+                icon: "fa-microchip",
+                description: "Una inmersión comparativa en los principales modelos de lenguaje. No se trata de usar todos, sino de saber cuál usar para cada tarea específica (Codificación, Análisis, Creatividad).",
+                skills: ["Selección de Modelo", "Prompt Engineering", "Privacidad de Datos"],
+                tools: ["ChatGPT Team", "Gemini Advanced", "Claude 3 Opus", "Grok"],
+                analogy: "<strong>Objetivo:</strong> Dejar de 'googlear' para empezar a 'dialogar' con consultores expertos.",
+                chartData: [80, 40, 30] // Technical, Creative, Business
+            },
+            {
+                id: 2,
+                title: "2. Glosario y Fundamentos",
+                subtitle: "Alfabetización Técnica",
+                icon: "fa-book-open",
+                description: "Fundamentos esenciales para comunicarse con equipos técnicos y entender las limitaciones reales de la tecnología (Alucinaciones, Tokens, Context Window).",
+                skills: ["Comunicación Técnica", "Pensamiento Crítico", "Ética Básica"],
+                tools: ["Documentación Oficial", "Playgrounds"],
+                analogy: "<strong>Objetivo:</strong> Distinguir entre 'Hype' de marketing y utilidad real.",
+                chartData: [90, 10, 50]
+            },
+            {
+                id: 3,
+                title: "3. Documentación Inteligente",
+                subtitle: "Productividad Administrativa",
+                icon: "fa-file-lines",
+                description: "Técnicas avanzadas para crear borradores, resúmenes ejecutivos, presentaciones y comunicaciones complejas en segundos, manteniendo el tono de marca.",
+                skills: ["Redacción Asistida", "Síntesis", "Estructuración Lógica"],
+                tools: ["ChatGPT Writer", "Gamma App", "Microsoft Copilot"],
+                analogy: "<strong>Objetivo:</strong> Convertir una reunión de 2 horas en un acta y presentación en 15 minutos.",
+                chartData: [50, 40, 90]
+            },
+            {
+                id: 4,
+                title: "4. Estudio Creativo IA",
+                subtitle: "Imagen y Video",
+                icon: "fa-palette",
+                description: "Creación de activos visuales profesionales para marketing, prototipado de productos y contenido social sin necesidad de un departamento de diseño externo.",
+                skills: ["Prompting Visual", "Dirección de Arte", "Consistencia"],
+                tools: ["Midjourney v6", "DALL-E 3", "Runway Gen-2", "Magnific.ai"],
+                analogy: "<strong>Objetivo:</strong> Materializar un concepto abstracto en una imagen fotorrealista.",
+                chartData: [60, 100, 60]
+            },
+            {
+                id: 5,
+                title: "5. Ecosistema Google & Data",
+                subtitle: "Análisis Integrado",
+                icon: "fa-chart-pie",
+                description: "Explotando al máximo Gemini en Workspace. Análisis de datos en Sheets con lenguaje natural y automatización de flujos de trabajo en Drive.",
+                skills: ["Data Analysis", "Automatización", "Colaboración Real-Time"],
+                tools: ["Gemini for Workspace", "Google Sheets AI"],
+                analogy: "<strong>Objetivo:</strong> 'Hablar' con tus hojas de cálculo para extraer tendencias.",
+                chartData: [70, 20, 95]
+            },
+            {
+                id: 6,
+                title: "6. Agentes Autónomos",
+                subtitle: "El Futuro de la Automatización",
+                icon: "fa-robot",
+                description: "Introducción a sistemas que no solo responden, sino que ejecutan. IAs capaces de planificar tareas, navegar por la web y realizar secuencias complejas.",
+                skills: ["Planificación Lógica", "Supervisión de IA", "Workflow Design"],
+                tools: ["GPTs Custom", "Perplexity AI"],
+                analogy: "<strong>Objetivo:</strong> Configurar un asistente que investigue y reserve, no solo informe.",
+                chartData: [95, 30, 80]
+            },
+            {
+                id: 7,
+                title: "7. Proyecto: MVP Empresarial",
+                subtitle: "Ejecución Final",
+                icon: "fa-rocket",
+                description: "Aplicación transversal. Simulación de lanzamiento de una línea de negocio: desde el naming y logo hasta la estrategia de go-to-market.",
+                skills: ["Gestión de Proyectos", "Integración", "Visión Estratégica", "Ejecución Rápida"],
+                tools: ["Full Stack AI"],
+                analogy: "<strong>Objetivo:</strong> Salir con un dossier de producto listo para presentar.",
+                chartData: [85, 85, 100]
+            }
+        ];
+
+        // --- APP INIT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderOverviewChart();
+            renderModules();
+        });
+
+        // 1. Overview Chart (Color Updated)
+        function renderOverviewChart() {
+            const ctx = document.getElementById('overviewChart').getContext('2d');
+            
+            // Modern Palette for Chart
+            const colorPrimary = '#4F46E5'; // Indigo
+            const colorSecondary = '#8B5CF6'; // Violet
+            const colorAccent = '#F59E0B'; // Amber
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Técnica', 'Creatividad', 'Negocio'],
+                    datasets: [{
+                        label: 'Peso en el Programa',
+                        data: [35, 30, 35],
+                        backgroundColor: [colorPrimary, colorSecondary, colorAccent],
+                        borderRadius: 6,
+                        barThickness: 40
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#0F172A',
+                            titleFont: { family: 'Inter' },
+                            bodyFont: { family: 'Inter' }
+                        }
+                    },
+                    scales: {
+                        y: { display: false, grid: { display: false } },
+                        x: { 
+                            grid: { display: false },
+                            ticks: { font: { family: 'Inter', weight: 'bold' }, color: '#64748B' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 2. Render Modules (Monochrome Clean Style)
+        function renderModules() {
+            const container = document.getElementById('modules-container');
+            
+            modulesData.forEach(module => {
+                const moduleEl = document.createElement('div');
+                moduleEl.className = 'bg-white rounded border border-gray-200 overflow-hidden hover:border-brand-primary transition-colors duration-300';
+                
+                moduleEl.innerHTML = `
+                    <button class="w-full text-left p-6 flex items-center justify-between focus:outline-none group" onclick="toggleAccordion(\${module.id})">
+                        <div class="flex items-center space-x-6">
+                            <span class="text-3xl font-bold text-gray-200 group-hover:text-brand-primary transition-colors font-mono">0\${module.id}</span>
+                            <div>
+                                <h4 class="text-lg font-bold text-brand-dark group-hover:text-brand-primary transition-colors">\${module.title}</h4>
+                                <p class="text-sm text-gray-400 font-serif italic">\${module.subtitle}</p>
+                            </div>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-brand-primary group-hover:text-white transition-all">
+                            <i id="icon-\${module.id}" class="fa-solid fa-plus text-xs transition-transform duration-300"></i>
+                        </div>
+                    </button>
+                    
+                    <div id="content-\${module.id}" class="accordion-content bg-gray-50/50 border-t border-gray-100">
+                        <div class="p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+                            <!-- Content -->
+                            <div class="lg:col-span-8 space-y-6">
+                                <p class="text-gray-600 prose-text text-base">\${module.description}</p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                                    <div>
+                                        <h5 class="text-xs font-bold text-brand-dark uppercase tracking-widest mb-3">Skills</h5>
+                                        <ul class="space-y-2">
+                                            \${module.skills.map(skill => `<li class="text-sm text-gray-600 font-serif flex items-start"><i class="fa-solid fa-check text-brand-primary mt-1 mr-2 text-xs"></i>\${skill}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-xs font-bold text-brand-dark uppercase tracking-widest mb-3">Toolkit</h5>
+                                        <div class="flex flex-wrap gap-2">
+                                            \${module.tools.map(tool => `<span class="bg-white border border-gray-200 text-gray-600 px-3 py-1 rounded text-xs font-medium">\${tool}</span>`).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 p-4 bg-amber-50 border-l-2 border-brand-accent text-sm text-gray-700 font-serif italic">
+                                    \${module.analogy}
+                                </div>
+                            </div>
+
+                            <!-- Mini Chart -->
+                            <div class="lg:col-span-4 flex flex-col justify-center border-l border-gray-100 pl-8">
+                                <h5 class="text-xs font-bold text-gray-400 uppercase mb-4 text-center">Impacto</h5>
+                                <div class="chart-container" style="height: 150px; width: 100%;">
+                                    <canvas id="chart-\${module.id}"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(moduleEl);
+            });
+        }
+
+        // 3. Accordion Logic
+        const chartsInitialized = {};
+
+        function toggleAccordion(id) {
+            const content = document.getElementById(`content-\${id}`);
+            const icon = document.getElementById(`icon-\${id}`);
+            
+            // Close others logic (Optional, kept disabled for now to allow comparing)
+            
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                content.classList.remove('active');
+                icon.classList.remove('fa-minus');
+                icon.classList.add('fa-plus');
+                // icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.classList.add('active');
+                content.style.maxHeight = content.scrollHeight + "px";
+                icon.classList.remove('fa-plus');
+                icon.classList.add('fa-minus');
+                // icon.style.transform = 'rotate(180deg)';
+
+                if (!chartsInitialized[id]) {
+                    setTimeout(() => {
+                        initModuleChart(id);
+                        chartsInitialized[id] = true;
+                    }, 150);
+                }
+            }
+        }
+
+        function initModuleChart(id) {
+            const ctx = document.getElementById(`chart-\${id}`).getContext('2d');
+            const module = modulesData.find(m => m.id === id);
+            
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Técnico', 'Creativo', 'Negocio'],
+                    datasets: [{
+                        label: 'Nivel',
+                        data: module.chartData,
+                        backgroundColor: 'rgba(79, 70, 229, 0.2)', // Indigo low opacity
+                        borderColor: '#4F46E5', // Indigo
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#4F46E5',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: '#E2E8F0' },
+                            grid: { color: '#E2E8F0' },
+                            pointLabels: {
+                                font: { family: 'Inter', size: 10, weight: '600' },
+                                color: '#64748B'
+                            },
+                            ticks: { display: false, max: 100 }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        /* --------------------------------------------------------------
+           GEMINI API LOGIC (BACKEND PROXY)
+           -------------------------------------------------------------- */
+
+        function switchAIMode(mode) {
+            const simPanel = document.getElementById('panel-simulator');
+            const chatPanel = document.getElementById('panel-chat');
+            
+            if(mode === 'simulator') {
+                simPanel.classList.remove('hidden');
+                chatPanel.classList.add('hidden');
+            } else {
+                simPanel.classList.add('hidden');
+                chatPanel.classList.remove('hidden');
+            }
+        }
+
+        async function generateImpact() {
+            const industry = document.getElementById('userIndustry').value;
+            const role = document.getElementById('userRole').value;
+            const contentDiv = document.getElementById('simulation-content');
+            const btn = document.getElementById('btn-simulate');
+
+            if (!industry || !role) {
+                alert("Por favor, introduce tu sector y cargo.");
+                return;
+            }
+
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Procesando...';
+            btn.disabled = true;
+            contentDiv.innerHTML = `
+                <div class="flex flex-col items-center">
+                    <div class="typing-indicator mb-6"><span></span><span></span><span></span></div>
+                    <p class="text-gray-500 font-serif text-sm">Consultando modelo de lenguaje...</p>
+                </div>
+            `;
+
+            const context = JSON.stringify(modulesData.map(m => ({title: m.title, skills: m.skills})));
+            const prompt = `
+                Eres un consultor senior de [m].seny [labs].
+                Usuario: \${role} en \${industry}.
+                Curso: \${context}
+                
+                Genera un informe HTML breve (sin markdown, usa h3, p, ul, li) que sea MUY profesional y elegante.
+                1. Título h3 impactante.
+                2. Intro breve.
+                3. Lista de 3 aplicaciones prácticas inmediatas.
+                
+                Usa clases de Tailwind (text-brand-primary, font-bold) en el HTML generado.
+            `;
+
+            try {
+                // Changed to fetch from local API endpoint
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+
+                const data = await response.json();
+                if (data.candidates && data.candidates[0].content) {
+                    const aiText = data.candidates[0].content.parts[0].text.replace(/```html/g, '').replace(/```/g, '');
+                    contentDiv.innerHTML = `<div class="text-left animate-fade-in font-serif text-sm leading-relaxed space-y-4">\${aiText}</div>`;
+                } else {
+                    throw new Error("No data");
+                }
+            } catch (error) {
+                console.error(error);
+                contentDiv.innerHTML = `<p class="text-red-500">Error de conexión.</p>`;
+            } finally {
+                btn.innerHTML = 'GENERAR INFORME';
+                btn.disabled = false;
+            }
+        }
+
+        function handleChatEnter(e) { if (e.key === 'Enter') sendChatMessage(); }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const history = document.getElementById('chat-history');
+            const userMsg = input.value.trim();
+            if (!userMsg) return;
+
+            history.innerHTML += `
+                <div class="flex items-start justify-end">
+                    <div class="bg-brand-primary text-white rounded-lg rounded-tr-none p-3 text-sm font-sans max-w-[80%] shadow-md">
+                        \${userMsg}
+                    </div>
+                </div>
+            `;
+            input.value = '';
+            history.scrollTop = history.scrollHeight;
+
+            const loadingId = 'load-' + Date.now();
+            history.innerHTML += `<div id="\${loadingId}" class="text-xs text-gray-400 ml-10 mt-2">Escribiendo...</div>`;
+            
+            const context = JSON.stringify(modulesData);
+            const prompt = `Asistente curso IA [m].seny. Temario: \${context}. Pregunta: "\${userMsg}". Responde en español, tono profesional y breve.`;
+
+            try {
+                // Changed to fetch from local API endpoint
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+                const data = await response.json();
+                const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || "Error.";
+                
+                document.getElementById(loadingId).remove();
+                history.innerHTML += `
+                    <div class="flex items-start">
+                        <div class="bg-brand-light p-2 rounded-full mr-3 shrink-0 border border-gray-200">
+                             <span class="font-bold text-brand-primary text-xs">[m]</span>
+                        </div>
+                        <div class="bg-gray-50 border border-gray-100 rounded-lg rounded-tl-none p-3 text-sm text-gray-700 font-serif max-w-[85%]">
+                            \${marked.parse(aiResponse)}
+                        </div>
+                    </div>
+                `;
+            } catch (e) {
+                console.error(e);
+                document.getElementById(loadingId).remove();
+            }
+            history.scrollTop = history.scrollHeight;
+        }
+    </script>
+</body>
+</html>
