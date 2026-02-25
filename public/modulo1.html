@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 1: El Paisaje de los LLMs - [m].seny [labs]</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter (Sans) & Merriweather (Serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0F172A',  // Slate 900
+                            primary: '#4F46E5', // Indigo 600
+                            accent: '#F59E0B',  // Amber 500
+                            light: '#F8FAFC'    // Slate 50
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F8FAFC;
+            color: #334155;
+            scroll-behavior: smooth;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        button,
+        .nav-link {
+            font-family: 'Inter', sans-serif;
+        }
+
+        p,
+        li,
+        .prose-text {
+            font-family: 'Merriweather', serif;
+            line-height: 1.4;
+            font-size: 1.125rem;
+            text-align: justify;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Callout Boxes */
+        .callout-analogy {
+            background-color: #FEF3C7;
+            /* Amber 50 */
+            border-left: 4px solid #F59E0B;
+            /* Amber 500 */
+        }
+
+        .callout-phrase {
+            background-color: #EEF2FF;
+            /* Indigo 50 */
+            border-left: 4px solid #4F46E5;
+            /* Indigo 600 */
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .code-block {
+            background-color: #1E293B;
+            color: #E2E8F0;
+            font-family: monospace;
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Quiz Styles for Dark Section */
+        .quiz-option {
+            padding: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #e2e8f0;
+        }
+
+        .quiz-option:hover {
+            border-color: #4F46E5;
+            background-color: rgba(79, 70, 229, 0.1);
+        }
+
+        .quiz-option.selected {
+            border-color: #F59E0B;
+            background-color: rgba(245, 158, 11, 0.1);
+        }
+
+        .quiz-option.correct {
+            border-color: #10b981;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .quiz-option.incorrect {
+            border-color: #ef4444;
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .align-left {
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Navigation Header -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="index.html" class="no-underline">
+                    <h1
+                        class="text-xl font-bold tracking-tight text-brand-dark hover:text-brand-primary transition-colors cursor-pointer">
+                        <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+                    </h1>
+                </a>
+            </div>
+            <nav class="hidden lg:flex space-x-5 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                <a href="#paradigma" class="hover:text-brand-primary transition-colors">1. Paradigma</a>
+                <a href="#mercado" class="hover:text-brand-primary transition-colors">2. Mercado</a>
+                <a href="#seguridad" class="hover:text-brand-primary transition-colors">3. Seguridad</a>
+                <a href="#interfaz" class="hover:text-brand-primary transition-colors">4. Interfaz</a>
+                <a href="#cerebro" class="hover:text-brand-primary transition-colors">5. Cerebro</a>
+                <a href="#prompt" class="hover:text-brand-primary transition-colors">6. Prompts</a>
+                <a href="#casos" class="hover:text-brand-primary transition-colors">7. Casos Uso</a>
+                <a href="#practica" class="hover:text-brand-primary transition-colors text-brand-accent">8. Práctica</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Presentation Title (Hero) -->
+    <section class="bg-brand-dark text-white py-24 border-b-8 border-brand-primary">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <span
+                class="inline-block py-1 px-3 bg-brand-primary/20 text-brand-primary font-mono text-sm font-bold uppercase tracking-widest mb-6 rounded">
+                Módulo 1
+            </span>
+            <h1 class="text-5xl lg:text-7xl font-extrabold mb-6 leading-tight">
+                El Paisaje de los <span class="text-brand-accent">LLMs</span>
+            </h1>
+            <p class="text-xl text-gray-300 font-serif max-w-2xl mx-auto italic text-center">
+                De la estrategia conceptual a la ejecución técnica. Entendiendo la nueva mesa de operaciones
+                empresarial.
+            </p>
+            <div class="mt-10 flex items-center justify-center space-x-2 text-sm text-gray-400 font-mono">
+                <i class="fa-regular fa-clock"></i> <span>Duración estimada: 1.5 - 2 horas</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 1. Paradigma -->
+    <section id="paradigma" class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                <span
+                    class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">1</span>
+                El Cambio de Paradigma: De lo Determinista a lo Probabilístico
+            </h2>
+
+            <p class="prose-text mb-12 text-gray-600">Antes de abrir una herramienta y escribir, necesitamos entender
+                por qué estamos viviendo la mayor revolución industrial desde la llegada de internet. Para ello, hay que
+                entender cómo han funcionado los ordenadores hasta hoy.</p>
+
+            <!-- Visual Schema: Deterministic vs AI -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
+                <!-- Deterministic -->
+                <div class="bg-gray-50 rounded-2xl overflow-hidden border border-gray-200 shadow-sm flex flex-col">
+                    <div class="h-48 overflow-hidden relative shrink-0">
+                        <img src="https://images.unsplash.com/photo-1474487548417-781cb71495f3?q=80&w=1000&auto=format&fit=crop"
+                            alt="Vías de tren - Determinista" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-brand-dark/40 flex items-center justify-center">
+                            <h3 class="text-2xl font-bold text-white tracking-widest uppercase text-center px-4">La Era
+                                Determinista</h3>
+                        </div>
+                    </div>
+                    <div class="p-8 flex-grow flex flex-col justify-between">
+                        <p class="prose-text text-gray-600 mb-6">El software tradicional se basa en <strong>reglas
+                                estrictas</strong>. Si pulsas A, sucede B. Una fórmula en Excel siempre da el mismo
+                            resultado. El ordenador no "entiende", sigue instrucciones de un programador.</p>
+                        <div class="callout-analogy p-4 rounded-lg">
+                            <p class="font-serif text-amber-900 text-sm m-0">
+                                <i class="fa-solid fa-train-tram mr-2"></i> <strong>Analogía:</strong> Como un tren
+                                sobre raíles. Solo puede ir por donde se ha construido la vía. Ante un obstáculo
+                                imprevisto, se detiene o da "Error 404".
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI / Probabilistic -->
+                <div
+                    class="bg-white rounded-2xl overflow-hidden border border-brand-primary/30 shadow-xl shadow-indigo-100 relative flex flex-col">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-brand-primary/10 rounded-bl-full -z-10"></div>
+                    <div class="h-48 overflow-hidden relative shrink-0">
+                        <img src="https://i.pinimg.com/564x/44/16/e8/4416e8b71c305c4f16ab348f360ee51e.jpg"
+                            alt="Red Neuronal AI - Probabilístico" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-brand-primary/60 flex items-center justify-center">
+                            <h3 class="text-2xl font-bold text-white tracking-widest uppercase text-center px-4">La Era
+                                Probabilística</h3>
+                        </div>
+                    </div>
+                    <div class="p-8 relative z-10 flex-grow flex flex-col justify-between">
+                        <p class="prose-text text-gray-600 mb-6">¿Qué pasa si no podemos escribir reglas para todo? (Ej:
+                            detectar sarcasmo en un texto). Usamos <strong>Redes Neuronales</strong>: aprenden
+                            reconociendo patrones a través de prueba y error masivo.</p>
+                        <div class="callout-phrase p-4 rounded-lg">
+                            <p class="font-serif text-indigo-900 text-sm m-0">
+                                <i class="fa-solid fa-lightbulb text-brand-primary mr-2"></i> <strong>Frase
+                                    Clave:</strong> "Ya no programamos las reglas; le damos al ordenador los datos y
+                                dejamos que él mismo aprenda las reglas."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redes Neuronales y LLMs -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <!-- Box Red Neuronal -->
+                <div>
+                    <h4 class="text-2xl font-bold text-brand-dark mb-4">¿Qué es una Red Neuronal?</h4>
+                    <p class="prose-text text-gray-600 mb-4">Es un sistema matemático complejo inspirado libremente en
+                        las conexiones de nuestro cerebro. Aprende de ejemplos.</p>
+                    <div class="callout-analogy p-5 rounded-lg mb-4 w-full shadow-sm">
+                        <p class="font-serif text-amber-900 text-base m-0">
+                            <i class="fa-solid fa-brain mr-2 text-brand-accent"></i> Es como enseñarle a un niño lo que
+                            es un "gato". No le das reglas geométricas exactas (4 patas, 2 orejas...). Le enseñas 1.000
+                            fotos de gatos. Al final, la red "intuye" y reconoce el patrón.
+                        </p>
+                    </div>
+                    <!-- Imagen extra Red Neuronal -->
+                    <img src="https://media.istockphoto.com/id/1448152453/es/vector/tecnolog%C3%ADa-big-data-e-ilustraci%C3%B3n-de-ciencia-de-datos-concepto-de-flujo-de-datos-consultar.jpg?s=612x612&w=0&k=20&c=j2DWD286rZUMLpZhwkyhmmzsxCpi6ARWPVXFPfzxIYk="
+                        class="w-full h-56 object-cover rounded-lg shadow-sm border border-gray-100"
+                        alt="Conexiones de Red Neuronal abstracta">
+                </div>
+
+                <!-- Box LLM -->
+                <div>
+                    <h4 class="text-2xl font-bold text-brand-dark mb-4">¿Qué es un LLM?</h4>
+                    <p class="prose-text text-gray-600 mb-4">Una red neuronal gigantesca entrenada con <strong>todo el
+                            texto público de la humanidad</strong>. Su función: predecir la palabra más probable a
+                        continuación.</p>
+                    <div class="callout-analogy p-5 rounded-lg mb-4 w-full shadow-sm">
+                        <p class="font-serif text-amber-900 text-base m-0">
+                            <i class="fa-solid fa-mobile-screen-button mr-2 text-brand-accent"></i> Un LLM es como el
+                            teclado predictivo de WhatsApp, pero con un máster en Harvard, habiendo leído todas las
+                            bibliotecas del mundo. Sabe lo que buscas porque ya lo ha leido en otro lugar o contexto.
+                        </p>
+                    </div>
+                    <!-- Imagen extra LLM / Datos -->
+                    <img src="https://cdn.prod.website-files.com/680a070c3b99253410dd3df5/684d8626f3a3145136e891d7_681cc829292a5d61a39e0bd0_67ed55f61778c15890e0183c_671b844911a414d4522be1b3_671b8411e7ea9d59cc6f0a91_Networks_fig4.webp"
+                        class="w-full h-56 object-cover rounded-lg shadow-sm border border-gray-100"
+                        alt="Servidores y procesamiento masivo de lenguaje">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Mercado -->
+    <section id="mercado" class="py-20 bg-brand-light border-t border-gray-200">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-brand-dark mb-4 flex items-center">
+                <span
+                    class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">2</span>
+                El Mapa del Mercado Actual
+            </h2>
+            <p class="prose-text mb-12 text-gray-600">Hoy en día no existe "una IA", existen diferentes modelos con
+                "personalidades" y capacidades distintas. Usar el correcto para la tarea adecuada es la clave del éxito.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Claude -->
+                <a href="https://claude.ai" target="_blank"
+                    class="group block bg-white p-8 rounded-2xl border border-gray-200 hover:border-[#D97757] hover:shadow-xl transition-all">
+                    <div class="flex items-center mb-4">
+                        <div
+                            class="w-12 h-12 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12"
+                                shape-rendering="geometricPrecision" text-rendering="geometricPrecision"
+                                image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"
+                                viewBox="0 0 512 509.64">
+                                <path fill="#D77655"
+                                    d="M115.612 0h280.775C459.974 0 512 52.026 512 115.612v278.415c0 63.587-52.026 115.612-115.613 115.612H115.612C52.026 509.639 0 457.614 0 394.027V115.612C0 52.026 52.026 0 115.612 0z" />
+                                <path fill="#FCF2EE" fill-rule="nonzero"
+                                    d="M142.27 316.619l73.655-41.326 1.238-3.589-1.238-1.996-3.589-.001-12.31-.759-42.084-1.138-36.498-1.516-35.361-1.896-8.897-1.895-8.34-10.995.859-5.484 7.482-5.03 10.717.935 23.683 1.617 35.537 2.452 25.782 1.517 38.193 3.968h6.064l.86-2.451-2.073-1.517-1.618-1.517-36.776-24.922-39.81-26.338-20.852-15.166-11.273-7.683-5.687-7.204-2.451-15.721 10.237-11.273 13.75.935 3.513.936 13.928 10.716 29.749 23.027 38.848 28.612 5.687 4.727 2.275-1.617.278-1.138-2.553-4.271-21.13-38.193-22.546-38.848-10.035-16.101-2.654-9.655c-.935-3.968-1.617-7.304-1.617-11.374l11.652-15.823 6.445-2.073 15.545 2.073 6.547 5.687 9.655 22.092 15.646 34.78 24.265 47.291 7.103 14.028 3.791 12.992 1.416 3.968 2.449-.001v-2.275l1.997-26.641 3.69-32.707 3.589-42.084 1.239-11.854 5.863-14.206 11.652-7.683 9.099 4.348 7.482 10.716-1.036 6.926-4.449 28.915-8.72 45.294-5.687 30.331h3.313l3.792-3.791 15.342-20.372 25.782-32.227 11.374-12.789 13.27-14.129 8.517-6.724 16.1-.001 11.854 17.617-5.307 18.199-16.581 21.029-13.75 17.819-19.716 26.54-12.309 21.231 1.138 1.694 2.932-.278 44.536-9.479 24.062-4.347 28.714-4.928 12.992 6.066 1.416 6.167-5.106 12.613-30.71 7.583-36.018 7.204-53.636 12.689-.657.48.758.935 24.164 2.275 10.337.556h25.301l47.114 3.514 12.309 8.139 7.381 9.959-1.238 7.583-18.957 9.655-25.579-6.066-59.702-14.205-20.474-5.106-2.83-.001v1.694l17.061 16.682 31.266 28.233 39.152 36.397 1.997 8.999-5.03 7.102-5.307-.758-34.401-25.883-13.27-11.651-30.053-25.302-1.996-.001v2.654l6.926 10.136 36.574 54.975 1.895 16.859-2.653 5.485-9.479 3.311-10.414-1.895-21.408-30.054-22.092-33.844-17.819-30.331-2.173 1.238-10.515 113.261-4.929 5.788-11.374 4.348-9.478-7.204-5.03-11.652 5.03-23.027 6.066-30.052 4.928-23.886 4.449-29.674 2.654-9.858-.177-.657-2.173.278-22.37 30.71-34.021 45.977-26.919 28.815-6.445 2.553-11.173-5.789 1.037-10.337 6.243-9.2 37.257-47.392 22.47-29.371 14.508-16.961-.101-2.451h-.859l-98.954 64.251-17.618 2.275-7.583-7.103.936-11.652 3.589-3.791 29.749-20.474-.101.102.024.101z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-brand-dark">Anthropic (Claude 4.6)</h3>
+                            <p class="text-xs font-bold text-[#D97757] uppercase tracking-wider">El Redactor Jefe</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 font-serif text-sm">Rey de la naturalidad escribiendo y programación. Suena
+                        más humano, tiene razonamiento ético superior y es brillante analizando documentos gigantes sin
+                        perderse.</p>
+                </a>
+
+                <!-- Gemini -->
+                <a href="https://gemini.google.com" target="_blank"
+                    class="group block bg-white p-8 rounded-2xl border border-gray-200 hover:border-[#1A73E8] hover:shadow-xl transition-all">
+                    <div class="flex items-center mb-4">
+                        <div
+                            class="w-12 h-12 bg-[#E8F0FE] text-[#1A73E8] rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                            <svg viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7">
+                                <path
+                                    d="M19.38 6.94c-.7-.52-1.39-1.3-1.74-2.18-.32-.82-.57-1.85-.7-2.67-.09-.59-.92-.6-1.02-.01-.13.82-.38 1.85-.7 2.67-.35.88-1.04 1.66-1.74 2.18-.8.59-1.86.88-2.6.98-.56.07-.56.9 0 .97.74.1 1.8.39 2.6.98.7.52 1.39 1.3 1.74 2.18.32.82.57 1.85.7 2.67.09.59.92.6 1.02.01.13-.82.38-1.85.7-2.67.35-.88 1.04-1.66 1.74-2.18.8-.59 1.86-.88 2.6-.98.56-.07.56-.9 0-.97-.74-.1-1.8-.39-2.6-.98zm-8.8 6.32c-.52-.39-1.04-.97-1.3-1.64-.24-.61-.43-1.39-.52-2-.07-.44-.69-.45-.76-.01-.1.61-.28 1.39-.52 2-.26.67-.78 1.25-1.3 1.64-.6.44-1.39.66-1.95.73-.42.05-.42.67 0 .73.56.07 1.35.29 1.95.73.52.39 1.04.97 1.3 1.64.24.61.43 1.39.52 2 .07.44.69.45.76.01.1-.61.28-1.39.52-2 .26-.67.78-1.25 1.3-1.64.6-.44 1.39-.66 1.95-.73.42-.05.42-.67 0-.73-.56-.07-1.35-.29-1.95-.73z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-brand-dark">Google (Gemini 3.1 Pro)</h3>
+                            <p class="text-xs font-bold text-[#1A73E8] uppercase tracking-wider">El Devorador de Datos
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 font-serif text-sm">Integrado en Workspace. Su "ventana de contexto
+                        infinita" permite subir horas de vídeo o bases de datos enteras de una vez sin olvidar nada.</p>
+                </a>
+
+                <!-- ChatGPT -->
+                <a href="https://chatgpt.com" target="_blank"
+                    class="group block bg-white p-8 rounded-2xl border border-gray-200 hover:border-[#10A37F] hover:shadow-xl transition-all">
+                    <div class="flex items-center mb-4">
+                        <div
+                            class="w-12 h-12 bg-[#E6F6F2] text-[#10A37F] rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                            <svg viewBox="0 0 512 512" class="w-8 h-8 fill-current" xmlns="http://www.w3.org/2000/svg"
+                                fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">
+                                <path
+                                    d="M474.123 209.81c11.525-34.577 7.569-72.423-10.838-103.904-27.696-48.168-83.433-72.94-137.794-61.414a127.14 127.14 0 00-95.475-42.49c-55.564 0-104.936 35.781-122.139 88.593-35.781 7.397-66.574 29.76-84.637 61.414-27.868 48.167-21.503 108.72 15.826 150.007-11.525 34.578-7.569 72.424 10.838 103.733 27.696 48.34 83.433 73.111 137.966 61.585 24.084 27.18 58.833 42.835 95.303 42.663 55.564 0 104.936-35.782 122.139-88.594 35.782-7.397 66.574-29.76 84.465-61.413 28.04-48.168 21.676-108.722-15.654-150.008v-.172zm-39.567-87.218c11.01 19.267 15.139 41.803 11.354 63.65-.688-.516-2.064-1.204-2.924-1.72l-101.152-58.49a16.965 16.965 0 00-16.687 0L206.621 194.5v-50.232l97.883-56.597c45.587-26.32 103.732-10.666 130.052 34.921zm-227.935 104.42l49.888-28.9 49.887 28.9v57.63l-49.887 28.9-49.888-28.9v-57.63zm23.223-191.81c22.364 0 43.867 7.742 61.07 22.02-.688.344-2.064 1.204-3.097 1.72L186.666 117.26c-5.161 2.925-8.258 8.43-8.258 14.45v136.934l-43.523-25.116V130.333c0-52.64 42.491-95.13 95.131-95.302l-.172.172zM52.14 168.697c11.182-19.268 28.557-34.062 49.544-41.803V247.14c0 6.02 3.097 11.354 8.258 14.45l118.354 68.295-43.695 25.288-97.711-56.425c-45.415-26.32-61.07-84.465-34.75-130.052zm26.665 220.71c-11.182-19.095-15.139-41.802-11.354-63.65.688.516 2.064 1.204 2.924 1.72l101.152 58.49a16.965 16.965 0 0016.687 0l118.354-68.467v50.232l-97.883 56.425c-45.587 26.148-103.732 10.665-130.052-34.75h.172zm204.54 87.39c-22.192 0-43.867-7.741-60.898-22.02a62.439 62.439 0 003.097-1.72l101.152-58.317c5.16-2.924 8.429-8.43 8.257-14.45V243.527l43.523 25.116v113.022c0 52.64-42.663 95.303-95.131 95.303v-.172zM461.22 343.303c-11.182 19.267-28.729 34.061-49.544 41.63V264.687c0-6.021-3.097-11.526-8.257-14.45L284.893 181.77l43.523-25.116 97.883 56.424c45.587 26.32 61.07 84.466 34.75 130.053l.172.172z"
+                                    fill-rule="nonzero" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-brand-dark">OpenAI (ChatGPT-5)</h3>
+                            <p class="text-xs font-bold text-[#10A37F] uppercase tracking-wider">La Navaja Suiza</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 font-serif text-sm">El pionero y todoterreno. Excelente en lógica deductiva,
+                        voz/visión en tiempo real y creación de agentes personalizados (GPTs). A veces suena "robótico".
+                    </p>
+                </a>
+
+                <!-- Grok -->
+                <a href="https://x.com/i/grok" target="_blank"
+                    class="group block bg-white p-8 rounded-2xl border border-gray-200 hover:border-gray-900 hover:shadow-xl transition-all">
+                    <div class="flex items-center mb-4">
+                        <div
+                            class="w-12 h-12 bg-gray-200 text-gray-900 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                            <!-- X SVG -->
+                            <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-brand-dark">xAI (Grok 3)</h3>
+                            <p class="text-xs font-bold text-gray-600 uppercase tracking-wider">El Periodista</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 font-serif text-sm">Tiene acceso directo y sin filtros al caudal de datos en
+                        tiempo real de X (Twitter). Inigualable para análisis de tendencias de última hora y sentimiento
+                        social.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Precios y Seguridad -->
+    <section id="seguridad" class="py-20 bg-brand-dark text-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <span
+                            class="w-10 h-10 bg-brand-accent text-brand-dark rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">3</span>
+                        Precios y Seguridad
+                    </h2>
+                    <p class="prose-text text-gray-300 mb-6">
+                        El modelo 'gratuito' (Freemium) cuesta dinero a la empresa en tiempo perdido y riesgos en
+                        materia de seguridad. El modelo 'Pro' (~20-30€/mes) garantiza acceso a modelos insignia (Opus,
+                        Gemini 3.1) sin cuellos de botella. Solo las licencias 'Enterprise' ofrecen total seguridad.
+                    </p>
+                    <br>
+                    <div class="bg-gray-800/80 border-l-4 border-red-500 p-6 rounded-r-lg mb-6 shadow-inner">
+                        <h4 class="font-bold text-red-400 mb-2 uppercase tracking-wider text-sm"><i
+                                class="fa-solid fa-shield-halved mr-2"></i>El Riesgo de lo Gratis</h4>
+                        <p class="font-serif text-gray-300 italic text-base">"Si es gratis, los datos estratégicos de tu
+                            empresa son el producto con el que entrenan a la IA mundial."</p>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white/5 backdrop-blur-sm border border-white/10 p-10 rounded-2xl shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-accent to-brand-primary">
+                    </div>
+                    <div class="text-center mb-6">
+                        <i class="fa-solid fa-lock text-5xl text-brand-accent mb-4 drop-shadow-md"></i>
+                        <h3 class="text-2xl font-bold text-white">Licencias Enterprise / Team</h3>
+                    </div>
+                    <p class="prose-text text-gray-300 text-center mb-8">
+                        Es <strong>obligatorio</strong> el uso corporativo de cuentas de equipo. Garantizan por contrato
+                        la "Retención de Datos Cero".
+                    </p>
+                    <div class="bg-brand-accent/10 border border-brand-accent/30 p-5 rounded-lg text-center">
+                        <p class="font-serif text-amber-200 m-0 text-base">
+                            <i class="fa-solid fa-dice text-brand-accent mr-2"></i> <strong>El Modo Las Vegas:</strong>
+                            <br>Lo que pasa en tu chat de empresa, se queda en tu chat de empresa.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Interfaz -->
+    <section id="interfaz" class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-brand-dark mb-4 flex items-center">
+                <span
+                    class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">4</span>
+                Anatomía de la Interfaz
+            </h2>
+            <p class="prose-text text-gray-600 mb-10">Tu nueva mesa de operaciones. Todas las herramientas comparten
+                este ADN visual.</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                <div class="lg:col-span-4 space-y-6">
+                    <div class="p-5 bg-gray-50 rounded-xl border border-gray-100 shadow-sm">
+                        <h4 class="font-bold text-brand-dark mb-1"><i
+                                class="fa-solid fa-clock-rotate-left text-brand-primary mr-2"></i> Barra Lateral</h4>
+                        <p class="text-sm font-serif text-gray-600">Tu archivo de proyectos. Contiene accesos directos
+                            ("Mis cosas", "Gems") y el historial de "cerebros" pasados.</p>
+                    </div>
+                    <div class="p-5 bg-gray-50 rounded-xl border border-gray-100 shadow-sm">
+                        <h4 class="font-bold text-brand-dark mb-1"><i
+                                class="fa-solid fa-microchip text-brand-primary mr-2"></i> Selector de Modelo</h4>
+                        <p class="text-sm font-serif text-gray-600">Arriba a la derecha. Permite cambiar el motor de la
+                            IA según la complejidad de la tarea requerida (Ej: Google AI Plus).</p>
+                    </div>
+                    <div class="p-5 bg-gray-50 rounded-xl border border-gray-100 shadow-sm">
+                        <h4 class="font-bold text-brand-dark mb-1"><i
+                                class="fa-solid fa-keyboard text-brand-primary mr-2"></i> La Caja de Prompt</h4>
+                        <p class="text-sm font-serif text-gray-600">El centro de control. Desde aquí se escribe, se
+                            adjuntan archivos o se activan funciones especiales como generación de imágenes.</p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-8">
+                    <!-- Imagen Real Proporcionada -->
+                    <div class="rounded-2xl overflow-hidden shadow-2xl border border-gray-200">
+                        <img src="https://assets.seobotai.com/uxpin.com/692f521adf12e5e3fe921866/c2b53ac40ca4b1af5222aa9ad79ebe61.jpg"
+                            alt="Interfaz de Gemini" class="w-full h-auto object-cover">
+                    </div>
+                    <p class="text-xs text-center text-gray-400 mt-4 font-mono uppercase tracking-widest">Interfaz
+                        actual de Google Gemini</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Cerebro y Contexto -->
+    <section id="cerebro" class="py-24 bg-brand-light border-t border-gray-200">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-extrabold text-brand-dark flex items-center mb-4">
+                    <span
+                        class="w-12 h-12 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-2xl shadow-lg shrink-0">5</span>
+                    El Concepto de "Cerebro"
+                </h2>
+                <p class="text-xl text-gray-500 font-serif italic">El error número uno en las empresas es usar un solo
+                    chat continuo como si fuera un buscador web.</p>
+            </div>
+
+            <!-- Nueva Jerarquía: Problema vs Solución -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+
+                <!-- El Problema -->
+                <div class="bg-white border-t-4 border-red-500 p-8 rounded-2xl shadow-md">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <i class="fa-solid fa-triangle-exclamation text-red-500 mr-3 text-2xl"></i> Limitaciones
+                        Técnicas
+                    </h3>
+                    <div class="space-y-8">
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-2">Los "Tokens" (Efecto Pez Dorado)</h4>
+                            <p class="font-serif text-gray-600 text-base leading-relaxed">La IA lee fragmentos de texto
+                                (tokens) y tiene un límite de memoria temporal. Si llenas esa memoria chateando meses
+                                sobre lo mismo, empieza a olvidar las primeras instrucciones para hacer hueco.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-2">Lost in the Middle</h4>
+                            <p class="font-serif text-gray-600 text-base leading-relaxed">Al procesar documentos
+                                inmensos, la IA presta total atención al principio y al final, pero suele ignorar
+                                matices del medio. <strong>Solución:</strong> Repite siempre tus directrices vitales al
+                                final del prompt.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- La Solución -->
+                <div class="bg-indigo-50/50 border-t-4 border-brand-primary p-8 rounded-2xl shadow-md">
+                    <h3 class="text-2xl font-bold text-brand-dark mb-6 flex items-center">
+                        <i class="fa-solid fa-folder-tree text-brand-primary mr-3 text-2xl"></i> Estrategia del Usuario
+                    </h3>
+                    <div class="space-y-8">
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-2">Crear un "Cerebro" Especializado</h4>
+                            <p class="font-serif text-gray-600 text-base leading-relaxed">Un "Nuevo Chat" es un
+                                consultor con amnesia. Si lo educas sobre "Lanzamiento Q3" (dándole tono de marca, PDFs
+                                y contexto), ese chat se convierte de forma perenne en tu <strong>Asistente de
+                                    Lanzamiento</strong>.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-2">Evitar la Contaminación</h4>
+                            <p class="font-serif text-gray-600 text-base leading-relaxed">Si en el chat de "Lanzamiento
+                                Q3" pides un informe legal, los conceptos colisionarán y la IA "alucinará" inventando
+                                datos.</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 bg-white border border-indigo-100 p-5 rounded-xl shadow-sm">
+                        <p class="font-serif text-brand-primary text-base m-0 font-bold text-center">
+                            <i class="fa-solid fa-star text-brand-accent mr-2"></i> Regla de Oro: <br>"Nuevo Proyecto =
+                            Nuevo Chat." <br>"Nuevo Departamento = Nuevo Chat."
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Prompts -->
+    <section id="prompt" class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-brand-dark mb-6 flex items-center">
+                <span
+                    class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">6</span>
+                Prompt Engineering
+            </h2>
+
+            <div class="callout-analogy p-6 rounded-xl mb-12 shadow-sm border border-amber-100">
+                <p class="font-serif text-amber-900 text-lg m-0">
+                    <i class="fa-solid fa-user-tie mr-3 text-brand-accent text-xl"></i> Trabajar con IA es como
+                    contratar a un becario brillante pero que no sabe NADA de tu empresa. Un prompt no es una búsqueda
+                    web, es un <strong>encargo profesional (briefing)</strong> detallado.
+                </p>
+            </div>
+
+            <!-- FÓRMULA ESTRELLA: RCTRF Formula -->
+            <h3 class="text-2xl font-bold text-brand-dark mb-6">La Fórmula Estrella: <span
+                    class="text-brand-primary">R.C.T.R.F.</span></h3>
+            <div class="grid grid-cols-1 sm:grid-cols-5 gap-4 mb-16">
+                <div class="bg-gray-50 p-5 rounded-xl border-t-4 border-blue-500 shadow-sm">
+                    <span class="block text-4xl font-black text-gray-200 mb-2">R</span>
+                    <h4 class="font-bold text-sm uppercase tracking-wider text-gray-800">Rol</h4>
+                    <p class="text-sm text-gray-500 mt-3 font-serif italic align-left">"Actúa como un experto en ventas
+                        B2B..."</p>
+                </div>
+                <div class="bg-gray-50 p-5 rounded-xl border-t-4 border-green-500 shadow-sm">
+                    <span class="block text-4xl font-black text-gray-200 mb-2">C</span>
+                    <h4 class="font-bold text-sm uppercase tracking-wider text-gray-800">Contexto</h4>
+                    <p class="text-sm text-gray-500 mt-3 font-serif italic align-left">"Nuestra empresa vende software a
+                        clínicas..."</p>
+                </div>
+                <div class="bg-gray-50 p-5 rounded-xl border-t-4 border-purple-500 shadow-sm">
+                    <span class="block text-4xl font-black text-gray-200 mb-2">T</span>
+                    <h4 class="font-bold text-sm uppercase tracking-wider text-gray-800">Tarea</h4>
+                    <p class="text-sm text-gray-500 mt-3 font-serif italic align-left">"Redacta un correo para puerta
+                        fría..."</p>
+                </div>
+                <div class="bg-gray-50 p-5 rounded-xl border-t-4 border-red-500 shadow-sm">
+                    <span class="block text-4xl font-black text-gray-200 mb-2">R</span>
+                    <h4 class="font-bold text-sm uppercase tracking-wider text-gray-800">Restric.</h4>
+                    <p class="text-sm text-gray-500 mt-3 font-serif italic align-left">"No superes 150 palabras, sin
+                        tono comercial..."</p>
+                </div>
+                <div class="bg-gray-50 p-5 rounded-xl border-t-4 border-brand-accent shadow-sm">
+                    <span class="block text-4xl font-black text-gray-200 mb-2">F</span>
+                    <h4 class="font-bold text-sm uppercase tracking-wider text-gray-800">Formato</h4>
+                    <p class="text-sm text-gray-500 mt-3 font-serif italic align-left">"Entrégalo con viñetas y formato
+                        Markdown."</p>
+                </div>
+            </div>
+
+            <!-- OTRAS FÓRMULAS DE ALTO RENDIMIENTO -->
+            <div class="mt-16 mb-16 pt-8 border-t border-gray-100">
+                <h3 class="text-2xl font-bold text-brand-dark mb-8">Otras 4 Estructuras de Alto Rendimiento</h3>
+
+                <!-- Formula 1: PAIN -->
+                <div class="mb-10">
+                    <h4 class="text-lg font-bold text-gray-700 mb-4 flex items-center"><i
+                            class="fa-solid fa-triangle-exclamation text-red-400 mr-2"></i> 1. Estructura P.A.I.N
+                        (Resolución de Problemas)</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-red-400 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Problema</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Nuestras ventas cayeron un
+                                20% en Q1..."</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-red-400 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Acción</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Analiza los datos y encuentra
+                                la causa..."</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-red-400 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Información</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Adjunto el reporte financiero
+                                detallado..."</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-red-400 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Next Steps</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Proporciona 3 medidas
+                                correctivas..."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formula 2: PECRA -->
+                <div class="mb-10">
+                    <h4 class="text-lg font-bold text-gray-700 mb-4 flex items-center"><i
+                            class="fa-solid fa-bullseye text-teal-500 mr-2"></i> 2. Estructura P.E.C.R.A (Claridad y
+                        Metas)</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-5 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-teal-500 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Propósito</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Preparar una presentación
+                                para inversores..."</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-teal-500 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Expectativa</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Un guion de 10 diapositivas
+                                directo..."</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-teal-500 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Contexto</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Buscamos levantar ronda de
+                                1M€..."</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-teal-500 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Requisición</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Extrae los puntos clave del
+                                business plan..."</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-teal-500 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Acción</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Redacta el texto que diré en
+                                voz alta."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formula 3: ROSES -->
+                <div class="mb-10">
+                    <h4 class="text-lg font-bold text-gray-700 mb-4 flex items-center"><i
+                            class="fa-solid fa-diagram-project text-indigo-500 mr-2"></i> 3. Estructura R.O.S.E.S
+                        (Flujos de Trabajo)</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-5 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-indigo-500 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Rol</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Project Manager Senior..."
+                            </p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-indigo-500 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Objetivo</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Lanzar la nueva web
+                                corporativa..."</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-indigo-500 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Situación</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Tenemos 1 mes y un equipo de
+                                3 devs..."</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-indigo-500 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Expectativa</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Un cronograma ágil en formato
+                                tabla..."</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-indigo-500 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Steps</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Paso 1: Diseño. Paso 2:
+                                Backend..."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formula 4: CREATE -->
+                <div class="mb-10">
+                    <h4 class="text-lg font-bold text-gray-700 mb-4 flex items-center"><i
+                            class="fa-solid fa-pen-nib text-pink-500 mr-2"></i> 4. Estructura C.R.E.A.T.E (Copywriting y
+                        Contenido)</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-pink-500 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Caracteriz.</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Copywriter estrella de
+                                agencia..."</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-pink-500 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Requisic.</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Escribe un artículo para el
+                                blog..."</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-pink-500 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Ejemplos</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Imita este estilo: [Texto
+                                adjunto]..."</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-pink-500 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Ajustes</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Evita jergas. Usa frases
+                                cortas..."</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-pink-500 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Tipo</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Post educativo de lectura
+                                rápida..."</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl border-t-4 border-pink-500 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-2">Extras</h4>
+                            <p class="text-xs text-gray-500 font-serif italic align-left">"Sugiere 3 posibles títulos
+                                hook..."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón de Enlace a la Fuente -->
+                <div class="text-center mt-10">
+                    <a href="https://fvivas.com/es/19-formulas-y-estructuras-de-prompts-para-chatgpt/" target="_blank"
+                        rel="noopener"
+                        class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-lg text-sm font-bold text-gray-700 bg-white hover:bg-gray-50 hover:text-brand-primary transition-colors shadow-sm">
+                        <i class="fa-solid fa-book-open-reader mr-2"></i> Ver las 19 Fórmulas de Prompts Completas
+                    </a>
+                </div>
+            </div>
+
+            <!-- Formats: MD vs JSON vs CSV -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-bold text-brand-dark mb-6">El formato final importa: Máquinas vs Humanos</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+                    <!-- Markdown -->
+                    <div
+                        class="flex flex-col bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg h-full">
+                        <div class="bg-gray-50 p-5 border-b border-gray-200 shrink-0">
+                            <h4 class="font-bold text-brand-dark text-lg flex items-center">
+                                <i class="fa-brands fa-markdown text-blue-500 mr-3 text-2xl"></i> Markdown (.md)
+                            </h4>
+                            <p class="text-sm font-serif text-gray-500 mt-2">El "plato servido". Para copiar
+                                directamente a Notion, Word o Slack manteniendo el diseño y la jerarquía intactos.</p>
+                        </div>
+                        <div id="format-theory-md" class="code-block rounded-none flex-grow whitespace-pre-wrap"><span
+                                class="text-blue-400 font-bold">##</span> Resumen de Ventas Q3
+
+                            <span class="text-amber-400 font-bold">**</span>Facturación:<span
+                                class="text-amber-400 font-bold">**</span> 15.000€
+                            <span class="text-blue-400 font-bold">*</span> Cliente principal: Acme Corp
+                            <span class="text-blue-400 font-bold">*</span> Producto estrella: Licencia Pro
+                        </div>
+                        <div class="bg-gray-100 px-4 py-3 border-t border-gray-200 flex justify-end">
+                            <button onclick="copyToClipboard('format-theory-md', this)"
+                                class="flex items-center text-xs font-bold text-gray-600 hover:text-brand-primary transition-colors border border-gray-300 hover:border-brand-primary rounded bg-white shadow-sm px-3 py-1">
+                                <i class="fa-regular fa-copy mr-2"></i> Copiar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- JSON -->
+                    <div
+                        class="flex flex-col bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg h-full">
+                        <div class="bg-gray-50 p-5 border-b border-gray-200 shrink-0">
+                            <h4 class="font-bold text-brand-dark text-lg flex items-center">
+                                <!-- Custom JSON SVG icon -->
+                                <svg viewBox="0 0 24 24" class="w-6 h-6 text-green-600 mr-3" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1" />
+                                    <path
+                                        d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1" />
+                                </svg>
+                                JSON (.json)
+                            </h4>
+                            <p class="text-sm font-serif text-gray-500 mt-2">El "tupperware con etiquetas". Idioma de
+                                programación para automatizar e integrar los datos generados con tu ERP (como SAP).</p>
+                        </div>
+                        <div id="format-theory-json" class="code-block rounded-none flex-grow whitespace-pre-wrap"><span
+                                class="text-gray-400">{</span>
+                            <span class="text-amber-300">"resumen_ventas_q3"</span><span class="text-gray-400">:
+                                {</span>
+                            <span class="text-amber-300">"facturacion_total"</span><span class="text-gray-400">:</span>
+                            <span class="text-blue-300">15000</span>,
+                            <span class="text-amber-300">"cliente_principal"</span><span class="text-gray-400">:</span>
+                            <span class="text-green-300">"Acme Corp"</span>,
+                            <span class="text-amber-300">"producto_estrella"</span><span class="text-gray-400">:</span>
+                            <span class="text-green-300">"Licencia Pro"</span>
+                            <span class="text-gray-400">}</span>
+                            <span class="text-gray-400">}</span>
+                        </div>
+                        <div class="bg-gray-100 px-4 py-3 border-t border-gray-200 flex justify-end">
+                            <button onclick="copyToClipboard('format-theory-json', this)"
+                                class="flex items-center text-xs font-bold text-gray-600 hover:text-brand-primary transition-colors border border-gray-300 hover:border-brand-primary rounded bg-white shadow-sm px-3 py-1">
+                                <i class="fa-regular fa-copy mr-2"></i> Copiar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- CSV -->
+                    <div
+                        class="flex flex-col bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg h-full">
+                        <div class="bg-gray-50 p-5 border-b border-gray-200 shrink-0">
+                            <h4 class="font-bold text-brand-dark text-lg flex items-center">
+                                <i class="fa-solid fa-table-cells text-amber-500 mr-3 text-2xl"></i> CSV (.csv)
+                            </h4>
+                            <p class="text-sm font-serif text-gray-500 mt-2">La "tabla universal". Estructura los datos
+                                en texto separado por comas (o punto y coma). Ideal para copiar y pegar directamente en
+                                Excel.</p>
+                        </div>
+                        <div id="format-theory-csv" class="code-block rounded-none flex-grow whitespace-pre-wrap"><span
+                                class="text-gray-400">Categoria;Tecnologia;Impacto</span>
+                            <span class="text-amber-300">Automatización</span><span class="text-gray-400">;</span><span
+                                class="text-blue-300">Robots Autónomos</span><span class="text-gray-400">;</span><span
+                                class="text-green-300">-40% errores</span>
+                            <span class="text-amber-300">Rutas</span><span class="text-gray-400">;</span><span
+                                class="text-blue-300">IA Predictiva</span><span class="text-gray-400">;</span><span
+                                class="text-green-300">-15% tiempos</span>
+                        </div>
+                        <div class="bg-gray-100 px-4 py-3 border-t border-gray-200 flex justify-end">
+                            <button onclick="copyToClipboard('format-theory-csv', this)"
+                                class="flex items-center text-xs font-bold text-gray-600 hover:text-brand-primary transition-colors border border-gray-300 hover:border-brand-primary rounded bg-white shadow-sm px-3 py-1">
+                                <i class="fa-regular fa-copy mr-2"></i> Copiar
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Calculadora de Tokens -->
+            <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8 shadow-sm mb-16">
+                <h3 class="text-2xl font-bold text-brand-dark mb-4">
+                    <i class="fa-solid fa-calculator text-brand-primary mr-2"></i> Calculadora de Tokens <span
+                        class="text-sm font-normal text-gray-500">(Estimación)</span>
+                </h3>
+                <p class="font-serif text-gray-600 mb-6">Pega aquí el texto de tu documento o prompt para calcular su
+                    peso en la "memoria" de la IA.</p>
+
+                <textarea id="tokenInput"
+                    class="w-full p-4 border border-gray-300 rounded-xl font-serif text-gray-700 mb-4 focus:ring-2 focus:ring-brand-primary outline-none resize-y"
+                    rows="4" placeholder="Ej: Pega aquí los párrafos que quieres analizar..."></textarea>
+
+                <button onclick="calculateTokens()"
+                    class="bg-brand-primary text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-700 transition-colors shadow-lg">
+                    <i class="fa-solid fa-bolt mr-2"></i> Calcular Tokens
+                </button>
+
+                <div id="tokenResult" class="hidden mt-6 p-6 bg-white border border-indigo-100 rounded-xl shadow-sm">
+                    <p class="font-bold text-brand-dark mb-1">Impacto en la Ventana de Contexto:</p>
+                    <p class="text-4xl font-black text-brand-primary mb-2"><span id="tokenCount">0</span> <span
+                            class="text-xl text-gray-500 font-normal">tokens aprox.</span></p>
+                    <p class="text-sm text-gray-600 font-serif">
+                        <i class="fa-solid fa-circle-info text-brand-accent mr-1"></i>
+                        <span id="tokenAdvice"></span>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 7. Casos de Uso -->
+    <section id="casos" class="py-20 bg-brand-light border-t border-gray-200">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-brand-dark mb-4 flex items-center">
+                <span
+                    class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">7</span>
+                Casos de Uso por Industria
+            </h2>
+            <p class="prose-text text-gray-600 mb-12">Ejemplos reales de cómo la IA generativa impacta directamente en
+                el ROI y los procesos diarios.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Caso 1 -->
+                <div
+                    class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-shadow">
+                    <div class="flex justify-between items-start mb-6">
+                        <h3 class="text-xl font-bold text-brand-dark">Agencia de Marketing</h3>
+                        <div
+                            class="w-12 h-12 bg-amber-100 text-brand-accent rounded-full flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-bullhorn"></i>
+                        </div>
+                    </div>
+                    <p class="font-serif text-gray-700 mb-6"><strong>El Reto:</strong> Redactar 50 posts de LinkedIn
+                        técnicos para un cliente B2B (tiempo manual: 10 horas).</p>
+                    <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-brand-primary space-y-2">
+                        <p class="text-sm text-gray-600"><strong class="text-brand-dark">Herramienta:</strong> Claude +
+                            Fórmula R.C.T.R.F</p>
+                        <p class="text-sm text-gray-600"><strong class="text-brand-dark">Resultado:</strong> Finalizado
+                            en 2 horas</p>
+                        <p class="text-sm font-bold text-emerald-600 mt-2"><i class="fa-solid fa-sack-dollar mr-1"></i>
+                            Ahorro: 8 horas facturables/semana</p>
+                    </div>
+                </div>
+
+                <!-- Caso 2 -->
+                <div
+                    class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-shadow">
+                    <div class="flex justify-between items-start mb-6">
+                        <h3 class="text-xl font-bold text-brand-dark">Consultoría Empresarial</h3>
+                        <div
+                            class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <p class="font-serif text-gray-700 mb-6"><strong>El Reto:</strong> Analizar 20 balances financieros
+                        en PDF (50 pags c/u) para un informe de Due Diligence.</p>
+                    <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-brand-primary space-y-2">
+                        <p class="text-sm text-gray-600"><strong class="text-brand-dark">Herramienta:</strong> Gemini
+                            3.1 Pro (Contexto infinito)</p>
+                        <p class="text-sm text-gray-600"><strong class="text-brand-dark">Resultado:</strong> Análisis
+                            cruzado en 45 minutos</p>
+                        <p class="text-sm font-bold text-emerald-600 mt-2"><i class="fa-solid fa-sack-dollar mr-1"></i>
+                            Ahorro: 2 días completos de trabajo analítico</p>
+                    </div>
+                </div>
+
+                <!-- Caso 3 -->
+                <div
+                    class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-shadow">
+                    <div class="flex justify-between items-start mb-6">
+                        <h3 class="text-xl font-bold text-brand-dark">Desarrollo de Software</h3>
+                        <div
+                            class="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                    </div>
+                    <p class="font-serif text-gray-700 mb-6"><strong>El Reto:</strong> Auditar y refactorizar 2000
+                        líneas de código antiguo (Legacy code) para un nuevo sistema.</p>
+                    <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-brand-primary space-y-2">
+                        <p class="text-sm text-gray-600"><strong class="text-brand-dark">Herramienta:</strong> ChatGPT-5
+                            o Claude Opus</p>
+                        <p class="text-sm text-gray-600"><strong class="text-brand-dark">Resultado:</strong>
+                            Refactorizado con tests en 3 horas</p>
+                        <p class="text-sm font-bold text-emerald-600 mt-2"><i class="fa-solid fa-sack-dollar mr-1"></i>
+                            Ahorro: -60% tiempo en QA y bugs</p>
+                    </div>
+                </div>
+
+                <!-- Caso 4 -->
+                <div
+                    class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-shadow">
+                    <div class="flex justify-between items-start mb-6">
+                        <h3 class="text-xl font-bold text-brand-dark">Departamento RRHH</h3>
+                        <div
+                            class="w-12 h-12 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-users-viewfinder"></i>
+                        </div>
+                    </div>
+                    <p class="font-serif text-gray-700 mb-6"><strong>El Reto:</strong> Criba inicial de 300 currículums
+                        ciegos para un puesto técnico especializado.</p>
+                    <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-brand-primary space-y-2">
+                        <p class="text-sm text-gray-600"><strong class="text-brand-dark">Herramienta:</strong> ChatGPT +
+                            Extracción en formato JSON / CSV</p>
+                        <p class="text-sm text-gray-600"><strong class="text-brand-dark">Resultado:</strong> Tabla de
+                            candidatos en 15 mins</p>
+                        <p class="text-sm font-bold text-emerald-600 mt-2"><i class="fa-solid fa-sack-dollar mr-1"></i>
+                            Ahorro: Procesos de selección 5x más rápidos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Práctica -->
+    <section id="practica" class="py-24 bg-brand-dark text-white border-t-8 border-brand-accent">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-3 block"><i
+                        class="fa-solid fa-desktop mr-2"></i> Demo Interactiva</span>
+                <h2 class="text-4xl lg:text-5xl font-extrabold mb-6">La Evolución del Prompt</h2>
+                <p class="text-gray-400 font-serif text-xl max-w-3xl mx-auto">Observa en pantalla cómo la misma orden
+                    inicial cambia de un resultado inútil a inteligencia de negocio real estructurada.</p>
+            </div>
+
+            <div class="space-y-8 mb-24">
+                <!-- Fase 1 -->
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-colors">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-300">Fase 1: El Prompt "Buscador" <span
+                            class="text-sm font-normal text-red-400 ml-3 py-1 px-3 bg-red-500/20 rounded-full">Novato</span>
+                    </h3>
+                    <div class="bg-[#0f172a] rounded-lg mb-5 border-l-4 border-red-500 shadow-inner overflow-hidden">
+                        <div id="prompt-fase1" class="p-5 font-mono text-gray-300 whitespace-pre-wrap"><span
+                                class="text-red-400 mr-2">></span> Escribe un post sobre las tendencias del sector
+                            logístico para 2026.</div>
+                        <div class="bg-black/30 px-4 py-2 border-t border-white/5 flex justify-end">
+                            <button onclick="copyToClipboard('prompt-fase1', this)"
+                                class="flex items-center text-xs font-bold text-gray-400 hover:text-white transition-colors border border-gray-600 hover:border-gray-400 rounded px-3 py-1">
+                                <i class="fa-regular fa-copy mr-2"></i> Copiar
+                            </button>
+                        </div>
+                    </div>
+                    <p class="font-serif text-gray-400 text-lg"><i
+                            class="fa-solid fa-magnifying-glass-chart text-red-400 mr-2"></i> <strong>Análisis:</strong>
+                        Texto plano, aburrido, tipo Wikipedia. Usa "En conclusión...". Inusable para una empresa real.
+                    </p>
+                </div>
+
+                <!-- Fase 2 -->
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-colors">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-300">Fase 2: La Fórmula R.C.T.R.F + MD <span
+                            class="text-sm font-normal text-blue-400 ml-3 py-1 px-3 bg-blue-500/20 rounded-full">Profesional</span>
+                    </h3>
+                    <div class="bg-[#0f172a] rounded-lg mb-5 border-l-4 border-blue-500 shadow-inner overflow-hidden">
+                        <div id="prompt-fase2"
+                            class="p-5 font-mono text-gray-300 text-sm leading-relaxed whitespace-pre-wrap"><span
+                                class="text-blue-400 mr-2">></span> Actúa como el Director de Innovación B2B de una
+                            empresa de logística. (ROL)
+                            Nuestro objetivo es atraer clientes empresariales en LinkedIn mostrando autoridad.
+                            (CONTEXTO)
+                            Redacta un post sobre las tendencias de automatización en 2026. (TAREA)
+                            Máx 3 párrafos, sin hashtags genéricos ni lenguaje técnico, tono urgente. (RESTRICCIONES)
+                            Utiliza formato Markdown, titular en H2 y viñetas. (FORMATO)</div>
+                        <div class="bg-black/30 px-4 py-2 border-t border-white/5 flex justify-end">
+                            <button onclick="copyToClipboard('prompt-fase2', this)"
+                                class="flex items-center text-xs font-bold text-gray-400 hover:text-white transition-colors border border-gray-600 hover:border-gray-400 rounded px-3 py-1">
+                                <i class="fa-regular fa-copy mr-2"></i> Copiar
+                            </button>
+                        </div>
+                    </div>
+                    <p class="font-serif text-gray-400 text-lg"><i class="fa-solid fa-bolt text-blue-400 mr-2"></i>
+                        <strong>Análisis:</strong> Cambio radical. Texto estructurado, listo para publicar. Tono
+                        persuasivo con objetivo comercial claro.</p>
+                </div>
+
+                <!-- Fase 3 -->
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-colors">
+                    <h3 class="text-2xl font-bold mb-4 text-brand-accent">Fase 3: Deep Research + Archivos <span
+                            class="text-sm font-normal text-amber-200 ml-3 py-1 px-3 bg-amber-500/20 rounded-full">Experto</span>
+                    </h3>
+                    <div
+                        class="bg-[#0f172a] rounded-lg mb-5 border-l-4 border-brand-accent shadow-inner overflow-hidden">
+                        <div class="px-5 pt-5 pb-3 border-b border-gray-700/50 flex items-center">
+                            <i class="fa-solid fa-file-pdf text-red-400 text-2xl mr-3"></i>
+                            <span class="text-gray-400 italic text-sm">[Archivo Adjunto:
+                                Informe_Logistica_Deloitte_2026.pdf]</span>
+                        </div>
+                        <div id="prompt-fase3"
+                            class="px-5 pb-5 pt-3 font-mono text-gray-300 text-sm whitespace-pre-wrap"><span
+                                class="text-brand-accent mr-2">></span> ...Basa este post EXCLUSIVAMENTE en las métricas
+                            de crecimiento que aparecen en el documento adjunto y activa Búsqueda Web para las últimas
+                            noticias regulatorias de hoy.</div>
+                        <div class="bg-black/30 px-4 py-2 border-t border-white/5 flex justify-end">
+                            <button onclick="copyToClipboard('prompt-fase3', this)"
+                                class="flex items-center text-xs font-bold text-gray-400 hover:text-white transition-colors border border-gray-600 hover:border-gray-400 rounded px-3 py-1">
+                                <i class="fa-regular fa-copy mr-2"></i> Copiar
+                            </button>
+                        </div>
+                    </div>
+                    <p class="font-serif text-gray-400 text-lg"><i
+                            class="fa-solid fa-bullseye text-brand-accent mr-2"></i> <strong>Análisis:</strong> Elimina
+                        alucinaciones. Fundamentado en datos exactos, porcentajes reales y fuentes verificables. Pasa de
+                        "marketing" a "inteligencia de negocio".</p>
+                </div>
+
+                <!-- Fase 4 -->
+                <div
+                    class="bg-gradient-to-br from-brand-primary/20 via-[#0f172a] to-purple-900/30 border border-brand-primary/50 rounded-2xl p-10 relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 text-9xl opacity-5 text-white"><i
+                            class="fa-solid fa-code-compare"></i></div>
+
+                    <h3 class="text-3xl font-bold mb-3 text-white relative z-10">Fase 4: La Batalla de Modelos</h3>
+                    <p class="font-serif text-gray-300 mb-8 text-lg relative z-10">Lanzamos el Prompt Experto de la Fase
+                        3 simultáneamente en dos líderes de mercado:</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+                        <div
+                            class="bg-gray-900/90 backdrop-blur border border-emerald-500/30 p-8 rounded-xl shadow-2xl">
+                            <h4 class="text-xl font-bold text-emerald-400 mb-4 flex items-center">
+                                <svg viewBox="0 0 512 512" class="w-6 h-6 fill-current mr-3"
+                                    xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"
+                                    stroke-linejoin="round" stroke-miterlimit="2">
+                                    <path
+                                        d="M474.123 209.81c11.525-34.577 7.569-72.423-10.838-103.904-27.696-48.168-83.433-72.94-137.794-61.414a127.14 127.14 0 00-95.475-42.49c-55.564 0-104.936 35.781-122.139 88.593-35.781 7.397-66.574 29.76-84.637 61.414-27.868 48.167-21.503 108.72 15.826 150.007-11.525 34.578-7.569 72.424 10.838 103.733 27.696 48.34 83.433 73.111 137.966 61.585 24.084 27.18 58.833 42.835 95.303 42.663 55.564 0 104.936-35.782 122.139-88.594 35.782-7.397 66.574-29.76 84.465-61.413 28.04-48.168 21.676-108.722-15.654-150.008v-.172zm-39.567-87.218c11.01 19.267 15.139 41.803 11.354 63.65-.688-.516-2.064-1.204-2.924-1.72l-101.152-58.49a16.965 16.965 0 00-16.687 0L206.621 194.5v-50.232l97.883-56.597c45.587-26.32 103.732-10.666 130.052 34.921zm-227.935 104.42l49.888-28.9 49.887 28.9v57.63l-49.887 28.9-49.888-28.9v-57.63zm23.223-191.81c22.364 0 43.867 7.742 61.07 22.02-.688.344-2.064 1.204-3.097 1.72L186.666 117.26c-5.161 2.925-8.258 8.43-8.258 14.45v136.934l-43.523-25.116V130.333c0-52.64 42.491-95.13 95.131-95.302l-.172.172zM52.14 168.697c11.182-19.268 28.557-34.062 49.544-41.803V247.14c0 6.02 3.097 11.354 8.258 14.45l118.354 68.295-43.695 25.288-97.711-56.425c-45.415-26.32-61.07-84.465-34.75-130.052zm26.665 220.71c-11.182-19.095-15.139-41.802-11.354-63.65.688.516 2.064 1.204 2.924 1.72l101.152 58.49a16.965 16.965 0 0016.687 0l118.354-68.467v50.232l-97.883 56.425c-45.587 26.148-103.732 10.665-130.052-34.75h.172zm204.54 87.39c-22.192 0-43.867-7.741-60.898-22.02a62.439 62.439 0 003.097-1.72l101.152-58.317c5.16-2.924 8.429-8.43 8.257-14.45V243.527l43.523 25.116v113.022c0 52.64-42.663 95.303-95.131 95.303v-.172zM461.22 343.303c-11.182 19.267-28.729 34.061-49.544 41.63V264.687c0-6.021-3.097-11.526-8.257-14.45L284.893 181.77l43.523-25.116 97.883 56.424c45.587 26.32 61.07 84.466 34.75 130.053l.172.172z"
+                                        fill-rule="nonzero" />
+                                </svg>
+                                ChatGPT-5 (Razonamiento)
+                            </h4>
+                            <p class="text-base font-serif text-gray-300 leading-relaxed">Estructura la información de
+                                forma más aséptica, lógica y deductiva. Directo al grano. Ideal si el público objetivo
+                                son ingenieros puros que buscan el dato crudo sin adornos.</p>
+                        </div>
+                        <div class="bg-gray-900/90 backdrop-blur border border-[#D97757]/30 p-8 rounded-xl shadow-2xl">
+                            <h4 class="text-xl font-bold text-[#D97757] mb-4 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-3"
+                                    shape-rendering="geometricPrecision" text-rendering="geometricPrecision"
+                                    image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"
+                                    viewBox="0 0 512 509.64">
+                                    <path fill="#D77655"
+                                        d="M115.612 0h280.775C459.974 0 512 52.026 512 115.612v278.415c0 63.587-52.026 115.612-115.613 115.612H115.612C52.026 509.639 0 457.614 0 394.027V115.612C0 52.026 52.026 0 115.612 0z" />
+                                    <path fill="#FCF2EE" fill-rule="nonzero"
+                                        d="M142.27 316.619l73.655-41.326 1.238-3.589-1.238-1.996-3.589-.001-12.31-.759-42.084-1.138-36.498-1.516-35.361-1.896-8.897-1.895-8.34-10.995.859-5.484 7.482-5.03 10.717.935 23.683 1.617 35.537 2.452 25.782 1.517 38.193 3.968h6.064l.86-2.451-2.073-1.517-1.618-1.517-36.776-24.922-39.81-26.338-20.852-15.166-11.273-7.683-5.687-7.204-2.451-15.721 10.237-11.273 13.75.935 3.513.936 13.928 10.716 29.749 23.027 38.848 28.612 5.687 4.727 2.275-1.617.278-1.138-2.553-4.271-21.13-38.193-22.546-38.848-10.035-16.101-2.654-9.655c-.935-3.968-1.617-7.304-1.617-11.374l11.652-15.823 6.445-2.073 15.545 2.073 6.547 5.687 9.655 22.092 15.646 34.78 24.265 47.291 7.103 14.028 3.791 12.992 1.416 3.968 2.449-.001v-2.275l1.997-26.641 3.69-32.707 3.589-42.084 1.239-11.854 5.863-14.206 11.652-7.683 9.099 4.348 7.482 10.716-1.036 6.926-4.449 28.915-8.72 45.294-5.687 30.331h3.313l3.792-3.791 15.342-20.372 25.782-32.227 11.374-12.789 13.27-14.129 8.517-6.724 16.1-.001 11.854 17.617-5.307 18.199-16.581 21.029-13.75 17.819-19.716 26.54-12.309 21.231 1.138 1.694 2.932-.278 44.536-9.479 24.062-4.347 28.714-4.928 12.992 6.066 1.416 6.167-5.106 12.613-30.71 7.583-36.018 7.204-53.636 12.689-.657.48.758.935 24.164 2.275 10.337.556h25.301l47.114 3.514 12.309 8.139 7.381 9.959-1.238 7.583-18.957 9.655-25.579-6.066-59.702-14.205-20.474-5.106-2.83-.001v1.694l17.061 16.682 31.266 28.233 39.152 36.397 1.997 8.999-5.03 7.102-5.307-.758-34.401-25.883-13.27-11.651-30.053-25.302-1.996-.001v2.654l6.926 10.136 36.574 54.975 1.895 16.859-2.653 5.485-9.479 3.311-10.414-1.895-21.408-30.054-22.092-33.844-17.819-30.331-2.173 1.238-10.515 113.261-4.929 5.788-11.374 4.348-9.478-7.204-5.03-11.652 5.03-23.027 6.066-30.052 4.928-23.886 4.449-29.674 2.654-9.858-.177-.657-2.173.278-22.37 30.71-34.021 45.977-26.919 28.815-6.445 2.553-11.173-5.789 1.037-10.337 6.243-9.2 37.257-47.392 22.47-29.371 14.508-16.961-.101-2.451h-.859l-98.954 64.251-17.618 2.275-7.583-7.103.936-11.652 3.589-3.791 29.749-20.474-.101.102.024.101z" />
+                                </svg>
+                                Claude 4.6 Sonnet
+                            </h4>
+                            <p class="text-base font-serif text-gray-300 leading-relaxed">Entrega un texto con mayor
+                                riqueza léxica, flujo narrativo y "empatía". Conecta mejor a nivel humano y persuasivo,
+                                demostrando ser superior para Copywriting.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fase 5 -->
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-colors">
+                    <h3 class="text-2xl font-bold mb-4 text-purple-400">Fase 5: El idioma de la IA <span
+                            class="text-sm font-normal text-purple-200 ml-3 py-1 px-3 bg-purple-500/20 rounded-full">Aplicación</span>
+                    </h3>
+                    <p class="font-serif text-gray-400 text-lg mb-6"><i
+                            class="fa-solid fa-paste text-purple-400 mr-2"></i> <strong>Ejercicio:</strong> Copia el
+                        contenido generado en Markdown y pégalo en un documento Word o Notion. Luego, copia el CSV y
+                        pégalo directamente en Excel para ver cómo se estructuran las columnas mágicamente.</p>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- MD Copy -->
+                        <div
+                            class="bg-[#0f172a] rounded-lg border-l-4 border-blue-500 shadow-inner overflow-hidden flex flex-col h-full">
+                            <div
+                                class="bg-black/40 px-4 py-2 border-b border-white/5 flex items-center text-xs text-blue-400 font-bold uppercase tracking-wider">
+                                <i class="fa-brands fa-markdown mr-2"></i> Para Word / Notion
+                            </div>
+                            <div id="prompt-fase5-md"
+                                class="p-5 font-mono text-gray-300 text-sm flex-grow whitespace-pre-wrap">## Resumen de
+                                Tendencias 2026
+
+                                **1. Automatización:**
+                                * Implementación de robots (AMRs).
+                                * Reducción de errores en un 40%.
+
+                                **2. Predictiva en Rutas:**
+                                * Tiempos reducidos un 15%.</div>
+                            <div class="bg-black/30 px-4 py-2 border-t border-white/5 flex justify-end">
+                                <button onclick="copyToClipboard('prompt-fase5-md', this)"
+                                    class="flex items-center text-xs font-bold text-gray-400 hover:text-white transition-colors border border-gray-600 hover:border-gray-400 rounded px-3 py-1">
+                                    <i class="fa-regular fa-copy mr-2"></i> Copiar .md
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- JSON Copy -->
+                        <div
+                            class="bg-[#0f172a] rounded-lg border-l-4 border-green-500 shadow-inner overflow-hidden flex flex-col h-full">
+                            <div
+                                class="bg-black/40 px-4 py-2 border-b border-white/5 flex items-center justify-between text-xs text-green-400 font-bold uppercase tracking-wider">
+                                <span class="flex items-center">
+                                    <svg viewBox="0 0 24 24" class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1" />
+                                        <path
+                                            d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1" />
+                                    </svg>
+                                    Para APIs
+                                </span>
+                            </div>
+                            <div id="prompt-fase5-json"
+                                class="p-5 font-mono text-gray-300 text-sm flex-grow whitespace-pre-wrap">{
+                                "tendencias_2026": [
+                                {
+                                "tecnologia": "Robots",
+                                "impacto_error": -40
+                                }
+                                ]
+                                }</div>
+                            <div class="bg-black/30 px-4 py-2 border-t border-white/5 flex justify-end">
+                                <button onclick="copyToClipboard('prompt-fase5-json', this)"
+                                    class="flex items-center text-xs font-bold text-gray-400 hover:text-white transition-colors border border-gray-600 hover:border-gray-400 rounded px-3 py-1">
+                                    <i class="fa-regular fa-copy mr-2"></i> Copiar .json
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- CSV Copy -->
+                        <div
+                            class="bg-[#0f172a] rounded-lg border-l-4 border-amber-500 shadow-inner overflow-hidden flex flex-col h-full">
+                            <div
+                                class="bg-black/40 px-4 py-2 border-b border-white/5 flex items-center text-xs text-amber-400 font-bold uppercase tracking-wider">
+                                <i class="fa-solid fa-table-cells mr-2"></i> Para Excel
+                            </div>
+                            <div id="prompt-fase5-csv"
+                                class="p-5 font-mono text-gray-300 text-sm flex-grow whitespace-pre-wrap">Categoría
+                                Tecnología Impacto
+                                Automatización Robots (AMRs) -40% errores
+                                Rutas IA Predictiva -15% tiempos</div>
+                            <div class="bg-black/30 px-4 py-2 border-t border-white/5 flex justify-end">
+                                <button onclick="copyToClipboard('prompt-fase5-csv', this)"
+                                    class="flex items-center text-xs font-bold text-gray-400 hover:text-white transition-colors border border-gray-600 hover:border-gray-400 rounded px-3 py-1">
+                                    <i class="fa-regular fa-copy mr-2"></i> Copiar Tabla
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Quiz Interactivo -->
+            <div class="border-t border-gray-700 pt-16">
+                <h3 class="text-3xl font-bold mb-8 text-white"><i
+                        class="fa-solid fa-clipboard-question text-brand-accent mr-3"></i> Test de Conocimientos</h3>
+                <div class="bg-gray-900 border border-gray-700 rounded-2xl p-8 lg:p-12 shadow-2xl">
+                    <div id="quizContainer">
+                        <!-- Quiz se renderiza vía JS aquí -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proyecto Fin de Curso (PFC) -->
+            <div
+                class="mt-24 border-t-8 border-brand-primary bg-white rounded-3xl p-10 lg:p-16 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-brand-primary/5 rounded-bl-full -z-10"></div>
+                <div class="flex items-center mb-6">
+                    <div
+                        class="w-16 h-16 bg-brand-primary text-white rounded-2xl flex items-center justify-center text-3xl shadow-lg mr-6 shrink-0">
+                        <i class="fa-solid fa-rocket"></i>
+                    </div>
+                    <div>
+                        <span
+                            class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-1 block">Transversal</span>
+                        <h3 class="text-3xl lg:text-4xl font-extrabold text-brand-dark">Proyecto Fin de Curso (PFC)</h3>
+                    </div>
+                </div>
+
+                <p class="font-serif text-gray-600 text-lg mb-8 leading-relaxed max-w-4xl">
+                    A lo largo de este programa, construirás todos los activos necesarios para lanzar un producto real
+                    al mercado. Al finalizar, tendrás un MVP (Producto Mínimo Viable) completo creado en tiempo récord.
+                </p>
+
+                <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-8 mb-8">
+                    <h4 class="font-bold text-brand-dark text-xl mb-4 flex items-center">
+                        <i class="fa-solid fa-bullseye text-brand-primary mr-3"></i> Tarea del Módulo 1: Definición del
+                        Core
+                    </h4>
+                    <p class="font-serif text-gray-700 mb-6">
+                        Decide un producto o servicio para un nicho muy específico (Ej: <em>"Un perfume sólido especial
+                            para escaladores"</em> o <em>"Software de gestión para clínicas veterinarias"</em>).
+                        Utilizando los LLMs vistos hoy y las estructuras de Prompts de alto rendimiento, debes generar:
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div
+                            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div
+                                class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4 text-lg font-bold">
+                                1</div>
+                            <h5 class="font-bold text-gray-800 mb-2">Documento de Análisis</h5>
+                            <p class="text-sm font-serif text-gray-500">Presentación del proyecto, análisis rápido de la
+                                competencia y tu Propuesta Única de Valor (UVP).</p>
+                        </div>
+                        <div
+                            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div
+                                class="w-10 h-10 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center mb-4 text-lg font-bold">
+                                2</div>
+                            <h5 class="font-bold text-gray-800 mb-2">Plan de Marketing</h5>
+                            <p class="text-sm font-serif text-gray-500">Estrategia para redes sociales, definición del
+                                cliente ideal (Buyer Persona) y 3 ideas de campañas.</p>
+                        </div>
+                        <div
+                            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div
+                                class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4 text-lg font-bold">
+                                3</div>
+                            <h5 class="font-bold text-gray-800 mb-2">Roadmap Financiero</h5>
+                            <p class="text-sm font-serif text-gray-500">Estimación de costes iniciales y modelo de
+                                <em>pricing</em> estructurado para que puedas llevártelo a Excel.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#050B14] text-white py-12 border-t border-gray-800">
+        <div class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+            <h2 class="text-xl font-bold mb-4 md:mb-0">
+                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+            </h2>
+            <p class="text-sm text-gray-500 font-sans">Material de Apoyo Formativo - Módulo 1 © 2026</p>
+        </div>
+    </footer>
+
+    <!-- Lógica de Interactividad (Calculadora de Tokens + Quiz + Copiar) -->
+    <script>
+        // 1. Lógica Funcionalidad de Copiar
+        function copyToClipboard(elementId, btn) {
+            const el = document.getElementById(elementId);
+            let text = el.innerText || el.textContent;
+
+            // Eliminar el prompt chevron "> " si está presente al principio del texto
+            text = text.replace(/^>\s*/, '').replace(/\n>\s*/g, '\n').trim();
+
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "0";
+            textArea.style.top = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                document.execCommand('copy');
+                const originalHTML = btn.innerHTML;
+
+                // Efecto visual de copiado exitoso
+                btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i> Copiado';
+                btn.classList.add('bg-emerald-600', 'text-white', 'border-emerald-600');
+                btn.classList.remove('text-gray-400', 'text-gray-600', 'hover:text-white', 'border-gray-600', 'border-gray-300', 'bg-white', 'hover:border-brand-primary');
+
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    // Revertir estilos según si era botón de modo claro u oscuro
+                    if (btn.closest('.bg-gray-100')) {
+                        btn.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-600');
+                        btn.classList.add('text-gray-600', 'border-gray-300', 'hover:border-brand-primary', 'bg-white');
+                    } else {
+                        btn.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-600');
+                        btn.classList.add('text-gray-400', 'hover:text-white', 'border-gray-600', 'hover:border-gray-400');
+                    }
+                }, 2000);
+            } catch (err) {
+                console.error('Error al copiar', err);
+            }
+
+            document.body.removeChild(textArea);
+        }
+
+        // 2. Lógica Calculadora de Tokens
+        function calculateTokens() {
+            const text = document.getElementById('tokenInput').value;
+            if (!text.trim()) {
+                alert("Por favor, introduce algún texto primero.");
+                return;
+            }
+
+            // Aproximación estándar: 1 token ≈ 4 caracteres / 0.75 palabras en inglés o español.
+            const estimatedTokens = Math.ceil(text.split(/\s+/).length / 0.75);
+
+            const resultDiv = document.getElementById('tokenResult');
+            const countSpan = document.getElementById('tokenCount');
+            const adviceSpan = document.getElementById('tokenAdvice');
+
+            countSpan.textContent = estimatedTokens.toLocaleString('es-ES');
+
+            // Lógica de consejos sobre la ventana de contexto
+            if (estimatedTokens < 2000) {
+                adviceSpan.innerHTML = '<span class="text-emerald-600 font-bold">Excelente:</span> Muy ligero. Cabrá perfectamente en la memoria de cualquier modelo y responderá rápido.';
+                resultDiv.className = "mt-6 p-6 bg-emerald-50 border border-emerald-200 rounded-xl shadow-sm block";
+            } else if (estimatedTokens < 30000) {
+                adviceSpan.innerHTML = '<span class="text-brand-primary font-bold">Moderado:</span> Tamaño adecuado. Funciona bien en Claude, ChatGPT o Gemini.';
+                resultDiv.className = "mt-6 p-6 bg-indigo-50 border border-indigo-200 rounded-xl shadow-sm block";
+            } else if (estimatedTokens < 100000) {
+                adviceSpan.innerHTML = '<span class="text-amber-600 font-bold">Grande:</span> Necesitarás usar modelos con gran ventana de contexto (Claude Opus o Gemini Pro). Puede que la IA sufra el efecto "Lost in the Middle".';
+                resultDiv.className = "mt-6 p-6 bg-amber-50 border border-amber-200 rounded-xl shadow-sm block";
+            } else {
+                adviceSpan.innerHTML = '<span class="text-red-600 font-bold">Masivo:</span> Supera el límite de memoria a corto plazo de la mayoría de modelos base. Te sugerimos dividir el texto o usar específicamente Gemini 3.1 Pro.';
+                resultDiv.className = "mt-6 p-6 bg-red-50 border border-red-200 rounded-xl shadow-sm block";
+            }
+
+            resultDiv.classList.remove('hidden');
+        }
+
+        // 3. Lógica Quiz Interactivo (Expandido a 10 preguntas)
+        const quizData = [
+            {
+                question: "¿Cuál es la diferencia fundamental entre el software tradicional (determinista) y la IA (probabilística)?",
+                options: [
+                    { text: "El software tradicional es más rápido que la IA.", correct: false },
+                    { text: "En la IA programamos las reglas; en el tradicional le damos datos.", correct: false },
+                    { text: "El software tradicional sigue reglas estrictas fijas; la IA aprende patrones de los datos.", correct: true },
+                    { text: "No hay diferencia real, es solo una estrategia de marketing.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué pasa con la información corporativa en las versiones GRATUITAS de los modelos (ej. ChatGPT Free)?",
+                options: [
+                    { text: "Se borra a las 24 horas por defecto.", correct: false },
+                    { text: "Se usa para entrenar y mejorar los modelos de la empresa que lo desarrolla.", correct: true },
+                    { text: "Está protegida por el Reglamento General de Protección de Datos europeo.", correct: false },
+                    { text: "Es 100% privada siempre que no subas PDFs.", correct: false }
+                ]
+            },
+            {
+                question: "¿Cuál es la 'Regla de Oro' para evitar que la IA invente datos (alucine) mezclando información?",
+                options: [
+                    { text: "Pedirle siempre por favor que no invente datos.", correct: false },
+                    { text: "Usar un solo chat para absolutamente todo para que te conozca mejor.", correct: false },
+                    { text: "Abrir un 'Nuevo Chat' para cada nuevo proyecto o departamento.", correct: true },
+                    { text: "Usar exclusivamente el modelo Grok 3.", correct: false }
+                ]
+            },
+            {
+                question: "En la estructura de Prompt Profesional (R.C.T.R.F), ¿qué significa la 'R' y la 'C' iniciales?",
+                options: [
+                    { text: "Resumen y Conclusión.", correct: false },
+                    { text: "Rol y Contexto.", correct: true },
+                    { text: "Revisión y Corrección.", correct: false },
+                    { text: "Razón y Código.", correct: false }
+                ]
+            },
+            {
+                question: "¿Si necesito pedirle a la IA que estructure datos contables para enviarlos automáticamente a mi ERP, qué formato debo solicitar?",
+                options: [
+                    { text: "Formato Markdown (.md).", correct: false },
+                    { text: "Una tabla en formato Word (.docx).", correct: false },
+                    { text: "Formato de programación JSON (.json).", correct: true },
+                    { text: "Texto plano separado por comas.", correct: false }
+                ]
+            },
+            {
+                question: "En la analogía del 'Consejo de Administración', ¿qué modelo representa al Director de Operaciones (COO) con acceso a todos los archivos internos?",
+                options: [
+                    { text: "Claude 4.6 (Anthropic)", correct: false },
+                    { text: "ChatGPT-5 (OpenAI)", correct: false },
+                    { text: "Gemini 3.1 Pro (Google)", correct: true },
+                    { text: "Grok 3 (xAI)", correct: false }
+                ]
+            },
+            {
+                question: "Si necesitas auditar o revisar contratos legales extensos, ¿cuál es la mejor opción por su razonamiento y ventana de contexto?",
+                options: [
+                    { text: "Grok 3", correct: false },
+                    { text: "Claude 4.6", correct: true },
+                    { text: "ChatGPT", correct: false },
+                    { text: "Midjourney", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué ocurre cuando sufres el efecto 'Lost in the Middle' al subir un documento gigante a la IA?",
+                options: [
+                    { text: "La IA se bloquea y da un Error 404.", correct: false },
+                    { text: "Presta mucha atención al principio y al final, pero suele ignorar información del medio.", correct: true },
+                    { text: "Pierdes la conexión a internet.", correct: false },
+                    { text: "Traduce mal la parte central del documento.", correct: false }
+                ]
+            },
+            {
+                question: "Si necesitas analizar las últimas noticias de hace 1 hora sobre tu marca, ¿qué modelo destaca por su acceso en tiempo real a las redes?",
+                options: [
+                    { text: "Grok 3 (xAI)", correct: true },
+                    { text: "Claude Sonnet", correct: false },
+                    { text: "ChatGPT Free", correct: false },
+                    { text: "Llama 3", correct: false }
+                ]
+            },
+            {
+                question: "En la era de la Inteligencia Artificial, decimos que la 'ventaja competitiva' ha pasado de la escritura a la...",
+                options: [
+                    { text: "Programación tradicional en C++.", correct: false },
+                    { text: "Velocidad de tecleo.", correct: false },
+                    { text: "Orquestación de modelos y la dirección estratégica.", correct: true },
+                    { text: "Habilidad de dibujar a mano.", correct: false }
+                ]
+            }
+        ];
+
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            container.innerHTML = '';
+
+            quizData.forEach((q, idx) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'mb-8';
+                qDiv.innerHTML = `
+                    <h4 class="text-xl font-bold text-white mb-4"><span class="text-brand-accent">${idx + 1}.</span> ${q.question}</h4>
+                    <div class="space-y-3">
+                        ${q.options.map((opt, optIdx) => `
+                            <div class="quiz-option group flex items-center" onclick="selectAnswer(event, ${idx}, ${optIdx})">
+                                <input type="radio" name="q${idx}" value="${optIdx}" class="hidden">
+                                <div class="w-6 h-6 rounded-full border-2 border-gray-500 mr-4 flex-shrink-0 group-hover:border-brand-primary radio-custom transition-colors"></div>
+                                <span class="font-serif">${opt.text}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(qDiv);
+            });
+
+            const btnDiv = document.createElement('div');
+            btnDiv.className = "mt-10 pt-8 border-t border-gray-700 text-center";
+            btnDiv.innerHTML = `
+                <button onclick="submitQuiz()" class="px-10 py-4 bg-brand-primary text-white font-bold rounded-xl hover:bg-indigo-500 transition-colors shadow-lg text-lg uppercase tracking-wider">
+                    Validar Respuestas
+                </button>
+            `;
+            container.appendChild(btnDiv);
+        }
+
+        function selectAnswer(e, qIdx, optIdx) {
+            const optionContainer = e.currentTarget;
+            const parentDiv = optionContainer.closest('.space-y-3');
+
+            // Quitar clase seleccionada a todos los hermanos
+            const allOptions = parentDiv.querySelectorAll('.quiz-option');
+            allOptions.forEach(opt => {
+                opt.classList.remove('selected');
+                opt.querySelector('.radio-custom').classList.remove('bg-brand-accent', 'border-brand-accent');
+                opt.querySelector('.radio-custom').classList.add('border-gray-500');
+            });
+
+            // Añadir clase al clickado
+            optionContainer.classList.add('selected');
+            const radioCustom = optionContainer.querySelector('.radio-custom');
+            radioCustom.classList.remove('border-gray-500');
+            radioCustom.classList.add('bg-brand-accent', 'border-brand-accent');
+
+            // Chequear el input hidden
+            const input = optionContainer.querySelector('input');
+            input.checked = true;
+        }
+
+        function submitQuiz() {
+            let correctCount = 0;
+            let answeredCount = 0;
+
+            quizData.forEach((q, idx) => {
+                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+                if (selected) {
+                    answeredCount++;
+                    const optIdx = selected.value;
+                    const isCorrect = q.options[optIdx].correct;
+                    const optionDiv = selected.closest('.quiz-option');
+                    const parentDiv = optionDiv.parentElement;
+
+                    // Deshabilitar más clicks
+                    parentDiv.style.pointerEvents = "none";
+
+                    if (isCorrect) {
+                        correctCount++;
+                        optionDiv.classList.remove('selected');
+                        optionDiv.classList.add('correct');
+                        optionDiv.querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-emerald-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-check";
+                    } else {
+                        optionDiv.classList.remove('selected');
+                        optionDiv.classList.add('incorrect');
+                        optionDiv.querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-red-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-xmark";
+
+                        // Resaltar la que era correcta
+                        const allOptions = parentDiv.querySelectorAll('.quiz-option');
+                        q.options.forEach((opt, oIdx) => {
+                            if (opt.correct) {
+                                allOptions[oIdx].classList.add('border-emerald-500', 'text-emerald-400');
+                            }
+                        });
+                    }
+                }
+            });
+
+            if (answeredCount < quizData.length) {
+                alert("Por favor, responde a todas las preguntas antes de validar.");
+                return;
+            }
+
+            const percentage = Math.round((correctCount / quizData.length) * 100);
+            let message = "";
+            if (percentage === 100) message = "🏆 ¡Excelente! Has dominado el Módulo 1.";
+            else if (percentage >= 80) message = "👍 ¡Buen trabajo! Entiendes perfectamente los conceptos base.";
+            else if (percentage >= 60) message = "✅ ¡Aprobado! Pero no estaría de más repasar algunas secciones.";
+            else message = "📚 Te sugerimos repasar la parte teórica de la lección antes de avanzar al siguiente módulo.";
+
+            alert(`Puntuación Final: ${correctCount}/${quizData.length} (${percentage}%)\n\n${message}`);
+        }
+
+        // Iniciar Quiz al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            renderQuiz();
+        });
+    </script>
+</body>
+
+</html>

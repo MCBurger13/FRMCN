@@ -10,6 +10,6 @@
     "marked": "^11.1.0"
   },
   "devDependencies": {
-    "vercel": "^33.0.0"
+    "vercel": "^50.20.0"
   }
 }
