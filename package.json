@@ -6,9 +6,7 @@
     "start": "vercel dev",
     "deploy": "vercel"
   },
-  "dependencies": {
-    "marked": "^11.1.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "vercel": "^50.20.0"
   }
