@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Módulo 2: Glosario y Fundamentos de IA - [m].seny [labs]">
+    <title>Módulo 2: Alfabetización Técnica en IA - [m].seny [labs]</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0F172A',
+                            primary: '#4F46E5',
+                            accent: '#F59E0B',
+                            light: '#F8FAFC'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F8FAFC;
+            color: #334155;
+            scroll-behavior: smooth;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        button,
+        .nav-link {
+            font-family: 'Inter', sans-serif;
+        }
+
+        p,
+        li,
+        .prose-text {
+            font-family: 'Merriweather', serif;
+            line-height: 1.5;
+            font-size: 1.125rem;
+            text-align: justify;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        /* Callout Boxes */
+        .callout-analogy {
+            background-color: #FEF3C7;
+            /* Amber 50 */
+            border-left: 4px solid #F59E0B;
+            /* Amber 500 */
+        }
+
+        .callout-phrase {
+            background-color: #EEF2FF;
+            /* Indigo 50 */
+            border-left: 4px solid #4F46E5;
+            /* Indigo 600 */
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .code-block {
+            background-color: #1E293B;
+            color: #E2E8F0;
+            font-family: monospace;
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Animations */
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+        }
+
+        .fade-in-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #4F46E5, #F59E0B);
+            z-index: 1000;
+            transition: width 0.2s ease;
+        }
+
+        /* Quiz Styles */
+        .quiz-option {
+            padding: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #e2e8f0;
+        }
+
+        .quiz-option:hover {
+            border-color: #4F46E5;
+            background-color: rgba(79, 70, 229, 0.1);
+        }
+
+        .quiz-option.selected {
+            border-color: #F59E0B;
+            background-color: rgba(245, 158, 11, 0.1);
+        }
+
+        .quiz-option.correct {
+            border-color: #10b981;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .quiz-option.incorrect {
+            border-color: #ef4444;
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Navigation Header -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="index.html" class="no-underline">
+                    <h1
+                        class="text-xl font-bold tracking-tight text-brand-dark hover:text-brand-primary transition-colors cursor-pointer">
+                        <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+                    </h1>
+                </a>
+            </div>
+            <nav class="hidden lg:flex space-x-5 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                <a href="#cajanegra" class="hover:text-brand-primary transition-colors">1. La Caja Negra</a>
+                <a href="#memoria" class="hover:text-brand-primary transition-colors">2. Cerebro/Memoria</a>
+                <a href="#riesgos" class="hover:text-brand-primary transition-colors">3. Riesgos/Datos</a>
+                <a href="#operaciones" class="hover:text-brand-primary transition-colors">4. Operaciones</a>
+                <a href="#practica" class="hover:text-brand-primary transition-colors text-brand-accent">5. Práctica &
+                    PFC</a>
+            </nav>
+            <a href="/api/logout"
+                class="hidden lg:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors"
+                title="Cerrar sesión">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                Salir
+            </a>
+        </div>
+    </header>
+
+    <!-- Presentation Title (Hero) -->
+    <section class="bg-brand-dark text-white py-32 border-b-8 border-brand-primary relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-brand-primary rounded-full blur-3xl"></div>
+            <div class="absolute bottom-10 right-20 w-96 h-96 bg-brand-accent rounded-full blur-3xl"></div>
+        </div>
+        <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
+            <span
+                class="inline-block py-1 px-3 bg-brand-primary/20 text-brand-primary font-mono text-sm font-bold uppercase tracking-widest mb-6 rounded">
+                Módulo 2
+            </span>
+            <h1 class="text-5xl lg:text-7xl font-extrabold mb-6 leading-tight">
+                Glosario y Fundamentos<br>
+                <span class="text-brand-accent text-4xl lg:text-5xl">(Alfabetización Técnica)</span>
+            </h1>
+            <p class="text-xl text-gray-300 font-serif max-w-2xl mx-auto italic text-center">
+                Habla el idioma de las máquinas. De usuario pasivo a arquitecto de soluciones de IA.
+            </p>
+            <div class="mt-10 flex items-center justify-center space-x-4 text-sm text-gray-400 font-mono">
+                <span><i class="fa-regular fa-clock mr-2"></i> 1.5 Horas</span>
+                <span>•</span>
+                <span><i class="fa-solid fa-book-open mr-2"></i> Glosario Ejecutivo</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 1. Desmitificando -->
+    <section id="cajanegra" class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll">
+                <span
+                    class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">1</span>
+                Desmitificando la "Caja Negra"
+            </h2>
+
+            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">
+                En 2026, el analfabetismo técnico en Inteligencia Artificial ya no es solo una barrera para la
+                productividad; es una <strong>vulnerabilidad de ciberseguridad corporativa</strong>. Muchos ven a la IA
+                como magia: entra texto y sale un resultado. Este módulo abre esa caja. No vamos a aprender a construir
+                un motor, pero sí para qué sirve el acelerador, el freno y cómo conectarle un remolque.
+            </p>
+
+            <div class="callout-phrase p-6 rounded-xl mb-16 shadow-sm fade-in-on-scroll text-center">
+                <p class="font-serif text-indigo-900 text-lg m-0">
+                    <i class="fa-solid fa-key mr-2 text-brand-primary"></i> <strong>Frase Clave:</strong> "No necesitas
+                    ser desarrollador de software para usar IA, pero necesitas fluidez operativa para ser el arquitecto
+                    de tus propias soluciones."
+                </p>
+            </div>
+
+            <!-- El Ciclo de Iteración -->
+            <h3 class="text-2xl font-bold text-brand-dark mb-8 text-center fade-in-on-scroll">El Ciclo de Iteración (El
+                nuevo proceso de trabajo)</h3>
+            <p class="prose-text mb-8 text-gray-600 text-center max-w-3xl mx-auto fade-in-on-scroll">
+                La educación tradicional enseñaba procedimientos lineales (A → B → C). La IA Generativa es
+                probabilística. Debemos interiorizar un proceso iterativo hombre-máquina:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 fade-in-on-scroll relative">
+                <!-- Conector (línea) -->
+                <div
+                    class="hidden md:block absolute top-1/2 left-10 right-10 h-1 bg-gray-200 -z-10 transform -translate-y-1/2">
+                </div>
+
+                <div class="bg-white border-2 border-gray-200 rounded-xl p-6 text-center shadow-sm relative card-hover">
+                    <div
+                        class="w-8 h-8 bg-gray-200 text-gray-600 font-bold rounded-full flex items-center justify-center mx-auto mb-4">
+                        1</div>
+                    <h4 class="font-bold text-brand-dark mb-2">Instrucción</h4>
+                    <p class="text-sm font-serif text-gray-500">Diseño del Prompt estructurado.</p>
+                </div>
+
+                <div
+                    class="bg-white border-2 border-brand-primary/40 rounded-xl p-6 text-center shadow-sm relative card-hover">
+                    <div
+                        class="w-8 h-8 bg-brand-primary/20 text-brand-primary font-bold rounded-full flex items-center justify-center mx-auto mb-4">
+                        2</div>
+                    <h4 class="font-bold text-brand-dark mb-2">Borrador Cero</h4>
+                    <p class="text-sm font-serif text-gray-500">Evaluación crítica del primer resultado (Draft Zero).
+                    </p>
+                </div>
+
+                <div
+                    class="bg-white border-2 border-brand-accent/50 rounded-xl p-6 text-center shadow-sm relative card-hover">
+                    <div
+                        class="w-8 h-8 bg-brand-accent/20 text-brand-accent font-bold rounded-full flex items-center justify-center mx-auto mb-4">
+                        3</div>
+                    <h4 class="font-bold text-brand-dark mb-2">Refinamiento</h4>
+                    <p class="text-sm font-serif text-gray-500">Ajuste de instrucciones y feedback a la IA.</p>
+                </div>
+
+                <div
+                    class="bg-brand-primary border-2 border-brand-primary rounded-xl p-6 text-center shadow-lg relative card-hover text-white">
+                    <div
+                        class="w-8 h-8 bg-white text-brand-primary font-bold rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-check"></i></div>
+                    <h4 class="font-bold mb-2">Resultado Final</h4>
+                    <p class="text-sm font-serif text-indigo-100">Producto de calidad directiva listo para usar.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Diccionario I: Cerebro y Memoria -->
+    <section id="memoria" class="py-20 bg-brand-light border-t border-gray-200">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-brand-dark mb-4 flex items-center fade-in-on-scroll">
+                <span
+                    class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">2</span>
+                Diccionario Ejecutivo (I): Cerebro y Memoria
+            </h2>
+            <p class="prose-text mb-12 text-gray-600 fade-in-on-scroll">Estos términos explican cómo "piensa",
+                "recuerda" y "percibe" la máquina. Impactan directamente en tu facturación y en la calidad de tu
+                trabajo.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 fade-in-on-scroll">
+                <!-- A. Token -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 card-hover">
+                    <h3 class="text-xl font-bold text-brand-dark mb-3"><span class="text-brand-primary mr-2">A.</span>
+                        Token <span class="text-sm font-normal text-gray-400 italic">(La Moneda/Ladrillo)</span></h3>
+                    <p class="font-serif text-gray-600 text-sm mb-4">La unidad básica de información. La IA no lee
+                        palabras, lee fragmentos (Tokens). En español, 1,000 tokens ≈ 750 palabras. Todo en la IA se
+                        cobra y mide en tokens.</p>
+                    <div class="bg-amber-50 p-3 rounded border-l-2 border-brand-accent">
+                        <p class="text-sm text-amber-900 font-serif m-0"><i
+                                class="fa-solid fa-brain mr-2"></i><strong>Analogía:</strong> Es el "megabyte" de la era
+                            IA. Debes saber que tu manual pesa 100k tokens.</p>
+                    </div>
+                </div>
+
+                <!-- B. Ventana de Contexto -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 card-hover">
+                    <h3 class="text-xl font-bold text-brand-dark mb-3"><span class="text-brand-primary mr-2">B.</span>
+                        Ventana de Contexto <span class="text-sm font-normal text-gray-400 italic">(Memoria RAM)</span>
+                    </h3>
+                    <p class="font-serif text-gray-600 text-sm mb-4">Cantidad máxima de tokens que la IA mantiene "en
+                        mente" en un solo chat. Si la superas, sufre amnesia y olvida las primeras instrucciones.</p>
+                    <div class="bg-amber-50 p-3 rounded border-l-2 border-brand-accent">
+                        <p class="text-sm text-amber-900 font-serif m-0"><i
+                                class="fa-solid fa-brain mr-2"></i><strong>Analogía:</strong> Modelos antiguos tenían
+                            una "mesa de avión" (1 folio). Gemini 1.5 tiene una "mesa de conferencias" (1.500 páginas a
+                            la vez).</p>
+                    </div>
+                </div>
+
+                <!-- C. Temperatura -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 card-hover">
+                    <h3 class="text-xl font-bold text-brand-dark mb-3"><span class="text-brand-primary mr-2">C.</span>
+                        Temperatura <span class="text-sm font-normal text-gray-400 italic">(Termostato Creativo)</span>
+                    </h3>
+                    <p class="font-serif text-gray-600 text-sm mb-4">Parámetro (0.0 a 1.0) que controla la aleatoriedad.
+                        <br><strong>0.0:</strong> Lógico, predecible (Finanzas/Código).<br><strong>1.0:</strong>
+                        Creativo, impredecible (Marketing/Ideas).</p>
+                    <div class="bg-indigo-50 p-3 rounded border-l-2 border-brand-primary">
+                        <p class="text-sm text-indigo-900 font-serif m-0"><i
+                                class="fa-solid fa-fire mr-2"></i><strong>Clave:</strong> Baja la temperatura si buscas
+                            la verdad; súbela si buscas ideas disruptivas.</p>
+                    </div>
+                </div>
+
+                <!-- D. Deep Think / Multimodalidad -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 card-hover">
+                    <h3 class="text-xl font-bold text-brand-dark mb-3"><span class="text-brand-primary mr-2">D.</span>
+                        Multimodalidad & Deep Think</h3>
+                    <p class="font-serif text-gray-600 text-sm mb-2"><strong>Multimodalidad:</strong> Capacidad de
+                        procesar texto, imagen, audio y código simultáneamente (como la percepción humana).</p>
+                    <p class="font-serif text-gray-600 text-sm"><strong>Deep Think:</strong> Modelos (ej. O1) que
+                        "pausan" para simular múltiples cadenas lógicas antes de responder (para matemáticas o lógica
+                        compleja).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Diccionario II: Control y Riesgos -->
+    <section id="riesgos" class="py-20 bg-brand-dark text-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-3xl font-bold mb-4 flex items-center fade-in-on-scroll">
+                <span
+                    class="w-10 h-10 bg-brand-accent text-brand-dark rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">3</span>
+                Diccionario Ejecutivo (II): Control de Riesgos
+            </h2>
+            <p class="prose-text mb-12 text-gray-300 fade-in-on-scroll">Para usar la IA en la empresa, hay que asegurar
+                la veracidad de los datos y proteger la propiedad intelectual.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 fade-in-on-scroll">
+                <!-- Alucinación -->
+                <div class="bg-white/5 border border-red-500/30 p-8 rounded-2xl shadow-lg">
+                    <h3 class="text-xl font-bold text-red-400 mb-3"><i class="fa-solid fa-ghost mr-2"></i> Alucinación
+                    </h3>
+                    <p class="font-serif text-gray-300 text-sm mb-4">Respuesta falsa o inventada, pero redactada con una
+                        elocuencia aplastante. Ocurre porque la IA intenta "rellenar huecos" estadísticamente si le
+                        falta información real.</p>
+                </div>
+
+                <!-- Shadow AI -->
+                <div class="bg-white/5 border border-red-500/30 p-8 rounded-2xl shadow-lg">
+                    <h3 class="text-xl font-bold text-red-400 mb-3"><i class="fa-solid fa-user-secret mr-2"></i> Shadow
+                        AI (IA en la Sombra)</h3>
+                    <p class="font-serif text-gray-300 text-sm mb-4">Uso no autorizado de IAs gratuitas por empleados.
+                        Riesgo masivo de fuga de datos, ya que estas cuentas entrenan al modelo global con la
+                        información que se les da.</p>
+                </div>
+
+                <!-- RAG -->
+                <div class="bg-white/5 border border-brand-accent/50 p-8 rounded-2xl shadow-lg">
+                    <h3 class="text-xl font-bold text-brand-accent mb-3">RAG <span
+                            class="text-sm font-normal text-gray-400">(Retrieval-Augmented Generation)</span></h3>
+                    <p class="font-serif text-gray-300 text-sm mb-4">Técnica para evitar alucinaciones. Conecta el
+                        cerebro genérico de la IA a tu base de datos corporativa. La IA busca primero ahí y responde
+                        *solo* con tus datos (Grounding).</p>
+                    <div class="bg-black/30 p-3 rounded border-l-2 border-brand-accent">
+                        <p class="text-sm text-amber-100 font-serif m-0"><i
+                                class="fa-solid fa-book-open-reader mr-2"></i><strong>Analogía:</strong> Hacer un examen
+                            a libro abierto con tu manual de empresa sobre la mesa, en lugar de tirar de memoria
+                            genérica.</p>
+                    </div>
+                </div>
+
+                <!-- MCP -->
+                <div
+                    class="bg-white/5 border border-brand-primary/50 p-8 rounded-2xl shadow-lg relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-brand-primary text-xs font-bold px-3 py-1 rounded-bl-lg">NUEVO
+                        2026</div>
+                    <h3 class="text-xl font-bold text-brand-primary mb-3">MCP <span
+                            class="text-sm font-normal text-gray-400">(Model Context Protocol)</span></h3>
+                    <p class="font-serif text-gray-300 text-sm mb-4">Protocolo universal seguro. Permite que la IA
+                        "visite" y lea tus herramientas locales (Slack, Drive, GitHub) sin tener que enviarle a la nube
+                        toda tu información corporativa.</p>
+                    <div class="bg-black/30 p-3 rounded border-l-2 border-brand-primary">
+                        <p class="text-sm text-indigo-200 font-serif m-0"><i
+                                class="fa-solid fa-id-badge mr-2"></i><strong>Analogía:</strong> Darle a la IA una
+                            "tarjeta de visitante" temporal, en lugar de enviarle un camión con todas las carpetas
+                            confidenciales.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Operaciones -->
+    <section id="operaciones" class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-brand-dark mb-4 flex items-center fade-in-on-scroll">
+                <span
+                    class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">4</span>
+                Diccionario (III): Operaciones y Herramientas
+            </h2>
+            <p class="prose-text mb-12 text-gray-600 fade-in-on-scroll">Términos del día a día para pedir resultados
+                útiles o crear flujos de trabajo autónomos.</p>
+
+            <div class="space-y-10 fade-in-on-scroll">
+
+                <!-- Formatos y Prompts -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-bold text-brand-dark border-b-2 border-gray-100 pb-2 mb-4">Zero-Shot vs.
+                            Few-Shot</h4>
+                        <p class="font-serif text-gray-600 text-sm mb-3">Técnicas de Prompting.
+                            <strong>Zero-shot</strong> es pedirle algo sin ejemplos. <strong>Few-shot</strong> es darle
+                            2 o 3 ejemplos de tu estilo corporativo para que lo imite a la perfección.</p>
+                        <div class="bg-amber-50 p-3 rounded border-l-2 border-brand-accent">
+                            <p class="text-sm text-amber-900 font-serif m-0"><i
+                                    class="fa-solid fa-user-tie mr-2"></i><strong>Pasante Internacional:</strong>
+                                Brillante pero literal. Si no le das ejemplos de tu "cultura" (Few-shot), fallará.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold text-brand-dark border-b-2 border-gray-100 pb-2 mb-4">Los Formatos
+                            (.md, .csv, .json)</h4>
+                        <ul class="font-serif text-gray-600 text-sm space-y-2">
+                            <li><strong class="text-blue-600">.md (Markdown):</strong> Texto humano con diseño (títulos,
+                                listas). Para Word/Notion.</li>
+                            <li><strong class="text-amber-600">.csv (Comma-Separated):</strong> La tabla. Para copiar y
+                                pegar en celdas de Excel.</li>
+                            <li><strong class="text-green-600">.json (JS Object Notation):</strong> Idioma máquina
+                                (etiquetas). Para enviar a APIs/ERPs.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Arquitectura del Prompt (System vs User) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div
+                        class="bg-gray-50 p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                        <h4 class="text-xl font-bold text-brand-dark mb-2"><i
+                                class="fa-solid fa-server text-indigo-500 mr-2"></i> System Prompt</h4>
+                        <p class="font-serif text-gray-600 text-sm">El "mensaje padre" o configuración base. Actúa como
+                            la <em>descripción del puesto de trabajo</em> de la IA: define quién es, sus límites
+                            intocables y su tono. Permanece estable y es el marco de juego que manda sobre cualquier
+                            otra instrucción.</p>
+                    </div>
+                    <div
+                        class="bg-gray-50 p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                        <h4 class="text-xl font-bold text-brand-dark mb-2"><i
+                                class="fa-solid fa-keyboard text-brand-accent mr-2"></i> User Prompt</h4>
+                        <p class="font-serif text-gray-600 text-sm">El mensaje que tú escribes con la instrucción o
+                            tarea concreta ("redacta un email"). Cambia constantemente reflejando tu intención
+                            específica del momento, pero siempre debe someterse a las reglas marcadas por el <em>System
+                                Prompt</em>.</p>
+                    </div>
+                </div>
+
+                <!-- Herramientas Avanzadas -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <h4 class="text-xl font-bold text-brand-dark mb-2"><i
+                                class="fa-solid fa-gem text-purple-500 mr-2"></i> Gems / GPTs Personalizados</h4>
+                        <p class="font-serif text-gray-600 text-sm">"Empleados empaquetados". En vez de hacer un prompt
+                            largo cada vez, guardas las instrucciones y archivos en un "Gem" que hace siempre esa tarea
+                            (Ej: "Auditor Legal").</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <h4 class="text-xl font-bold text-brand-dark mb-2"><i
+                                class="fa-solid fa-magnifying-glass-chart text-blue-500 mr-2"></i> Deep Research</h4>
+                        <p class="font-serif text-gray-600 text-sm">Investigador autónomo. No da un simple resumen;
+                            busca, lee, identifica qué le falta por saber, vuelve a buscar y redacta un informe de grado
+                            consultor.</p>
+                    </div>
+                </div>
+
+                <!-- Técnicas de Precisión y Edición -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <h4 class="text-xl font-bold text-brand-dark mb-2"><i
+                                class="fa-solid fa-anchor text-emerald-500 mr-2"></i> Grounding (Anclaje)</h4>
+                        <p class="font-serif text-gray-600 text-sm">Proceso técnico mediante el cual se vinculan las
+                            respuestas de la IA a fuentes de verdad verificables (como Google Search o documentos
+                            internos corporativos) para reducir alucinaciones y aumentar la fiabilidad al 100%.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <h4 class="text-xl font-bold text-brand-dark mb-2"><i
+                                class="fa-solid fa-paintbrush text-pink-500 mr-2"></i> In-painting</h4>
+                        <p class="font-serif text-gray-600 text-sm">Técnica de edición de imágenes generativa que
+                            permite modificar, añadir o eliminar objetos dentro de un área seleccionada de una imagen
+                            existente, integrando los cambios de forma realista sin alterar el resto de la foto.</p>
+                    </div>
+                </div>
+
+                <!-- Chatbot vs Agent -->
+                <div class="bg-indigo-50 border border-brand-primary/30 p-8 rounded-2xl shadow-sm">
+                    <h3 class="text-2xl font-bold text-brand-dark mb-4 text-center">Chatbot vs. Agente Autónomo (Agentic
+                        AI)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="font-bold text-gray-800 text-lg mb-2">El Chatbot (Conversacional)</h4>
+                            <p class="font-serif text-gray-600 text-sm">Es pasivo. Espera tus preguntas y responde. Es
+                                como un mapa de papel: tiene mucha información, pero estática y requiere que tú tomes
+                                las decisiones.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-brand-primary text-lg mb-2">El Agente (Acción)</h4>
+                            <p class="font-serif text-gray-600 text-sm">Persigue un objetivo. Percibe el entorno, razona
+                                y usa herramientas (Tools) para actuar. Es como Waze: lee el tráfico, decide cambiar de
+                                ruta y actúa avisando de tu retraso.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NUEVA SECCIÓN: Directorio de Plataformas Clave -->
+                <div class="pt-12 mt-8 border-t border-gray-200">
+                    <div class="text-center mb-10">
+                        <h3 class="text-3xl font-extrabold text-brand-dark flex items-center justify-center mb-3">
+                            <i class="fa-solid fa-toolbox text-brand-accent mr-3"></i> Directorio de Plataformas
+                        </h3>
+                        <p class="text-gray-500 font-serif text-center">Tu panel de control de acceso rápido a las
+                            herramientas y ecosistemas líderes del mercado.</p>
+                    </div>
+
+                    <div class="flex flex-col space-y-8">
+
+                        <!-- 1. PERPLEXITY AI (Tarjeta Detallada) -->
+                        <div
+                            class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
+                            <div class="border-l-4 border-teal-500 p-8 lg:p-10">
+                                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                                    <div class="flex items-center">
+                                        <div
+                                            class="w-16 h-16 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
+                                            <i class="fa-solid fa-magnifying-glass-location"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Perplexity AI</h4>
+                                            <p class="text-teal-600 font-bold text-xs uppercase tracking-widest">El
+                                                Motor de Respuestas (Deep Research)</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p class="text-gray-600 font-serif text-lg mb-8 leading-relaxed">
+                                    A diferencia de un buscador tradicional que devuelve un listado de enlaces azules,
+                                    Perplexity rastrea la web en tiempo real, lee el contenido por ti y redacta un
+                                    informe consolidado <strong>citando cada fuente de origen con precisión</strong>. Es
+                                    la herramienta imprescindible para tareas de investigación corporativa, análisis de
+                                    competencia y verificación de datos (Fact-checking).
+                                </p>
+
+                                <!-- Sub-herramientas de Perplexity (Grid 2x2) -->
+                                <div class="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                                    <h5 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4"><i
+                                            class="fa-solid fa-layer-group text-teal-500 mr-2"></i> Herramientas del
+                                        Ecosistema</h5>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <a href="https://www.perplexity.ai/" target="_blank" rel="noopener"
+                                            class="flex flex-col bg-white border border-gray-200 hover:border-teal-500 p-4 rounded-lg transition-colors shadow-sm group">
+                                            <span
+                                                class="font-bold text-gray-800 group-hover:text-teal-600 flex items-center mb-1"><i
+                                                    class="fa-solid fa-plus text-teal-500 mr-2"></i> Nuevo Chat</span>
+                                            <span class="text-xs text-gray-500 font-serif">Búsqueda rápida en tiempo
+                                                real con opción "Pro" (Deep Research).</span>
+                                        </a>
+                                        <a href="https://www.perplexity.ai/collections" target="_blank" rel="noopener"
+                                            class="flex flex-col bg-white border border-gray-200 hover:border-teal-500 p-4 rounded-lg transition-colors shadow-sm group">
+                                            <span
+                                                class="font-bold text-gray-800 group-hover:text-teal-600 flex items-center mb-1"><i
+                                                    class="fa-solid fa-folder-tree text-teal-500 mr-2"></i> Espacios
+                                                (Spaces)</span>
+                                            <span class="text-xs text-gray-500 font-serif">Entornos colaborativos para
+                                                invitar a tu equipo y subir archivos propios.</span>
+                                        </a>
+                                        <a href="#" target="_blank" rel="noopener"
+                                            class="flex flex-col bg-white border border-gray-200 hover:border-teal-500 p-4 rounded-lg transition-colors shadow-sm group">
+                                            <span
+                                                class="font-bold text-gray-800 group-hover:text-teal-600 flex items-center mb-1"><i
+                                                    class="fa-solid fa-meteor text-teal-500 mr-2"></i> Comet</span>
+                                            <span class="text-xs text-gray-500 font-serif">API y herramientas para
+                                                desarrolladores para crear flujos de investigación.</span>
+                                        </a>
+                                        <a href="#" target="_blank" rel="noopener"
+                                            class="flex flex-col bg-white border border-gray-200 hover:border-teal-500 p-4 rounded-lg transition-colors shadow-sm group">
+                                            <span
+                                                class="font-bold text-gray-800 group-hover:text-teal-600 flex items-center mb-1"><i
+                                                    class="fa-solid fa-desktop text-teal-500 mr-2"></i> Computer</span>
+                                            <span class="text-xs text-gray-500 font-serif">La app de escritorio nativa
+                                                para búsquedas globales desde tu teclado.</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2. ECOSISTEMA GOOGLE / GEMINI -->
+                        <div
+                            class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
+                            <div class="border-l-4 border-[#1A73E8] p-8 lg:p-10">
+                                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                                    <div class="flex items-center">
+                                        <div
+                                            class="w-16 h-16 bg-[#E8F0FE] text-[#1A73E8] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
+                                            <svg viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8">
+                                                <path
+                                                    d="M19.38 6.94c-.7-.52-1.39-1.3-1.74-2.18-.32-.82-.57-1.85-.7-2.67-.09-.59-.92-.6-1.02-.01-.13.82-.38 1.85-.7 2.67-.35.88-1.04 1.66-1.74 2.18-.8.59-1.86.88-2.6.98-.56.07-.56.9 0 .97.74.1 1.8.39 2.6.98.7.52 1.39 1.3 1.74 2.18.32.82.57 1.85.7 2.67.09.59.92.6 1.02.01.13-.82.38-1.85.7-2.67.35-.88 1.04-1.66 1.74-2.18.8-.59 1.86-.88 2.6-.98.56-.07.56-.9 0-.97-.74-.1-1.8-.39-2.6-.98zm-8.8 6.32c-.52-.39-1.04-.97-1.3-1.64-.24-.61-.43-1.39-.52-2-.07-.44-.69-.45-.76-.01-.1.61-.28 1.39-.52 2-.26.67-.78 1.25-1.3 1.64-.6.44-1.39.66-1.95.73-.42.05-.42.67 0 .73.56.07 1.35.29 1.95.73.52.39 1.04.97 1.3 1.64.24.61.43 1.39.52 2 .07.44.69.45.76.01.1-.61.28-1.39.52-2 .26-.67.78-1.25 1.3-1.64.6-.44 1.39-.66 1.95-.73.42-.05.42-.67 0-.73-.56-.07-1.35-.29-1.95-.73z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Ecosistema Google
+                                            </h4>
+                                            <p class="text-[#1A73E8] font-bold text-xs uppercase tracking-widest">
+                                                Integración y Multimodalidad</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p class="text-gray-600 font-serif text-lg mb-8 leading-relaxed">
+                                    Google ofrece una suite inigualable por su ventana de contexto masiva y su
+                                    integración nativa con Workspace (Docs, Sheets, Drive). Permite analizar datos
+                                    gigantescos y crear asistentes corporativos sin salir del entorno de trabajo
+                                    habitual de la empresa.
+                                </p>
+
+                                <!-- Sub-herramientas de Google (Grid 2x2) -->
+                                <div class="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                                    <h5 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4"><i
+                                            class="fa-solid fa-layer-group text-[#1A73E8] mr-2"></i> Herramientas del
+                                        Ecosistema</h5>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <a href="https://gemini.google.com/" target="_blank" rel="noopener"
+                                            class="flex flex-col bg-white border border-gray-200 hover:border-[#1A73E8] p-4 rounded-lg transition-colors shadow-sm group">
+                                            <span
+                                                class="font-bold text-gray-800 group-hover:text-[#1A73E8] flex items-center mb-1"><i
+                                                    class="fa-solid fa-plus text-[#1A73E8] mr-2"></i> Nuevo Chat
+                                                (Gemini)</span>
+                                            <span class="text-xs text-gray-500 font-serif">La interfaz principal
+                                                conversacional impulsada por los modelos Pro y Flash.</span>
+                                        </a>
+                                        <a href="https://gemini.google.com/gems" target="_blank" rel="noopener"
+                                            class="flex flex-col bg-white border border-gray-200 hover:border-[#1A73E8] p-4 rounded-lg transition-colors shadow-sm group">
+                                            <span
+                                                class="font-bold text-gray-800 group-hover:text-[#1A73E8] flex items-center mb-1"><i
+                                                    class="fa-solid fa-gem text-[#1A73E8] mr-2"></i> Gems</span>
+                                            <span class="text-xs text-gray-500 font-serif">Asistentes preconfigurados
+                                                con rol, documentos e instrucciones persistentes.</span>
+                                        </a>
+                                        <a href="https://notebooklm.google.com/" target="_blank" rel="noopener"
+                                            class="flex flex-col bg-white border border-gray-200 hover:border-[#1A73E8] p-4 rounded-lg transition-colors shadow-sm group">
+                                            <span
+                                                class="font-bold text-gray-800 group-hover:text-[#1A73E8] flex items-center mb-1"><i
+                                                    class="fa-solid fa-book-journal-whills text-[#1A73E8] mr-2"></i>
+                                                NotebookLM</span>
+                                            <span class="text-xs text-gray-500 font-serif">Investigador personal con
+                                                100% "Grounding" en tus PDFs y generador de podcasts.</span>
+                                        </a>
+                                        <a href="https://aistudio.google.com/" target="_blank" rel="noopener"
+                                            class="flex flex-col bg-white border border-gray-200 hover:border-[#1A73E8] p-4 rounded-lg transition-colors shadow-sm group">
+                                            <span
+                                                class="font-bold text-gray-800 group-hover:text-[#1A73E8] flex items-center mb-1"><i
+                                                    class="fa-solid fa-code text-[#1A73E8] mr-2"></i> Google AI
+                                                Studio</span>
+                                            <span class="text-xs text-gray-500 font-serif">El entorno técnico para
+                                                ajustar "Temperatura" y probar parámetros avanzados.</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. ECOSISTEMA OPENAI / CHATGPT -->
+                        <div
+                            class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
+                            <div class="border-l-4 border-[#10A37F] p-8 lg:p-10">
+                                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                                    <div class="flex items-center">
+                                        <div
+                                            class="w-16 h-16 bg-[#E6F6F2] text-[#10A37F] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
+                                            <svg viewBox="0 0 512 512" class="w-8 h-8 fill-current"
+                                                xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd"
+                                                clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">
+                                                <path
+                                                    d="M474.123 209.81c11.525-34.577 7.569-72.423-10.838-103.904-27.696-48.168-83.433-72.94-137.794-61.414a127.14 127.14 0 00-95.475-42.49c-55.564 0-104.936 35.781-122.139 88.593-35.781 7.397-66.574 29.76-84.637 61.414-27.868 48.167-21.503 108.72 15.826 150.007-11.525 34.578-7.569 72.424 10.838 103.733 27.696 48.34 83.433 73.111 137.966 61.585 24.084 27.18 58.833 42.835 95.303 42.663 55.564 0 104.936-35.782 122.139-88.594 35.782-7.397 66.574-29.76 84.465-61.413 28.04-48.168 21.676-108.722-15.654-150.008v-.172zm-39.567-87.218c11.01 19.267 15.139 41.803 11.354 63.65-.688-.516-2.064-1.204-2.924-1.72l-101.152-58.49a16.965 16.965 0 00-16.687 0L206.621 194.5v-50.232l97.883-56.597c45.587-26.32 103.732-10.666 130.052 34.921zm-227.935 104.42l49.888-28.9 49.887 28.9v57.63l-49.887 28.9-49.888-28.9v-57.63zm23.223-191.81c22.364 0 43.867 7.742 61.07 22.02-.688.344-2.064 1.204-3.097 1.72L186.666 117.26c-5.161 2.925-8.258 8.43-8.258 14.45v136.934l-43.523-25.116V130.333c0-52.64 42.491-95.13 95.131-95.302l-.172.172zM52.14 168.697c11.182-19.268 28.557-34.062 49.544-41.803V247.14c0 6.02 3.097 11.354 8.258 14.45l118.354 68.295-43.695 25.288-97.711-56.425c-45.415-26.32-61.07-84.465-34.75-130.052zm26.665 220.71c-11.182-19.095-15.139-41.802-11.354-63.65.688.516 2.064 1.204 2.924 1.72l101.152 58.49a16.965 16.965 0 0016.687 0l118.354-68.467v50.232l-97.883 56.425c-45.587 26.148-103.732 10.665-130.052-34.75h.172zm204.54 87.39c-22.192 0-43.867-7.741-60.898-22.02a62.439 62.439 0 003.097-1.72l101.152-58.317c5.16-2.924 8.429-8.43 8.257-14.45V243.527l43.523 25.116v113.022c0 52.64-42.663 95.303-95.131 95.303v-.172zM461.22 343.303c-11.182 19.267-28.729 34.061-49.544 41.63V264.687c0-6.021-3.097-11.526-8.257-14.45L284.893 181.77l43.523-25.116 97.883 56.424c45.587 26.32 61.07 84.466 34.75 130.053l.172.172z"
+                                                    fill-rule="nonzero" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Ecosistema OpenAI
+                                            </h4>
+                                            <p class="text-[#10A37F] font-bold text-xs uppercase tracking-widest">
+                                                Razonamiento y Aplicaciones</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p class="text-gray-600 font-serif text-lg mb-8 leading-relaxed">
+                                    El pionero y estándar de la industria. Destaca por su capacidad lógica deductiva
+                                    (Deep Think) y por ser la plataforma con el ecosistema de integraciones y acciones
+                                    conectadas más maduro del mercado.
+                                </p>
+
+                                <!-- Sub-herramientas de OpenAI (Grid 2x2) -->
+                                <div class="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                                    <h5 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4"><i
+                                            class="fa-solid fa-layer-group text-[#10A37F] mr-2"></i> Herramientas del
+                                        Ecosistema</h5>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <a href="https://chatgpt.com/" target="_blank" rel="noopener"
+                                            class="flex flex-col bg-white border border-gray-200 hover:border-[#10A37F] p-4 rounded-lg transition-colors shadow-sm group">
+                                            <span
+                                                class="font-bold text-gray-800 group-hover:text-[#10A37F] flex items-center mb-1"><i
+                                                    class="fa-solid fa-plus text-[#10A37F] mr-2"></i> Nuevo Chat</span>
+                                            <span class="text-xs text-gray-500 font-serif">Acceso a modelos estándar y
+                                                modelos O1 para razonamiento profundo matemático/lógico.</span>
+                                        </a>
+                                        <a href="https://chatgpt.com/gpts" target="_blank" rel="noopener"
+                                            class="flex flex-col bg-white border border-gray-200 hover:border-[#10A37F] p-4 rounded-lg transition-colors shadow-sm group">
+                                            <span
+                                                class="font-bold text-gray-800 group-hover:text-[#10A37F] flex items-center mb-1"><i
+                                                    class="fa-solid fa-robot text-[#10A37F] mr-2"></i> GPTs
+                                                Personalizados</span>
+                                            <span class="text-xs text-gray-500 font-serif">Versiones de ChatGPT
+                                                configuradas por ti que pueden ejecutar "Acciones" en otras apps.</span>
+                                        </a>
+                                        <a href="#" target="_blank" rel="noopener"
+                                            class="flex flex-col bg-white border border-gray-200 hover:border-[#10A37F] p-4 rounded-lg transition-colors shadow-sm group">
+                                            <span
+                                                class="font-bold text-gray-800 group-hover:text-[#10A37F] flex items-center mb-1"><i
+                                                    class="fa-solid fa-store text-[#10A37F] mr-2"></i> Aplicaciones
+                                                (Store)</span>
+                                            <span class="text-xs text-gray-500 font-serif">Tienda integrada para usar
+                                                GPTs creados por otras empresas y expertos.</span>
+                                        </a>
+                                        <a href="https://platform.openai.com/playground" target="_blank" rel="noopener"
+                                            class="flex flex-col bg-white border border-gray-200 hover:border-[#10A37F] p-4 rounded-lg transition-colors shadow-sm group">
+                                            <span
+                                                class="font-bold text-gray-800 group-hover:text-[#10A37F] flex items-center mb-1"><i
+                                                    class="fa-solid fa-terminal text-[#10A37F] mr-2"></i> Playground /
+                                                Codex</span>
+                                            <span class="text-xs text-gray-500 font-serif">Entorno técnico para ajustar
+                                                "System Prompts", temperatura y parámetros a nivel API.</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Práctica y PFC -->
+    <section id="practica" class="py-24 bg-brand-dark text-white border-t-8 border-brand-accent">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in-on-scroll">
+                <span class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-3 block"><i
+                        class="fa-solid fa-desktop mr-2"></i> Ejercicios</span>
+                <h2 class="text-4xl lg:text-5xl font-extrabold mb-6">Práctica: Controlando a la Máquina</h2>
+            </div>
+
+            <div class="space-y-8 mb-24 fade-in-on-scroll">
+
+                <!-- Ejercicio 1: Temperatura -->
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-colors">
+                    <h3 class="text-2xl font-bold mb-4 text-amber-400">Fase 1: Hackeando la "Temperatura"</h3>
+                    <p class="font-serif text-gray-400 mb-6">En la web no hay un botón de temperatura, pero podemos
+                        simularlo con "Prompting Semántico". Vamos a crear el <em>Naming</em> para un nuevo producto.
+                    </p>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div
+                            class="bg-[#0f172a] rounded-lg border-l-4 border-blue-400 shadow-inner overflow-hidden flex flex-col h-full">
+                            <div
+                                class="bg-black/40 px-4 py-2 border-b border-white/5 text-xs text-blue-400 font-bold uppercase tracking-wider">
+                                Test 1 (Simulando Temp. 0.0)
+                            </div>
+                            <div id="prompt-temp-0"
+                                class="p-5 font-mono text-gray-300 text-sm flex-grow whitespace-pre-wrap"><span
+                                    class="text-blue-400 mr-2">></span> Actúa con absoluta literalidad y lógica. Sin
+                                adornos ni creatividad. Dame 3 nombres puramente descriptivos y funcionales para [tu
+                                producto del PFC].</div>
+                            <div class="bg-black/30 px-4 py-2 border-t border-white/5 flex justify-end">
+                                <button onclick="copyToClipboard('prompt-temp-0', this)"
+                                    class="flex items-center text-xs font-bold text-gray-400 hover:text-white transition-colors border border-gray-600 hover:border-gray-400 rounded px-3 py-1">
+                                    <i class="fa-regular fa-copy mr-2"></i> Copiar
+                                </button>
+                            </div>
+                        </div>
+
+                        <div
+                            class="bg-[#0f172a] rounded-lg border-l-4 border-amber-500 shadow-inner overflow-hidden flex flex-col h-full">
+                            <div
+                                class="bg-black/40 px-4 py-2 border-b border-white/5 text-xs text-amber-400 font-bold uppercase tracking-wider">
+                                Test 2 (Simulando Temp. 1.0+)
+                            </div>
+                            <div id="prompt-temp-1"
+                                class="p-5 font-mono text-gray-300 text-sm flex-grow whitespace-pre-wrap"><span
+                                    class="text-amber-500 mr-2">></span> Eleva tu nivel de abstracción y creatividad al
+                                máximo. Toma riesgos. Ignora lo obvio. Usa metáforas sorprendentes. Dame 3 nombres
+                                radicalmente disruptivos para [tu producto del PFC].</div>
+                            <div class="bg-black/30 px-4 py-2 border-t border-white/5 flex justify-end">
+                                <button onclick="copyToClipboard('prompt-temp-1', this)"
+                                    class="flex items-center text-xs font-bold text-gray-400 hover:text-white transition-colors border border-gray-600 hover:border-gray-400 rounded px-3 py-1">
+                                    <i class="fa-regular fa-copy mr-2"></i> Copiar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ejercicio 2: Few-Shot -->
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-colors">
+                    <h3 class="text-2xl font-bold mb-4 text-purple-400">Fase 2: El Poder del Few-Shot Prompting</h3>
+                    <p class="font-serif text-gray-400 mb-6">Enséñale la "cultura" de tu empresa al pasante digital
+                        dándole ejemplos exactos antes de pedir la tarea.</p>
+
+                    <div class="bg-[#0f172a] rounded-lg border-l-4 border-purple-500 shadow-inner overflow-hidden">
+                        <div id="prompt-fewshot" class="p-5 font-mono text-gray-300 text-sm whitespace-pre-wrap"><span
+                                class="text-purple-400 mr-2">></span> Quiero que redactes un tweet promocional para [tu
+                            producto]. Antes de hacerlo, analiza y absorbe el tono exacto (elegante pero irónico) de
+                            estos 2 ejemplos de nuestro historial:
+
+                            Ejemplo 1: "Decían que innovar era difícil. Nosotros preferimos llamarlo 'martes'. Descubre
+                            la nueva actualización."
+                            Ejemplo 2: "Menos reuniones que podrían haber sido un email, más herramientas que trabajan
+                            por ti."
+
+                            Ahora, redacta el nuevo tweet manteniendo ese nivel de confianza:</div>
+                        <div class="bg-black/30 px-4 py-2 border-t border-white/5 flex justify-end">
+                            <button onclick="copyToClipboard('prompt-fewshot', this)"
+                                class="flex items-center text-xs font-bold text-gray-400 hover:text-white transition-colors border border-gray-600 hover:border-gray-400 rounded px-3 py-1">
+                                <i class="fa-regular fa-copy mr-2"></i> Copiar Prompt
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Quiz Interactivo -->
+            <div class="border-t border-gray-700 pt-16 mb-24 fade-in-on-scroll">
+                <h3 class="text-3xl font-bold mb-8 text-white"><i
+                        class="fa-solid fa-clipboard-question text-brand-accent mr-3"></i> Test: Glosario Técnico</h3>
+                <div class="bg-gray-900 border border-gray-700 rounded-2xl p-8 lg:p-12 shadow-2xl">
+                    <div id="quizContainer">
+                        <!-- Quiz se renderiza vía JS aquí -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proyecto Fin de Curso (PFC) - Modulo 2 -->
+            <div
+                class="border-t-8 border-brand-primary bg-white rounded-3xl p-10 lg:p-16 shadow-2xl relative overflow-hidden fade-in-on-scroll text-gray-800">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-brand-primary/5 rounded-bl-full -z-10"></div>
+                <div class="flex items-center mb-6">
+                    <div
+                        class="w-16 h-16 bg-brand-primary text-white rounded-2xl flex items-center justify-center text-3xl shadow-lg mr-6 shrink-0">
+                        <i class="fa-solid fa-rocket"></i>
+                    </div>
+                    <div>
+                        <span
+                            class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-1 block">Transversal</span>
+                        <h3 class="text-3xl lg:text-4xl font-extrabold text-brand-dark">Proyecto Fin de Curso (PFC)</h3>
+                    </div>
+                </div>
+
+                <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-8 mb-8">
+                    <h4 class="font-bold text-brand-dark text-xl mb-4 flex items-center">
+                        <i class="fa-solid fa-bullseye text-brand-primary mr-3"></i> Tarea Módulo 2: Despliegue de tu
+                        Asistente
+                    </h4>
+                    <p class="font-serif text-gray-700 mb-6">
+                        En el M1 creamos los activos estratégicos de tu proyecto. Ahora vamos a construir la
+                        arquitectura de conocimiento y comportamiento de tu asistente oficial, conectando el ecosistema
+                        avanzado de Google en 3 pasos:
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div
+                            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div
+                                class="w-10 h-10 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-4 text-lg font-bold">
+                                <i class="fa-solid fa-book-journal-whills"></i></div>
+                            <h5 class="font-bold text-gray-800 mb-2">1. Base de Conocimiento</h5>
+                            <p class="text-sm font-serif text-gray-500">Entrena uno (o varios) cuadernos en
+                                <strong>NotebookLM</strong> cargando los documentos de tu proyecto y proporciónales
+                                contexto extra para consolidar la información.</p>
+                        </div>
+                        <div
+                            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div
+                                class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4 text-lg font-bold">
+                                <i class="fa-solid fa-gem"></i></div>
+                            <h5 class="font-bold text-gray-800 mb-2">2. System Prompt & Gem</h5>
+                            <p class="text-sm font-serif text-gray-500">Crea tu <strong>Gem</strong> en Gemini. Cárgalo
+                                con tu NotebookLM (o archivos directos) y define su <em>System Prompt</em> fundacional
+                                para otorgarle su rol y personalidad.</p>
+                        </div>
+                        <div
+                            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div
+                                class="w-10 h-10 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-4 text-lg font-bold">
+                                <i class="fa-solid fa-shield-halved"></i></div>
+                            <h5 class="font-bold text-gray-800 mb-2">3. Termostato y Escudos</h5>
+                            <p class="text-sm font-serif text-gray-500">Aplica a tu Gem el <strong>Termostato
+                                    Teórico</strong> (temperatura y tono adecuados) y configura <strong>Escudos
+                                    Departamentales</strong> estrictos para evitar alucinaciones.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Navegación entre Módulos -->
+    <section class="py-12 bg-white border-t border-gray-200">
+        <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <a href="index.html"
+                class="flex items-center px-6 py-3 text-gray-600 border border-gray-300 rounded-xl font-bold hover:text-brand-primary hover:border-brand-primary transition-all bg-white shadow-sm">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Volver al Temario
+            </a>
+            <a href="modulo1.html"
+                class="flex items-center px-6 py-3 bg-brand-dark text-white rounded-xl font-bold hover:bg-brand-primary transition-colors shadow-lg">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Anterior: Módulo 1
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#050B14] text-white py-12 border-t border-gray-800">
+        <div class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+            <h2 class="text-xl font-bold mb-4 md:mb-0">
+                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+            </h2>
+            <p class="text-sm text-gray-500 font-sans">Material de Apoyo Formativo - Módulo 2 © 2026</p>
+        </div>
+    </footer>
+
+    <!-- Lógica de Interactividad (Copiar + Quiz M2) -->
+    <script>
+        // 1. Lógica Funcionalidad de Copiar
+        function copyToClipboard(elementId, btn) {
+            const el = document.getElementById(elementId);
+            let text = el.innerText || el.textContent;
+
+            // Eliminar el prompt chevron "> "
+            text = text.replace(/^>\s*/, '').replace(/\n>\s*/g, '\n').trim();
+
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                document.execCommand('copy');
+                const originalHTML = btn.innerHTML;
+
+                btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i> Copiado';
+                btn.classList.add('bg-emerald-600', 'text-white', 'border-emerald-600');
+                btn.classList.remove('text-gray-400', 'text-gray-600', 'hover:text-white', 'border-gray-600', 'border-gray-300', 'bg-white', 'hover:border-brand-primary');
+
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    if (btn.closest('.bg-gray-100')) {
+                        btn.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-600');
+                        btn.classList.add('text-gray-600', 'border-gray-300', 'hover:border-brand-primary', 'bg-white');
+                    } else {
+                        btn.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-600');
+                        btn.classList.add('text-gray-400', 'hover:text-white', 'border-gray-600', 'hover:border-gray-400');
+                    }
+                }, 2000);
+            } catch (err) {
+                console.error('Error al copiar', err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // 2. Lógica Quiz Interactivo (10 Preguntas Módulo 2)
+        const quizData = [
+            {
+                question: "¿Qué diferencia principal hay entre un 'System Prompt' y un 'User Prompt'?",
+                options: [
+                    { text: "El System Prompt lo escribe la IA automáticamente y el User Prompt el humano.", correct: false },
+                    { text: "No hay diferencia real, ambos sirven exactamente para lo mismo.", correct: false },
+                    { text: "El System Prompt establece las reglas base y límites intocables (descripción del puesto), mientras que el User Prompt es la orden específica del momento.", correct: true },
+                    { text: "El User Prompt tiene mayor jerarquía y anula siempre al System Prompt en caso de conflicto.", correct: false }
+                ]
+            },
+            {
+                question: "¿Cuál es la finalidad técnica del proceso de 'Grounding' (Anclaje)?",
+                options: [
+                    { text: "Vincular las respuestas de la IA a fuentes de verdad verificables para reducir alucinaciones.", correct: true },
+                    { text: "Acelerar el tiempo de respuesta del servidor de Google.", correct: false },
+                    { text: "Generar imágenes a partir de texto en menos de 1 segundo.", correct: false },
+                    { text: "Entrenar al modelo base con todos los datos públicos de internet.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué permite hacer la técnica de edición visual generativa conocida como 'In-painting'?",
+                options: [
+                    { text: "Transformar un texto descriptivo largo en un vídeo 4K.", correct: false },
+                    { text: "Modificar, añadir o eliminar objetos dentro de un área seleccionada de una imagen, integrando los cambios de forma realista.", correct: true },
+                    { text: "Mejorar exponencialmente la resolución de una imagen antigua o borrosa.", correct: false },
+                    { text: "Fusionar el estilo de dos imágenes distintas en una sola pintura.", correct: false }
+                ]
+            },
+            {
+                question: "Si necesitas que la IA analice exclusivamente tus propios documentos sin inventar nada (100% Grounding), ¿qué herramienta utilizarías?",
+                options: [
+                    { text: "Google Vids", correct: false },
+                    { text: "Midjourney", correct: false },
+                    { text: "Google AI Studio", correct: false },
+                    { text: "NotebookLM", correct: true }
+                ]
+            },
+            {
+                question: "¿Qué característica distingue principalmente a un 'Agente Autónomo' de un 'Chatbot' tradicional?",
+                options: [
+                    { text: "El Agente tiene un objetivo, razona y usa herramientas para ejecutar acciones en el mundo real de forma autónoma.", correct: true },
+                    { text: "El Chatbot es siempre de pago y el Agente es gratuito.", correct: false },
+                    { text: "El Agente solo entiende código de programación y no lenguaje natural.", correct: false },
+                    { text: "El Chatbot puede hablar por voz y el Agente solo se comunica por texto.", correct: false }
+                ]
+            },
+            {
+                question: "¿Cuál es el peligro crítico de la 'Shadow AI' en entornos corporativos?",
+                options: [
+                    { text: "Aumenta drásticamente la factura mensual de servidores de la empresa.", correct: false },
+                    { text: "Los empleados usan herramientas gratuitas que pueden utilizar datos confidenciales para entrenar modelos públicos, exponiendo secretos.", correct: true },
+                    { text: "Crea documentos con formatos incompatibles con Microsoft Office.", correct: false },
+                    { text: "Bloquea los cortafuegos (firewalls) internos del departamento de IT.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué ventaja principal ofrece el protocolo MCP (Model Context Protocol)?",
+                options: [
+                    { text: "Traducir en tiempo real reuniones de videollamada a múltiples idiomas.", correct: false },
+                    { text: "Desarrollar aplicaciones móviles sin tener conocimientos de código.", correct: false },
+                    { text: "Permitir que la IA acceda de forma segura a herramientas locales sin necesidad de subir toda la información privada a la nube.", correct: true },
+                    { text: "Comprimir archivos PDF gigantes para que quepan en la ventana de contexto.", correct: false }
+                ]
+            },
+            {
+                question: "Si configuras el 'Termostato' de la IA con una Temperatura baja (ej. 0.0), ¿qué tipo de resultado estás buscando?",
+                options: [
+                    { text: "Respuestas estrictamente lógicas, analíticas y predecibles (ideal para código o finanzas).", correct: true },
+                    { text: "Máxima creatividad e ideas disruptivas y sorprendentes (ideal para marketing).", correct: false },
+                    { text: "Respuestas más rápidas, sacrificando la calidad ortográfica.", correct: false },
+                    { text: "Que la IA hable en un tono más coloquial, relajado y amistoso.", correct: false }
+                ]
+            },
+            {
+                question: "¿En qué consiste la técnica de 'Few-shot prompting'?",
+                options: [
+                    { text: "Hacer preguntas muy cortas y concisas, usando la menor cantidad de palabras posible.", correct: false },
+                    { text: "Proporcionar a la IA 2 o 3 ejemplos previos dentro de la instrucción para que entienda e imite el formato y tono deseado.", correct: true },
+                    { text: "Pedirle a la IA que genere múltiples imágenes usando una ráfaga rápida de parámetros.", correct: false },
+                    { text: "Dividir un documento gigantesco en fragmentos pequeños para evitar que la IA sufra amnesia.", correct: false }
+                ]
+            },
+            {
+                question: "¿Para qué caso de uso operativo es ideal pedirle a la IA que te entregue el resultado en formato JSON (.json)?",
+                options: [
+                    { text: "Para que los datos queden estructurados y puedan ser leídos automáticamente por otras aplicaciones informáticas (como tu ERP).", correct: true },
+                    { text: "Para copiar y pegar el texto en un documento de Notion manteniendo las negritas y los títulos.", correct: false },
+                    { text: "Para visualizar el resultado en un gráfico circular de Excel.", correct: false },
+                    { text: "Para imprimir el documento directamente con formato de libro.", correct: false }
+                ]
+            }
+        ];
+
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            container.innerHTML = '';
+
+            quizData.forEach((q, idx) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'mb-8';
+                qDiv.innerHTML = `
+                    <h4 class="text-xl font-bold text-white mb-4"><span class="text-brand-accent">${idx + 1}.</span> ${q.question}</h4>
+                    <div class="space-y-3">
+                        ${q.options.map((opt, optIdx) => `
+                            <div class="quiz-option group flex items-center" onclick="selectAnswer(event, ${idx}, ${optIdx})">
+                                <input type="radio" name="q${idx}" value="${optIdx}" class="hidden">
+                                <div class="w-6 h-6 rounded-full border-2 border-gray-500 mr-4 flex-shrink-0 group-hover:border-brand-primary radio-custom transition-colors"></div>
+                                <span class="font-serif text-sm md:text-base">${opt.text}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(qDiv);
+            });
+
+            const btnDiv = document.createElement('div');
+            btnDiv.className = "mt-10 pt-8 border-t border-gray-700 text-center";
+            btnDiv.innerHTML = `
+                <button onclick="submitQuiz()" class="px-10 py-4 bg-brand-primary text-white font-bold rounded-xl hover:bg-indigo-500 transition-colors shadow-lg text-lg uppercase tracking-wider">
+                    Validar Respuestas
+                </button>
+            `;
+            container.appendChild(btnDiv);
+        }
+
+        function selectAnswer(e, qIdx, optIdx) {
+            const optionContainer = e.currentTarget;
+            const parentDiv = optionContainer.closest('.space-y-3');
+
+            const allOptions = parentDiv.querySelectorAll('.quiz-option');
+            allOptions.forEach(opt => {
+                opt.classList.remove('selected');
+                opt.querySelector('.radio-custom').classList.remove('bg-brand-accent', 'border-brand-accent');
+                opt.querySelector('.radio-custom').classList.add('border-gray-500');
+            });
+
+            optionContainer.classList.add('selected');
+            const radioCustom = optionContainer.querySelector('.radio-custom');
+            radioCustom.classList.remove('border-gray-500');
+            radioCustom.classList.add('bg-brand-accent', 'border-brand-accent');
+
+            const input = optionContainer.querySelector('input');
+            input.checked = true;
+        }
+
+        function submitQuiz() {
+            let correctCount = 0;
+            let answeredCount = 0;
+
+            quizData.forEach((q, idx) => {
+                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+                if (selected) {
+                    answeredCount++;
+                    const optIdx = selected.value;
+                    const isCorrect = q.options[optIdx].correct;
+                    const optionDiv = selected.closest('.quiz-option');
+                    const parentDiv = optionDiv.parentElement;
+
+                    parentDiv.style.pointerEvents = "none";
+
+                    if (isCorrect) {
+                        correctCount++;
+                        optionDiv.classList.remove('selected');
+                        optionDiv.classList.add('correct');
+                        optionDiv.querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-emerald-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-check";
+                    } else {
+                        optionDiv.classList.remove('selected');
+                        optionDiv.classList.add('incorrect');
+                        optionDiv.querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-red-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-xmark";
+
+                        const allOptions = parentDiv.querySelectorAll('.quiz-option');
+                        q.options.forEach((opt, oIdx) => {
+                            if (opt.correct) {
+                                allOptions[oIdx].classList.add('border-emerald-500', 'text-emerald-400');
+                            }
+                        });
+                    }
+                }
+            });
+
+            if (answeredCount < quizData.length) {
+                alert("Por favor, responde a todas las preguntas antes de validar.");
+                return;
+            }
+
+            const percentage = Math.round((correctCount / quizData.length) * 100);
+            let message = "";
+            if (percentage === 100) message = "🏆 ¡Excelente! Has dominado la jerga técnica del Módulo 2.";
+            else if (percentage >= 75) message = "👍 ¡Muy bien! Estás listo para operar IAs empresariales con seguridad.";
+            else if (percentage >= 50) message = "✅ ¡Aprobado! Aunque convendría repasar las diferencias entre RAG y MCP.";
+            else message = "📚 Te recomendamos releer los conceptos clave para evitar riesgos de Shadow AI.";
+
+            alert(`Puntuación Final: ${correctCount}/${quizData.length} (${percentage}%)\n\n${message}`);
+        }
+
+        // Initialize features
+        document.addEventListener('DOMContentLoaded', () => {
+            renderQuiz();
+
+            // Scroll Observer for Fade-ins
+            const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in-on-scroll').forEach(el => observer.observe(el));
+
+            // Progress Bar
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrolled = (scrollTop / docHeight) * 100;
+                document.getElementById('progressBar').style.width = scrolled + '%';
+            });
+        });
+    </script>
+</body>
+
+</html>

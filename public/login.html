@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso al Curso — [m].seny [labs]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --brand-dark: #0f172a;
+            --brand-primary: #4f46e5;
+            --brand-accent: #818cf8;
+            --brand-bg: #0f172a;
+            --brand-surface: rgba(255, 255, 255, 0.04);
+            --brand-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f1f5f9;
+            --text-muted: #94a3b8;
+            --error: #f87171;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--brand-bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Ambient background blobs */
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            pointer-events: none;
+            animation: float 8s ease-in-out infinite alternate;
+        }
+
+        body::before {
+            width: 500px;
+            height: 500px;
+            background: var(--brand-primary);
+            top: -150px;
+            left: -150px;
+        }
+
+        body::after {
+            width: 400px;
+            height: 400px;
+            background: var(--brand-accent);
+            bottom: -120px;
+            right: -100px;
+            animation-delay: -4s;
+        }
+
+        @keyframes float {
+            from {
+                transform: translate(0, 0) scale(1);
+            }
+
+            to {
+                transform: translate(30px, 20px) scale(1.05);
+            }
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 24px;
+            background: var(--brand-surface);
+            border: 1px solid var(--brand-border);
+            border-radius: 20px;
+            padding: 40px 36px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+            animation: fadeUp 0.4s ease both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        .logo h1 span {
+            color: var(--brand-accent);
+        }
+
+        .logo p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .divider {
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--brand-primary), var(--brand-accent));
+            border-radius: 2px;
+            margin: 0 auto 32px;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--brand-border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .field input::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .field input:focus {
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        .error-msg {
+            background: rgba(248, 113, 113, 0.1);
+            border: 1px solid rgba(248, 113, 113, 0.3);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.82rem;
+            color: var(--error);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-msg::before {
+            content: '⚠';
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, var(--brand-primary), #6366f1);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.4);
+            margin-top: 6px;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 28px rgba(79, 70, 229, 0.55);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 28px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <div class="logo">
+            <h1><span>[m]</span>.seny <span>[labs]</span></h1>
+            <p>Área de alumnos</p>
+        </div>
+        <div class="divider"></div>
+
+        <!-- Error message (shown only if ?error=1) -->
+        <div class="error-msg" id="errorMsg" style="display:none">
+            Usuario o contraseña incorrectos.
+        </div>
+
+        <form method="POST" action="/api/login">
+            <div class="field">
+                <label for="username">Usuario</label>
+                <input type="text" id="username" name="username" placeholder="Tu nombre de usuario"
+                    autocomplete="username" required>
+            </div>
+            <div class="field">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" placeholder="••••••••"
+                    autocomplete="current-password" required>
+            </div>
+            <button type="submit" class="btn">Entrar al Curso →</button>
+        </form>
+
+        <p class="footer-note">Acceso exclusivo para alumnos matriculados.</p>
+    </div>
+
+    <script>
+        // Show error banner if redirected with ?error=1
+        if (new URLSearchParams(window.location.search).get('error') === '1') {
+            document.getElementById('errorMsg').style.display = 'flex';
+        }
+    </script>
+</body>
+
+</html>
