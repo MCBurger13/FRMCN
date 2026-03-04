@@ -382,7 +382,29 @@
             },
             {
                 id: 3,
-                title: "3. Documentación Inteligente",
+                title: "3. Estudio Creativo IA",
+                subtitle: "Imagen",
+                icon: "fa-palette",
+                description: "Creación de activos visuales profesionales para marketing, prototipado de productos y contenido social sin necesidad de un departamento de diseño externo.",
+                skills: ["Prompting Visual", "Dirección de Arte", "Consistencia"],
+                tools: ["Midjourney v6", "DALL-E 3", "Magnific.ai"],
+                analogy: "<strong>Objetivo:</strong> Materializar un concepto abstracto en una imagen fotorrealista.",
+                chartData: [60, 100, 60]
+            },
+            {
+                id: 4,
+                title: "4. Estudio Creativo 2",
+                subtitle: "Vídeo Generativo",
+                icon: "fa-video",
+                description: "Exploración de técnicas avanzadas para la creación de clips de vídeo mediante Inteligencia Artificial generativa. Transformación de texto e imágenes en secuencias animadas coherentes.",
+                skills: ["Continuidad Visual", "Prompting Temporal", "Control de Cámara AI"],
+                tools: ["Runway Gen-2", "Luma Dream Machine", "Sora"],
+                analogy: "<strong>Objetivo:</strong> Pasar del fotograma estático a la narrativa en movimiento.",
+                chartData: [70, 95, 50]
+            },
+            {
+                id: 5,
+                title: "5. Documentación Inteligente",
                 subtitle: "Productividad Administrativa",
                 icon: "fa-file-lines",
                 description: "Técnicas avanzadas para crear borradores, resúmenes ejecutivos, presentaciones y comunicaciones complejas en segundos, manteniendo el tono de marca.",
@@ -392,19 +414,8 @@
                 chartData: [50, 40, 90]
             },
             {
-                id: 4,
-                title: "4. Estudio Creativo IA",
-                subtitle: "Imagen y Video",
-                icon: "fa-palette",
-                description: "Creación de activos visuales profesionales para marketing, prototipado de productos y contenido social sin necesidad de un departamento de diseño externo.",
-                skills: ["Prompting Visual", "Dirección de Arte", "Consistencia"],
-                tools: ["Midjourney v6", "DALL-E 3", "Runway Gen-2", "Magnific.ai"],
-                analogy: "<strong>Objetivo:</strong> Materializar un concepto abstracto en una imagen fotorrealista.",
-                chartData: [60, 100, 60]
-            },
-            {
-                id: 5,
-                title: "5. Ecosistema Google & Data",
+                id: 6,
+                title: "6. Ecosistema Google & Data",
                 subtitle: "Análisis Integrado",
                 icon: "fa-chart-pie",
                 description: "Explotando al máximo Gemini en Workspace. Análisis de datos en Sheets con lenguaje natural y automatización de flujos de trabajo en Drive.",
@@ -414,8 +425,8 @@
                 chartData: [70, 20, 95]
             },
             {
-                id: 6,
-                title: "6. Agentes Autónomos",
+                id: 7,
+                title: "7. Agentes Autónomos",
                 subtitle: "El Futuro de la Automatización",
                 icon: "fa-robot",
                 description: "Introducción a sistemas que no solo responden, sino que ejecutan. IAs capaces de planificar tareas, navegar por la web y realizar secuencias complejas.",
@@ -425,8 +436,8 @@
                 chartData: [95, 30, 80]
             },
             {
-                id: 7,
-                title: "7. Proyecto: MVP Empresarial",
+                id: 8,
+                title: "8. Proyecto: MVP Empresarial",
                 subtitle: "Ejecución Final",
                 icon: "fa-rocket",
                 description: "Aplicación transversal. Simulación de lanzamiento de una línea de negocio: desde el naming y logo hasta la estrategia de go-to-market.",
@@ -531,12 +542,55 @@
                                 <div class="mt-4 p-4 bg-amber-50 border-l-2 border-brand-accent text-sm text-gray-700 font-serif italic">
                                     ${module.analogy}
                                 </div>
-                                ${module.id === 1 || module.id === 2 ? `
+                                ${module.id === 1 || module.id === 2 || module.id === 4 ? `
                                 <div class="mt-6">
                                     <a href="modulo${module.id}.html" class="inline-flex items-center bg-brand-primary text-white px-6 py-3 rounded text-sm font-bold hover:bg-indigo-700 hover:-translate-y-0.5 transition-all shadow-lg shadow-indigo-200">
                                         <i class="fa-solid fa-arrow-right-to-bracket mr-2"></i> Entrar al Módulo
                                         <i class="fa-solid fa-arrow-right ml-2"></i>
                                     </a>
+                                </div>
+                                ` : ''}
+                                ${module.id === 3 ? `
+                                <div class="mt-6 pt-6 border-t border-gray-200">
+                                    <h5 class="text-xs font-bold text-brand-dark uppercase tracking-widest mb-4">Clases del Módulo</h5>
+                                    <div class="space-y-3">
+                                        <a href="modulo3-clase1.html" class="flex items-center justify-between bg-white px-5 py-3 border border-gray-200 rounded-lg hover:border-brand-primary hover:shadow-md transition-all group">
+                                            <div class="flex items-center">
+                                                <div class="w-8 h-8 rounded bg-indigo-50 text-brand-primary flex items-center justify-center mr-4 group-hover:bg-brand-primary group-hover:text-white transition-colors">
+                                                    <span class="font-bold text-sm">C1</span>
+                                                </div>
+                                                <span class="font-bold text-gray-700 group-hover:text-brand-primary transition-colors">Conceptos Base</span>
+                                            </div>
+                                            <i class="fa-solid fa-chevron-right text-gray-300 group-hover:text-brand-primary transition-colors text-sm"></i>
+                                        </a>
+                                        <a href="modulo3-clase2.html" class="flex items-center justify-between bg-white px-5 py-3 border border-gray-200 rounded-lg hover:border-brand-primary hover:shadow-md transition-all group">
+                                            <div class="flex items-center">
+                                                <div class="w-8 h-8 rounded bg-indigo-50 text-brand-primary flex items-center justify-center mr-4 group-hover:bg-brand-primary group-hover:text-white transition-colors">
+                                                    <span class="font-bold text-sm">C2</span>
+                                                </div>
+                                                <span class="font-bold text-gray-700 group-hover:text-brand-primary transition-colors">Midjourney Básico</span>
+                                            </div>
+                                            <i class="fa-solid fa-chevron-right text-gray-300 group-hover:text-brand-primary transition-colors text-sm"></i>
+                                        </a>
+                                        <a href="modulo3-clase3.html" class="flex items-center justify-between bg-white px-5 py-3 border border-gray-200 rounded-lg hover:border-brand-primary hover:shadow-md transition-all group">
+                                            <div class="flex items-center">
+                                                <div class="w-8 h-8 rounded bg-indigo-50 text-brand-primary flex items-center justify-center mr-4 group-hover:bg-brand-primary group-hover:text-white transition-colors">
+                                                    <span class="font-bold text-sm">C3</span>
+                                                </div>
+                                                <span class="font-bold text-gray-700 group-hover:text-brand-primary transition-colors">Midjourney Avanzado</span>
+                                            </div>
+                                            <i class="fa-solid fa-chevron-right text-gray-300 group-hover:text-brand-primary transition-colors text-sm"></i>
+                                        </a>
+                                        <a href="modulo3-clase4.html" class="flex items-center justify-between bg-white px-5 py-3 border border-gray-200 rounded-lg hover:border-brand-primary hover:shadow-md transition-all group">
+                                            <div class="flex items-center">
+                                                <div class="w-8 h-8 rounded bg-indigo-50 text-brand-primary flex items-center justify-center mr-4 group-hover:bg-brand-primary group-hover:text-white transition-colors">
+                                                    <span class="font-bold text-sm">C4</span>
+                                                </div>
+                                                <span class="font-bold text-gray-700 group-hover:text-brand-primary transition-colors">Casos de Uso</span>
+                                            </div>
+                                            <i class="fa-solid fa-chevron-right text-gray-300 group-hover:text-brand-primary transition-colors text-sm"></i>
+                                        </a>
+                                    </div>
                                 </div>
                                 ` : ''}
                             </div>

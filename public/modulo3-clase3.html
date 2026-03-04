@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Módulo 3 Clase 3: Control Absoluto y Ecosistemas Híbridos - [m].seny [labs]">
+
+    <title>Módulo 3: Estudio Creativo (Clase 3) - [m].seny [labs]</title>
+
+
+
+    <!-- Tailwind CSS -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap"
+        rel="stylesheet">
+
+
+
+    <script>
+
+        tailwind.config = {
+
+            theme: {
+
+                extend: {
+
+                    fontFamily: {
+
+                        sans: ['Inter', 'sans-serif'],
+
+                        serif: ['Merriweather', 'serif'],
+
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+
+                    },
+
+                    colors: {
+
+                        brand: {
+
+                            dark: '#0F172A',
+
+                            primary: '#4F46E5',
+
+                            accent: '#F59E0B',
+
+                            light: '#F8FAFC'
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    </script>
+
+
+
+    <style>
+        body {
+
+            background-color: #F8FAFC;
+
+            color: #334155;
+
+            scroll-behavior: smooth;
+
+        }
+
+
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        button,
+        .nav-link {
+
+            font-family: 'Inter', sans-serif;
+
+        }
+
+
+
+        p,
+        li,
+        .prose-text {
+
+            font-family: 'Merriweather', serif;
+
+            line-height: 1.6;
+
+            font-size: 1.125rem;
+
+            text-align: justify;
+
+        }
+
+
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+
+
+        /* Callout Boxes */
+
+        .callout-analogy {
+
+            background-color: #FEF3C7;
+            /* Amber 50 */
+
+            border-left: 4px solid #F59E0B;
+            /* Amber 500 */
+
+        }
+
+
+
+        .callout-phrase {
+
+            background-color: #EEF2FF;
+            /* Indigo 50 */
+
+            border-left: 4px solid #4F46E5;
+            /* Indigo 600 */
+
+        }
+
+
+
+        /* Custom Scrollbar */
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+
+
+        /* Animations */
+
+        .fade-in-on-scroll {
+
+            opacity: 0;
+
+            transform: translateY(20px);
+
+            transition: all 0.8s ease-out;
+
+        }
+
+        .fade-in-on-scroll.visible {
+
+            opacity: 1;
+
+            transform: translateY(0);
+
+        }
+
+
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+
+            transform: translateY(-4px);
+
+            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.1);
+
+        }
+
+
+
+        /* Progress Bar */
+
+        .progress-bar {
+
+            position: fixed;
+
+            top: 0;
+
+            left: 0;
+
+            height: 3px;
+
+            background: linear-gradient(90deg, #4F46E5, #F59E0B);
+
+            z-index: 1000;
+
+            transition: width 0.2s ease;
+
+        }
+
+
+
+        /* Quiz Styles */
+
+        .quiz-option {
+
+            padding: 1rem;
+
+            border: 2px solid rgba(255, 255, 255, 0.1);
+
+            border-radius: 0.75rem;
+
+            cursor: pointer;
+
+            transition: all 0.3s;
+
+            background-color: rgba(255, 255, 255, 0.05);
+
+            color: #e2e8f0;
+
+        }
+
+        .quiz-option:hover {
+
+            border-color: #4F46E5;
+
+            background-color: rgba(79, 70, 229, 0.1);
+
+        }
+
+        .quiz-option.selected {
+
+            border-color: #F59E0B;
+
+            background-color: rgba(245, 158, 11, 0.1);
+
+        }
+
+        .quiz-option.correct {
+
+            border-color: #10b981;
+
+            background-color: rgba(16, 185, 129, 0.1);
+
+            color: #10b981;
+
+        }
+
+        .quiz-option.incorrect {
+
+            border-color: #ef4444;
+
+            background-color: rgba(239, 68, 68, 0.1);
+
+            color: #ef4444;
+
+        }
+    </style>
+
+</head>
+
+<body class="antialiased">
+
+
+
+    <div class="progress-bar" id="progressBar"></div>
+
+
+
+    <!-- Navigation Header -->
+
+    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
+
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+
+            <div class="flex items-center">
+                <a href="index.html" class="no-underline">
+                    <h1
+                        class="text-xl font-bold tracking-tight text-brand-dark hover:text-brand-primary transition-colors cursor-pointer">
+                        <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+                    </h1>
+                </a>
+            </div>
+            <nav class="hidden lg:flex space-x-5 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                <a href="#intro" class="hover:text-brand-primary transition-colors">1. Introducción</a>
+                <a href="#conceptos" class="hover:text-brand-primary transition-colors">2. Conceptos Técnicos</a>
+                <a href="#herramientas" class="hover:text-brand-primary transition-colors">3. Directorio</a>
+                <a href="#practica" class="hover:text-brand-primary transition-colors text-brand-accent">4. Práctica &
+                    PFC</a>
+            </nav>
+            <a href="/api/logout"
+                class="hidden lg:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors"
+                title="Cerrar sesión">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                Salir
+            </a>
+        </div>
+
+    </header>
+
+
+
+    <!-- Presentation Title (Hero) -->
+
+    <section class="bg-brand-dark text-white py-32 border-b-8 border-brand-primary relative overflow-hidden">
+
+        <div class="absolute inset-0 opacity-10">
+
+            <div class="absolute top-10 right-10 w-96 h-96 bg-brand-primary rounded-full blur-3xl"></div>
+
+            <div class="absolute bottom-10 left-20 w-[30rem] h-[30rem] bg-brand-accent rounded-full blur-3xl"></div>
+
+        </div>
+
+        <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
+
+            <span
+                class="inline-block py-1 px-3 bg-brand-primary/20 text-brand-primary font-mono text-sm font-bold uppercase tracking-widest mb-6 rounded">
+
+                Módulo 3 • Clase 3
+
+            </span>
+
+            <h1 class="text-5xl lg:text-7xl font-extrabold mb-6 leading-tight">
+
+                Control Absoluto<br>
+
+                <span class="text-brand-accent text-4xl lg:text-5xl">& Ecosistemas Híbridos</span>
+
+            </h1>
+
+            <p class="text-xl text-gray-300 font-serif max-w-2xl mx-auto italic text-center">
+
+                De la aleatoriedad al control quirúrgico. Estructuras innegociables y preparación audiovisual.
+
+            </p>
+
+            <div class="mt-10 flex items-center justify-center space-x-4 text-sm text-gray-400 font-mono">
+
+                <span><i class="fa-regular fa-clock mr-2"></i> 1 Hora</span>
+
+                <span>•</span>
+
+                <span><i class="fa-solid fa-crosshairs mr-2"></i> Precisión Grado Industrial</span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- 1. Introducción -->
+
+    <section id="intro" class="py-20 bg-white">
+
+        <div class="max-w-5xl mx-auto px-6">
+
+            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll">
+
+                <span
+                    class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">1</span>
+
+                De la Aleatoriedad al Control Quirúrgico
+
+            </h2>
+
+
+
+            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">
+
+                En las clases anteriores aprendimos a generar imágenes de alta calidad y a componerlas ágilmente. Sin
+                embargo, el mayor desafío para un Director de Arte corporativo cuando usa IA es el <strong>control
+                    preciso</strong>.
+
+            </p>
+
+
+
+            <div class="bg-indigo-50 border border-brand-primary/30 p-8 rounded-2xl mb-12 fade-in-on-scroll shadow-sm">
+
+                <h3 class="text-xl font-bold text-brand-dark mb-4 flex items-center">
+
+                    <i class="fa-solid fa-circle-question text-brand-primary mr-3"></i> El Límite de las Herramientas
+                    Comerciales
+
+                </h3>
+
+                <p class="font-serif text-gray-700">
+
+                    ¿Qué pasa si necesitas que la modelo de tu anuncio tenga <em>exactamente</em> la misma pose que un
+                    boceto que dibujaste a lápiz? ¿O si necesitas generar 50 iconos que tengan matemáticamente el mismo
+                    estilo visual? Las herramientas "comerciales" (Midjourney, DALL-E) son como artistas brillantes pero
+                    testarudos: ellos deciden gran parte de la estética por ti.
+
+                </p>
+
+            </div>
+
+
+
+            <p class="prose-text text-gray-600 fade-in-on-scroll">
+
+                En esta Clase 3, introducimos los <strong>Ecosistemas de Control Absoluto y Código Abierto</strong>.
+                Aprenderemos a usar herramientas que no solo interpretan texto, sino que leen "esqueletos" y mapas de
+                profundidad, dándonos el poder de exigirle a la IA que respete la estructura geométrica exacta de
+                nuestra visión.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- 2. Conceptos Técnicos -->
+
+    <section id="conceptos" class="py-20 bg-brand-dark text-white border-t border-gray-800">
+
+        <div class="max-w-6xl mx-auto px-6">
+
+            <h2 class="text-3xl font-bold mb-4 flex items-center fade-in-on-scroll">
+
+                <span
+                    class="w-10 h-10 bg-brand-accent text-brand-dark rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">2</span>
+
+                El Concepto Técnico
+
+            </h2>
+
+            <p class="prose-text mb-12 text-gray-300 fade-in-on-scroll">Para dominar las plataformas de control
+                absoluto, debes entender primero cómo funcionan estos cuatro pilares técnicos subyacentes.</p>
+
+
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 fade-in-on-scroll">
+
+
+
+                <!-- Fine-Tuning -->
+
+                <div
+                    class="bg-white/5 border border-white/10 p-8 rounded-2xl shadow-lg hover:border-brand-primary/50 transition-colors group">
+
+                    <h3 class="text-xl font-bold text-white mb-3 flex items-center"><i
+                            class="fa-solid fa-sliders text-brand-primary mr-3 text-2xl group-hover:scale-110 transition-transform"></i>
+                        2.1 Fine-Tuning (Modelos Ajustados)</h3>
+
+                    <p class="font-serif text-gray-300 text-sm mb-4">Un modelo base (ej. Stable Diffusion) sabe dibujar
+                        de todo un poco. El <em>Fine-Tuning</em> es coger ese modelo y enseñarle, por ejemplo, 5.000
+                        fotos exclusivas de fotografía analógica de los años 80. El resultado es un experto absoluto en
+                        esa estética concreta.</p>
+
+                </div>
+
+
+
+                <!-- ControlNet -->
+
+                <div
+                    class="bg-white/5 border border-white/10 p-8 rounded-2xl shadow-lg hover:border-emerald-500/50 transition-colors group">
+
+                    <h3 class="text-xl font-bold text-white mb-3 flex items-center"><i
+                            class="fa-solid fa-bezier-curve text-emerald-400 mr-3 text-2xl group-hover:scale-110 transition-transform"></i>
+                        2.2 ControlNet (La Marioneta Virtual)</h3>
+
+                    <p class="font-serif text-gray-300 text-sm mb-4">Una capa de inteligencia adicional. Subes una foto,
+                        ControlNet extrae su "esqueleto de alambre" (wireframe) y luego obliga a la IA a que su nueva
+                        generación encaje OBLIGATORIAMENTE dentro de esa pose geométrica exacta dictada por ti.</p>
+
+                </div>
+
+
+
+                <!-- LoRAs -->
+
+                <div
+                    class="bg-white/5 border border-white/10 p-8 rounded-2xl shadow-lg hover:border-brand-accent/50 transition-colors group">
+
+                    <h3 class="text-xl font-bold text-white mb-3 flex items-center"><i
+                            class="fa-solid fa-sd-card text-brand-accent mr-3 text-2xl group-hover:scale-110 transition-transform"></i>
+                        2.3 LoRAs (Low-Rank Adaptation)</h3>
+
+                    <p class="font-serif text-gray-300 text-sm mb-4">Si un "Modelo Ajustado" es una enciclopedia
+                        gigante, un LoRA es un folleto de 5 páginas. Te permite enseñar a la IA un concepto súper
+                        específico (como tu producto físico) dándole tan solo entre 15 y 30 fotografías.</p>
+
+                    <div class="bg-black/30 p-3 rounded border-l-2 border-brand-accent mt-4">
+
+                        <p class="text-sm text-amber-100 font-serif m-0"><strong>Analogía:</strong> Es como insertar un
+                            "cartucho de memoria" temporal con tu botella de perfume para que la IA sepa dibujarla a la
+                            perfección, sin reentrenar todo el modelo.</p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Prompt Negativo -->
+
+                <div
+                    class="bg-white/5 border border-white/10 p-8 rounded-2xl shadow-lg hover:border-red-500/50 transition-colors group">
+
+                    <h3 class="text-xl font-bold text-white mb-3 flex items-center"><i
+                            class="fa-solid fa-shield-halved text-red-400 mr-3 text-2xl group-hover:scale-110 transition-transform"></i>
+                        2.4 Prompt Negativo (El Escudo)</h3>
+
+                    <p class="font-serif text-gray-300 text-sm mb-4">En los entornos de control absoluto es vital. Es
+                        una caja de texto separada donde le dices a la IA todo lo que <strong>NO</strong> quieres que
+                        dibuje.</p>
+
+                    <div class="bg-black/30 p-3 rounded border-l-2 border-red-400 mt-4">
+
+                        <p class="text-sm text-red-100 font-serif m-0"><strong>Filtro de calidad:</strong> Escribir
+                            "baja resolución, texto deforme, extremidades extrañas" pone barreras físicas a la IA para
+                            evitar los errores típicos digitales.</p>
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- 3. Herramientas: Precisión y Activos -->
+
+    <section id="herramientas" class="py-20 bg-brand-light border-t border-gray-200">
+
+        <div class="max-w-5xl mx-auto px-6">
+
+            <div class="text-center mb-16 fade-in-on-scroll">
+
+                <h3 class="text-3xl font-extrabold text-brand-dark flex items-center justify-center mb-3">
+
+                    <span
+                        class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">3</span>
+
+                    Directorio: Precisión y Activos Híbridos
+
+                </h3>
+
+                <p class="text-gray-500 font-serif">Conoce a la línea de tu equipo enfocada en la precisión quirúrgica y
+                    la integración profesional.</p>
+
+            </div>
+
+
+
+            <div class="flex flex-col space-y-10 fade-in-on-scroll">
+
+
+
+                <!-- 1. Stable Diffusion -->
+
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all card-hover">
+
+                    <div class="border-l-8 border-[#8B5CF6] p-8 lg:p-10">
+
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+
+                            <div class="flex items-center">
+
+                                <div
+                                    class="w-16 h-16 bg-purple-50 text-[#8B5CF6] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
+
+                                    <i class="fa-solid fa-code-merge"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Stable Diffusion</h4>
+
+                                    <p class="text-[#8B5CF6] font-bold text-xs uppercase tracking-widest">El Motor de
+                                        Código Abierto</p>
+
+                                </div>
+
+                            </div>
+
+                            <a href="https://stability.ai/" target="_blank" rel="noopener"
+                                class="inline-flex items-center justify-center bg-gray-100 hover:bg-[#8B5CF6] hover:text-white text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors text-sm shadow-sm shrink-0">
+
+                                Abrir Stable Diffusion <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+
+                            </a>
+
+                        </div>
+
+                        <p class="text-gray-600 font-serif text-lg mb-6 leading-relaxed">
+
+                            A diferencia de Midjourney (caja negra), es de código abierto. La comunidad puede
+                            modificarlo, entrenarlo y crear extensiones. Su mayor superpoder es su integración nativa y
+                            profunda con <strong>ControlNet</strong>.
+
+                        </p>
+
+                        <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-brand-accent mb-4">
+
+                            <p class="text-sm text-amber-900 font-serif m-0"><i
+                                    class="fa-solid fa-lightbulb mr-2 text-brand-accent"></i><strong>Analogía:</strong>
+                                Midjourney es viajar en un tren de lujo; cómodo pero tú no conduces. Stable Diffusion es
+                                un coche de carreras modificado: requiere saber de mecánica, pero tienes volante,
+                                pedales y control absoluto.</p>
+
+                        </div>
+
+                        <p class="text-sm text-gray-500"><strong class="text-gray-700">Uso Corporativo:</strong> Renders
+                            arquitectónicos fotorrealistas a partir de planos exactos sin que la IA invente ventanas
+                            nuevas.</p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- 2. Leonardo AI -->
+
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all card-hover">
+
+                    <div class="border-l-8 border-[#F43F5E] p-8 lg:p-10">
+
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+
+                            <div class="flex items-center">
+
+                                <div
+                                    class="w-16 h-16 bg-rose-50 text-[#F43F5E] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
+
+                                    <i class="fa-solid fa-swatchbook"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Leonardo AI</h4>
+
+                                    <p class="text-[#F43F5E] font-bold text-xs uppercase tracking-widest">El Estudio de
+                                        Arte Todo en Uno</p>
+
+                                </div>
+
+                            </div>
+
+                            <a href="https://leonardo.ai/" target="_blank" rel="noopener"
+                                class="inline-flex items-center justify-center bg-gray-100 hover:bg-[#F43F5E] hover:text-white text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors text-sm shadow-sm shrink-0">
+
+                                Abrir Leonardo AI <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+
+                            </a>
+
+                        </div>
+
+                        <p class="text-gray-600 font-serif text-lg mb-6 leading-relaxed">
+
+                            Democratiza el inmenso poder de Stable Diffusion. En lugar de instalar software complejo,
+                            ofrece una interfaz web hermosa que actúa como un verdadero motor de producción gráfica de
+                            control absoluto.
+
+                        </p>
+
+
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 mb-6">
+
+                            <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+
+                                <h5 class="font-bold text-brand-dark mb-3"><i
+                                        class="fa-solid fa-gears text-[#F43F5E] mr-2"></i> Motor de Estilos</h5>
+
+                                <ul class="text-sm font-serif text-gray-600 space-y-2">
+
+                                    <li><strong>Blueprints:</strong> Acceso a docenas de estilos pre-entrenados.</li>
+
+                                    <li><strong>Train LoRAs:</strong> Sube fotos de tu producto físico y crea un modelo
+                                        exclusivo para replicarlo con exactitud fotográfica.</li>
+
+                                </ul>
+
+                            </div>
+
+                            <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+
+                                <h5 class="font-bold text-brand-dark mb-3"><i
+                                        class="fa-solid fa-crop-simple text-[#F43F5E] mr-2"></i> Lienzo de Composición
+                                </h5>
+
+                                <ul class="text-sm font-serif text-gray-600 space-y-2">
+
+                                    <li><strong>Dominio del Color:</strong> Control de paletas e in-painting avanzado.
+                                    </li>
+
+                                    <li><strong>Tipografía:</strong> Herramientas nativas para generar tipografías y
+                                        copys de anuncios visuales.</li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <p class="text-sm text-gray-500"><strong class="text-gray-700">Uso Corporativo:</strong>
+                            Entrenamiento de modelos con productos de la empresa para catálogos infinitos y diseño ágil
+                            de materiales con control total de marca.</p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- 3. Runway -->
+
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all card-hover">
+
+                    <div class="border-l-8 border-[#6366F1] p-8 lg:p-10">
+
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+
+                            <div class="flex items-center">
+
+                                <div
+                                    class="w-16 h-16 bg-indigo-50 text-[#6366F1] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
+
+                                    <i class="fa-solid fa-film"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Runway</h4>
+
+                                    <p class="text-[#6366F1] font-bold text-xs uppercase tracking-widest">La Navaja
+                                        Suiza Audiovisual</p>
+
+                                </div>
+
+                            </div>
+
+                            <a href="https://runwayml.com/" target="_blank" rel="noopener"
+                                class="inline-flex items-center justify-center bg-gray-100 hover:bg-[#6366F1] hover:text-white text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors text-sm shadow-sm shrink-0">
+
+                                Abrir Runway <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+
+                            </a>
+
+                        </div>
+
+                        <p class="text-gray-600 font-serif text-lg mb-6 leading-relaxed">
+
+                            Famosa por su generación de vídeo, es una suite creativa completa (*AI Magic Tools*).
+                            Permite generar imágenes, expandirlas (Out-painting), borrar fondos de vídeos (Green Screen
+                            automático) e interpolar frames.
+
+                        </p>
+
+                        <p class="text-sm text-gray-500"><strong class="text-gray-700">Uso Corporativo:</strong> Retoque
+                            audiovisual rápido, eliminación de objetos en vídeos corporativos y expansión precisa de
+                            formatos de imagen.</p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- 4. Artlist.io -->
+
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all card-hover">
+
+                    <div class="border-l-8 border-[#F59E0B] p-8 lg:p-10">
+
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+
+                            <div class="flex items-center">
+
+                                <div
+                                    class="w-16 h-16 bg-amber-50 text-[#F59E0B] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
+
+                                    <i class="fa-solid fa-photo-film"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Artlist.io</h4>
+
+                                    <p class="text-[#F59E0B] font-bold text-xs uppercase tracking-widest">Stock Premium
+                                        + IA Generativa</p>
+
+                                </div>
+
+                            </div>
+
+                            <a href="https://artlist.io/" target="_blank" rel="noopener"
+                                class="inline-flex items-center justify-center bg-gray-100 hover:bg-[#F59E0B] hover:text-white text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors text-sm shadow-sm shrink-0">
+
+                                Abrir Artlist.io <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+
+                            </a>
+
+                        </div>
+
+                        <p class="text-gray-600 font-serif text-lg mb-6 leading-relaxed">
+
+                            El estándar de recursos cinematográficos da el salto a la generación visual. Integra motores
+                            IA para búsqueda semántica y prepara su apartado <strong>'Studio' (Coming Soon)</strong>: un
+                            espacio para generar imagen y vídeo IA directamente en su ecosistema.
+
+                        </p>
+
+                        <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-brand-accent mb-4">
+
+                            <p class="text-sm text-amber-900 font-serif m-0"><i
+                                    class="fa-solid fa-lightbulb mr-2 text-brand-accent"></i><strong>Analogía:</strong>
+                                Tener acceso al mejor archivo mundial y decirle a la IA en el 'Studio': "Coge la paleta
+                                de colores y estética de esta foto premium de archivo, y genérame una nueva desde cero
+                                con nuestro producto".</p>
+
+                        </div>
+
+                        <p class="text-sm text-gray-500"><strong class="text-gray-700">Uso Corporativo:</strong>
+                            Campañas que combinan la seguridad del stock tradicional (música/B-roll) con la flexibilidad
+                            infinita de la IA visual.</p>
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- 4. Práctica y PFC -->
+
+    <section id="practica" class="py-24 bg-brand-dark text-white border-t-8 border-brand-accent">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in-on-scroll">
+                <span class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-3 block"><i
+                        class="fa-solid fa-desktop mr-2"></i> Parte Práctica</span>
+                <h2 class="text-4xl lg:text-5xl font-extrabold mb-6">Precisión y Expansión</h2>
+                <p class="text-gray-400 font-serif text-xl max-w-3xl mx-auto">Encadenemos el uso de estas herramientas
+                    para lograr un control absoluto de la imagen.</p>
+            </div>
+
+            <!-- Ejercicios -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-24 fade-in-on-scroll">
+                <div class="bg-white/5 border border-white/10 rounded-xl p-8 hover:bg-white/10 transition-colors">
+                    <div
+                        class="w-12 h-12 bg-rose-500/20 text-rose-400 rounded-xl flex items-center justify-center mb-6 text-xl">
+                        <i class="fa-solid fa-swatchbook"></i>
+                    </div>
+                    <h4 class="font-bold text-xl mb-3 text-white">Ej. 1: Modelo Especializado</h4>
+                    <p class="font-serif text-gray-400 text-sm">Entra en Leonardo AI y usa un <strong>"Fine-tuned
+                            Model"</strong> (ej. Anime/3D). Genera <em>"Un zorro con traje"</em>. Observa el estilo
+                        hiper-definido. Asegúrate de usar el <strong>Prompt Negativo</strong>.</p>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-xl p-8 hover:bg-white/10 transition-colors">
+                    <div
+                        class="w-12 h-12 bg-indigo-500/20 text-indigo-400 rounded-xl flex items-center justify-center mb-6 text-xl">
+                        <i class="fa-solid fa-expand"></i>
+                    </div>
+                    <h4 class="font-bold text-xl mb-3 text-white">Ej. 2: Expansión de Formato</h4>
+                    <p class="font-serif text-gray-400 text-sm">Imagina que necesitas la imagen anterior como banner web
+                        (16:9). Usa <strong>Runway</strong> o el Canvas de Leonardo para aplicar <em>Out-painting</em> y
+                        generar los bordes faltantes.</p>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-xl p-8 hover:bg-white/10 transition-colors">
+                    <div
+                        class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-xl flex items-center justify-center mb-6 text-xl">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <h4 class="font-bold text-xl mb-3 text-white">Ej. 3: Terreno Audiovisual</h4>
+                    <p class="font-serif text-gray-400 text-sm">Entra en Artlist.io. Usa su búsqueda semántica para
+                        encontrar el tono musical exacto (ej. <em>"Música corporativa y ágil"</em>) para acompañar tus
+                        futuras animaciones del Módulo 4.</p>
+                </div>
+            </div>
+
+            <!-- Quiz Interactivo -->
+            <div class="border-t border-gray-700 pt-16 mb-24 fade-in-on-scroll">
+                <h3 class="text-3xl font-bold mb-8 text-white"><i
+                        class="fa-solid fa-clipboard-question text-brand-accent mr-3"></i> Autodiagnóstico de la Clase 3
+                </h3>
+                <div class="bg-gray-900 border border-gray-700 rounded-2xl p-8 lg:p-12 shadow-2xl">
+                    <div id="quizContainer">
+                        <!-- Quiz se renderiza vía JS aquí -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proyecto Fin de Curso (PFC) -->
+            <div
+                class="border-t-8 border-brand-primary bg-white rounded-3xl p-10 lg:p-16 shadow-2xl relative overflow-hidden fade-in-on-scroll text-gray-800">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-brand-primary/5 rounded-bl-full -z-10"></div>
+                <div class="flex items-center mb-6">
+                    <div
+                        class="w-16 h-16 bg-brand-primary text-white rounded-2xl flex items-center justify-center text-3xl shadow-lg mr-6 shrink-0">
+                        <i class="fa-solid fa-rocket"></i>
+                    </div>
+                    <div>
+                        <span class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-1 block">Proyecto
+                            Fin de Curso</span>
+                        <h3 class="text-3xl lg:text-4xl font-extrabold text-brand-dark">Activos de Marca Controlados
+                        </h3>
+                    </div>
+                </div>
+
+                <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-8">
+                    <h4 class="text-brand-primary font-bold mb-4 text-xl">Objetivo Final</h4>
+                    <p class="font-serif text-gray-700 mb-8 text-lg">
+                        Seguir entrenando a tu "Director de Arte" digital para que cada vez sea más capaz y esté más
+                        alineado con el estilo innegociable de tu marca.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div
+                                class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold mr-4 shrink-0 mt-1">
+                                1</div>
+                            <div>
+                                <h5 class="font-bold text-gray-800 text-lg">Entrenamiento de tu propio LoRA</h5>
+                                <p class="font-serif text-gray-600 text-sm mt-1">Recopila 10-15 imágenes de tu producto
+                                    real o del personaje base creado en la Clase 1. Usa <strong>Leonardo AI</strong>
+                                    para crear un LoRA específico. Ahora la IA "conocerá" tu producto a la perfección.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div
+                                class="w-8 h-8 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center font-bold mr-4 shrink-0 mt-1">
+                                2</div>
+                            <div>
+                                <h5 class="font-bold text-gray-800 text-lg">Análisis y Clonación de Campaña</h5>
+                                <p class="font-serif text-gray-600 text-sm mt-1">Busca una campaña de éxito que te
+                                    inspire. Súbela a Leonardo y usa <em>Style Reference</em> para copiar su
+                                    iluminación/estética, pero <strong>inyectando tu nuevo LoRA</strong>. Adáptalo al
+                                    ADN de tu marca.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div
+                                class="w-8 h-8 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold mr-4 shrink-0 mt-1">
+                                3</div>
+                            <div>
+                                <h5 class="font-bold text-gray-800 text-lg">Adaptación de Formatos (Runway / Canvas)
+                                </h5>
+                                <p class="font-serif text-gray-600 text-sm mt-1">Toma tu imagen clonada (cuadrada o
+                                    16:9) y llévala a <strong>Runway</strong> o al Canvas de Leonardo. Aplica Upscaling
+                                    y usa <em>Out-painting</em> para transformarla en formato vertical (9:16) para
+                                    Stories.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start border-t border-gray-200 pt-6 mt-4">
+                            <div
+                                class="w-8 h-8 bg-brand-primary/10 text-brand-primary rounded-full flex items-center justify-center font-bold mr-4 shrink-0 mt-1">
+                                <i class="fa-solid fa-save"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-gray-800 text-lg">Entregable</h5>
+                                <p class="font-serif text-gray-600 text-sm mt-1">Guarda la imagen original clonada y su
+                                    versión expandida a formato vertical.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Footer -->
+
+    <footer class="bg-[#050B14] text-white py-12 border-t border-gray-800">
+
+        <div class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+
+            <h2 class="text-xl font-bold mb-4 md:mb-0">
+
+                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+
+            </h2>
+
+            <p class="text-sm text-gray-500 font-sans">Material de Apoyo Formativo - Módulo 3 (Clase 3) © 2026</p>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- Lógica de Interactividad -->
+
+    <script>
+
+        // Lógica Quiz Interactivo (10 Preguntas Módulo 3 Clase 3) 
+
+        const quizData = [
+
+            {
+
+                question: "¿Cuál es la principal ventaja de usar Stable Diffusion (código abierto) frente a Midjourney (cerrado) para arquitectura?",
+
+                options: [
+
+                    { text: "Es mucho más barato y rápido.", correct: false },
+
+                    { text: "Su integración nativa con ControlNet permite un control geométrico y estructural absoluto de la imagen.", correct: true },
+
+                    { text: "Sus colores son más saturados por defecto.", correct: false },
+
+                    { text: "Solo funciona en dispositivos Apple.", correct: false }
+
+                ]
+
+            },
+
+            {
+
+                question: "¿Para qué sirve específicamente la tecnología 'ControlNet'?",
+
+                options: [
+
+                    { text: "Para extraer esqueletos o mapas de profundidad de una imagen base y obligar a la IA a respetar esa estructura al generar.", correct: true },
+
+                    { text: "Para controlar los gastos de facturación (tokens) en las APIs.", correct: false },
+
+                    { text: "Para moderar palabras ofensivas en los prompts.", correct: false },
+
+                    { text: "Para traducir textos en las imágenes generadas.", correct: false }
+
+                ]
+
+            },
+
+            {
+
+                question: "¿Qué es un LoRA y por qué es fundamental para las marcas?",
+
+                options: [
+
+                    { text: "Es un filtro de Instagram avanzado.", correct: false },
+
+                    { text: "Es un 'cartucho de memoria' ligero que se entrena con pocas fotos para que la IA aprenda a replicar exactamente un producto físico o rostro.", correct: true },
+
+                    { text: "Es el formato final de exportación de vídeos en alta resolución.", correct: false },
+
+                    { text: "Es un modelo base que cuesta millones de dólares entrenar.", correct: false }
+
+                ]
+
+            },
+
+            {
+
+                question: "¿Cuál es el propósito del 'Prompt Negativo' en plataformas de control absoluto?",
+
+                options: [
+
+                    { text: "Escribir palabras mal sonantes para probar la censura.", correct: false },
+
+                    { text: "Restar color a la imagen y hacerla en blanco y negro.", correct: false },
+
+                    { text: "Actuar como escudo o filtro de calidad, diciéndole a la IA explícitamente lo que NO quieres que dibuje (ej. 'deforme, borroso').", correct: true },
+
+                    { text: "Eliminar el fondo automáticamente.", correct: false }
+
+                ]
+
+            },
+
+            {
+
+                question: "En la analogía de las herramientas, ¿qué plataforma se describe como un 'estudio de arte digital con especialistas pre-contratados'?",
+
+                options: [
+
+                    { text: "Runway", correct: false },
+
+                    { text: "Artlist.io", correct: false },
+
+                    { text: "Leonardo AI", correct: true },
+
+                    { text: "Midjourney", correct: false }
+
+                ]
+
+            },
+
+            {
+
+                question: "¿Qué plataforma de esta clase es conocida como la 'Navaja Suiza audiovisual', permitiendo expandir imágenes y borrar fondos de vídeo?",
+
+                options: [
+
+                    { text: "Runway", correct: true },
+
+                    { text: "Stable Diffusion", correct: false },
+
+                    { text: "Leonardo AI", correct: false },
+
+                    { text: "ChatGPT", correct: false }
+
+                ]
+
+            },
+
+            {
+
+                question: "¿Por qué el ecosistema publicitario tiene grandes expectativas en el futuro apartado 'Studio' de Artlist.io?",
+
+                options: [
+
+                    { text: "Porque será la primera red social exclusiva para IAs.", correct: false },
+
+                    { text: "Porque permitirá combinar la seguridad de su stock de grado cinematográfico con la flexibilidad de la generación visual de IA en un mismo entorno.", correct: true },
+
+                    { text: "Porque regalarán licencias de Photoshop.", correct: false },
+
+                    { text: "Porque eliminarán todos los derechos de autor musicales.", correct: false }
+
+                ]
+
+            },
+
+            {
+
+                question: "En Leonardo AI, ¿qué ocurre si usas el mismo prompt exacto pero cambias el 'Modelo Ajustado' (Fine-tuned model) en el menú?",
+
+                options: [
+
+                    { text: "Nada, la imagen será idéntica.", correct: false },
+
+                    { text: "El estilo estético de la imagen cambiará radicalmente según la especialidad del modelo seleccionado (ej. 3D vs Fotografía).", correct: true },
+
+                    { text: "La IA se bloqueará por error de sintaxis.", correct: false },
+
+                    { text: "El tamaño de la imagen se reducirá a la mitad.", correct: false }
+
+                ]
+
+            },
+
+            {
+
+                question: "VERDADERO O FALSO: Entrenar un LoRA con 20 fotos de tu producto requiere el mismo poder computacional y coste millonario que entrenar a GPT-4 desde cero.",
+
+                options: [
+
+                    { text: "Verdadero", correct: false },
+
+                    { text: "Falso. Es un ajuste rápido, ligero y muy económico (o gratis) en herramientas como Leonardo.", correct: true }
+
+                ]
+
+            },
+
+            {
+
+                question: "¿Qué técnica de edición utilizarías si tienes una imagen cuadrada perfecta pero necesitas adaptarla como fondo de pantalla panorámico?",
+
+                options: [
+
+                    { text: "Upscaling", correct: false },
+
+                    { text: "In-painting", correct: false },
+
+                    { text: "Out-painting (Expansión) en herramientas como Runway o Canvas.", correct: true },
+
+                    { text: "ControlNet de profundidad.", correct: false }
+
+                ]
+
+            }
+
+        ];
+
+
+
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            container.innerHTML = '';
+
+            quizData.forEach((q, idx) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'mb-8';
+                qDiv.innerHTML = `
+                    <h4 class="text-xl font-bold text-white mb-4"><span class="text-brand-accent">${idx + 1}.</span> ${q.question}</h4>
+                    <div class="space-y-3">
+                        ${q.options.map((opt, optIdx) => `
+                            <div class="quiz-option group flex items-center" onclick="selectAnswer(event, ${idx}, ${optIdx})">
+                                <input type="radio" name="q${idx}" value="${optIdx}" class="hidden">
+                                <div class="w-6 h-6 rounded-full border-2 border-gray-500 mr-4 flex-shrink-0 group-hover:border-brand-primary radio-custom transition-colors"></div>
+                                <span class="font-serif text-sm md:text-base">${opt.text}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(qDiv);
+            });
+
+            const btnDiv = document.createElement('div');
+            btnDiv.className = "mt-10 pt-8 border-t border-gray-700 text-center";
+            btnDiv.innerHTML = `
+                <button onclick="submitQuiz()" class="px-10 py-4 bg-brand-primary text-white font-bold rounded-xl hover:bg-indigo-500 transition-colors shadow-lg text-lg uppercase tracking-wider">
+                    Validar Respuestas
+                </button>
+            `;
+            container.appendChild(btnDiv);
+        }
+
+        function selectAnswer(e, qIdx, optIdx) {
+            const optionContainer = e.currentTarget;
+            const parentDiv = optionContainer.closest('.space-y-3');
+
+            const allOptions = parentDiv.querySelectorAll('.quiz-option');
+            allOptions.forEach(opt => {
+                opt.classList.remove('selected');
+                opt.querySelector('.radio-custom').classList.remove('bg-brand-accent', 'border-brand-accent');
+                opt.querySelector('.radio-custom').classList.add('border-gray-500');
+            });
+
+            optionContainer.classList.add('selected');
+            const radioCustom = optionContainer.querySelector('.radio-custom');
+            radioCustom.classList.remove('border-gray-500');
+            radioCustom.classList.add('bg-brand-accent', 'border-brand-accent');
+
+            const input = optionContainer.querySelector('input');
+            input.checked = true;
+        }
+
+        function submitQuiz() {
+            let correctCount = 0;
+            let answeredCount = 0;
+
+            quizData.forEach((q, idx) => {
+                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+                if (selected) {
+                    answeredCount++;
+                    const optIdx = selected.value;
+                    const isCorrect = q.options[optIdx].correct;
+                    const optionDiv = selected.closest('.quiz-option');
+                    const parentDiv = optionDiv.parentElement;
+
+                    parentDiv.style.pointerEvents = "none";
+
+                    if (isCorrect) {
+                        correctCount++;
+                        optionDiv.classList.remove('selected');
+                        optionDiv.classList.add('correct');
+                        optionDiv.querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-emerald-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-check";
+                    } else {
+                        optionDiv.classList.remove('selected');
+                        optionDiv.classList.add('incorrect');
+                        optionDiv.querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-red-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-xmark";
+
+                        const allOptions = parentDiv.querySelectorAll('.quiz-option');
+                        q.options.forEach((opt, oIdx) => {
+                            if (opt.correct) {
+                                allOptions[oIdx].classList.remove('selected');
+                                allOptions[oIdx].classList.add('correct');
+                                allOptions[oIdx].querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-emerald-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-check";
+                            }
+                        });
+                    }
+                }
+            });
+
+            if (answeredCount < quizData.length) {
+                alert("Por favor, responde a todas las preguntas antes de validar.");
+                return;
+            }
+
+            const percentage = Math.round((correctCount / quizData.length) * 100);
+            let message = "";
+            if (percentage === 100) message = "🏆 ¡Excelente! Dominas a la perfección el control estructural y los modelos ajustados.";
+            else if (percentage >= 80) message = "👍 ¡Muy bien! Tienes clara la función técnica de LoRAs y ControlNet.";
+            else if (percentage >= 60) message = "✅ ¡Aprobado! Pero repasa la utilidad de los Prompts Negativos y el Out-painting.";
+            else message = "📚 Te recomendamos releer los conceptos clave antes de avanzar a la práctica.";
+
+            alert(`Puntuación Final: ${correctCount}/${quizData.length} (${percentage}%)\n\n${message}`);
+        }
+
+
+
+        // Initialize features 
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            renderQuiz();
+
+
+
+            // Scroll Observer for Fade-ins 
+
+            const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+
+            const observer = new IntersectionObserver(entries => {
+
+                entries.forEach(entry => {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.classList.add('visible');
+
+                    }
+
+                });
+
+            }, observerOptions);
+
+
+
+            document.querySelectorAll('.fade-in-on-scroll').forEach(el => observer.observe(el));
+
+
+
+            // Progress Bar 
+
+            window.addEventListener('scroll', () => {
+
+                const scrollTop = window.scrollY;
+
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+                const scrolled = (scrollTop / docHeight) * 100;
+
+                document.getElementById('progressBar').style.width = scrolled + '%';
+
+            });
+
+        });
+
+    </script>
+
+    <!-- Navegación entre Clases -->
+    <section class="py-12 bg-white border-t border-gray-200">
+        <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <a href="modulo3-clase2.html"
+                class="flex items-center px-6 py-3 text-gray-600 border border-gray-300 rounded-xl font-bold hover:text-brand-primary hover:border-brand-primary transition-all bg-white shadow-sm">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Anterior: Clase 2
+            </a>
+            <a href="modulo3-clase4.html"
+                class="flex items-center px-6 py-3 bg-brand-primary text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors shadow-lg">
+                Siguiente: Clase 4 <i class="fa-solid fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </section>
+
+</body>
+
+</html>

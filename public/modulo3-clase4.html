@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Módulo 3 Clase 4: Ecosistema de Campaña y Síntesis Visual - [m].seny [labs]">
+    <title>Módulo 3: Estudio Creativo (Clase 4) - [m].seny [labs]</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0F172A',
+                            primary: '#4F46E5',
+                            accent: '#F59E0B',
+                            light: '#F8FAFC'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F8FAFC;
+            color: #334155;
+            scroll-behavior: smooth;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        button,
+        .nav-link {
+            font-family: 'Inter', sans-serif;
+        }
+
+        p,
+        li,
+        .prose-text {
+            font-family: 'Merriweather', serif;
+            line-height: 1.6;
+            font-size: 1.125rem;
+            text-align: justify;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        /* Callout Boxes */
+        .callout-analogy {
+            background-color: #FEF3C7;
+            /* Amber 50 */
+            border-left: 4px solid #F59E0B;
+            /* Amber 500 */
+        }
+
+        .callout-phrase {
+            background-color: #EEF2FF;
+            /* Indigo 50 */
+            border-left: 4px solid #4F46E5;
+            /* Indigo 600 */
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Animations */
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+        }
+
+        .fade-in-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #4F46E5, #F59E0B);
+            z-index: 1000;
+            transition: width 0.2s ease;
+        }
+
+        /* Quiz Styles */
+        .quiz-option {
+            padding: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #e2e8f0;
+        }
+
+        .quiz-option:hover {
+            border-color: #4F46E5;
+            background-color: rgba(79, 70, 229, 0.1);
+        }
+
+        .quiz-option.selected {
+            border-color: #F59E0B;
+            background-color: rgba(245, 158, 11, 0.1);
+        }
+
+        .quiz-option.correct {
+            border-color: #10b981;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .quiz-option.incorrect {
+            border-color: #ef4444;
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Navigation Header -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="index.html" class="no-underline">
+                    <h1
+                        class="text-xl font-bold tracking-tight text-brand-dark hover:text-brand-primary transition-colors cursor-pointer">
+                        <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+                    </h1>
+                </a>
+            </div>
+            <nav class="hidden lg:flex space-x-5 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                <a href="#intro" class="hover:text-brand-primary transition-colors">1. Introducción</a>
+                <a href="#herramientas" class="hover:text-brand-primary transition-colors">2. Agencias AI</a>
+                <a href="#concepto" class="hover:text-brand-primary transition-colors">3. Consistencia</a>
+                <a href="#practica" class="hover:text-brand-primary transition-colors text-brand-accent">4. Práctica &
+                    PFC</a>
+            </nav>
+            <a href="/api/logout"
+                class="hidden lg:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors"
+                title="Cerrar sesión">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                Salir
+            </a>
+        </div>
+    </header>
+
+    <!-- Presentation Title (Hero) -->
+    <section class="bg-brand-dark text-white py-32 border-b-8 border-brand-primary relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 right-10 w-96 h-96 bg-brand-primary rounded-full blur-3xl"></div>
+            <div class="absolute bottom-10 left-20 w-[30rem] h-[30rem] bg-brand-accent rounded-full blur-3xl"></div>
+        </div>
+        <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
+            <span
+                class="inline-block py-1 px-3 bg-brand-primary/20 text-brand-primary font-mono text-sm font-bold uppercase tracking-widest mb-6 rounded">
+                Módulo 3 • Clase 4
+            </span>
+            <h1 class="text-5xl lg:text-7xl font-extrabold mb-6 leading-tight">
+                El Ecosistema de Campaña<br>
+                <span class="text-brand-accent text-4xl lg:text-5xl">y Síntesis Visual</span>
+            </h1>
+            <p class="text-xl text-gray-300 font-serif max-w-2xl mx-auto italic text-center">
+                De la imagen aislada a la campaña cohesiva. Herramientas de agencia digital en la nube.
+            </p>
+            <div class="mt-10 flex items-center justify-center space-x-4 text-sm text-gray-400 font-mono">
+                <span><i class="fa-regular fa-clock mr-2"></i> 1 Hora</span>
+                <span>•</span>
+                <span><i class="fa-solid fa-layer-group mr-2"></i> Producción a Escala</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 1. Introducción -->
+    <section id="intro" class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll">
+                <span
+                    class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">1</span>
+                De la Imagen Aislada a la Campaña Cohesiva
+            </h2>
+
+            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">
+                En las tres clases anteriores hemos dominado la generación fotorrealista (Clase 1), la iteración ágil
+                (Clase 2) y el control estructural milimétrico (Clase 3). Ahora nos enfrentamos al último gran reto del
+                Director de Arte Corporativo: <strong>la cohesión y la síntesis a escala</strong>.
+            </p>
+
+            <div class="bg-indigo-50 border border-brand-primary/30 p-8 rounded-2xl mb-12 fade-in-on-scroll shadow-sm">
+                <h3 class="text-xl font-bold text-brand-dark mb-6 flex items-center">
+                    <i class="fa-solid fa-bullseye text-brand-primary mr-3"></i> Los 3 Desafíos de Producción
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-5 rounded-xl border border-indigo-100">
+                        <div
+                            class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-3">
+                            <i class="fa-solid fa-magnifying-glass-chart"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">1. Investigación</h4>
+                        <p class="text-sm font-serif text-gray-600">¿Cómo analizamos rápidamente las tendencias visuales
+                            de la competencia antes de diseñar?</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl border border-indigo-100">
+                        <div
+                            class="w-10 h-10 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center mb-3">
+                            <i class="fa-solid fa-clone"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">2. Consistencia</h4>
+                        <p class="text-sm font-serif text-gray-600">¿Cómo nos aseguramos de que el mismo modelo aparezca
+                            inalterable en 50 banners diferentes?</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl border border-indigo-100">
+                        <div
+                            class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-3">
+                            <i class="fa-solid fa-film"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">3. Prototipado Ágil</h4>
+                        <p class="text-sm font-serif text-gray-600">¿Cómo creamos borradores de vídeo o animatics sin
+                            invertir horas de renderizado?</p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="prose-text text-gray-600 fade-in-on-scroll">
+                Esta clase actúa como puente definitivo entre el diseño gráfico puro y la producción de campañas (Módulo
+                4: Generación de Vídeo). Introducimos plataformas diseñadas para el trabajo de agencia y marketing.
+            </p>
+        </div>
+    </section>
+
+    <!-- 2. Herramientas: Agencias Digitales -->
+    <section id="herramientas" class="py-20 bg-brand-light border-t border-gray-200">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in-on-scroll">
+                <h3 class="text-3xl font-extrabold text-brand-dark flex items-center justify-center mb-3">
+                    <span
+                        class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">2</span>
+                    Agencias Digitales en la Nube
+                </h3>
+                <p class="text-gray-500 font-serif">Plataformas para estructurar campañas visuales y sintetizar
+                    información a velocidades inéditas.</p>
+            </div>
+
+            <div class="flex flex-col space-y-10 fade-in-on-scroll">
+
+                <!-- 1. Genspark -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all card-hover">
+                    <div class="border-l-8 border-[#0EA5E9] p-8 lg:p-10">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-16 h-16 bg-sky-50 text-[#0EA5E9] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
+                                    <i class="fa-solid fa-sparkles"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Genspark</h4>
+                                    <p class="text-[#0EA5E9] font-bold text-xs uppercase tracking-widest">Motor de
+                                        Inteligencia Visual</p>
+                                </div>
+                            </div>
+                            <a href="https://www.genspark.ai/" target="_blank" rel="noopener"
+                                class="inline-flex items-center justify-center bg-gray-100 hover:bg-[#0EA5E9] hover:text-white text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors text-sm shadow-sm shrink-0">
+                                Abrir Genspark <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+                            </a>
+                        </div>
+                        <p class="text-gray-600 font-serif text-lg mb-6 leading-relaxed">
+                            A diferencia de los buscadores que devuelven enlaces, es un "Motor de Respuestas" que
+                            sintetiza información en <strong>Sparkpages</strong> (páginas interactivas, dinámicas y
+                            ricas en contenido multimedia).
+                        </p>
+                        <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-brand-accent mb-4">
+                            <p class="text-sm text-amber-900 font-serif m-0"><i
+                                    class="fa-solid fa-lightbulb mr-2 text-brand-accent"></i><strong>Analogía:</strong>
+                                Es tu investigador junior. En vez de abrir 10 webs de "tendencias de diseño", la IA lee
+                                las 10, extrae conclusiones, descarga imágenes de referencia y te monta una presentación
+                                web resumida al instante.</p>
+                        </div>
+                        <p class="text-sm text-gray-500"><strong class="text-gray-700">Uso Corporativo:</strong>
+                            Moodboards ultrarrápidos, dossiers visuales de competencia y resúmenes ejecutivos.</p>
+                    </div>
+                </div>
+
+                <!-- 2. Pomelli -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all card-hover">
+                    <div class="border-l-8 border-[#F43F5E] p-8 lg:p-10">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-16 h-16 bg-rose-50 text-[#F43F5E] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
+                                    <i class="fa-solid fa-id-card-clip"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Pomelli</h4>
+                                    <p class="text-[#F43F5E] font-bold text-xs uppercase tracking-widest">La
+                                        Consistencia de Marca como Servicio</p>
+                                </div>
+                            </div>
+                            <a href="https://pomelli.ai/" target="_blank" rel="noopener"
+                                class="inline-flex items-center justify-center bg-gray-100 hover:bg-[#F43F5E] hover:text-white text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors text-sm shadow-sm shrink-0">
+                                Abrir Pomelli <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+                            </a>
+                        </div>
+                        <p class="text-gray-600 font-serif text-lg mb-6 leading-relaxed">
+                            Plataforma enfocada en resolver el mayor dolor de cabeza comercial de la IA: la
+                            inconsistencia. Diseñada para que un modelo humano o estilo se mantenga matemáticamente
+                            inalterable en decenas de imágenes.
+                        </p>
+                        <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-brand-accent mb-4">
+                            <p class="text-sm text-amber-900 font-serif m-0"><i
+                                    class="fa-solid fa-lightbulb mr-2 text-brand-accent"></i><strong>Analogía:</strong>
+                                Es un "Libro de Estilo" digital inquebrantable. Le inyectas la cara de tu modelo
+                                contratado y obliga a la IA a no salirse jamás de esos márgenes, ya esté el modelo en
+                                París o en la Luna.</p>
+                        </div>
+                        <p class="text-sm text-gray-500"><strong class="text-gray-700">Uso Corporativo:</strong>
+                            Catálogos e-commerce, campañas anuales de redes y creación de influencers virtuales de
+                            marca.</p>
+                    </div>
+                </div>
+
+                <!-- 3. Opus Clip -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all card-hover">
+                    <div class="border-l-8 border-[#8B5CF6] p-8 lg:p-10">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-16 h-16 bg-purple-50 text-[#8B5CF6] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
+                                    <i class="fa-solid fa-scissors"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Opus Clip</h4>
+                                    <p class="text-[#8B5CF6] font-bold text-xs uppercase tracking-widest">La Máquina del
+                                        Micro-Contenido</p>
+                                </div>
+                            </div>
+                            <a href="https://www.opus.pro/" target="_blank" rel="noopener"
+                                class="inline-flex items-center justify-center bg-gray-100 hover:bg-[#8B5CF6] hover:text-white text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors text-sm shadow-sm shrink-0">
+                                Abrir Opus Clip <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+                            </a>
+                        </div>
+                        <p class="text-gray-600 font-serif text-lg mb-6 leading-relaxed">
+                            IA especializada en "repurposing" (reutilización de contenido). Analiza vídeos largos,
+                            extrae automáticamente los clips más virales, añade subtítulos dinámicos y re-encuadra a
+                            formato vertical.
+                        </p>
+                        <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-brand-accent mb-4">
+                            <p class="text-sm text-amber-900 font-serif m-0"><i
+                                    class="fa-solid fa-lightbulb mr-2 text-brand-accent"></i><strong>Analogía:</strong>
+                                Editor de vídeo trabajando a cámara rápida. Entregas la aburrida conferencia de 1 hora
+                                del CEO, y él corta los 5 momentos clave, los pone en vertical y les pone letras
+                                brillantes para captar atención.</p>
+                        </div>
+                        <p class="text-sm text-gray-500"><strong class="text-gray-700">Uso Corporativo:</strong>
+                            Alimentar redes sociales de la empresa aprovechando el contenido institucional ya existente.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 4. Higgsfield -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all card-hover">
+                    <div class="border-l-8 border-[#10B981] p-8 lg:p-10">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-16 h-16 bg-emerald-50 text-[#10B981] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
+                                    <i class="fa-solid fa-person-running"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Higgsfield AI</h4>
+                                    <p class="text-[#10B981] font-bold text-xs uppercase tracking-widest">El Laboratorio
+                                        de Movimiento Dinámico</p>
+                                </div>
+                            </div>
+                            <a href="https://higgsfield.ai/" target="_blank" rel="noopener"
+                                class="inline-flex items-center justify-center bg-gray-100 hover:bg-[#10B981] hover:text-white text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors text-sm shadow-sm shrink-0">
+                                Abrir Higgsfield <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+                            </a>
+                        </div>
+                        <p class="text-gray-600 font-serif text-lg mb-6 leading-relaxed">
+                            Plataforma de creación audiovisual altamente dinámica. Destaca por su capacidad para generar
+                            movimientos fluidos, complejos y personalizados a partir de una sola foto estática.
+                        </p>
+                        <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-brand-accent mb-4">
+                            <p class="text-sm text-amber-900 font-serif m-0"><i
+                                    class="fa-solid fa-lightbulb mr-2 text-brand-accent"></i><strong>Analogía:</strong>
+                                Si Midjourney es tu fotógrafo de estudio, Higgsfield es tu director de coreografía. Le
+                                pasas tu foto y le dices "Haz que esta persona baile este ritmo", y aplica la cinemática
+                                realista.</p>
+                        </div>
+                        <p class="text-sm text-gray-500"><strong class="text-gray-700">Uso Corporativo:</strong>
+                            Contenido muy "engaging" B2C, viralización de mascotas corporativas o teasers dinámicos.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Concepto Técnico -->
+    <section id="concepto" class="py-20 bg-white border-t border-gray-200">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll">
+                <span
+                    class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">3</span>
+                El Concepto Técnico: Consistencia de Personaje
+            </h2>
+
+            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">
+                El hilo conductor de esta clase es la <strong>consistencia</strong>. Una empresa no puede permitirse que
+                la protagonista de su anuncio cambie de facciones de un post a otro.
+            </p>
+
+            <div class="bg-brand-dark rounded-2xl overflow-hidden shadow-2xl fade-in-on-scroll">
+                <div class="p-8 lg:p-12 text-white">
+                    <h3 class="text-2xl font-bold mb-6 text-brand-accent">¿Cómo logran esto las herramientas?</h3>
+                    <p class="font-serif text-gray-300 mb-8">
+                        A diferencia del <em>Seed</em> (que guarda la composición general) o <em>ControlNet</em> (que
+                        guarda la pose), el entrenamiento de <strong>Character Consistency</strong> funciona mapeando
+                        matemáticamente los rasgos faciales clave (distancia entre los ojos, forma de la mandíbula).
+                    </p>
+
+                    <div class="bg-white/10 border border-white/20 p-6 rounded-xl relative">
+                        <div class="absolute -right-4 -top-4 text-5xl text-brand-accent opacity-20"><i
+                                class="fa-solid fa-fingerprint"></i></div>
+                        <h4 class="font-bold text-lg mb-2 text-white"><i
+                                class="fa-solid fa-code text-brand-primary mr-2"></i> El Token Único</h4>
+                        <p class="font-serif text-sm text-gray-300">
+                            La plataforma crea un token único (ej. <code
+                                class="bg-black/50 px-2 py-1 rounded text-brand-accent">@Modelo_Acme_01</code>) que
+                            invocas en tus prompts. Cuando la IA ve ese token, ignora su base de datos general de
+                            rostros y <strong>proyecta la malla facial exacta</strong> de tu modelo sobre el nuevo
+                            personaje generado.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Práctica y PFC -->
+    <section id="practica" class="py-24 bg-brand-dark text-white border-t-8 border-brand-accent">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in-on-scroll">
+                <span class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-3 block"><i
+                        class="fa-solid fa-desktop mr-2"></i> Parte Práctica</span>
+                <h2 class="text-4xl lg:text-5xl font-extrabold mb-6">De la Investigación a la Campaña
+                </h2>
+                <p class="text-gray-400 font-serif text-xl max-w-3xl mx-auto">Vamos a orquestar el flujo completo de una
+                    agencia utilizando las herramientas de hoy.</p>
+            </div>
+
+            <!-- Ejercicios -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-24 fade-in-on-scroll">
+                <div class="bg-white/5 border border-white/10 rounded-xl p-8 hover:bg-white/10 transition-colors">
+                    <div
+                        class="w-12 h-12 bg-sky-500/20 text-sky-400 rounded-xl flex items-center justify-center mb-6 text-xl">
+                        <i class="fa-solid fa-magnifying-glass-chart"></i>
+                    </div>
+                    <h4 class="font-bold text-xl mb-3 text-white">Ej. 1: Analista Visual</h4>
+                    <p class="font-serif text-gray-400 text-sm">Entra en <strong>Genspark</strong>. Busca: <em>"Análisis
+                            visual de paletas de colores en campañas de perfumes de lujo 2026"</em>. Usa la
+                        <em>Sparkpage</em> generada como tu "Moodboard" base.
+                    </p>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-xl p-8 hover:bg-white/10 transition-colors">
+                    <div
+                        class="w-12 h-12 bg-rose-500/20 text-rose-400 rounded-xl flex items-center justify-center mb-6 text-xl">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+                    <h4 class="font-bold text-xl mb-3 text-white">Ej. 2: El Embajador</h4>
+                    <p class="font-serif text-gray-400 text-sm">Genera un rostro en primer plano en Midjourney. Luego
+                        investiga cómo usar el parámetro de consistencia (<code>--cref</code>) o
+                        <strong>Pomelli</strong> para generar a esa MISMA persona caminando por la calle.
+                    </p>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-xl p-8 hover:bg-white/10 transition-colors">
+                    <div
+                        class="w-12 h-12 bg-purple-500/20 text-purple-400 rounded-xl flex items-center justify-center mb-6 text-xl">
+                        <i class="fa-solid fa-recycle"></i>
+                    </div>
+                    <h4 class="font-bold text-xl mb-3 text-white">Ej. 3: Reciclaje Táctico</h4>
+                    <p class="font-serif text-gray-400 text-sm">Pega el enlace de una charla TED de tu sector en
+                        <strong>Opus Clip</strong>. Observa cómo recorta los mejores momentos en vertical y añade
+                        subtítulos en 3 minutos.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quiz Interactivo -->
+            <div class="border-t border-gray-700 pt-16 mb-24 fade-in-on-scroll">
+                <h3 class="text-3xl font-bold mb-8 text-white text-center"><i
+                        class="fa-solid fa-clipboard-question text-brand-accent mr-3"></i> Autodiagnóstico de la Clase 4
+                </h3>
+                <div class="bg-gray-900 border border-gray-700 rounded-2xl p-8 lg:p-12 shadow-2xl">
+                    <div id="quizContainer">
+                        <!-- Quiz se renderiza vía JS aquí -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proyecto Fin de Curso (PFC) -->
+            <div
+                class="border-t-8 border-brand-primary bg-white rounded-3xl p-10 lg:p-16 shadow-2xl relative overflow-hidden fade-in-on-scroll text-gray-800">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-brand-primary/5 rounded-bl-full -z-10"></div>
+                <div class="flex items-center mb-6">
+                    <div
+                        class="w-16 h-16 bg-brand-primary text-white rounded-2xl flex items-center justify-center text-3xl shadow-lg mr-6 shrink-0">
+                        <i class="fa-solid fa-rocket"></i>
+                    </div>
+                    <div>
+                        <span class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-1 block">Proyecto
+                            Fin de Curso</span>
+                        <h3 class="text-3xl lg:text-4xl font-extrabold text-brand-dark">El Moodboard y el Embajador</h3>
+                    </div>
+                </div>
+
+                <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-8">
+                    <p class="font-serif text-gray-700 mb-8 text-lg">
+                        Tu campaña necesita fundamentos sólidos antes de pasar a la producción de vídeo final.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div
+                                class="w-8 h-8 bg-sky-100 text-sky-600 rounded-full flex items-center justify-center font-bold mr-4 shrink-0 mt-1">
+                                1</div>
+                            <div>
+                                <h5 class="font-bold text-gray-800 text-lg">Investigación de Competencia (Genspark)</h5>
+                                <p class="font-serif text-gray-600 text-sm mt-1">Realiza una búsqueda profunda sobre la
+                                    publicidad visual de tu competencia directa. Extrae las 3 conclusiones visuales más
+                                    importantes e incorpóralas a tu Business Plan.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div
+                                class="w-8 h-8 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center font-bold mr-4 shrink-0 mt-1">
+                                2</div>
+                            <div>
+                                <h5 class="font-bold text-gray-800 text-lg">Creación de tu Embajador (Consistencia)</h5>
+                                <p class="font-serif text-gray-600 text-sm mt-1">Define al "Embajador" de tu marca.
+                                    Genera <strong>3 fotografías fotorrealistas de la misma persona</strong> en
+                                    situaciones distintas (Primer plano, usando el producto, trabajando) usando
+                                    herramientas de consistencia.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start border-t border-gray-200 pt-6 mt-4">
+                            <div
+                                class="w-8 h-8 bg-brand-primary/10 text-brand-primary rounded-full flex items-center justify-center font-bold mr-4 shrink-0 mt-1">
+                                <i class="fa-solid fa-save"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-gray-800 text-lg">Entregable</h5>
+                                <p class="font-serif text-gray-600 text-sm mt-1">Guarda el resumen de conclusiones de
+                                    Genspark y el tríptico de fotos consistentes de tu embajador/a.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#050B14] text-white py-12 border-t border-gray-800">
+        <div class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+            <h2 class="text-xl font-bold mb-4 md:mb-0">
+                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+            </h2>
+            <p class="text-sm text-gray-500 font-sans">Material de Apoyo Formativo - Módulo 3 (Clase 4) © 2026</p>
+        </div>
+    </footer>
+
+    <!-- Lógica de Interactividad -->
+    <script>
+        // Lógica Quiz Interactivo (10 Preguntas Módulo 3 Clase 4)
+        const quizData = [
+            {
+                question: "¿Cuál es la diferencia fundamental entre una búsqueda en Google tradicional y una búsqueda en Genspark?",
+                options: [
+                    { text: "Genspark solo busca imágenes sin derechos de autor.", correct: false },
+                    { text: "Google da una lista de enlaces, Genspark lee los artículos y genera una presentación o 'Sparkpage' sintetizada.", correct: true },
+                    { text: "Google es más rápido pero Genspark es más seguro.", correct: false },
+                    { text: "No hay diferencia, ambos usan el mismo algoritmo base.", correct: false }
+                ]
+            },
+            {
+                question: "Si necesitas generar 20 fotos para un catálogo asegurándote de que la modelo se vea exactamente igual en todas, ¿qué necesitas?",
+                options: [
+                    { text: "Herramientas de 'Character Consistency' (como Pomelli) o el parámetro --cref.", correct: true },
+                    { text: "Usar siempre el mismo prompt de iluminación.", correct: false },
+                    { text: "Subir la resolución (Upscaling) a todas las fotos por igual.", correct: false },
+                    { text: "Pedirle a ChatGPT que escriba el prompt muy detallado.", correct: false }
+                ]
+            },
+            {
+                question: "En la analogía de las herramientas, ¿qué plataforma se describe como un 'maquetador e investigador junior'?",
+                options: [
+                    { text: "Opus Clip", correct: false },
+                    { text: "Higgsfield", correct: false },
+                    { text: "Genspark", correct: true },
+                    { text: "Midjourney", correct: false }
+                ]
+            },
+            {
+                question: "¿Para qué tarea corporativa específica es ideal utilizar Opus Clip?",
+                options: [
+                    { text: "Para traducir textos legales complejos a varios idiomas.", correct: false },
+                    { text: "Para diseñar logotipos vectoriales escalables.", correct: false },
+                    { text: "Para recortar y reciclar vídeos largos (como webinars) en clips verticales cortos y virales para redes sociales.", correct: true },
+                    { text: "Para crear hojas de cálculo automatizadas.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué diferencia técnica hay entre guardar el número de Seed y utilizar herramientas de Character Consistency?",
+                options: [
+                    { text: "El Seed guarda la composición general de la imagen; Character Consistency mapea y proyecta matemáticamente los rasgos faciales exactos.", correct: true },
+                    { text: "El Seed es de pago y Character Consistency es gratuito.", correct: false },
+                    { text: "El Seed es para vídeo y Character Consistency es para fotos.", correct: false },
+                    { text: "Ninguna, son exactamente la misma tecnología con distinto nombre.", correct: false }
+                ]
+            },
+            {
+                question: "Si quieres que una fotografía estática de tu mascota corporativa realice un movimiento o coreografía dinámica, ¿qué herramienta explorarías?",
+                options: [
+                    { text: "Genspark", correct: false },
+                    { text: "Pomelli", correct: false },
+                    { text: "Higgsfield", correct: true },
+                    { text: "Leonardo AI", correct: false }
+                ]
+            },
+            {
+                question: "VERDADERO o FALSO: Genspark solo devuelve enlaces a páginas web, no redacta ni sintetiza información propia.",
+                options: [
+                    { text: "Verdadero", correct: false },
+                    { text: "Falso. Genera Sparkpages que consolidan y sintetizan la información extraída de los enlaces.", correct: true }
+                ]
+            },
+            {
+                question: "¿Por qué el 'repurposing' (reutilización) de herramientas como Opus es económicamente vital para los departamentos de marketing?",
+                options: [
+                    { text: "Porque permite alimentar las redes sociales exprimiendo contenido institucional que ya existe, ahorrando costes de nuevos rodajes.", correct: true },
+                    { text: "Porque elimina la necesidad de pagar derechos de autor musicales.", correct: false },
+                    { text: "Porque reduce el coste de los servidores web.", correct: false },
+                    { text: "Porque escribe los correos de los clientes automáticamente.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué es una 'Sparkpage'?",
+                options: [
+                    { text: "Un filtro de color para Instagram.", correct: false },
+                    { text: "El menú de inicio de ChatGPT.", correct: false },
+                    { text: "Una página interactiva y multimedia generada por IA como respuesta consolidada a una investigación.", correct: true },
+                    { text: "Un formato de archivo de vídeo de alta compresión.", correct: false }
+                ]
+            },
+            {
+                question: "¿Por qué las marcas están empezando a crear 'Embajadores Virtuales' generados por IA en lugar de modelos reales?",
+                options: [
+                    { text: "Porque los modelos virtuales siempre hablan más idiomas.", correct: false },
+                    { text: "Para evitar pagar impuestos comerciales.", correct: false },
+                    { text: "Porque las herramientas de consistencia permiten usar la imagen de marca de forma ilimitada y controlada, sin depender de la disponibilidad o contratos de un humano.", correct: true },
+                    { text: "Porque la calidad de resolución de la IA siempre es mayor que la de una cámara real.", correct: false }
+                ]
+            }
+        ];
+
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            container.innerHTML = '';
+
+            quizData.forEach((q, idx) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'mb-8';
+                qDiv.innerHTML = `
+                    <h4 class="text-xl font-bold text-white mb-4"><span class="text-brand-accent">${idx + 1}.</span> ${q.question}</h4>
+                    <div class="space-y-3">
+                        ${q.options.map((opt, optIdx) => `
+                            <div class="quiz-option group flex items-center" onclick="selectAnswer(event, ${idx}, ${optIdx})">
+                                <input type="radio" name="q${idx}" value="${optIdx}" class="hidden">
+                                <div class="w-6 h-6 rounded-full border-2 border-gray-500 mr-4 flex-shrink-0 group-hover:border-brand-primary radio-custom transition-colors"></div>
+                                <span class="font-serif text-sm md:text-base">${opt.text}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(qDiv);
+            });
+
+            const btnDiv = document.createElement('div');
+            btnDiv.className = "mt-10 pt-8 border-t border-gray-700 text-center";
+            btnDiv.innerHTML = `
+                <button onclick="submitQuiz()" class="px-10 py-4 bg-brand-primary text-white font-bold rounded-xl hover:bg-indigo-500 transition-colors shadow-lg text-lg uppercase tracking-wider">
+                    Validar Respuestas
+                </button>
+            `;
+            container.appendChild(btnDiv);
+        }
+
+        function selectAnswer(e, qIdx, optIdx) {
+            const optionContainer = e.currentTarget;
+            const parentDiv = optionContainer.closest('.space-y-3');
+
+            const allOptions = parentDiv.querySelectorAll('.quiz-option');
+            allOptions.forEach(opt => {
+                opt.classList.remove('selected');
+                opt.querySelector('.radio-custom').classList.remove('bg-brand-accent', 'border-brand-accent');
+                opt.querySelector('.radio-custom').classList.add('border-gray-500');
+            });
+
+            optionContainer.classList.add('selected');
+            const radioCustom = optionContainer.querySelector('.radio-custom');
+            radioCustom.classList.remove('border-gray-500');
+            radioCustom.classList.add('bg-brand-accent', 'border-brand-accent');
+
+            const input = optionContainer.querySelector('input');
+            input.checked = true;
+        }
+
+        function submitQuiz() {
+            let correctCount = 0;
+            let answeredCount = 0;
+
+            quizData.forEach((q, idx) => {
+                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+                if (selected) {
+                    answeredCount++;
+                    const optIdx = selected.value;
+                    const isCorrect = q.options[optIdx].correct;
+                    const optionDiv = selected.closest('.quiz-option');
+                    const parentDiv = optionDiv.parentElement;
+
+                    parentDiv.style.pointerEvents = "none";
+
+                    if (isCorrect) {
+                        correctCount++;
+                        optionDiv.classList.remove('selected');
+                        optionDiv.classList.add('correct');
+                        optionDiv.querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-emerald-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-check";
+                    } else {
+                        optionDiv.classList.remove('selected');
+                        optionDiv.classList.add('incorrect');
+                        optionDiv.querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-red-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-xmark";
+
+                        const allOptions = parentDiv.querySelectorAll('.quiz-option');
+                        q.options.forEach((opt, oIdx) => {
+                            if (opt.correct) {
+                                allOptions[oIdx].classList.remove('selected');
+                                allOptions[oIdx].classList.add('correct');
+                                allOptions[oIdx].querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-emerald-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-check";
+                            }
+                        });
+                    }
+                }
+            });
+
+            if (answeredCount < quizData.length) {
+                alert("Por favor, responde a todas las preguntas antes de validar.");
+                return;
+            }
+
+            const percentage = Math.round((correctCount / quizData.length) * 100);
+            let message = "";
+            if (percentage === 100) message = "🏆 ¡Excelente! Has dominado el Módulo 3 al completo.";
+            else if (percentage >= 80) message = "👍 ¡Muy bien! Estás listo para saltar a la producción de vídeo.";
+            else if (percentage >= 60) message = "✅ ¡Aprobado! Pero repasa los conceptos de Consistencia de Personaje.";
+            else message = "📚 Te recomendamos releer las diferencias entre Seed y Character Consistency.";
+
+            alert(`Puntuación Final: ${correctCount}/${quizData.length} (${percentage}%)\n\n${message}`);
+        }
+
+        // Initialize features
+        document.addEventListener('DOMContentLoaded', () => {
+            renderQuiz();
+
+            // Scroll Observer for Fade-ins
+            const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in-on-scroll').forEach(el => observer.observe(el));
+
+            // Progress Bar
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrolled = (scrollTop / docHeight) * 100;
+                document.getElementById('progressBar').style.width = scrolled + '%';
+            });
+        });
+    </script>
+
+    <!-- Navegación entre Clases -->
+    <section class="py-12 bg-white border-t border-gray-200">
+        <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <a href="modulo3-clase3.html"
+                class="flex items-center px-6 py-3 text-gray-600 border border-gray-300 rounded-xl font-bold hover:text-brand-primary hover:border-brand-primary transition-all bg-white shadow-sm">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Anterior: Clase 3
+            </a>
+            <a href="index.html"
+                class="flex items-center px-6 py-3 bg-brand-primary text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors shadow-lg">
+                Finalizar Módulo <i class="fa-solid fa-check ml-2"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#050B14] text-white py-12 border-t border-gray-800">
+        <div class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+            <h2 class="text-xl font-bold mb-4 md:mb-0">
+                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+            </h2>
+            <p class="text-sm text-gray-500 font-sans">Material de Apoyo Formativo - Módulo 3 (Clase 4) © 2026</p>
+        </div>
+    </footer>
+</body>
+
+</html>

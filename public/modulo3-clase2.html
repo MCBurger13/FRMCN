@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Módulo 3 Clase 2: Composición e Iteración - [m].seny [labs]">
+    <title>Módulo 3: Estudio Creativo (Clase 2) - [m].seny [labs]</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0F172A',
+                            primary: '#4F46E5',
+                            accent: '#F59E0B',
+                            light: '#F8FAFC'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F8FAFC;
+            color: #334155;
+            scroll-behavior: smooth;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        button,
+        .nav-link {
+            font-family: 'Inter', sans-serif;
+        }
+
+        p,
+        li,
+        .prose-text {
+            font-family: 'Merriweather', serif;
+            line-height: 1.6;
+            font-size: 1.125rem;
+            text-align: justify;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        /* Callout Boxes */
+        .callout-analogy {
+            background-color: #FEF3C7;
+            /* Amber 50 */
+            border-left: 4px solid #F59E0B;
+            /* Amber 500 */
+        }
+
+        .callout-phrase {
+            background-color: #EEF2FF;
+            /* Indigo 50 */
+            border-left: 4px solid #4F46E5;
+            /* Indigo 600 */
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Animations */
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+        }
+
+        .fade-in-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #4F46E5, #F59E0B);
+            z-index: 1000;
+            transition: width 0.2s ease;
+        }
+
+        /* Quiz Styles */
+        .quiz-option {
+            padding: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #e2e8f0;
+        }
+
+        .quiz-option:hover {
+            border-color: #4F46E5;
+            background-color: rgba(79, 70, 229, 0.1);
+        }
+
+        .quiz-option.selected {
+            border-color: #F59E0B;
+            background-color: rgba(245, 158, 11, 0.1);
+        }
+
+        .quiz-option.correct {
+            border-color: #10b981;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .quiz-option.incorrect {
+            border-color: #ef4444;
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Navigation Header -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="index.html" class="no-underline">
+                    <h1
+                        class="text-xl font-bold tracking-tight text-brand-dark hover:text-brand-primary transition-colors cursor-pointer">
+                        <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+                    </h1>
+                </a>
+            </div>
+            <nav class="hidden lg:flex space-x-5 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                <a href="#intro" class="hover:text-brand-primary transition-colors">1. Introducción</a>
+                <a href="#herramientas" class="hover:text-brand-primary transition-colors">2. El Laboratorio</a>
+                <a href="#entrenamiento" class="hover:text-brand-primary transition-colors">3. Entrenar Gem</a>
+                <a href="#practica" class="hover:text-brand-primary transition-colors text-brand-accent">4. Práctica &
+                    PFC</a>
+            </nav>
+            <a href="/api/logout"
+                class="hidden lg:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors"
+                title="Cerrar sesión">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                Salir
+            </a>
+        </div>
+    </header>
+
+    <!-- Presentation Title (Hero) -->
+    <section class="bg-brand-dark text-white py-32 border-b-8 border-brand-primary relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 right-10 w-96 h-96 bg-brand-primary rounded-full blur-3xl"></div>
+            <div class="absolute bottom-10 left-20 w-[30rem] h-[30rem] bg-brand-accent rounded-full blur-3xl"></div>
+        </div>
+        <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
+            <span
+                class="inline-block py-1 px-3 bg-brand-primary/20 text-brand-primary font-mono text-sm font-bold uppercase tracking-widest mb-6 rounded">
+                Módulo 3 • Clase 2
+            </span>
+            <h1 class="text-5xl lg:text-7xl font-extrabold mb-6 leading-tight">
+                Estudio Creativo IA:<br>
+                <span class="text-brand-accent text-4xl lg:text-5xl">Composición y Tiempo Real</span>
+            </h1>
+            <p class="text-xl text-gray-300 font-serif max-w-2xl mx-auto italic text-center">
+                El ecosistema de producción ágil. Generación modular, iteración y prototipado visual instantáneo.
+            </p>
+            <div class="mt-10 flex items-center justify-center space-x-4 text-sm text-gray-400 font-mono">
+                <span><i class="fa-regular fa-clock mr-2"></i> 1 Hora</span>
+                <span>•</span>
+                <span><i class="fa-solid fa-layer-group mr-2"></i> Flujo de Trabajo Avanzado</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 1. Introducción -->
+    <section id="intro" class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll">
+                <span
+                    class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">1</span>
+                El Ecosistema de Producción Ágil
+            </h2>
+
+            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">
+                En la Clase 1 aprendimos a generar una fotografía de alta fidelidad desde cero usando prompts técnicos.
+                Sin embargo, en el día a día corporativo, la creatividad rara vez es un proceso lineal de un solo clic.
+                Los departamentos de marketing, producto y diseño necesitan <strong>agilidad, iteración y control
+                    modular</strong>.
+            </p>
+
+            <div class="bg-indigo-50 border border-brand-primary/30 p-8 rounded-2xl mb-12 fade-in-on-scroll shadow-sm">
+                <h3 class="text-xl font-bold text-brand-dark mb-4 flex items-center">
+                    <i class="fa-solid fa-circle-question text-brand-primary mr-3"></i> El Gran Reto
+                </h3>
+                <p class="font-serif text-gray-700">
+                    ¿Qué pasa si tienes la imagen perfecta pero necesitas que el sujeto esté en otro fondo? ¿O si
+                    quieres cambiar el estilo de iluminación en medio de una reunión sin reescribir todo el texto?
+                </p>
+            </div>
+
+            <p class="prose-text text-gray-600 fade-in-on-scroll">
+                Esta clase te introduce a las plataformas "aplicadas". Pasamos del "Chat" tradicional a los
+                <strong>laboratorios creativos</strong>: herramientas que separan la generación en bloques (Sujeto,
+                Escena, Estilo), plataformas que renderizan tus bocetos en tiempo real y sistemas que te permiten
+                componer activos visuales complejos a la velocidad del pensamiento.
+            </p>
+        </div>
+    </section>
+
+    <!-- 2. Herramientas: El Laboratorio Creativo -->
+    <section id="herramientas" class="py-20 bg-brand-light border-t border-gray-200">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in-on-scroll">
+                <h3 class="text-3xl font-extrabold text-brand-dark flex items-center justify-center mb-3">
+                    <span
+                        class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">2</span>
+                    Directorio: El Laboratorio Creativo
+                </h3>
+                <p class="text-gray-500 font-serif">Conoce a los cuatro nuevos integrantes de tu equipo de diseño ágil.
+                </p>
+            </div>
+
+            <div class="flex flex-col space-y-10 fade-in-on-scroll">
+
+                <!-- 1. ImageFX -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all card-hover">
+                    <div class="border-l-8 border-[#1A73E8] p-8 lg:p-10">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-16 h-16 bg-[#E8F0FE] text-[#1A73E8] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
+                                    <i class="fa-solid fa-sliders"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">ImageFX (Google)</h4>
+                                    <p class="text-[#1A73E8] font-bold text-xs uppercase tracking-widest">El Laboratorio
+                                        de Iteración Rápida</p>
+                                </div>
+                            </div>
+                            <a href="https://aitestkitchen.withgoogle.com/tools/image-fx" target="_blank" rel="noopener"
+                                class="inline-flex items-center justify-center bg-gray-100 hover:bg-[#1A73E8] hover:text-white text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors text-sm shadow-sm shrink-0">
+                                Abrir ImageFX <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+                            </a>
+                        </div>
+                        <p class="text-gray-600 font-serif text-lg mb-6 leading-relaxed">
+                            Es la interfaz experimental impulsada por <em>Imagen 3</em>. Su gran innovación es la UI
+                            mediante <strong>"Chips Expresivos"</strong>. La plataforma detecta palabras clave en tu
+                            prompt y las convierte en menús desplegables para iterar al instante.
+                        </p>
+                        <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-brand-accent mb-4">
+                            <p class="text-sm text-amber-900 font-serif m-0"><i
+                                    class="fa-solid fa-lightbulb mr-2 text-brand-accent"></i><strong>Analogía:</strong>
+                                Como la mesa de mezclas de un DJ. Si quieres cambiar el ritmo, no vuelves a grabar a los
+                                músicos; simplemente giras el dial de iluminación de "Día" a "Neón", y la imagen muta
+                                instantáneamente.</p>
+                        </div>
+                        <p class="text-sm text-gray-500"><strong class="text-gray-700">Uso Corporativo:</strong> Lluvia
+                            de ideas en vivo proyectando en reuniones, cambiando estilos a golpe de clic.</p>
+                    </div>
+                </div>
+
+                <!-- 2. Whisk -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all card-hover">
+                    <div class="border-l-8 border-[#4F46E5] p-8 lg:p-10">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-16 h-16 bg-indigo-50 text-[#4F46E5] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
+                                    <i class="fa-solid fa-cubes"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Whisk</h4>
+                                    <p class="text-[#4F46E5] font-bold text-xs uppercase tracking-widest">El Lienzo
+                                        Modular de Composición</p>
+                                </div>
+                            </div>
+                            <a href="https://labs.google/workspace/whisk" target="_blank" rel="noopener"
+                                class="inline-flex items-center justify-center bg-gray-100 hover:bg-[#4F46E5] hover:text-white text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors text-sm shadow-sm shrink-0">
+                                Abrir Whisk <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+                            </a>
+                        </div>
+                        <p class="text-gray-600 font-serif text-lg mb-6 leading-relaxed">
+                            Rompe el paradigma del texto plano y transforma la generación en un proceso modular. Separa
+                            tu intención en <strong>tres cajas de entrada (inputs): Asunto (Sujeto), Escena (Fondo) y
+                                Estilo</strong>, permitiendo adjuntar imágenes o texto en cada una.
+                        </p>
+                        <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-brand-accent mb-4">
+                            <p class="text-sm text-amber-900 font-serif m-0"><i
+                                    class="fa-solid fa-lightbulb mr-2 text-brand-accent"></i><strong>Analogía:</strong>
+                                Es como jugar con Legos. Colocas un Lego en 'Sujeto' (foto de tu producto), otro en
+                                'Escena' ("Playa tropical") y otro en 'Estilo' (foto Acuarela). La IA ensambla las
+                                piezas a la perfección.</p>
+                        </div>
+                        <p class="text-sm text-gray-500"><strong class="text-gray-700">Uso Corporativo:</strong> Mezclar
+                            el producto real de la empresa con fondos generados por IA manteniendo la dirección de arte
+                            intacta.</p>
+                    </div>
+                </div>
+
+                <!-- 3. Krea AI -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all card-hover">
+                    <div class="border-l-8 border-[#8B5CF6] p-8 lg:p-10">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-16 h-16 bg-purple-50 text-[#8B5CF6] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
+                                    <i class="fa-solid fa-bolt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Krea AI</h4>
+                                    <p class="text-[#8B5CF6] font-bold text-xs uppercase tracking-widest">La Magia en
+                                        Tiempo Real y Alta Resolución</p>
+                                </div>
+                            </div>
+                            <a href="https://www.krea.ai/" target="_blank" rel="noopener"
+                                class="inline-flex items-center justify-center bg-gray-100 hover:bg-[#8B5CF6] hover:text-white text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors text-sm shadow-sm shrink-0">
+                                Abrir Krea AI <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+                            </a>
+                        </div>
+                        <p class="text-gray-600 font-serif text-lg mb-6 leading-relaxed">
+                            Combina dos funciones de nivel industrial: <strong>Generación en Real-Time</strong>
+                            (renderiza mientras dibujas) y <strong>Upscaling</strong> (Escalado de resolución extremo
+                            para recuperar imágenes borrosas).
+                        </p>
+                        <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-brand-accent mb-4">
+                            <p class="text-sm text-amber-900 font-serif m-0"><i
+                                    class="fa-solid fa-lightbulb mr-2 text-brand-accent"></i><strong>Analogía:</strong>
+                                (Real-Time) Dibujas un triángulo verde y la IA lo traduce al instante en una tienda de
+                                campaña 3D. (Upscaler) Como en las películas de espías: toma una foto borrosa y
+                                "redibuja" las texturas en 4K.</p>
+                        </div>
+                        <p class="text-sm text-gray-500"><strong class="text-gray-700">Uso Corporativo:</strong>
+                            Bocetado rápido frente a clientes y preparación de artes finales para imprenta o cartelería.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 4. Seedream -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all card-hover">
+                    <div class="border-l-8 border-[#10B981] p-8 lg:p-10">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-16 h-16 bg-emerald-50 text-[#10B981] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
+                                    <i class="fa-solid fa-palette"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Seedream</h4>
+                                    <p class="text-[#10B981] font-bold text-xs uppercase tracking-widest">La Factoría de
+                                        Estilo y Referencia</p>
+                                </div>
+                            </div>
+                            <a href="https://seedream.ai" target="_blank" rel="noopener"
+                                class="inline-flex items-center justify-center bg-gray-100 hover:bg-[#10B981] hover:text-white text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors text-sm shadow-sm shrink-0">
+                                Abrir Seedream <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+                            </a>
+                        </div>
+                        <p class="text-gray-600 font-serif text-lg mb-6 leading-relaxed">
+                            Plataforma emergente especializada en el control de referencias artísticas y consistencia
+                            visual. Permite un control granular sobre cómo los elementos se fusionan, ideal para estilos
+                            ilustrativos o renderizados muy pulidos.
+                        </p>
+                        <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-brand-accent mb-4">
+                            <p class="text-sm text-amber-900 font-serif m-0"><i
+                                    class="fa-solid fa-lightbulb mr-2 text-brand-accent"></i><strong>Analogía:</strong>
+                                Es tu estudio de ilustración privado. Le pasas un boceto rígido y le exiges que aplique
+                                un estilo de luz exacto, asegurando que toda la campaña parezca dibujada por el mismo
+                                artista.</p>
+                        </div>
+                        <p class="text-sm text-gray-500"><strong class="text-gray-700">Uso Corporativo:</strong> Activos
+                            para redes sociales, mascotas de marca o ilustraciones donde el "trazo" consistente es
+                            vital.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Entrenando un Gem -->
+    <section id="entrenamiento" class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll">
+                <span
+                    class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">3</span>
+                Entrenando un "Gem" con nuestra Referencia
+            </h2>
+
+            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">
+                Las herramientas visuales son tan buenas como las instrucciones que reciben. En lugar de pensar en el
+                prompt visual cada vez, podemos utilizar un LLM (como Google Gemini) para que actúe como nuestro
+                <strong>"Director de Arte"</strong> personal.
+            </p>
+
+            <div
+                class="bg-brand-dark text-white rounded-2xl p-8 lg:p-12 shadow-2xl relative overflow-hidden fade-in-on-scroll">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-brand-primary/20 rounded-full blur-3xl -z-10"></div>
+                <h3 class="text-2xl font-bold mb-6 text-brand-accent"><i class="fa-solid fa-gears mr-2"></i> ¿Cómo
+                    funciona este flujo?</h3>
+
+                <div class="space-y-6">
+                    <div class="flex items-start">
+                        <div
+                            class="w-8 h-8 bg-brand-primary text-white rounded-full flex items-center justify-center font-bold mr-4 shrink-0 mt-1">
+                            1</div>
+                        <p class="font-serif text-gray-300 text-lg">Vas a Gemini y creas un nuevo <strong>Gem</strong>.
+                        </p>
+                    </div>
+                    <div class="flex items-start">
+                        <div
+                            class="w-8 h-8 bg-brand-primary text-white rounded-full flex items-center justify-center font-bold mr-4 shrink-0 mt-1">
+                            2</div>
+                        <p class="font-serif text-gray-300 text-lg">Lo nombras: <em class="text-white">"Director de Arte
+                                de [Tu Marca]"</em>.</p>
+                    </div>
+                    <div class="flex items-start">
+                        <div
+                            class="w-8 h-8 bg-brand-primary text-white rounded-full flex items-center justify-center font-bold mr-4 shrink-0 mt-1">
+                            3</div>
+                        <p class="font-serif text-gray-300 text-lg">En sus instrucciones (System Prompt), pegas tu
+                            Brandbook corporativo y las fórmulas de la Clase 1 (Ej: la fórmula P.E.P.A.). Le indicas tu
+                            paleta de colores y el tono de tu marca.</p>
+                    </div>
+                    <div class="flex items-start border-t border-gray-700 pt-6 mt-4">
+                        <div
+                            class="w-8 h-8 bg-emerald-500 text-white rounded-full flex items-center justify-center font-bold mr-4 shrink-0 mt-1">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-emerald-400 text-lg mb-2">El Resultado</h4>
+                            <p class="font-serif text-gray-300">A partir de ahora, solo le dices *"Necesito una idea
+                                para un post sobre sostenibilidad"*. El Gem te devolverá los 3 prompts visuales
+                                perfectos y técnicos, listos para copiar y pegar en ImageFX, Whisk o Krea AI.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Práctica y PFC -->
+    <section id="practica" class="py-24 bg-brand-dark text-white border-t-8 border-brand-accent">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in-on-scroll">
+                <span class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-3 block"><i
+                        class="fa-solid fa-desktop mr-2"></i> Parte Práctica</span>
+                <h2 class="text-4xl lg:text-5xl font-extrabold mb-6">El Flujo Modular</h2>
+                <p class="text-gray-400 font-serif text-xl max-w-3xl mx-auto">Abre las herramientas y completa este
+                    flujo de trabajo secuencial.</p>
+            </div>
+
+            <!-- Ejercicios -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-24 fade-in-on-scroll">
+                <div class="bg-white/5 border border-white/10 rounded-xl p-8 hover:bg-white/10 transition-colors">
+                    <div
+                        class="w-12 h-12 bg-blue-500/20 text-blue-400 rounded-xl flex items-center justify-center mb-6 text-xl">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <h4 class="font-bold text-xl mb-3 text-white">Ej. 1: Iteración en ImageFX</h4>
+                    <p class="font-serif text-gray-400 text-sm">Genera <em>"Una zapatilla moderna levitando en un
+                            estudio"</em>. Usa los <strong>Chips Expresivos</strong> para cambiar el material (a malla)
+                        y la luz (a neón cyberpunk) con dos clics. Descarga.</p>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-xl p-8 hover:bg-white/10 transition-colors">
+                    <div
+                        class="w-12 h-12 bg-indigo-500/20 text-indigo-400 rounded-xl flex items-center justify-center mb-6 text-xl">
+                        <i class="fa-solid fa-cubes"></i>
+                    </div>
+                    <h4 class="font-bold text-xl mb-3 text-white">Ej. 2: Composición en Whisk</h4>
+                    <p class="font-serif text-gray-400 text-sm">Sube la zapatilla a <strong>Asunto</strong>. En
+                        <strong>Escena</strong> escribe <em>"Un charco de agua en Tokio de noche"</em>. Elige estilo
+                        fotorrealista. Observa cómo integra el sujeto en el nuevo entorno.
+                    </p>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-xl p-8 hover:bg-white/10 transition-colors">
+                    <div
+                        class="w-12 h-12 bg-purple-500/20 text-purple-400 rounded-xl flex items-center justify-center mb-6 text-xl">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h4 class="font-bold text-xl mb-3 text-white">Ej. 3: Tiempo Real (Krea AI)</h4>
+                    <p class="font-serif text-gray-400 text-sm">Lleva el resultado a Krea AI. Añade texto tipográfico
+                        encima. Usa la brocha para dibujar destellos rápidos y mira cómo la IA lo integra en tiempo
+                        real. Finalmente, aplica Upscaling.</p>
+                </div>
+            </div>
+
+            <!-- Quiz Interactivo -->
+            <div class="border-t border-gray-700 pt-16 mb-24 fade-in-on-scroll">
+                <h3 class="text-3xl font-bold mb-8 text-white"><i
+                        class="fa-solid fa-clipboard-question text-brand-accent mr-3"></i> Autodiagnóstico de la Clase 2
+                </h3>
+                <div class="bg-gray-900 border border-gray-700 rounded-2xl p-8 lg:p-12 shadow-2xl">
+                    <div id="quizContainer">
+                        <!-- Quiz se renderiza vía JS aquí -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proyecto Fin de Curso (PFC) -->
+            <div
+                class="border-t-8 border-brand-primary bg-white rounded-3xl p-10 lg:p-16 shadow-2xl relative overflow-hidden fade-in-on-scroll text-gray-800">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-brand-primary/5 rounded-bl-full -z-10"></div>
+                <div class="flex items-center mb-6">
+                    <div
+                        class="w-16 h-16 bg-brand-primary text-white rounded-2xl flex items-center justify-center text-3xl shadow-lg mr-6 shrink-0">
+                        <i class="fa-solid fa-rocket"></i>
+                    </div>
+                    <div>
+                        <span class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-1 block">Proyecto
+                            Fin de Curso</span>
+                        <h3 class="text-3xl lg:text-4xl font-extrabold text-brand-dark">La Campaña Visual Compuesta</h3>
+                    </div>
+                </div>
+
+                <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-8">
+                    <p class="font-serif text-gray-700 mb-8 text-lg">
+                        Aprovechando las herramientas vistas hoy, vas a crear una pieza de marketing compuesto para el
+                        producto/servicio que definiste en los módulos anteriores.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div
+                            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div
+                                class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold mb-4">
+                                1</div>
+                            <h5 class="font-bold text-gray-800 mb-2">El Asistente (Gem)</h5>
+                            <p class="font-serif text-gray-500 text-sm">Abre tu Gem "Director de Arte" y pídele
+                                un prompt utilizando la fórmula P.E.P.A. para mostrar tu producto.</p>
+                        </div>
+                        <div
+                            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div
+                                class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold mb-4">
+                                2</div>
+                            <h5 class="font-bold text-gray-800 mb-2">El Sujeto (ImageFX)</h5>
+                            <p class="font-serif text-gray-500 text-sm">Ve a ImageFX, pega el prompt y genera
+                                el producto aislado con fondo neutro. Itera con los chips.</p>
+                        </div>
+                        <div
+                            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div
+                                class="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold mb-4">
+                                3</div>
+                            <h5 class="font-bold text-gray-800 mb-2">El Entorno (Whisk)</h5>
+                            <p class="font-serif text-gray-500 text-sm">Lleva tu producto a Whisk (caja de
+                                Sujeto). Genera un entorno sorprendente y emocional en la caja de Escena.</p>
+                        </div>
+                        <div
+                            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div
+                                class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold mb-4">
+                                4</div>
+                            <h5 class="font-bold text-gray-800 mb-2">El Arte Final (Krea AI)</h5>
+                            <p class="font-serif text-gray-500 text-sm">Sube la imagen a Krea AI. Añade tu
+                                logotipo y pásala por el <strong>Upscaler</strong> para obtener un póster en 4K.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Navegación entre Clases -->
+    <section class="py-12 bg-white border-t border-gray-200">
+        <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <a href="modulo3-clase1.html"
+                class="flex items-center px-6 py-3 text-gray-600 border border-gray-300 rounded-xl font-bold hover:text-brand-primary hover:border-brand-primary transition-all bg-white shadow-sm">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Anterior: Clase 1
+            </a>
+            <a href="modulo3-clase3.html"
+                class="flex items-center px-6 py-3 bg-brand-primary text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors shadow-lg">
+                Siguiente: Clase 3 <i class="fa-solid fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#050B14] text-white py-12 border-t border-gray-800">
+        <div class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+            <h2 class="text-xl font-bold mb-4 md:mb-0">
+                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+            </h2>
+            <p class="text-sm text-gray-500 font-sans">Material de Apoyo Formativo - Módulo 3 (Clase 2) © 2026</p>
+        </div>
+    </footer>
+
+    <!-- Lógica de Interactividad -->
+    <script>
+        // Lógica Quiz Interactivo (10 Preguntas Módulo 3 Clase 2)
+        const quizData = [
+            {
+                question: "¿Cuál es la principal ventaja de utilizar los 'Chips Expresivos' de ImageFX frente a un prompt tradicional?",
+                options: [
+                    { text: "Permite iterar rápido cambiando palabras por menús desplegables sin reescribir el texto.", correct: true },
+                    { text: "Hace que las imágenes pesen menos megabytes.", correct: false },
+                    { text: "Añade texto legible a las imágenes automáticamente.", correct: false },
+                    { text: "Solo permite generar imágenes en blanco y negro.", correct: false }
+                ]
+            },
+            {
+                question: "En Whisk, ¿cuáles son los tres bloques de entrada (inputs) modulares que te permiten componer una imagen?",
+                options: [
+                    { text: "Color, Contraste y Brillo.", correct: false },
+                    { text: "Sujeto, Iluminación y Cámara.", correct: false },
+                    { text: "Asunto (Sujeto), Escena (Fondo) y Estilo.", correct: true },
+                    { text: "Prompt, Negativo y Seed.", correct: false }
+                ]
+            },
+            {
+                question: "Si un cliente te pide modificar la posición de un elemento en un render dibujándolo en vivo mientras estáis en una videollamada, ¿qué herramienta utilizarías?",
+                options: [
+                    { text: "Whisk", correct: false },
+                    { text: "ImageFX", correct: false },
+                    { text: "Seedream", correct: false },
+                    { text: "Krea AI (Real-Time)", correct: true }
+                ]
+            },
+            {
+                question: "¿Para qué utilizaríamos a un 'Gem' de Google dentro de un flujo de trabajo de generación de imágenes si el Gem solo genera texto?",
+                options: [
+                    { text: "Para que actúe como Director de Arte y escriba los prompts visuales perfectos por nosotros.", correct: true },
+                    { text: "Para traducir la página web de Midjourney.", correct: false },
+                    { text: "Para calcular el coste en tokens de la imagen.", correct: false },
+                    { text: "Para generar el código HTML de la imagen.", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué herramienta de este módulo es la más indicada si tienes un logotipo antiguo muy pixelado y necesitas imprimirlo en alta definición?",
+                options: [
+                    { text: "Whisk", correct: false },
+                    { text: "Krea AI (Upscaler)", correct: true },
+                    { text: "Seedream", correct: false },
+                    { text: "Gemini", correct: false }
+                ]
+            },
+            {
+                question: "En la analogía de las piezas de Lego para explicar Whisk, ¿qué representaría la pieza de 'Escena'?",
+                options: [
+                    { text: "El producto físico que estamos vendiendo.", correct: false },
+                    { text: "El estilo artístico (ej. Acuarela).", correct: false },
+                    { text: "El entorno o fondo donde se sitúa el sujeto.", correct: true },
+                    { text: "El tamaño final de la imagen.", correct: false }
+                ]
+            },
+            {
+                question: "VERDADERO O FALSO: El Upscaling simplemente 'estira' la imagen como si la hiciéramos grande en Paint, haciendo que se vea borrosa.",
+                options: [
+                    { text: "Verdadero", correct: false },
+                    { text: "Falso. La IA 'redibuja' y añade texturas y detalles microscópicos que no existían.", correct: true }
+                ]
+            },
+            {
+                question: "¿Por qué es útil la generación modular para mantener la consistencia de un producto en un catálogo comercial?",
+                options: [
+                    { text: "Porque permite mantener el producto intacto y cambiar solo el entorno y el estilo.", correct: true },
+                    { text: "Porque genera descripciones de producto automáticamente.", correct: false },
+                    { text: "Porque hace que las imágenes sean más baratas.", correct: false },
+                    { text: "Porque no requiere usar conexión a internet.", correct: false }
+                ]
+            },
+            {
+                question: "¿Cuál de las herramientas vistas se especializa en mezclar elementos combinando referencias de texto y foto en bloques separados?",
+                options: [
+                    { text: "Whisk", correct: true },
+                    { text: "ImageFX", correct: false },
+                    { text: "Midjourney", correct: false },
+                    { text: "ChatGPT", correct: false }
+                ]
+            },
+            {
+                question: "¿Qué logras al configurar el 'System Prompt' de un Gem con tu Brandbook corporativo?",
+                options: [
+                    { text: "Que el Gem genere videos automáticamente.", correct: false },
+                    { text: "Que la IA absorba la paleta de colores, el tono y las restricciones estéticas de tu marca al redactar prompts.", correct: true },
+                    { text: "Que el Gem envíe correos a tus clientes.", correct: false },
+                    { text: "Que la IA diseñe el logotipo de tu empresa desde cero.", correct: false }
+                ]
+            }
+        ];
+
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            container.innerHTML = '';
+
+            quizData.forEach((q, idx) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'mb-8';
+                qDiv.innerHTML = `
+                    <h4 class="text-xl font-bold text-white mb-4"><span class="text-brand-accent">${idx + 1}.</span> ${q.question}</h4>
+                    <div class="space-y-3">
+                        ${q.options.map((opt, optIdx) => `
+                            <div class="quiz-option group flex items-center" onclick="selectAnswer(event, ${idx}, ${optIdx})">
+                                <input type="radio" name="q${idx}" value="${optIdx}" class="hidden">
+                                <div class="w-6 h-6 rounded-full border-2 border-gray-500 mr-4 flex-shrink-0 group-hover:border-brand-primary radio-custom transition-colors"></div>
+                                <span class="font-serif text-sm md:text-base">${opt.text}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(qDiv);
+            });
+
+            const btnDiv = document.createElement('div');
+            btnDiv.className = "mt-10 pt-8 border-t border-gray-700 text-center";
+            btnDiv.innerHTML = `
+                <button onclick="submitQuiz()" class="px-10 py-4 bg-brand-primary text-white font-bold rounded-xl hover:bg-indigo-500 transition-colors shadow-lg text-lg uppercase tracking-wider">
+                    Validar Respuestas
+                </button>
+            `;
+            container.appendChild(btnDiv);
+        }
+
+        function selectAnswer(e, qIdx, optIdx) {
+            const optionContainer = e.currentTarget;
+            const parentDiv = optionContainer.closest('.space-y-3');
+
+            const allOptions = parentDiv.querySelectorAll('.quiz-option');
+            allOptions.forEach(opt => {
+                opt.classList.remove('selected');
+                opt.querySelector('.radio-custom').classList.remove('bg-brand-accent', 'border-brand-accent');
+                opt.querySelector('.radio-custom').classList.add('border-gray-500');
+            });
+
+            optionContainer.classList.add('selected');
+            const radioCustom = optionContainer.querySelector('.radio-custom');
+            radioCustom.classList.remove('border-gray-500');
+            radioCustom.classList.add('bg-brand-accent', 'border-brand-accent');
+
+            const input = optionContainer.querySelector('input');
+            input.checked = true;
+        }
+
+        function submitQuiz() {
+            let correctCount = 0;
+            let answeredCount = 0;
+
+            quizData.forEach((q, idx) => {
+                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+                if (selected) {
+                    answeredCount++;
+                    const optIdx = selected.value;
+                    const isCorrect = q.options[optIdx].correct;
+                    const optionDiv = selected.closest('.quiz-option');
+                    const parentDiv = optionDiv.parentElement;
+
+                    parentDiv.style.pointerEvents = "none";
+
+                    if (isCorrect) {
+                        correctCount++;
+                        optionDiv.classList.remove('selected');
+                        optionDiv.classList.add('correct');
+                        optionDiv.querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-emerald-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-check";
+                    } else {
+                        optionDiv.classList.remove('selected');
+                        optionDiv.classList.add('incorrect');
+                        optionDiv.querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-red-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-xmark";
+
+                        const allOptions = parentDiv.querySelectorAll('.quiz-option');
+                        q.options.forEach((opt, oIdx) => {
+                            if (opt.correct) {
+                                allOptions[oIdx].classList.remove('selected');
+                                allOptions[oIdx].classList.add('correct');
+                                allOptions[oIdx].querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-emerald-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-check";
+                            }
+                        });
+                    }
+                }
+            });
+
+            if (answeredCount < quizData.length) {
+                alert("Por favor, responde a todas las preguntas antes de validar.");
+                return;
+            }
+
+            const percentage = Math.round((correctCount / quizData.length) * 100);
+            let message = "";
+            if (percentage === 100) message = "🏆 ¡Excelente! Dominas a la perfección el flujo modular.";
+            else if (percentage >= 80) message = "👍 ¡Muy bien! Tienes clara la función de cada herramienta.";
+            else if (percentage >= 60) message = "✅ ¡Aprobado! Repasa los conceptos de Whisk y Krea AI.";
+            else message = "📚 Te recomendamos releer la clase antes de pasar a la práctica.";
+
+            alert(`Puntuación Final: ${correctCount}/${quizData.length} (${percentage}%)\n\n${message}`);
+        }
+
+        // Initialize features
+        document.addEventListener('DOMContentLoaded', () => {
+            renderQuiz();
+
+            // Scroll Observer for Fade-ins
+            const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in-on-scroll').forEach(el => observer.observe(el));
+
+            // Progress Bar
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrolled = (scrollTop / docHeight) * 100;
+                document.getElementById('progressBar').style.width = scrolled + '%';
+            });
+        });
+    </script>
+</body>
+
+</html>
