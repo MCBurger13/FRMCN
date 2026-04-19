@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudio Creativo IA (I) — Los Titanes del Píxel - [m].seny [labs]</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Merriweather -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0F172A',
+                            primary: '#4F46E5',
+                            accent: '#F59E0B',
+                            light: '#F8FAFC'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #F8FAFC; color: #334155; scroll-behavior: smooth; }
+        h1, h2, h3, h4, h5, h6, button, .nav-link { font-family: 'Inter', sans-serif; }
+        p, li, .prose-text { font-family: 'Merriweather', serif; line-height: 1.6; font-size: 1.125rem; text-align: left; }
+        .callout-analogy { background-color: #FEF3C7; border-left: 4px solid #F59E0B; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+
+<body class="antialiased">
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="../index.html" class="no-underline">
+                    <h1 class="text-xl font-bold tracking-tight text-brand-dark hover:text-brand-primary transition-colors cursor-pointer">
+                        <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+                    </h1>
+                </a>
+            </div>
+            <nav class="hidden lg:flex space-x-5 text-xs font-bold text-gray-500 uppercase tracking-wider overflow-x-auto">
+                <a href="#navegaci-n-de-la-clase" class="hover:text-brand-primary transition-colors">1. Navegación de la clase</a>
+<a href="#conceptos-clave-de-esta-clase" class="hover:text-brand-primary transition-colors">2. Conceptos clave de esta c...</a>
+<a href="#herramientas-presentadas" class="hover:text-brand-primary transition-colors">3. Herramientas presentadas</a>
+<a href="#1-el-roi-visual-de-la-ia" class="hover:text-brand-primary transition-colors">4. El ROI Visual de la IA</a>
+<a href="#2-glosario-visual" class="hover:text-brand-primary transition-colors">5. Glosario Visual</a>
+<a href="#3-el-flujo-de-trabajo-de-generaci-n" class="hover:text-brand-primary transition-colors">6. El Flujo de Trabajo de Ge...</a>
+<a href="#4-f-rmulas-de-prompt-visual" class="hover:text-brand-primary transition-colors">7. Fórmulas de Prompt Visual</a>
+<a href="#5-los-titanes-del-p-xel" class="hover:text-brand-primary transition-colors">8. Los Titanes del Píxel</a>
+<a href="#6-demo-de-prompt-a-render" class="hover:text-brand-primary transition-colors">9. Demo: De Prompt a Render</a>
+<a href="#7-quiz-y-pfc" class="hover:text-brand-primary transition-colors">10. Quiz y PFC</a>
+<a href="#-recursos-adicionales" class="hover:text-brand-primary transition-colors">11. 📎 Recursos Adicionales</a>
+            </nav>
+            <a href="/api/logout" class="hidden lg:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Salir
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-brand-dark text-white py-24 border-b-8 border-brand-primary">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <span class="inline-block py-1 px-3 bg-brand-primary/20 text-brand-primary font-mono text-sm font-bold uppercase tracking-widest mb-6 rounded">
+                CLASE 3 · 2 — Generación de Imagen
+            </span>
+            <h1 class="text-4xl lg:text-6xl font-extrabold mb-6 leading-tight">
+                Estudio Creativo IA (I) —<span class="text-brand-accent"> Los Titanes del Píxel</span>
+            </h1>
+            <div class="mt-10 flex items-center justify-center space-x-6 text-sm text-gray-400 font-mono">
+                <div><i class="fa-regular fa-clock"></i> <span>Duración: 1.5 - 2 horas</span></div>
+                <div><i class="fa-solid fa-users"></i> <span>Audiencia: conjunta</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wrap first section implicitly -->
+    <section class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            *El ROI de cada píxel. Domina las herramientas y fórmulas que convierten un prompt de texto en un render fotorrealista de producto.*
+        </p>
+    </div>
+<p class="prose-text text-gray-600 mb-6">**Duración estimada:** 1.5 – 2 horas</p>
+<hr>
+
+        
+        <section id="navegaci-n-de-la-clase" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">1</span>
+                    Navegación de la clase
+                </h2>
+        <ol class="font-serif text-gray-600 text-lg list-decimal list-inside space-y-3 mb-8">
+<li class="pl-2"><a href="#1-el-roi-visual-de-la-ia">El ROI Visual de la IA</a></li>
+<li class="pl-2"><a href="#2-glosario-visual">Glosario Visual</a></li>
+<li class="pl-2"><a href="#3-el-flujo-de-trabajo-de-generaci%C3%B3n">El Flujo de Trabajo de Generación</a></li>
+<li class="pl-2"><a href="#4-f%C3%B3rmulas-de-prompt-visual">Fórmulas de Prompt Visual</a></li>
+<li class="pl-2"><a href="#5-los-titanes-del-p%C3%ADxel">Los Titanes del Píxel</a></li>
+<li class="pl-2"><a href="#6-demo-de-prompt-a-render">Demo: De Prompt a Render</a></li>
+<li class="pl-2"><a href="#7-quiz-y-pfc">Quiz + PFC</a></li>
+</ol>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="conceptos-clave-de-esta-clase" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">2</span>
+                    Conceptos clave de esta clase
+                </h2>
+        <p class="prose-text text-gray-600 mb-6">`Seed` · `In-painting` · `Out-painting` · `Upscaling` · `ControlNet` · `Aspect Ratio` · `Negative Prompt` · `Fórmula S.C.I.E.` · `Fórmula P.E.P.A.` · `Fórmula M.E.T.A.` · `Fórmula C.A.P.A.` · `Sketch to Real` · `Image-to-Image`</p>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="herramientas-presentadas" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">3</span>
+                    Herramientas presentadas
+                </h2>
+        <div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Herramienta</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Especialidad</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Gemini (NanoBanana 2)</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Generación integrada en ecosistema Google, calidad fotorrealista</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Freepik (Mystic)</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Generación orientada a diseño profesional con estilos presets</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">DALL-E 3</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Integrado en ChatGPT, excelente siguiendo instrucciones de texto</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">ImageFX</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Chips Expresivos de Google para variaciones rápidas</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Midjourney</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Calidad estética premium, estilo fotográfico editorial</td>
+</tr>
+</tbody></table></div>
+
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="1-el-roi-visual-de-la-ia" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">4</span>
+                    El ROI Visual de la IA
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Antes vs. Después</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Proceso Tradicional</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Proceso con IA Generativa</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top">Briefing → Fotógrafo → Estudio → 200 fotos → Selección → Retoque → 2 semanas</td>
+<td class="p-4 font-serif text-gray-600 align-top">Prompt → 20 variaciones → Selección → Refinamiento → 2 horas</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top">Render 3D de producto → Modelador → Texturas → Iluminación → 3 días por modelo</td>
+<td class="p-4 font-serif text-gray-600 align-top">Prompt descriptivo + Seed → Render fotorrealista → 30 segundos</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top">Campaña visual 50 piezas → Equipo de 4 personas → 3 semanas</td>
+<td class="p-4 font-serif text-gray-600 align-top">Pipeline IA + variaciones automáticas → 1 persona → 2 días</td>
+</tr>
+</tbody></table></div>
+
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            💰 **Dato clave para la dirección:** La generación de imagen con IA reduce hasta un **80% el coste** de producción visual en fases de ideación y prototipado. NO reemplaza la producción final de calidad, pero elimina semanas de iteración.
+        </p>
+    </div>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">¿Cuándo usar IA vs. producción real?</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Fase</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">IA Generativa</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Producción Tradicional</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Ideación / Concepto</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">✅ Perfecto</td>
+<td class="p-4 font-serif text-gray-600 align-top">❌ Demasiado costoso para explorar</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Prototipado Rápido</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">✅ 20 variaciones en minutos</td>
+<td class="p-4 font-serif text-gray-600 align-top">❌ Semanas por cada versión</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Catálogo de e-commerce</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">⚠️ Posible con control (ControlNet + LoRAs)</td>
+<td class="p-4 font-serif text-gray-600 align-top">✅ Necesario para fidelidad exacta</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Campaña editorial</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">✅ Concepto + mood + storyboard</td>
+<td class="p-4 font-serif text-gray-600 align-top">✅ Ejecución final</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">RRSS / Contenido efímero</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">✅ Ideal (volumen alto, vida útil corta)</td>
+<td class="p-4 font-serif text-gray-600 align-top">❌ Coste desproporcionado</td>
+</tr>
+</tbody></table></div>
+
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="2-glosario-visual" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">5</span>
+                    Glosario Visual
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Términos que necesitas dominar para trabajar con generación de imagen</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Término</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Definición</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Analogía</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Seed</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Número aleatorio que determina el punto de partida de la generación. <strong class="font-bold text-gray-900">Misma seed + mismo prompt = misma imagen.</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">El ADN de la imagen. Si guardas la seed, puedes &quot;clonar&quot; el resultado exacto.</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">In-painting</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Editar/modificar una zona seleccionada de la imagen sin alterar el resto.</td>
+<td class="p-4 font-serif text-gray-600 align-top">Photoshop con IA: seleccionas la suela del zapato y le dices &quot;cámbiala a goma blanca&quot;.</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Out-painting</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Expandir los bordes de una imagen existente, generando contenido nuevo coherente.</td>
+<td class="p-4 font-serif text-gray-600 align-top">Ampliar el encuadre de una foto como si tuvieras un gran angular virtual.</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Upscaling</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Aumentar la resolución de una imagen sin perder calidad (a veces mejorándola).</td>
+<td class="p-4 font-serif text-gray-600 align-top">Pasar de 1080p a 4K, pero la IA &quot;inventa&quot; los detalles que faltan de forma inteligente.</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">ControlNet</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Sistema para dar instrucciones estructurales a la IA (pose, bordes, profundidad).</td>
+<td class="p-4 font-serif text-gray-600 align-top">Una &quot;marioneta virtual&quot; que controla la estructura de la imagen.</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Aspect Ratio</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Proporción de la imagen (1:1 cuadrada, 16:9 panorámica, 9:16 vertical).</td>
+<td class="p-4 font-serif text-gray-600 align-top">El formato del lienzo antes de pintar.</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Negative Prompt</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Instrucciones de lo que NO quieres ver en la imagen.</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;Prohibido en set&quot;: lista de elementos que no deben aparecer (ej: &quot;no watermark, no text, no blurry&quot;).</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Sketch to Real</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Convertir un dibujo o boceto a mano en una imagen fotorrealista.</td>
+<td class="p-4 font-serif text-gray-600 align-top">Escaneas un croquis de zapato y la IA lo transforma en un render realista.</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Image-to-Image (img2img)</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Usar una imagen existente como base para generar variaciones.</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;Coge esta foto de referencia y genera algo similar pero con estos cambios...&quot;</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Style Transfer</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Aplicar el estilo visual de una imagen a otra (ej: &quot;haz esta foto como un cuadro al óleo&quot;).</td>
+<td class="p-4 font-serif text-gray-600 align-top">Filtros de Instagram, pero con control profesional.</td>
+</tr>
+</tbody></table></div>
+
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="3-el-flujo-de-trabajo-de-generaci-n" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">6</span>
+                    El Flujo de Trabajo de Generación
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Las 5 Fases del Proceso Creativo con IA</h3>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>┌─────────────┐    ┌──────────────┐    ┌───────────────┐    ┌──────────────┐    ┌────────────┐
+│  1. IDEACIÓN │───▶│  2. SEED     │───▶│ 3. ITERACIÓN  │───▶│ 4. REFINA-   │───▶│ 5. ACABADO │
+│              │    │              │    │               │    │    MIENTO     │    │            │
+│ - Concepto   │    │ - Prompt     │    │ - Variaciones │    │ - In-painting│    │ - Upscaling│
+│ - Referencia │    │   estructu-  │    │ - Seeds       │    │ - Detalles   │    │ - Formato  │
+│ - Mood       │    │   rado       │    │ - Aspect      │    │ - Consistenci│    │ - Exportar │
+│              │    │ - Herramien- │    │   Ratio       │    │   a de marca │    │            │
+│              │    │   ta elegida │    │               │    │              │    │            │
+└─────────────┘    └──────────────┘    └───────────────┘    └──────────────┘    └────────────┘</code></pre>
+    </div>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            ⭐ **Regla de diseño:** Nunca uses el primer resultado. Genera mínimo 5 variaciones, escoge la mejor seed, y refina desde ahí. La IA te da el 80% en segundos; tú pones el 20% final con tu criterio profesional.
+        </p>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="4-f-rmulas-de-prompt-visual" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">7</span>
+                    Fórmulas de Prompt Visual
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">S.C.I.E. — La Fórmula Fundamental</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Letra</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Significado</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Ejemplo para zapatos</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">S</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Sujeto</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;A pair of handcrafted Italian luxury leather loafers&quot;</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">C</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Contexto / Escena</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;displayed on a marble pedestal in a minimalist luxury showroom&quot;</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">I</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Iluminación</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;soft golden hour side lighting, gentle shadows&quot;</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">E</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Estilo / Estética</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;editorial fashion photography, shot on Hasselblad, 85mm lens, shallow depth of field&quot;</td>
+</tr>
+</tbody></table></div>
+
+<p class="prose-text text-gray-600 mb-6">**Prompt completo S.C.I.E.:**</p>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>A pair of handcrafted Italian luxury leather loafers, cognac brown color with hand-stitched 
+details, displayed on a marble pedestal in a minimalist luxury showroom with white walls 
+and oak flooring, soft golden hour side lighting with gentle shadows, editorial fashion 
+photography style, shot on Hasselblad, 85mm lens, shallow depth of field, 8K resolution</code></pre>
+    </div>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">P.E.P.A. — Producto Editorial</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">P — Producto</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">E — Entorno</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">P — Perspectiva</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">A — Atmósfera</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;Men&#39;s oxford shoes in midnight blue suede&quot;</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;On a vintage oak desk in a gentleman&#39;s study&quot;</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;45-degree angle, product-centric composition&quot;</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;Warm, sophisticated, autumn mood&quot;</td>
+</tr>
+</tbody></table></div>
+
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">M.E.T.A. — Mood Conceptual</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">M — Mood</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">E — Elementos</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">T — Técnica</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">A — Acabado</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;Timeless elegance meets modern minimalism&quot;</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;Single stiletto heel, white orchid, black velvet&quot;</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;Macro photography, extreme close-up of leather grain&quot;</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;Matte finish, no glare, neutral color grading&quot;</td>
+</tr>
+</tbody></table></div>
+
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">C.A.P.A. — Campaña Publicitaria</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">C — Concepto</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">A — Audiencia Visual</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">P — Plataforma</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">A — Acción</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;Launch campaign: &#39;Walk in Art&#39;&quot;</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;Visual language for 30-45 year old affluent professionals&quot;</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;Instagram carousel (1:1), LinkedIn banner (1200x628)&quot;</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;Hero image with logo space bottom-right&quot;</td>
+</tr>
+</tbody></table></div>
+
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">🔴 Negative Prompt: Qué NO quieres</h3>
+<p class="prose-text text-gray-600 mb-6">Tan importante como lo que pides es **lo que prohíbes**:</p>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>Negative prompt: blurry, low quality, watermark, text overlay, deformed, distorted 
+proportions, ugly, bad anatomy, extra limbs, cropped, out of frame, cartoon, illustration, 
+3D render, CGI, stock photo look</code></pre>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="5-los-titanes-del-p-xel" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">8</span>
+                    Los Titanes del Píxel
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Gemini — NanoBanana 2 (Google)</h3>
+<p class="prose-text text-gray-600 mb-6">**Fortalezas:**</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">Integrado en Google Workspace (puedes generar desde Gmail/Docs)</li>
+<li class="pl-2">Calidad fotorrealista de nueva generación</li>
+<li class="pl-2">Entiende contexto en español de forma nativa</li>
+<li class="pl-2">Integración directa con Stitch y Flow para composición</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**Ideal para:** Renders rápidos de producto, variaciones de concepto, iteración desde el escritorio</p>
+<p class="prose-text text-gray-600 mb-6">**Ejemplo de prompt para Gemini:**</p>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>Genera una imagen fotorrealista de unos zapatos de mujer tipo stiletto en piel negra brillante, 
+con tacón de 9cm, sobre una superficie de mármol blanco Calacatta. Iluminación de estudio 
+frontal suave. Fondo degradado gris claro. Calidad editorial de revista Vogue.</code></pre>
+    </div>
+<hr>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Freepik — Mystic</h3>
+<p class="prose-text text-gray-600 mb-6">**Fortalezas:**</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">Modelos entrenados específicamente para diseño profesional</li>
+<li class="pl-2">Presets de estilo (editorial, producto, lifestyle)</li>
+<li class="pl-2">Freepik Spaces: generación colaborativa en equipo</li>
+<li class="pl-2">Integración con el banco de imágenes de Freepik para composición</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**Ideal para:** Catálogo de producto, mockups, assets de marketing, trabajo en equipo creativo</p>
+<p class="prose-text text-gray-600 mb-6">**Ejemplo de prompt para Freepik:**</p>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>Luxury men's derby shoes in hand-colored patina leather (brown-to-burgundy gradient), 
+displayed at a 3/4 angle on a dark walnut surface. Studio lighting with dramatic side light. 
+Clean white background. Product photography for e-commerce catalog.</code></pre>
+    </div>
+<hr>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">DALL-E 3 (OpenAI)</h3>
+<p class="prose-text text-gray-600 mb-6">**Fortalezas:**</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">Integrado en ChatGPT (conversación + generación de imagen en el mismo chat)</li>
+<li class="pl-2">Excelente comprendiendo instrucciones complejas en texto</li>
+<li class="pl-2">Buena composición y texto legible dentro de la imagen</li>
+<li class="pl-2">Iteración conversacional natural (&quot;ahora cambia el color a azul marino&quot;)</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**Ideal para:** Generación rápida dentro de una conversación, prototipado conceptual, imágenes con texto</p>
+<hr>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">ImageFX — Chips Expresivos (Google)</h3>
+<p class="prose-text text-gray-600 mb-6">**Fortalezas:**</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">Interfaz única de &quot;chips&quot; para modificar aspectos de la imagen con un clic</li>
+<li class="pl-2">Exploración visual ultrarrápida de variaciones</li>
+<li class="pl-2">Genera 4 resultados simultáneamente</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**Ideal para:** Explorar variaciones de iluminación, color, ángulo en segundos</p>
+<hr>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Midjourney</h3>
+<p class="prose-text text-gray-600 mb-6">**Fortalezas:**</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">Calidad estética superior (especialmente en estilo editorial/artístico)</li>
+<li class="pl-2">Parámetros avanzados (<code class="bg-gray-100 text-brand-primary px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">--ar</code>, <code class="bg-gray-100 text-brand-primary px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">--cref</code>, <code class="bg-gray-100 text-brand-primary px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">--sref</code>, <code class="bg-gray-100 text-brand-primary px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">--chaos</code>, <code class="bg-gray-100 text-brand-primary px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">--stylize</code>)</li>
+<li class="pl-2">Consistencia de personaje con <code class="bg-gray-100 text-brand-primary px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">--cref</code> (character reference)</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**Ideal para:** Campañas editoriales, key visuals, imágenes "hero" de alta calidad</p>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="6-demo-de-prompt-a-render" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">9</span>
+                    Demo: De Prompt a Render
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Ejercicio en vivo: Tres herramientas, un mismo concepto</h3>
+<p class="prose-text text-gray-600 mb-6">**Briefing del cliente (imaginario):**</p>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            "Necesitamos una imagen hero para la home de nuestra tienda online de zapatos de lujo. Debe transmitir elegancia atemporal. Producto: mocasín de hombre en piel marrón cognac."
+        </p>
+    </div>
+<h4 class="text-xl font-bold text-brand-dark mb-4 mt-8"><i class="fa-solid fa-arrow-right text-brand-accent mr-2 text-sm"></i> Paso 1: Construir el prompt con S.C.I.E.</h4>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>S: A pair of men's luxury penny loafers in cognac brown calfskin leather
+C: Resting on a vintage leather-bound book on a dark mahogany desk, with a whiskey glass 
+   and gold pocket watch in soft focus background
+I: Warm side lighting simulating late afternoon sun through venetian blinds, creating 
+   dramatic shadow patterns
+E: Editorial fashion photography, shot on Phase One IQ4, 100mm macro lens, f/2.8, 
+   ultra-high detail, 8K</code></pre>
+    </div>
+<h4 class="text-xl font-bold text-brand-dark mb-4 mt-8"><i class="fa-solid fa-arrow-right text-brand-accent mr-2 text-sm"></i> Paso 2: Lanzar en 3 herramientas simultáneamente</h4>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm"></th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Gemini</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Freepik</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">DALL-E 3</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Tiempo</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">~15 seg</td>
+<td class="p-4 font-serif text-gray-600 align-top">~20 seg</td>
+<td class="p-4 font-serif text-gray-600 align-top">~20 seg</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Fortaleza visible</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Color y realismo de la piel</td>
+<td class="p-4 font-serif text-gray-600 align-top">Composición editorial</td>
+<td class="p-4 font-serif text-gray-600 align-top">Comprensión del mood</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Debilidad típica</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">A veces detalles de costura borrosos</td>
+<td class="p-4 font-serif text-gray-600 align-top">Menos control fino en textos</td>
+<td class="p-4 font-serif text-gray-600 align-top">Texturas a veces planas</td>
+</tr>
+</tbody></table></div>
+
+<h4 class="text-xl font-bold text-brand-dark mb-4 mt-8"><i class="fa-solid fa-arrow-right text-brand-accent mr-2 text-sm"></i> Paso 3: Seleccionar el mejor resultado y refinar</h4>
+<p class="prose-text text-gray-600 mb-6">Elegido el mejor render base, aplico:</p>
+<ol class="font-serif text-gray-600 text-lg list-decimal list-inside space-y-3 mb-8">
+<li class="pl-2"><strong class="font-bold text-gray-900">In-painting</strong>: Corregir detalle de la costura lateral</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Variación de iluminación</strong>: 3 opciones (natural, estudio, dramática)  </li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Upscaling</strong>: De 1024px a 4096px</li>
+</ol>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            🎯 **Resultado:** De un briefing a un render editorial listo para la home en menos de 10 minutos.
+        </p>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="7-quiz-y-pfc" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">10</span>
+                    Quiz y PFC
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">📝 Quiz de Conocimientos (10 preguntas)</h3>
+<p class="prose-text text-gray-600 mb-6">**1.** ¿Qué es la "Seed" en generación de imagen?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) El nombre del modelo de IA</li>
+<li class="pl-2">b) ✅ Un número aleatorio que determina el punto de partida; misma seed + mismo prompt = misma imagen</li>
+<li class="pl-2">c) La resolución de la imagen</li>
+<li class="pl-2">d) El formato del archivo generado</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**2.** ¿Para qué sirve el In-painting?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Para generar imágenes desde cero</li>
+<li class="pl-2">b) Para aumentar la resolución</li>
+<li class="pl-2">c) ✅ Para modificar una zona seleccionada de la imagen sin alterar el resto</li>
+<li class="pl-2">d) Para convertir imagen a vídeo</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**3.** En la fórmula S.C.I.E., ¿qué representa la "I"?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Inteligencia del modelo</li>
+<li class="pl-2">b) Instrucciones de formato</li>
+<li class="pl-2">c) ✅ Iluminación</li>
+<li class="pl-2">d) Iteración del prompt</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**4.** ¿Cuál es el propósito del Negative Prompt?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Hacer la imagen en blanco y negro</li>
+<li class="pl-2">b) ✅ Indicar lo que NO quieres que aparezca en la imagen</li>
+<li class="pl-2">c) Reducir el tiempo de generación</li>
+<li class="pl-2">d) Generar la versión opuesta del prompt</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**5.** Si necesitas 20 variaciones rápidas de un render de zapato explorando distintas iluminaciones, ¿qué herramienta es ideal?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Midjourney</li>
+<li class="pl-2">b) ✅ ImageFX (Chips Expresivos)</li>
+<li class="pl-2">c) DALL-E 3</li>
+<li class="pl-2">d) Photoshop</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**6.** ¿Qué es Sketch to Real?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Un estilo de fotografía minimalista</li>
+<li class="pl-2">b) ✅ Convertir un boceto/dibujo a mano en una imagen fotorrealista</li>
+<li class="pl-2">c) Una técnica de marketing para redes sociales</li>
+<li class="pl-2">d) Un modelo de IA para texto</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**7.** ¿En qué fase del flujo de trabajo deberías usar el Upscaling?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) En la fase 1 (Ideación)</li>
+<li class="pl-2">b) En la fase 2 (Seed)</li>
+<li class="pl-2">c) ✅ En la fase 5 (Acabado), cuando ya tienes el render final seleccionado</li>
+<li class="pl-2">d) En todas las fases por igual</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**8.** ¿Qué herramienta ofrece "Freepik Spaces" para trabajo creativo?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Un portfolio online personal</li>
+<li class="pl-2">b) ✅ Entornos colaborativos de generación visual en equipo</li>
+<li class="pl-2">c) Almacenamiento en la nube gratuito</li>
+<li class="pl-2">d) Un editor de vídeo</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**9.** Según la regla de diseño con IA, ¿cuántas variaciones mínimas debes generar antes de elegir?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) 1 (la primera siempre es la mejor)</li>
+<li class="pl-2">b) 2</li>
+<li class="pl-2">c) ✅ Mínimo 5 variaciones</li>
+<li class="pl-2">d) 100</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**10.** Para una campaña de Instagram (formato 1:1), ¿qué fórmula usarías?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) S.C.I.E. (solo)</li>
+<li class="pl-2">b) P.E.P.A.</li>
+<li class="pl-2">c) ✅ C.A.P.A. (tiene en cuenta plataforma y formato de destino)</li>
+<li class="pl-2">d) M.E.T.A.</li>
+</ul>
+<hr>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">🚀 PFC — Entregable de Clase 3</h3>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            Esta es la última clase teórica antes de tu primer laboratorio visual (Clase 4). Prepara lo siguiente:
+        </p>
+    </div>
+<h4 class="text-xl font-bold text-brand-dark mb-4 mt-8"><i class="fa-solid fa-arrow-right text-brand-accent mr-2 text-sm"></i> Preparación para el Lab Visual (Clase 4)</h4>
+<ol class="font-serif text-gray-600 text-lg list-decimal list-inside space-y-3 mb-8">
+<li class="pl-2"><p class="prose-text text-gray-600 mb-6">**Definir la estética visual de tu marca de zapatos** (si no lo hiciste en C01):</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">Paleta de colores principal (3-5 colores)</li>
+<li class="pl-2">3 marcas de referencia visual (ej: Loewe, Crockett &amp; Jones, Santoni)</li>
+<li class="pl-2">Tono visual: ¿minimalista? ¿opulento? ¿contemporáneo? ¿clásico?</li>
+</ul>
+</li>
+<li class="pl-2"><p class="prose-text text-gray-600 mb-6">**Preparar los primeros 3 modelos de zapatos a generar:**</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">Modelo 1 (mujer): tipo de zapato, material, color</li>
+<li class="pl-2">Modelo 2 (hombre): tipo de zapato, material, color</li>
+<li class="pl-2">Modelo 3 (unisex o segundo modelo): tipo de zapato, material, color</li>
+</ul>
+</li>
+<li class="pl-2"><p class="prose-text text-gray-600 mb-6">**Escribir el prompt S.C.I.E. para cada modelo** (en inglés):</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">No lo ejecutes aún — lo haremos en la Clase 4</li>
+</ul>
+</li>
+</ol>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            📦 **Entregable:** Documento con la definición estética (paleta, referencias, tono) + 3 prompts S.C.I.E. escritos y listos para ejecutar en la Clase 4.
+        </p>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="-recursos-adicionales" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">11</span>
+                    📎 Recursos Adicionales
+                </h2>
+        <ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2"><a href="https://gemini.google.com">Gemini (Google)</a></li>
+<li class="pl-2"><a href="https://freepik.com">Freepik</a></li>
+<li class="pl-2"><a href="https://chatgpt.com">ChatGPT + DALL-E</a></li>
+<li class="pl-2"><a href="https://aitestkitchen.withgoogle.com/tools/image-fx">ImageFX</a></li>
+<li class="pl-2"><a href="https://midjourney.com">Midjourney</a></li>
+<li class="pl-2"><a href="https://platform.openai.com/docs/guides/images">Prompt Engineering for Image Generation - OpenAI Guide</a></li>
+</ul>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-dark text-white py-12 border-t border-gray-800 mt-12">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <h2 class="text-xl font-bold tracking-tight text-white mb-4">
+                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+            </h2>
+            <p class="text-gray-500 font-mono text-sm">© 2026 Curso IA Generativa. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>

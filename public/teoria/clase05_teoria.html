@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Composición Modular y Visualización en Tiempo Real - [m].seny [labs]</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Merriweather -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0F172A',
+                            primary: '#4F46E5',
+                            accent: '#F59E0B',
+                            light: '#F8FAFC'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #F8FAFC; color: #334155; scroll-behavior: smooth; }
+        h1, h2, h3, h4, h5, h6, button, .nav-link { font-family: 'Inter', sans-serif; }
+        p, li, .prose-text { font-family: 'Merriweather', serif; line-height: 1.6; font-size: 1.125rem; text-align: left; }
+        .callout-analogy { background-color: #FEF3C7; border-left: 4px solid #F59E0B; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+
+<body class="antialiased">
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="../index.html" class="no-underline">
+                    <h1 class="text-xl font-bold tracking-tight text-brand-dark hover:text-brand-primary transition-colors cursor-pointer">
+                        <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+                    </h1>
+                </a>
+            </div>
+            <nav class="hidden lg:flex space-x-5 text-xs font-bold text-gray-500 uppercase tracking-wider overflow-x-auto">
+                <a href="#navegaci-n-de-la-clase" class="hover:text-brand-primary transition-colors">1. Navegación de la clase</a>
+<a href="#conceptos-clave-de-esta-clase" class="hover:text-brand-primary transition-colors">2. Conceptos clave de esta c...</a>
+<a href="#herramientas-presentadas" class="hover:text-brand-primary transition-colors">3. Herramientas presentadas</a>
+<a href="#1-composici-n-modular" class="hover:text-brand-primary transition-colors">4. Composición Modular</a>
+<a href="#2-whisk" class="hover:text-brand-primary transition-colors">5. Whisk</a>
+<a href="#3-imagefx" class="hover:text-brand-primary transition-colors">6. ImageFX</a>
+<a href="#4-krea-ai" class="hover:text-brand-primary transition-colors">7. Krea AI</a>
+<a href="#5-stitch-y-flow" class="hover:text-brand-primary transition-colors">8. Stitch y Flow</a>
+<a href="#6-visualizaci-n-en-tiempo-real" class="hover:text-brand-primary transition-colors">9. Visualización en Tiempo R...</a>
+<a href="#7-seedream" class="hover:text-brand-primary transition-colors">10. Seedream</a>
+<a href="#8-quiz-y-pfc" class="hover:text-brand-primary transition-colors">11. Quiz y PFC</a>
+<a href="#-recursos-adicionales" class="hover:text-brand-primary transition-colors">12. 📎 Recursos Adicionales</a>
+            </nav>
+            <a href="/api/logout" class="hidden lg:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Salir
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-brand-dark text-white py-24 border-b-8 border-brand-primary">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <span class="inline-block py-1 px-3 bg-brand-primary/20 text-brand-primary font-mono text-sm font-bold uppercase tracking-widest mb-6 rounded">
+                CLASE 5 · 2 — Generación de Imagen
+            </span>
+            <h1 class="text-4xl lg:text-6xl font-extrabold mb-6 leading-tight">
+                Composición Modular y Visualización en Tiempo Real
+            </h1>
+            <div class="mt-10 flex items-center justify-center space-x-6 text-sm text-gray-400 font-mono">
+                <div><i class="fa-regular fa-clock"></i> <span>Duración: 1.5 horas</span></div>
+                <div><i class="fa-solid fa-users"></i> <span>Audiencia: conjunta</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wrap first section implicitly -->
+    <section class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            *De la imagen aislada a la composición inteligente. Mezcla sujetos, escenas y estilos como quien hace un collage con superpoderes.*
+        </p>
+    </div>
+<p class="prose-text text-gray-600 mb-6">**Duración estimada:** 1.5 horas</p>
+<hr>
+
+        
+        <section id="navegaci-n-de-la-clase" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">1</span>
+                    Navegación de la clase
+                </h2>
+        <ol class="font-serif text-gray-600 text-lg list-decimal list-inside space-y-3 mb-8">
+<li class="pl-2"><a href="#1-composici%C3%B3n-modular">Composición Modular: La Revolución</a></li>
+<li class="pl-2"><a href="#2-whisk">Whisk — Asunto + Escena + Estilo</a></li>
+<li class="pl-2"><a href="#3-imagefx">ImageFX — Chips Expresivos</a></li>
+<li class="pl-2"><a href="#4-krea-ai">Krea AI — Real-Time y Upscaling</a></li>
+<li class="pl-2"><a href="#5-stitch-y-flow">Stitch y Flow — Composición Colaborativa de Google</a></li>
+<li class="pl-2"><a href="#6-visualizaci%C3%B3n-en-tiempo-real">Visualización en Tiempo Real</a></li>
+<li class="pl-2"><a href="#7-seedream">Seedream y la Generación de Alta Fidelidad</a></li>
+<li class="pl-2"><a href="#8-quiz-y-pfc">Quiz + PFC</a></li>
+</ol>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="conceptos-clave-de-esta-clase" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">2</span>
+                    Conceptos clave de esta clase
+                </h2>
+        <p class="prose-text text-gray-600 mb-6">`Composición Modular` · `Style Transfer` · `Real-Time Generation` · `Upscaling` · `Chips Expresivos` · `Character Reference (--cref)` · `Style Reference (--sref)` · `Gem Director de Arte` · `Collaborative Generation`</p>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="herramientas-presentadas" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">3</span>
+                    Herramientas presentadas
+                </h2>
+        <div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Herramienta</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Especialidad</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Whisk (Google)</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Composición modular: Asunto + Escena + Estilo</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">ImageFX (Google)</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Variaciones ultrarrápidas con Chips Expresivos</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Krea AI</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Generación en Tiempo Real + Upscaling profesional</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Stitch (Google)</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Composición visual colaborativa con IA</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Flow (Google)</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Flujos creativos asistidos entre equipo y modelo</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Seedream</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Generación de alta fidelidad (Google DeepMind)</td>
+</tr>
+</tbody></table></div>
+
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="1-composici-n-modular" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">4</span>
+                    Composición Modular
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">El concepto: Separar para controlar</h3>
+<p class="prose-text text-gray-600 mb-6">En la generación de imagen tradicional, describes TODO en un solo prompt. El problema: si cambias una palabra, cambia toda la imagen.</p>
+<p class="prose-text text-gray-600 mb-6">**Composición Modular** separa la generación en capas independientes que puedes controlar por separado:</p>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Capa</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Qué controla</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Ejemplo para zapatos</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Sujeto</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">El producto/persona</td>
+<td class="p-4 font-serif text-gray-600 align-top">Tus stilettos negros de piel</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Escena</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">El entorno/fondo</td>
+<td class="p-4 font-serif text-gray-600 align-top">Escaparate de boutique en París</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Estilo</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">La estética visual</td>
+<td class="p-4 font-serif text-gray-600 align-top">Fotografía editorial de Condé Nast</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Iluminación</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">La luz y sombras</td>
+<td class="p-4 font-serif text-gray-600 align-top">Golden hour lateral</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Composición</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Encuadre y ángulo</td>
+<td class="p-4 font-serif text-gray-600 align-top">Cenital, 3/4, macro</td>
+</tr>
+</tbody></table></div>
+
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            🧩 **Analogía:** Es como un editor de vídeo con capas. Puedes cambiar el fondo sin tocar al actor, o cambiar la música sin alterar la imagen. Cada capa es independiente.
+        </p>
+    </div>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">¿Por qué es revolucionario para diseño de producto?</h3>
+<ol class="font-serif text-gray-600 text-lg list-decimal list-inside space-y-3 mb-8">
+<li class="pl-2"><strong class="font-bold text-gray-900">Consistencia de producto</strong>: El zapato es idéntico en 20 escenas diferentes</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Velocidad de campaña</strong>: Generas un catálogo seasonal cambiando solo las escenas</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Testeo A/B visual</strong>: Mismo producto en 5 escenarios para ver cuál funciona mejor comercialmente</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Eficiencia creativa</strong>: No regenatas el zapato cada vez, solo cambias el contexto</li>
+</ol>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="2-whisk" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">5</span>
+                    Whisk
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">El "Collage Inteligente" de Google</h3>
+<p class="prose-text text-gray-600 mb-6">🔗 [labs.google/whisk](https://labs.google/whisk)</p>
+<p class="prose-text text-gray-600 mb-6">Whisk permite generar imágenes combinando tres entradas independientes:</p>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Entrada</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Descripción</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Ejemplo</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Subject (Sujeto)</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">La imagen de lo que quieres generar</td>
+<td class="p-4 font-serif text-gray-600 align-top">Foto de tu zapato render</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Scene (Escena)</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">El entorno o fondo deseado</td>
+<td class="p-4 font-serif text-gray-600 align-top">Foto de una tienda de lujo en Milán</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Style (Estilo)</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">La estética visual de referencia</td>
+<td class="p-4 font-serif text-gray-600 align-top">Captura de un editorial de Vogue</td>
+</tr>
+</tbody></table></div>
+
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Flujo de trabajo con Whisk</h3>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>1. SUJETO: Sube el render del zapato de la Clase 4
+2. ESCENA A: Foto de un escaparate elegante → Genera
+3. ESCENA B: Foto de una pasarela de moda → Genera
+4. ESCENA C: Foto de una calle empedrada en Italia → Genera
+   ↓
+Resultado: 3 composiciones con el MISMO zapato en 3 entornos</code></pre>
+    </div>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            ⭐ **Potencia real:** Cambias la escena sin regenatar el producto. El zapato mantiene su identidad exacta. Esto es imposible con un prompt de texto convencional.
+        </p>
+    </div>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Casos de uso profesionales</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Uso</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Cómo</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Catálogo multientorno</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">1 zapato × 5 escenas = 5 imágenes de catálogo</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Adaptación cultural</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Mismo producto + escenas de distintos mercados (NY, Tokio, Madrid)</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Mood testing</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Mismo zapato en mood &quot;verano&quot; vs &quot;invierno&quot; vs &quot;noche&quot;</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Consistencia de campaña</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Misma escena + diferentes productos = línea visual coherente</td>
+</tr>
+</tbody></table></div>
+
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="3-imagefx" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">6</span>
+                    ImageFX
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Exploración Visual a la Velocidad del Pensamiento</h3>
+<p class="prose-text text-gray-600 mb-6">🔗 [aitestkitchen.withgoogle.com/tools/image-fx](https://aitestkitchen.withgoogle.com/tools/image-fx)</p>
+<p class="prose-text text-gray-600 mb-6">ImageFX genera 4 resultados simultáneos y ofrece **Chips Expresivos**: botones debajo del prompt que permiten modificar aspectos específicos con un clic.</p>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Chips Expresivos</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Tipo de Chip</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Qué modifica</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Ejemplo</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Lighting</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Iluminación</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;studio&quot; → &quot;cinematic&quot; → &quot;natural&quot; → &quot;dramatic&quot;</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Material</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Textura/Material</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;leather&quot; → &quot;suede&quot; → &quot;canvas&quot; → &quot;patent&quot;</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Color</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Paleta cromática</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;warm tones&quot; → &quot;cool tones&quot; → &quot;monochrome&quot;</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Mood</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Atmósfera general</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;luxury&quot; → &quot;casual&quot; → &quot;editorial&quot; → &quot;streetwear&quot;</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Angle</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Perspectiva/Encuadre</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;top view&quot; → &quot;side view&quot; → &quot;close-up&quot; → &quot;wide shot&quot;</td>
+</tr>
+</tbody></table></div>
+
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Workflow de exploración rápida</h3>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>1. Escribe el prompt base del zapato → Genera 4 resultados
+2. Identifica el mejor resultado
+3. Modifica un chip (ej: iluminación "studio" → "golden hour")
+4. Genera 4 nuevos resultados con esa variación
+5. Repite cambiando otro chip (material, color, mood)
+   ↓
+En 5 minutos: 20+ variaciones del mismo concepto</code></pre>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="4-krea-ai" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">7</span>
+                    Krea AI
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Generación en Tiempo Real + Upscaling Profesional</h3>
+<p class="prose-text text-gray-600 mb-6">🔗 [krea.ai](https://krea.ai)</p>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Real-Time Generation</h3>
+<p class="prose-text text-gray-600 mb-6">La funcionalidad más impactante: ves cambios EN VIVO mientras modificas el prompt o mueves elementos en el canvas. El resultado se actualiza instantáneamente.</p>
+<p class="prose-text text-gray-600 mb-6">**¿Cómo funciona?**</p>
+<ol class="font-serif text-gray-600 text-lg list-decimal list-inside space-y-3 mb-8">
+<li class="pl-2">Dibujas una forma aproximada (boceto rápido del zapato)</li>
+<li class="pl-2">Escribes un prompt descriptivo</li>
+<li class="pl-2">La imagen se genera y actualiza en tiempo real mientras dibujas y ajustas</li>
+</ol>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            🎯 **Para qué es perfecto:** Iteración ultrarrápida de ideas de diseño. Es como tener un diseñador 3D que dibuja a la velocidad de tu pensamiento.
+        </p>
+    </div>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Upscaling Profesional</h3>
+<p class="prose-text text-gray-600 mb-6">Krea AI ofrece uno de los mejores motores de upscaling del mercado:</p>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">De</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">A</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Resultado</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top">1024×1024</td>
+<td class="p-4 font-serif text-gray-600 align-top">4096×4096</td>
+<td class="p-4 font-serif text-gray-600 align-top">Sin pérdida de calidad, añade detalles inteligentes</td>
+</tr>
+</tbody></table></div>
+
+<p class="prose-text text-gray-600 mb-6">**Parámetros de Upscaling:**</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2"><strong class="font-bold text-gray-900">Enhance Prompt</strong>: Describe qué tipo de detalles quieres que añada al ampliar</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Resemblance</strong>: Cuánto se parece al original (alto = fiel, bajo = reinterpreta)</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Creativity</strong>: Cuánta libertad tiene para &quot;inventar&quot; detalles nuevos</li>
+</ul>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="5-stitch-y-flow" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">8</span>
+                    Stitch y Flow
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Stitch — Composición Visual Colaborativa</h3>
+<p class="prose-text text-gray-600 mb-6">Herramienta de Google para crear composiciones multicapa con IA de forma colaborativa:</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2"><strong class="font-bold text-gray-900">Múltiples capas</strong> de generación en un mismo canvas</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Colaboración en tiempo real</strong> con otros miembros del equipo</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Coherencia visual</strong> entre elementos generados por separado</li>
+<li class="pl-2">Ideal para: diseño de campañas visuales donde varios diseñadores trabajan simultáneamente</li>
+</ul>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Flow — Flujos Creativos Asistidos</h3>
+<p class="prose-text text-gray-600 mb-6">Flow lleva la composición un paso más allá:</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2"><strong class="font-bold text-gray-900">Workflows predefinidos</strong> para tareas creativas comunes</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Integración directa</strong> con los modelos de generación de Google</li>
+<li class="pl-2">El equipo puede crear <strong class="font-bold text-gray-900">pipelines visuales</strong> (concepto → variaciones → selección → refinamiento)</li>
+</ul>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            🤝 **Para equipos:** Si el diseñador A genera el producto y el diseñador B genera los fondos, Stitch permite que ambos trabajen en la misma composición final en tiempo real.
+        </p>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="6-visualizaci-n-en-tiempo-real" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">9</span>
+                    Visualización en Tiempo Real
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">El Paradigma: Ver Antes de Generar</h3>
+<p class="prose-text text-gray-600 mb-6">La visualización en tiempo real cambia fundamentalmente el proceso creativo:</p>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Antes (Generación Ciega)</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Ahora (Real-Time)</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top">Escribes prompt → esperas → ves resultado → ajustas → vuelves a esperar</td>
+<td class="p-4 font-serif text-gray-600 align-top">Dibujas/escribes → ves cambios en vivo → ajustas fluidamente</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top">20-30 segundos por iteración</td>
+<td class="p-4 font-serif text-gray-600 align-top">Cambios instantáneos</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top">Proceso lineal y frustrante</td>
+<td class="p-4 font-serif text-gray-600 align-top">Flujo creativo natural</td>
+</tr>
+</tbody></table></div>
+
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Herramientas con Real-Time</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Herramienta</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Tipo de Real-Time</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Krea AI</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Canvas interactivo con generación en vivo</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Gemini Canvas</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Dibujo + texto → imagen en tiempo real</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Leonardo AI (Realtime)</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Interfaz de generación en tiempo real</td>
+</tr>
+</tbody></table></div>
+
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="7-seedream" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">10</span>
+                    Seedream
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">La Generación de Alta Fidelidad de Google DeepMind</h3>
+<p class="prose-text text-gray-600 mb-6">Seedream es el modelo de generación de imagen más avanzado de Google, diseñado para:</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2"><strong class="font-bold text-gray-900">Fidelidad fotográfica extrema</strong>: texturas, materiales, iluminación hiperrealistas</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Comprensión compositiva avanzada</strong>: entiende relaciones espaciales complejas</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Consistencia de elementos</strong>: mantiene la coherencia de un producto a lo largo de múltiples generaciones</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Integración con el ecosistema Google</strong>: funciona dentro de Gemini, Stitch y otras herramientas</li>
+</ul>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            💎 **Para nuestra tienda de zapatos:** Seedream es el modelo que usaremos cuando necesitemos renders indistinguibles de una fotografía real — perfecto para el catálogo final de e-commerce.
+        </p>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="8-quiz-y-pfc" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">11</span>
+                    Quiz y PFC
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">📝 Quiz de Conocimientos (8 preguntas)</h3>
+<p class="prose-text text-gray-600 mb-6">**1.** ¿Cuál es la ventaja principal de la Composición Modular frente al prompt único?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Es más barato</li>
+<li class="pl-2">b) ✅ Permite cambiar escena/estilo sin regenerar el producto (control por capas)</li>
+<li class="pl-2">c) Genera imágenes más rápido</li>
+<li class="pl-2">d) Solo funciona con fotos reales</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**2.** En Whisk, ¿cuáles son las tres entradas que puedes combinar?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Texto, audio y vídeo</li>
+<li class="pl-2">b) ✅ Sujeto, Escena y Estilo</li>
+<li class="pl-2">c) Marca, Producto y Precio</li>
+<li class="pl-2">d) Resolución, Color y Formato</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**3.** ¿Qué son los "Chips Expresivos" de ImageFX?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Filtros como los de Instagram</li>
+<li class="pl-2">b) ✅ Botones que modifican aspectos específicos (iluminación, material, color) con un clic</li>
+<li class="pl-2">c) Componentes de hardware para acelerar la generación</li>
+<li class="pl-2">d) Plantillas prediseñadas de estilo</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**4.** ¿Qué hace especial a la generación Real-Time de Krea AI?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Genera a mayor resolución</li>
+<li class="pl-2">b) ✅ Los cambios se visualizan instantáneamente mientras dibujas/escribes</li>
+<li class="pl-2">c) Solo funciona con texto, no con imágenes</li>
+<li class="pl-2">d) Es exclusiva para vídeo</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**5.** ¿Para qué sirve el Upscaling de Krea AI?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Para reducir el tamaño del archivo</li>
+<li class="pl-2">b) Para añadir texto a la imagen</li>
+<li class="pl-2">c) ✅ Para aumentar la resolución (ej: 1024px → 4096px) sin perder calidad, añadiendo detalles inteligentes</li>
+<li class="pl-2">d) Para convertir imagen a vídeo</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**6.** ¿Cuál es la ventaja principal de Stitch para equipos de diseño?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Es gratuito</li>
+<li class="pl-2">b) ✅ Permite composición colaborativa en tiempo real donde varios diseñadores trabajan en la misma pieza</li>
+<li class="pl-2">c) Tiene mejor calidad que Midjourney</li>
+<li class="pl-2">d) Solo funciona con productos de moda</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**7.** Si quieres el mismo zapato en 5 escenarios diferentes para testeo A/B, ¿qué herramienta usarías?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Gemini con prompt largo</li>
+<li class="pl-2">b) ✅ Whisk (mismo sujeto + 5 escenas distintas)</li>
+<li class="pl-2">c) DALL-E 3</li>
+<li class="pl-2">d) In-painting</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**8.** ¿Qué rol cumple el "Gem Director de Arte"?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Es un plugin de Photoshop</li>
+<li class="pl-2">b) ✅ Un asistente IA preconfigurado con el brandbook que genera prompts visuales coherentes con la marca automáticamente</li>
+<li class="pl-2">c) Es un modelo de IA de Google</li>
+<li class="pl-2">d) Es una persona del equipo de diseño</li>
+</ul>
+<hr>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">🚀 PFC — Preparación para Clase 6</h3>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            La Clase 6 será la práctica de iteración rápida con Whisk, ImageFX y Krea AI. Prepara:
+        </p>
+    </div>
+<ol class="font-serif text-gray-600 text-lg list-decimal list-inside space-y-3 mb-8">
+<li class="pl-2"><p class="prose-text text-gray-600 mb-6">**Seleccionar tu mejor render** de cada modelo de zapato (Clase 4)</p>
+</li>
+<li class="pl-2"><p class="prose-text text-gray-600 mb-6">**Buscar 3 fotos de escena** que representen entornos donde quieres ver tu producto:</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">Escena 1: Tienda/boutique</li>
+<li class="pl-2">Escena 2: Outdoor/lifestyle</li>
+<li class="pl-2">Escena 3: Editorial/campaña</li>
+</ul>
+</li>
+<li class="pl-2"><p class="prose-text text-gray-600 mb-6">**Buscar 2 fotos de estilo** (referencia visual de la estética):</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">Referencia de revista/editorial que capture el tono visual de tu marca</li>
+</ul>
+</li>
+</ol>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            📦 **Entregable:** Carpeta con los renders de C04 + 3 fotos de escena + 2 fotos de estilo, listos para usar en Whisk.
+        </p>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="-recursos-adicionales" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">12</span>
+                    📎 Recursos Adicionales
+                </h2>
+        <ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2"><a href="https://labs.google/whisk">Whisk (Google)</a></li>
+<li class="pl-2"><a href="https://aitestkitchen.withgoogle.com/tools/image-fx">ImageFX (Google)</a></li>
+<li class="pl-2"><a href="https://krea.ai">Krea AI</a></li>
+<li class="pl-2"><a href="https://deepmind.google/technologies/imagen/">Seedream (Google DeepMind)</a></li>
+</ul>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-dark text-white py-12 border-t border-gray-800 mt-12">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <h2 class="text-xl font-bold tracking-tight text-white mb-4">
+                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+            </h2>
+            <p class="text-gray-500 font-mono text-sm">© 2026 Curso IA Generativa. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>

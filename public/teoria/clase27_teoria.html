@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistemas Multi-Agente — Equipos de IA Colaborativos - [m].seny [labs]</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Merriweather -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0F172A',
+                            primary: '#4F46E5',
+                            accent: '#F59E0B',
+                            light: '#F8FAFC'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #F8FAFC; color: #334155; scroll-behavior: smooth; }
+        h1, h2, h3, h4, h5, h6, button, .nav-link { font-family: 'Inter', sans-serif; }
+        p, li, .prose-text { font-family: 'Merriweather', serif; line-height: 1.6; font-size: 1.125rem; text-align: left; }
+        .callout-analogy { background-color: #FEF3C7; border-left: 4px solid #F59E0B; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+
+<body class="antialiased">
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="../index.html" class="no-underline">
+                    <h1 class="text-xl font-bold tracking-tight text-brand-dark hover:text-brand-primary transition-colors cursor-pointer">
+                        <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+                    </h1>
+                </a>
+            </div>
+            <nav class="hidden lg:flex space-x-5 text-xs font-bold text-gray-500 uppercase tracking-wider overflow-x-auto">
+                <a href="#navegaci-n-de-la-clase" class="hover:text-brand-primary transition-colors">1. Navegación de la clase</a>
+<a href="#conceptos-clave-de-esta-clase" class="hover:text-brand-primary transition-colors">2. Conceptos clave de esta c...</a>
+<a href="#1-de-agente-individual-a-sistema-multi-agente" class="hover:text-brand-primary transition-colors">3. De Agente Individual a Si...</a>
+<a href="#2-arquitecturas-multi-agente" class="hover:text-brand-primary transition-colors">4. Arquitecturas Multi-Agent...</a>
+<a href="#3-orquestaci-n-y-comunicaci-n" class="hover:text-brand-primary transition-colors">5. Orquestación y Comunicaci...</a>
+<a href="#4-sub-workflows-en-n8n" class="hover:text-brand-primary transition-colors">6. Sub-Workflows en n8n</a>
+<a href="#5-caso-pr-ctico-el-departamento-ia-de-la-tienda" class="hover:text-brand-primary transition-colors">7. Caso Práctico: El "Depart...</a>
+<a href="#6-limitaciones-y-consideraciones" class="hover:text-brand-primary transition-colors">8. Limitaciones y Considerac...</a>
+<a href="#7-quiz-y-pfc" class="hover:text-brand-primary transition-colors">9. Quiz y PFC</a>
+<a href="#-recursos-adicionales" class="hover:text-brand-primary transition-colors">10. 📎 Recursos Adicionales</a>
+            </nav>
+            <a href="/api/logout" class="hidden lg:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Salir
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-brand-dark text-white py-24 border-b-8 border-brand-primary">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <span class="inline-block py-1 px-3 bg-brand-primary/20 text-brand-primary font-mono text-sm font-bold uppercase tracking-widest mb-6 rounded">
+                CLASE 27 · 7 — Agentes IA
+            </span>
+            <h1 class="text-4xl lg:text-6xl font-extrabold mb-6 leading-tight">
+                Sistemas Multi-<span class="text-brand-accent">Agente — Equipos de IA Colaborativos</span>
+            </h1>
+            <div class="mt-10 flex items-center justify-center space-x-6 text-sm text-gray-400 font-mono">
+                <div><i class="fa-regular fa-clock"></i> <span>Duración: 1.5 horas</span></div>
+                <div><i class="fa-solid fa-users"></i> <span>Audiencia: conjunta</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wrap first section implicitly -->
+    <section class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            *Un agente es un empleado digital. Múltiples agentes que colaboran son un departamento completo. Aprende a diseñar equipos de IA que se coordinan entre sí.*
+        </p>
+    </div>
+<p class="prose-text text-gray-600 mb-6">**Duración estimada:** 1.5 horas</p>
+<hr>
+
+        
+        <section id="navegaci-n-de-la-clase" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">1</span>
+                    Navegación de la clase
+                </h2>
+        <ol class="font-serif text-gray-600 text-lg list-decimal list-inside space-y-3 mb-8">
+<li class="pl-2"><a href="#1-de-agente-a-multi-agente">De Agente Individual a Sistema Multi-Agente</a></li>
+<li class="pl-2"><a href="#2-arquitecturas">Arquitecturas Multi-Agente</a></li>
+<li class="pl-2"><a href="#3-orquestaci%C3%B3n">Orquestación y Comunicación</a></li>
+<li class="pl-2"><a href="#4-sub-workflows">Sub-Workflows en n8n</a></li>
+<li class="pl-2"><a href="#5-caso-pr%C3%A1ctico">Caso Práctico: El &quot;Departamento IA&quot; de la Tienda</a></li>
+<li class="pl-2"><a href="#6-limitaciones">Limitaciones y Consideraciones</a></li>
+<li class="pl-2"><a href="#7-quiz-y-pfc">Quiz + PFC</a></li>
+</ol>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="conceptos-clave-de-esta-clase" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">2</span>
+                    Conceptos clave de esta clase
+                </h2>
+        <p class="prose-text text-gray-600 mb-6">`Multi-Agent System` · `Orchestrator` · `Specialist Agent` · `Delegation` · `Sub-Workflow` · `Agent-to-Agent Communication` · `Consensus` · `Supervisor Pattern` · `Pipeline Pattern` · `Swarm`</p>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="1-de-agente-individual-a-sistema-multi-agente" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">3</span>
+                    De Agente Individual a Sistema Multi-Agente
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">¿Por qué múltiples agentes?</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Agente Individual</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Sistema Multi-Agente</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top">1 System Prompt que intenta cubrir todo</td>
+<td class="p-4 font-serif text-gray-600 align-top">Cada agente tiene un prompt especializado y enfocado</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top">Se confunde con tareas complejas</td>
+<td class="p-4 font-serif text-gray-600 align-top">Cada agente domina su dominio</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top">1 solo set de tools</td>
+<td class="p-4 font-serif text-gray-600 align-top">Cada agente tiene sus propios tools relevantes</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top">Puede ser lento y costoso (prompts más largos)</td>
+<td class="p-4 font-serif text-gray-600 align-top">Más eficiente: cada agente procesa solo lo suyo</td>
+</tr>
+</tbody></table></div>
+
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Analogía: El Equipo de una Revista de Moda</h3>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>REVISTA INDIVIDUAL:                    EQUIPO COMPLETO:
+1 persona hace todo                    Director creativo decide la visión
+(fotos, texto, diseño,                 Fotógrafo ejecuta las imágenes
+ edición, distribución)                Copywriter escribe los textos
+                                       Maquetador compone el layout
+                                       Editor revisa todo
+                                       Social media distribuye</code></pre>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="2-arquitecturas-multi-agente" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">4</span>
+                    Arquitecturas Multi-Agente
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Patrón 1: Pipeline (Cadena)</h3>
+<p class="prose-text text-gray-600 mb-6">Cada agente pasa su resultado al siguiente como en una cadena de producción.</p>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>[Agente 1: Investigador]
+    ↓ "He encontrado las tendencias de mercado"
+[Agente 2: Strategist]
+    ↓ "Propongo esta estrategia basándome en las tendencias"
+[Agente 3: Copywriter]
+    ↓ "He redactado el copy siguiendo la estrategia"
+[Agente 4: Designer]
+    ↓ "He generado los prompts visuales para el copy"
+[Agente 5: QA]
+    → "Todo revisado y aprobado" o "Devolver al agente 3 para reescribir"</code></pre>
+    </div>
+<p class="prose-text text-gray-600 mb-6">**Ideal para:** Flujos de producción de contenido donde cada paso alimenta al siguiente.</p>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Patrón 2: Supervisor (Hub & Spoke)</h3>
+<p class="prose-text text-gray-600 mb-6">Un agente orquestador recibe la tarea y delega a especialistas.</p>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>                    ┌──────────────┐
+                    │  SUPERVISOR  │
+                    │   (Router)   │
+                    └──────┬───────┘
+                           │
+           ┌───────────────┼───────────────┐
+           │               │               │
+    ┌──────▼──────┐ ┌──────▼──────┐ ┌──────▼──────┐
+    │ Agente      │ │ Agente      │ │ Agente      │
+    │ DISEÑO      │ │ MARKETING   │ │ OPERACIONES │
+    │             │ │             │ │             │
+    │ Tools:      │ │ Tools:      │ │ Tools:      │
+    │ - Renders   │ │ - RRSS      │ │ - CRM       │
+    │ - Brandbook │ │ - Calendar  │ │ - Inventario│
+    │ - Drive     │ │ - Copy      │ │ - Envíos    │
+    └─────────────┘ └─────────────┘ └─────────────┘</code></pre>
+    </div>
+<p class="prose-text text-gray-600 mb-6">**Ideal para:** Gestión general donde las solicitudes son variadas y el sistema debe saber a quién derivar.</p>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Patrón 3: Debate / Consenso</h3>
+<p class="prose-text text-gray-600 mb-6">Múltiples agentes opinan y se llega a una decisión conjunta.</p>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>SOLICITUD: "¿Deberíamos lanzar la colección en febrero o en abril?"
+
+[Agente Marketing]: "Febrero — antes de la temporada SS"
+[Agente Finanzas]:  "Abril — tenemos mejor cash flow"
+[Agente Diseño]:    "Marzo — la producción no estará lista hasta febrero"
+[Agente Supervisor]: DECISIÓN: "Marzo. Compromiso entre timing y producción."</code></pre>
+    </div>
+<p class="prose-text text-gray-600 mb-6">**Ideal para:** Decisiones estratégicas donde se necesitan múltiples perspectivas.</p>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="3-orquestaci-n-y-comunicaci-n" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">5</span>
+                    Orquestación y Comunicación
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Cómo los agentes se pasan información</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Método</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Cómo funciona</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Cuándo usarlo</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Output → Input</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">El resultado de un agente es el input del siguiente</td>
+<td class="p-4 font-serif text-gray-600 align-top">Pipeline lineal</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Shared Memory</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Todos los agentes leen/escriben en la misma base de datos</td>
+<td class="p-4 font-serif text-gray-600 align-top">Información compartida del proyecto</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Message Bus</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Agentes publican/suscriben a eventos</td>
+<td class="p-4 font-serif text-gray-600 align-top">Sistemas reactivos</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Orchestrator Calls</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">El supervisor llama a cada agente secuencialmente</td>
+<td class="p-4 font-serif text-gray-600 align-top">Control centralizado</td>
+</tr>
+</tbody></table></div>
+
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">En n8n: Sub-Workflows</h3>
+<p class="prose-text text-gray-600 mb-6">n8n permite que un workflow llame a otro (como un jefe que delega a empleados):</p>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>WORKFLOW PRINCIPAL (Supervisor):
+    ↓
+[Execute Sub-Workflow: "workflow_agente_diseno"]
+    ↓
+[Execute Sub-Workflow: "workflow_agente_marketing"]
+    ↓
+[Merge: combinar resultados]
+    ↓
+[AI Agent Supervisor: "Con estos inputs de diseño y marketing, 
+ toma la decisión final"]</code></pre>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="4-sub-workflows-en-n8n" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">6</span>
+                    Sub-Workflows en n8n
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Cómo crear un sistema multi-agente en n8n</h3>
+<h4 class="text-xl font-bold text-brand-dark mb-4 mt-8"><i class="fa-solid fa-arrow-right text-brand-accent mr-2 text-sm"></i> Paso 1: Crear workflows individuales para cada agente</h4>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2"><strong class="font-bold text-gray-900">Workflow "Agente Diseño"</strong>: Chat Trigger → AI Agent (con tools de diseño)</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Workflow "Agente Marketing"</strong>: Chat Trigger → AI Agent (con tools de marketing)</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Workflow "Agente QA"</strong>: Chat Trigger → AI Agent (con tools de evaluación)</li>
+</ul>
+<h4 class="text-xl font-bold text-brand-dark mb-4 mt-8"><i class="fa-solid fa-arrow-right text-brand-accent mr-2 text-sm"></i> Paso 2: Crear workflow Supervisor</h4>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>[Trigger: solicitud del usuario]
+    ↓
+[AI Agent Supervisor: "Analiza esta solicitud y decide:
+    - Si es de diseño → ejecuta sub-workflow diseño
+    - Si es de marketing → ejecuta sub-workflow marketing
+    - Si es de ambos → ejecuta ambos y combina
+    - Si necesita QA → ejecuta sub-workflow QA después"]
+    ↓
+[Execute Sub-Workflow: según decisión del supervisor]
+    ↓
+[Output: resultado final al usuario]</code></pre>
+    </div>
+<h4 class="text-xl font-bold text-brand-dark mb-4 mt-8"><i class="fa-solid fa-arrow-right text-brand-accent mr-2 text-sm"></i> Paso 3: Configurar comunicación entre agentes</h4>
+<p class="prose-text text-gray-600 mb-6">Los agentes comparten contexto a través de:</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2"><strong class="font-bold text-gray-900">Google Sheets</strong>: tabla compartida &quot;Estado del Proyecto&quot;</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Variables de n8n</strong>: los sub-workflows devuelven datos al principal</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Memory compartida</strong>: el mismo vector store para todos</li>
+</ul>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="5-caso-pr-ctico-el-departamento-ia-de-la-tienda" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">7</span>
+                    Caso Práctico: El "Departamento IA" de la Tienda
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Arquitectura completa del sistema multi-agente</h3>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>┌─────────────────────────────────────────────────────────────┐
+│           DEPARTAMENTO IA — [MARCA]                          │
+│                                                             │
+│  ┌──────────────────┐                                       │
+│  │   SUPERVISOR      │  "Recibe solicitudes, clasifica,     │
+│  │   (Orquestador)   │   delega y combina resultados"       │
+│  └────────┬──────────┘                                      │
+│           │                                                  │
+│  ┌────────┴────────────────────────────┐                    │
+│  │           │           │              │                    │
+│  ▼           ▼           ▼              ▼                    │
+│ ┌─────┐  ┌─────┐  ┌─────────┐  ┌──────────┐               │
+│ │ART  │  │COPY │  │ANALYTICS│  │SOPORTE   │               │
+│ │BOT  │  │BOT  │  │BOT      │  │BOT       │               │
+│ │     │  │     │  │         │  │          │               │
+│ │Genera│  │Copy │  │Métricas │  │Atiende   │               │
+│ │prompts│ │ads, │  │informes │  │clientes  │               │
+│ │evalúa│  │news │  │análisis │  │registra  │               │
+│ │render│  │RRSS │  │trends   │  │escala    │               │
+│ └─────┘  └─────┘  └─────────┘  └──────────┘               │
+│                                                             │
+│  SHARED: Google Sheets (catálogo + CRM + métricas)          │
+│  SHARED: Vector Store (brandbook + SOPs + FAQ)              │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+    </div>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Flujo ejemplo: "Lanza el modelo Loafer Riviera"</h3>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>USUARIO: "Quiero lanzar el nuevo modelo Loafer Riviera"
+
+SUPERVISOR: "Entendido. Voy a coordinar el lanzamiento."
+    ↓
+SUPERVISOR → ARTBOT: "Genera 3 prompts de render para el Loafer Riviera"
+ARTBOT: "Aquí tienes 3 prompts según el brandbook: [prompts]"
+    ↓
+SUPERVISOR → COPYBOT: "Genera copy para Instagram, LinkedIn y newsletter 
+    para el Loafer Riviera. Material: suede azul navy. Precio: €320"
+COPYBOT: "Copy listo para 3 canales: [copies]"
+    ↓
+SUPERVISOR → ANALYTICSBOT: "¿Cuál es el mejor horario para publicar 
+    esta semana según nuestras métricas?"
+ANALYTICSBOT: "Martes 11:00 y Jueves 18:00 tienen mejor engagement."
+    ↓
+SUPERVISOR: "Plan de lanzamiento:
+    1. Renders: 3 versiones listas (prompts generados por ArtBot)
+    2. Copy: Instagram (martes 11:00), LinkedIn (jueves 18:00), Newsletter (viernes)
+    3. ¿Apruebas para proceder?"</code></pre>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="6-limitaciones-y-consideraciones" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">8</span>
+                    Limitaciones y Consideraciones
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Cuándo NO usar multi-agente</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Situación</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Mejor opción</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top">Tarea simple y directa</td>
+<td class="p-4 font-serif text-gray-600 align-top">Un solo agente o incluso un chatbot</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top">Equipo de ≤3 personas</td>
+<td class="p-4 font-serif text-gray-600 align-top">Flujos manuales + 1 agente</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top">Datos sensibles</td>
+<td class="p-4 font-serif text-gray-600 align-top">Minimizar agentes con acceso</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top">Presupuesto limitado</td>
+<td class="p-4 font-serif text-gray-600 align-top">Cada agente = llamadas API = coste</td>
+</tr>
+</tbody></table></div>
+
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Costes operativos</h3>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>1 agente × 50 consultas/día × $0.03/consulta = $1.50/día = $45/mes
+4 agentes × 50 consultas/día × $0.03/consulta = $6.00/día = $180/mes
+
+Comparación: 1 empleado entry-level = ~$2,000/mes</code></pre>
+    </div>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            💡 **Regla práctica:** Los agentes no sustituyen empleados. Los agentes eliminan las tareas repetitivas para que los empleados se enfoquen en trabajo creativo y estratégico.
+        </p>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="7-quiz-y-pfc" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">9</span>
+                    Quiz y PFC
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">📝 Quiz de Conocimientos (8 preguntas)</h3>
+<p class="prose-text text-gray-600 mb-6">**1.** ¿Cuál es la ventaja principal de un sistema multi-agente sobre un agente individual?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Es más barato</li>
+<li class="pl-2">b) ✅ Cada agente está especializado en su dominio, con prompt enfocado y tools relevantes, lo que mejora la precisión</li>
+<li class="pl-2">c) Es más rápido</li>
+<li class="pl-2">d) Necesita menos configuración</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**2.** ¿Qué es el patrón "Supervisor"?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Un agente que supervisa las redes sociales</li>
+<li class="pl-2">b) ✅ Un agente orquestador que recibe solicitudes y delega a agentes especialistas adecuados</li>
+<li class="pl-2">c) Un dashboard de monitoreo</li>
+<li class="pl-2">d) Un tipo de test</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**3.** ¿Cómo se comunican los agentes entre sí en n8n?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) A través de email</li>
+<li class="pl-2">b) ✅ Sub-workflows (un workflow llama a otros), variables compartidas, y shared memory (Sheets/Vector Store)</li>
+<li class="pl-2">c) Por Slack</li>
+<li class="pl-2">d) No se pueden comunicar</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**4.** ¿Qué patrón multi-agente es mejor para producción de contenido?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Debate/Consenso</li>
+<li class="pl-2">b) ✅ Pipeline: Investigador → Strategist → Copywriter → Designer → QA</li>
+<li class="pl-2">c) Supervisor</li>
+<li class="pl-2">d) Todos son iguales</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**5.** ¿Cuándo NO deberías usar un sistema multi-agente?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Cuando tienes muchos productos</li>
+<li class="pl-2">b) ✅ Cuando la tarea es simple y directa: un solo agente es suficiente y más eficiente</li>
+<li class="pl-2">c) Cuando tienes acceso a APIs</li>
+<li class="pl-2">d) Nunca, siempre es mejor multi-agente</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**6.** ¿Qué es "Shared Memory" en un sistema multi-agente?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) La RAM del ordenador</li>
+<li class="pl-2">b) ✅ Una fuente de datos compartida entre todos los agentes (Google Sheets, Vector Store) para mantener coherencia</li>
+<li class="pl-2">c) La memoria del usuario</li>
+<li class="pl-2">d) Un archivo temporal</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**7.** En el "Departamento IA" de la tienda, ¿cuántos agentes especialistas tiene?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) 2 (diseño y marketing)</li>
+<li class="pl-2">b) 3 (diseño, marketing, soporte)</li>
+<li class="pl-2">c) ✅ 4 (ArtBot, CopyBot, AnalyticsBot, SoporteBot) + 1 Supervisor</li>
+<li class="pl-2">d) 1 solo agente que hace todo</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**8.** ¿Los agentes IA sustituyen empleados?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Sí, completamente</li>
+<li class="pl-2">b) ✅ No. Los agentes eliminan tareas repetitivas para que los empleados se enfoquen en trabajo creativo y estratégico</li>
+<li class="pl-2">c) Solo en empresas grandes</li>
+<li class="pl-2">d) Solo los chatbots</li>
+</ul>
+<hr>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">🚀 PFC — Preparación para Clase 28</h3>
+<ol class="font-serif text-gray-600 text-lg list-decimal list-inside space-y-3 mb-8">
+<li class="pl-2"><strong class="font-bold text-gray-900">Diseñar el diagrama</strong> del sistema multi-agente de tu marca (mínimo 3 agentes + supervisor)</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Escribir los System Prompts</strong> de cada agente especialista</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Definir los "shared resources"</strong>: qué Sheets/datos son compartidos</li>
+</ol>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            📦 **Entregable:** Diagrama multi-agente + System Prompts de cada agente + mapa de recursos compartidos.
+        </p>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="-recursos-adicionales" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">10</span>
+                    📎 Recursos Adicionales
+                </h2>
+        <ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2"><a href="https://docs.n8n.io/workflows/executions/sub-workflows/">n8n Sub-Workflows</a> — Documentación</li>
+<li class="pl-2"><a href="https://langchain-ai.github.io/langgraph/">LangGraph</a> — Framework multi-agente (referencia avanzada)</li>
+<li class="pl-2"><a href="https://crewai.com">CrewAI</a> — Framework de equipos de agentes (referencia)</li>
+</ul>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-dark text-white py-12 border-t border-gray-800 mt-12">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <h2 class="text-xl font-bold tracking-tight text-white mb-4">
+                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+            </h2>
+            <p class="text-gray-500 font-mono text-sm">© 2026 Curso IA Generativa. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>

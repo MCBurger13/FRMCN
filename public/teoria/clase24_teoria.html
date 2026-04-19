@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desarrollo de Agentes — MCP, RAG y Ecosistemas Conectados - [m].seny [labs]</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Merriweather -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0F172A',
+                            primary: '#4F46E5',
+                            accent: '#F59E0B',
+                            light: '#F8FAFC'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #F8FAFC; color: #334155; scroll-behavior: smooth; }
+        h1, h2, h3, h4, h5, h6, button, .nav-link { font-family: 'Inter', sans-serif; }
+        p, li, .prose-text { font-family: 'Merriweather', serif; line-height: 1.6; font-size: 1.125rem; text-align: left; }
+        .callout-analogy { background-color: #FEF3C7; border-left: 4px solid #F59E0B; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+
+<body class="antialiased">
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="../index.html" class="no-underline">
+                    <h1 class="text-xl font-bold tracking-tight text-brand-dark hover:text-brand-primary transition-colors cursor-pointer">
+                        <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+                    </h1>
+                </a>
+            </div>
+            <nav class="hidden lg:flex space-x-5 text-xs font-bold text-gray-500 uppercase tracking-wider overflow-x-auto">
+                <a href="#navegaci-n-de-la-clase" class="hover:text-brand-primary transition-colors">1. Navegación de la clase</a>
+<a href="#conceptos-clave-de-esta-clase" class="hover:text-brand-primary transition-colors">2. Conceptos clave de esta c...</a>
+<a href="#1-mcp-model-context-protocol" class="hover:text-brand-primary transition-colors">3. MCP — Model Context Proto...</a>
+<a href="#2-rag-retrieval-augmented-generation" class="hover:text-brand-primary transition-colors">4. RAG — Retrieval Augmented...</a>
+<a href="#3-construir-un-agente-paso-a-paso-en-n8n" class="hover:text-brand-primary transition-colors">5. Construir un Agente Paso ...</a>
+<a href="#4-system-prompts-avanzados-para-agentes" class="hover:text-brand-primary transition-colors">6. System Prompts Avanzados ...</a>
+<a href="#5-freepik-spaces-colaboraci-n-visual-con-ia" class="hover:text-brand-primary transition-colors">7. Freepik Spaces — Colabora...</a>
+<a href="#6-seguridad-y-tica-de-los-agentes" class="hover:text-brand-primary transition-colors">8. Seguridad y Ética de los ...</a>
+<a href="#7-quiz-y-pfc" class="hover:text-brand-primary transition-colors">9. Quiz y PFC</a>
+<a href="#-recursos-adicionales" class="hover:text-brand-primary transition-colors">10. 📎 Recursos Adicionales</a>
+            </nav>
+            <a href="/api/logout" class="hidden lg:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Salir
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-brand-dark text-white py-24 border-b-8 border-brand-primary">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <span class="inline-block py-1 px-3 bg-brand-primary/20 text-brand-primary font-mono text-sm font-bold uppercase tracking-widest mb-6 rounded">
+                CLASE 24 · 7 — Agentes IA
+            </span>
+            <h1 class="text-4xl lg:text-6xl font-extrabold mb-6 leading-tight">
+                Desarrollo de Agentes —<span class="text-brand-accent"> MCP, RAG y Ecosistemas Conectados</span>
+            </h1>
+            <div class="mt-10 flex items-center justify-center space-x-6 text-sm text-gray-400 font-mono">
+                <div><i class="fa-regular fa-clock"></i> <span>Duración: 1.5 horas</span></div>
+                <div><i class="fa-solid fa-users"></i> <span>Audiencia: conjunta</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wrap first section implicitly -->
+    <section class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            *El protocolo que lo cambia todo. MCP permite que los agentes se conecten con cualquier servicio: tu BBDD, tu Drive, tus APIs. Un agente que habla con el mundo entero.*
+        </p>
+    </div>
+<p class="prose-text text-gray-600 mb-6">**Duración estimada:** 1.5 horas</p>
+<hr>
+
+        
+        <section id="navegaci-n-de-la-clase" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">1</span>
+                    Navegación de la clase
+                </h2>
+        <ol class="font-serif text-gray-600 text-lg list-decimal list-inside space-y-3 mb-8">
+<li class="pl-2"><a href="#1-mcp">MCP — Model Context Protocol</a></li>
+<li class="pl-2"><a href="#2-rag">RAG — Retrieval Augmented Generation</a></li>
+<li class="pl-2"><a href="#3-construir-agente-n8n">Construir un Agente Paso a Paso en n8n</a></li>
+<li class="pl-2"><a href="#4-system-prompts-avanzados">System Prompts Avanzados para Agentes</a></li>
+<li class="pl-2"><a href="#5-freepik-spaces">Freepik Spaces — Colaboración Visual con IA</a></li>
+<li class="pl-2"><a href="#6-seguridad-y-%C3%A9tica">Seguridad y Ética de los Agentes</a></li>
+<li class="pl-2"><a href="#7-quiz-y-pfc">Quiz + PFC</a></li>
+</ol>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="conceptos-clave-de-esta-clase" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">2</span>
+                    Conceptos clave de esta clase
+                </h2>
+        <p class="prose-text text-gray-600 mb-6">`MCP (Model Context Protocol)` · `RAG (Retrieval Augmented Generation)` · `Embedding` · `Vector Database` · `Chunking` · `Context Window` · `System Prompt Avanzado` · `Persona` · `Chain of Thought` · `Few-Shot en System Prompt` · `Freepik Spaces`</p>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="1-mcp-model-context-protocol" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">3</span>
+                    MCP — Model Context Protocol
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">¿Qué es MCP?</h3>
+<p class="prose-text text-gray-600 mb-6">MCP (Model Context Protocol) es un estándar abierto creado por Anthropic que permite a los modelos de IA **conectarse con fuentes de datos y herramientas externas** de forma estandarizada.</p>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Analogía</h3>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>Sin MCP: Cada herramienta necesita su propio adaptador personalizado
+         (como tener 15 cargadores diferentes para 15 dispositivos)
+
+Con MCP: Un protocolo estándar que conecta cualquier IA con cualquier herramienta
+         (como USB-C: un cable para todo)</code></pre>
+    </div>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">¿Cómo funciona?</h3>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>┌──────────┐         ┌──────────┐         ┌──────────────┐
+│   LLM    │◄──MCP──▶│  MCP     │◄──API──▶│ Servicios    │
+│ (Claude, │         │ Server   │         │              │
+│  Gemini) │         │          │         │ · Supabase   │
+│          │         │ Traduce  │         │ · GitHub     │
+│          │         │ entre IA │         │ · Google     │
+│          │         │ y tools  │         │ · Slack      │
+└──────────┘         └──────────┘         │ · n8n        │
+                                          └──────────────┘</code></pre>
+    </div>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">MCP en la práctica: lo que ya conoces</h3>
+<p class="prose-text text-gray-600 mb-6">En Clase 5 aprendimos sobre Gemini Gems con grounding. MCP es la evolución profesional:</p>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Gems (Grounding)</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">MCP</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top">Subes documentos al modelo</td>
+<td class="p-4 font-serif text-gray-600 align-top">El modelo accede a documentos en tiempo real</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top">Datos estáticos, se quedan obsoletos</td>
+<td class="p-4 font-serif text-gray-600 align-top">Datos siempre actualizados</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top">Solo funciona en la interfaz de Gemini</td>
+<td class="p-4 font-serif text-gray-600 align-top">Funciona en cualquier aplicación (n8n, IDE, chatbot)</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top">Limitado a documentos</td>
+<td class="p-4 font-serif text-gray-600 align-top">Conecta con BBDD, APIs, herramientas</td>
+</tr>
+</tbody></table></div>
+
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Servidores MCP disponibles</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">MCP Server</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Qué conecta</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Ejemplo de uso</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Supabase MCP</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Tu base de datos PostgreSQL</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;¿Cuántos productos tenemos de mujer?&quot; → consulta la BBDD real</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">GitHub MCP</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Repositorios de código</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;¿Cuál es el último cambio en la web?&quot;</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Google Drive MCP</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Archivos y carpetas</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;Busca el último brandbook&quot;</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Slack MCP</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Canales y mensajes</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;Resume las decisiones del canal #diseño de esta semana&quot;</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">n8n MCP</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Workflows de automatización</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;Ejecuta el pipeline de renders para el modelo Z005&quot;</td>
+</tr>
+</tbody></table></div>
+
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="2-rag-retrieval-augmented-generation" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">4</span>
+                    RAG — Retrieval Augmented Generation
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">El problema que RAG resuelve</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Sin RAG</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Con RAG</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;¿Cuál es la guía de color de nuestra marca?&quot; → &quot;No tengo esa información&quot;</td>
+<td class="p-4 font-serif text-gray-600 align-top">&quot;¿Cuál es la guía de color de nuestra marca?&quot; → &quot;Según vuestro brandbook v3.2, los colores principales son...&quot;</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top">El modelo no conoce tus datos internos</td>
+<td class="p-4 font-serif text-gray-600 align-top">El modelo busca en tus documentos y responde con datos reales</td>
+</tr>
+</tbody></table></div>
+
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Cómo funciona RAG</h3>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>FASE 1: INDEXACIÓN (se hace una vez)
+┌──────────┐    ┌───────────┐    ┌──────────────┐    ┌──────────────┐
+│ Documentos│──▶│ Chunking  │──▶│ Embeddings   │──▶│ Vector Store │
+│ (brandbook│    │ (dividir  │    │ (convertir   │    │ (almacenar   │
+│  SOPs,    │    │  en trozos│    │  texto en    │    │  vectores)   │
+│  catálogo)│    │  de ~500  │    │  vectores    │    │              │
+│           │    │  palabras)│    │  numéricos)  │    │ Pinecone /   │
+└──────────┘    └───────────┘    └──────────────┘    │ Supabase pgv.│
+                                                      └──────────────┘
+
+FASE 2: CONSULTA (cada vez que alguien pregunta)
+┌──────────┐    ┌───────────┐    ┌──────────────┐    ┌──────────────┐
+│ Pregunta │──▶│ Embedding │──▶│ Búsqueda     │──▶│ LLM + Context│
+│ del      │    │ de la     │    │ semántica en │    │              │
+│ usuario  │    │ pregunta  │    │ Vector Store │    │ "Según tus   │
+│          │    │           │    │              │    │  docs, la    │
+│          │    │           │    │ Top 5        │    │  respuesta   │
+│          │    │           │    │ fragmentos   │    │  es..."      │
+└──────────┘    └───────────┘    │ relevantes   │    └──────────────┘
+                                 └──────────────┘</code></pre>
+    </div>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">RAG en n8n</h3>
+<p class="prose-text text-gray-600 mb-6">n8n ofrece nodos de Vector Store para implementar RAG:</p>
+<ol class="font-serif text-gray-600 text-lg list-decimal list-inside space-y-3 mb-8">
+<li class="pl-2"><strong class="font-bold text-gray-900">Supabase Vector Store</strong>: usa la extensión pgvector de tu Supabase</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Pinecone</strong>: servicio de vector database dedicado</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">In-Memory Vector Store</strong>: para pruebas rápidas (no persistente)</li>
+</ol>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="3-construir-un-agente-paso-a-paso-en-n8n" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">5</span>
+                    Construir un Agente Paso a Paso en n8n
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Ejemplo: Agente "Asistente de Catálogo"</h3>
+<p class="prose-text text-gray-600 mb-6">Este agente responde preguntas sobre el catálogo y puede modificarlo.</p>
+<h4 class="text-xl font-bold text-brand-dark mb-4 mt-8"><i class="fa-solid fa-arrow-right text-brand-accent mr-2 text-sm"></i> Paso 1: Trigger</h4>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">Nodo: <strong class="font-bold text-gray-900">Chat Trigger</strong> (interfaz de chat integrada en n8n)</li>
+<li class="pl-2">O: <strong class="font-bold text-gray-900">Webhook</strong> (para conectar desde tu web)</li>
+</ul>
+<h4 class="text-xl font-bold text-brand-dark mb-4 mt-8"><i class="fa-solid fa-arrow-right text-brand-accent mr-2 text-sm"></i> Paso 2: AI Agent Node</h4>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">Modelo: GPT-4 / Claude</li>
+<li class="pl-2">System Prompt:</li>
+</ul>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>Eres el Asistente de Catálogo de [MARCA], una marca de zapatos de lujo.
+
+TU ROL:
+- Responder preguntas sobre productos del catálogo
+- Añadir nuevos productos cuando se te indique
+- Generar fichas de producto
+- NUNCA inventar datos: si no encuentras un producto, di "No lo encuentro"
+
+TONO: Profesional, conciso, preciso.
+
+FORMATO de ficha:
+- Nombre | Tipo | Color | Material | Precio | Descripción</code></pre>
+    </div>
+<h4 class="text-xl font-bold text-brand-dark mb-4 mt-8"><i class="fa-solid fa-arrow-right text-brand-accent mr-2 text-sm"></i> Paso 3: Conectar Tools</h4>
+<ol class="font-serif text-gray-600 text-lg list-decimal list-inside space-y-3 mb-8">
+<li class="pl-2"><strong class="font-bold text-gray-900">Google Sheets Tool</strong>: leer/escribir en el catálogo</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Calculator Tool</strong>: calcular márgenes y descuentos</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Google Drive Tool</strong>: buscar imágenes de producto</li>
+</ol>
+<h4 class="text-xl font-bold text-brand-dark mb-4 mt-8"><i class="fa-solid fa-arrow-right text-brand-accent mr-2 text-sm"></i> Paso 4: Conectar Memory</h4>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2"><strong class="font-bold text-gray-900">Window Buffer Memory</strong>: recuerda las últimas 15 interacciones </li>
+<li class="pl-2">Permite conversaciones como: &quot;Muéstrame los mocasines&quot; → &quot;¿Cuánto cuesta el segundo?&quot; → &quot;Añádele un 15% de descuento&quot;</li>
+</ul>
+<h4 class="text-xl font-bold text-brand-dark mb-4 mt-8"><i class="fa-solid fa-arrow-right text-brand-accent mr-2 text-sm"></i> Paso 5: Probar</h4>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>Tú: "¿Cuántos modelos de mujer tenemos?"
+Agente: [Usa tool: Google Sheets → leer → filtrar género=Mujer]  
+        "Actualmente hay 12 modelos de mujer en el catálogo."
+
+Tú: "Añade un nuevo stiletto rojo en nappa, precio 420€"
+Agente: [Usa tool: Google Sheets → añadir fila]
+        "Hecho. He añadido 'Stiletto Rojo - Nappa' a €420. ¿Quieres que genere la ficha completa?"</code></pre>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="4-system-prompts-avanzados-para-agentes" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">6</span>
+                    System Prompts Avanzados para Agentes
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Estructura profesional de un System Prompt de agente</h3>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code># IDENTIDAD
+Eres [nombre del agente], [rol] de [empresa]. 
+
+# OBJETIVO
+Tu misión principal es [objetivo claro].
+
+# PERSONALIDAD
+- Tono: [profesional/cercano/técnico]
+- Idioma: [español, responde siempre en español]
+- Estilo: [conciso/detallado]
+
+# TOOLS DISPONIBLES
+Tienes acceso a:
+1. [Tool 1]: para [uso]. Úsalo cuando [condición].
+2. [Tool 2]: para [uso]. Úsalo cuando [condición].
+
+# PROCESO DE TRABAJO
+Cuando recibas una solicitud:
+1. Analiza qué se te pide
+2. Decide qué tool(s) necesitas
+3. Ejecuta
+4. Verifica el resultado
+5. Informa al usuario
+
+# RESTRICCIONES (Guardrails)
+- NUNCA [acción peligrosa]
+- SIEMPRE [verificación]
+- Si no estás seguro, PREGUNTA antes de actuar
+- Límite de gasto: máximo [cantidad] por operación
+
+# FORMATO DE RESPUESTA
+[Cómo estructurar las respuestas]
+
+# EJEMPLOS (Few-Shot)
+Ejemplo 1: 
+  Input: "..."
+  Tu respuesta: "..."</code></pre>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="5-freepik-spaces-colaboraci-n-visual-con-ia" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">7</span>
+                    Freepik Spaces — Colaboración Visual con IA
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">¿Qué es Freepik Spaces?</h3>
+<p class="prose-text text-gray-600 mb-6">Un entorno de trabajo colaborativo donde equipos pueden:</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">Generar imágenes con IA de forma compartida</li>
+<li class="pl-2">Crear y reutilizar estilos consistentes</li>
+<li class="pl-2">Gestionar un banco de imágenes de marca centralizado</li>
+<li class="pl-2">Iterar en tiempo real sobre conceptos visuales</li>
+</ul>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Integración con el ecosistema de agentes</h3>
+<p class="prose-text text-gray-600 mb-6">Un agente puede usar Freepik Spaces para:</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">Generar imágenes con estilo de marca consistente</li>
+<li class="pl-2">Buscar en la biblioteca visual de la empresa</li>
+<li class="pl-2">Sugerir imágenes para campañas basándose en el calendario editorial</li>
+</ul>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="6-seguridad-y-tica-de-los-agentes" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">8</span>
+                    Seguridad y Ética de los Agentes
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Las 5 Reglas de Oro</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Regla</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Por qué</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Implementación</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">1. Human-in-the-Loop para acciones irreversibles</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Un agente puede cometer errores costosos</td>
+<td class="p-4 font-serif text-gray-600 align-top">Aprobación humana antes de enviar emails, publicar, o hacer compras</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">2. Principio del mínimo privilegio</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Solo acceso a lo estrictamente necesario</td>
+<td class="p-4 font-serif text-gray-600 align-top">No des acceso a la BBDD completa si solo necesita leer el catálogo</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">3. Logging de todas las acciones</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Trazabilidad y auditoría</td>
+<td class="p-4 font-serif text-gray-600 align-top">Registrar cada tool call del agente en un log</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">4. Rate limits y presupuestos</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Evitar uso descontrolado</td>
+<td class="p-4 font-serif text-gray-600 align-top">Máximo 100 generaciones/día, máximo €10/día de API calls</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">5. Transparencia</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">El usuario debe saber que habla con IA</td>
+<td class="p-4 font-serif text-gray-600 align-top">Identificar siempre al agente como IA, nunca suplantar humanos</td>
+</tr>
+</tbody></table></div>
+
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="7-quiz-y-pfc" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">9</span>
+                    Quiz y PFC
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">📝 Quiz de Conocimientos (8 preguntas)</h3>
+<p class="prose-text text-gray-600 mb-6">**1.** ¿Qué es MCP y para qué sirve?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Un modelo de IA más potente</li>
+<li class="pl-2">b) ✅ Model Context Protocol: un estándar que permite a modelos de IA conectarse con fuentes de datos y herramientas externas de forma estandarizada</li>
+<li class="pl-2">c) Un tipo de memoria</li>
+<li class="pl-2">d) Un lenguaje de programación</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**2.** ¿Qué problema resuelve RAG?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Que las imágenes generadas sean borrosas</li>
+<li class="pl-2">b) ✅ Que los modelos de IA puedan responder con información de documentos internos de la empresa, no solo su conocimiento general</li>
+<li class="pl-2">c) Que los agentes sean más rápidos</li>
+<li class="pl-2">d) Que los flujos de n8n no fallen</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**3.** ¿Qué es un "embedding" en el contexto de RAG?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Un tipo de imagen IA</li>
+<li class="pl-2">b) ✅ La representación numérica (vector) de un texto, que permite buscar por significado semántico</li>
+<li class="pl-2">c) Un plugin de n8n</li>
+<li class="pl-2">d) Un tipo de base de datos</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**4.** ¿Cuáles son los 4 componentes de un agente IA?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Input, Process, Output, Log</li>
+<li class="pl-2">b) ✅ Cerebro (LLM), Memoria, Tools y Guardrails</li>
+<li class="pl-2">c) Prompt, Modelo, API, Resultado</li>
+<li class="pl-2">d) Frontend, Backend, BBDD, API</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**5.** ¿Qué es el "principio del mínimo privilegio" para agentes?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Usar el modelo más barato</li>
+<li class="pl-2">b) ✅ Dar al agente acceso SOLO a lo estrictamente necesario para su tarea, sin permisos excesivos</li>
+<li class="pl-2">c) No usar agentes en producción</li>
+<li class="pl-2">d) Limitar las respuestas a 100 palabras</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**6.** ¿Qué ventaja tiene MCP sobre Gemini Gems con grounding?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) MCP es gratis</li>
+<li class="pl-2">b) ✅ MCP conecta en tiempo real con BBDD/APIs/tools (datos siempre actualizados); funciona en cualquier aplicación, no solo en Gemini</li>
+<li class="pl-2">c) MCP genera mejores imágenes</li>
+<li class="pl-2">d) No hay ventaja, son iguales</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**7.** ¿Qué componente del System Prompt define "qué NO puede hacer el agente"?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Identidad</li>
+<li class="pl-2">b) Objetivo</li>
+<li class="pl-2">c) Tools disponibles</li>
+<li class="pl-2">d) ✅ Restricciones / Guardrails</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**8.** ¿Por qué todo agente debería tener logging activado?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Para que funcione más rápido</li>
+<li class="pl-2">b) ✅ Trazabilidad y auditoría: poder revisar qué hizo el agente, cuándo y por qué, para detectar errores</li>
+<li class="pl-2">c) Porque n8n lo requiere</li>
+<li class="pl-2">d) Para generar informes</li>
+</ul>
+<hr>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">🚀 PFC — Preparación para Labs de Agentes (Clases 25-26)</h3>
+<ol class="font-serif text-gray-600 text-lg list-decimal list-inside space-y-3 mb-8">
+<li class="pl-2"><strong class="font-bold text-gray-900">Escribir el System Prompt completo</strong> del agente de tu departamento (usando la estructura de 7 secciones)</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Preparar documentos para RAG</strong>: brandbook, SOPs, catálogo (en texto plano o PDF)</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Diseñar el diagrama del agente</strong>: qué tools necesita, qué memoria, qué guardrails</li>
+</ol>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            📦 **Entregable:** System Prompt profesional + documentos para RAG + diagrama del agente.
+        </p>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="-recursos-adicionales" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">10</span>
+                    📎 Recursos Adicionales
+                </h2>
+        <ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2"><a href="https://modelcontextprotocol.io">MCP Protocol</a> — Documentación oficial</li>
+<li class="pl-2"><a href="https://docs.n8n.io/integrations/builtin/cluster-nodes/root-nodes/n8n-nodes-langchain.agent/">n8n AI Agent Docs</a> — Referencia</li>
+<li class="pl-2"><a href="https://freepik.com/spaces">Freepik Spaces</a> — Colaboración visual</li>
+<li class="pl-2"><a href="https://supabase.com/docs/guides/ai/vector-columns">Supabase pgvector</a> — Vector store para RAG</li>
+</ul>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-dark text-white py-12 border-t border-gray-800 mt-12">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <h2 class="text-xl font-bold tracking-tight text-white mb-4">
+                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+            </h2>
+            <p class="text-gray-500 font-mono text-sm">© 2026 Curso IA Generativa. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -7,7 +7,8 @@ const USERS = [
     { username: 'AINABIBBILONI', password: 'CURSOIA.A' },
     { username: 'MILGUELLAZARO', password: 'CURSOIA.M' },
     { username: 'MARTINPIRIS', password: 'CURSOIA.M' },
-    { username: 'LAURANEGRE', password: 'CURSOIA.L' }
+    { username: 'LAURANEGRE', password: 'CURSOIA.L' },
+    { username: 'biel', password: 'biel' }
 ];
 
 async function signToken(payloadStr, secret) {
@@ -42,7 +43,7 @@ export async function POST(request) {
             const secret = process.env.SESSION_SECRET || 'insecure-default-change-me';
             const token = await signToken(payloadStr, secret);
 
-            const response = NextResponse.redirect(new URL('/index.html', request.url), 303);
+            const response = NextResponse.redirect(new URL('/', request.url), 303);
             response.cookies.set('auth_token', token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',

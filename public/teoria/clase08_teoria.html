@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Absoluto — ControlNet, LoRAs y Ecosistemas Híbridos - [m].seny [labs]</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Merriweather -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0F172A',
+                            primary: '#4F46E5',
+                            accent: '#F59E0B',
+                            light: '#F8FAFC'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #F8FAFC; color: #334155; scroll-behavior: smooth; }
+        h1, h2, h3, h4, h5, h6, button, .nav-link { font-family: 'Inter', sans-serif; }
+        p, li, .prose-text { font-family: 'Merriweather', serif; line-height: 1.6; font-size: 1.125rem; text-align: left; }
+        .callout-analogy { background-color: #FEF3C7; border-left: 4px solid #F59E0B; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+
+<body class="antialiased">
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="../index.html" class="no-underline">
+                    <h1 class="text-xl font-bold tracking-tight text-brand-dark hover:text-brand-primary transition-colors cursor-pointer">
+                        <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+                    </h1>
+                </a>
+            </div>
+            <nav class="hidden lg:flex space-x-5 text-xs font-bold text-gray-500 uppercase tracking-wider overflow-x-auto">
+                <a href="#navegaci-n-de-la-clase" class="hover:text-brand-primary transition-colors">1. Navegación de la clase</a>
+<a href="#conceptos-clave-de-esta-clase" class="hover:text-brand-primary transition-colors">2. Conceptos clave de esta c...</a>
+<a href="#herramientas-presentadas" class="hover:text-brand-primary transition-colors">3. Herramientas presentadas</a>
+<a href="#1-el-problema-del-control" class="hover:text-brand-primary transition-colors">4. El Problema del Control</a>
+<a href="#2-controlnet" class="hover:text-brand-primary transition-colors">5. ControlNet</a>
+<a href="#3-loras" class="hover:text-brand-primary transition-colors">6. LoRAs</a>
+<a href="#4-negative-prompt-avanzado" class="hover:text-brand-primary transition-colors">7. Negative Prompt Avanzado</a>
+<a href="#5-stable-diffusion" class="hover:text-brand-primary transition-colors">8. Stable Diffusion</a>
+<a href="#6-leonardo-ai" class="hover:text-brand-primary transition-colors">9. Leonardo AI</a>
+<a href="#7-figma-ia" class="hover:text-brand-primary transition-colors">10. Figma + IA</a>
+<a href="#8-quiz-y-pfc" class="hover:text-brand-primary transition-colors">11. Quiz y PFC</a>
+<a href="#-recursos-adicionales" class="hover:text-brand-primary transition-colors">12. 📎 Recursos Adicionales</a>
+            </nav>
+            <a href="/api/logout" class="hidden lg:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Salir
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-brand-dark text-white py-24 border-b-8 border-brand-primary">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <span class="inline-block py-1 px-3 bg-brand-primary/20 text-brand-primary font-mono text-sm font-bold uppercase tracking-widest mb-6 rounded">
+                CLASE 8 · 3 — Control Visual y Campaña
+            </span>
+            <h1 class="text-4xl lg:text-6xl font-extrabold mb-6 leading-tight">
+                Control Absoluto —<span class="text-brand-accent"> ControlNet, LoRAs y Ecosistemas Híbridos</span>
+            </h1>
+            <div class="mt-10 flex items-center justify-center space-x-6 text-sm text-gray-400 font-mono">
+                <div><i class="fa-regular fa-clock"></i> <span>Duración: 1.5 - 2 horas</span></div>
+                <div><i class="fa-solid fa-users"></i> <span>Audiencia: conjunta</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wrap first section implicitly -->
+    <section class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            *De la sugerencia al mando. Aprende a dar instrucciones estructurales a la IA: misma pose, misma estructura, control total sobre cada detalle del resultado.*
+        </p>
+    </div>
+<p class="prose-text text-gray-600 mb-6">**Duración estimada:** 1.5 – 2 horas</p>
+<hr>
+
+        
+        <section id="navegaci-n-de-la-clase" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">1</span>
+                    Navegación de la clase
+                </h2>
+        <ol class="font-serif text-gray-600 text-lg list-decimal list-inside space-y-3 mb-8">
+<li class="pl-2"><a href="#1-el-problema-del-control">El Problema del Control</a></li>
+<li class="pl-2"><a href="#2-controlnet">ControlNet — La Marioneta Virtual</a></li>
+<li class="pl-2"><a href="#3-loras">LoRAs — Fine-Tuning Ligero</a></li>
+<li class="pl-2"><a href="#4-negative-prompt-avanzado">Negative Prompt Avanzado</a></li>
+<li class="pl-2"><a href="#5-stable-diffusion">Stable Diffusion — El Ecosistema Open Source</a></li>
+<li class="pl-2"><a href="#6-leonardo-ai">Leonardo AI — El Centro de Control</a></li>
+<li class="pl-2"><a href="#7-figma-ia">Figma + IA — Diseño Colaborativo Híbrido</a></li>
+<li class="pl-2"><a href="#8-quiz-y-pfc">Quiz + PFC</a></li>
+</ol>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="conceptos-clave-de-esta-clase" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">2</span>
+                    Conceptos clave de esta clase
+                </h2>
+        <p class="prose-text text-gray-600 mb-6">`ControlNet` · `LoRA` · `Fine-Tuning` · `Canny Edge` · `Depth Map` · `OpenPose` · `Negative Prompt` · `Stable Diffusion` · `ComfyUI` · `Leonardo AI` · `Blueprints` · `Lienzo` · `Train LoRA` · `Figma AI Plugins`</p>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="herramientas-presentadas" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">3</span>
+                    Herramientas presentadas
+                </h2>
+        <div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Herramienta</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Especialidad</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Leonardo AI</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Control total: ControlNet, LoRAs, Lienzo, Blueprints</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Stable Diffusion / ComfyUI</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Ecosistema open source con máxima personalización</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Figma</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Diseño UI/UX con plugins IA para generación y edición</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Runway</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Pipeline visual con controles avanzados</td>
+</tr>
+</tbody></table></div>
+
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="1-el-problema-del-control" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">4</span>
+                    El Problema del Control
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Lo que la generación "libre" no puede hacer</h3>
+<p class="prose-text text-gray-600 mb-6">Hasta ahora hemos generado imágenes describiendo lo que queremos con texto. Esto funciona para ideación, pero tiene **límites críticos para producción**:</p>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Problema</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Ejemplo en nuestra tienda</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">No mantiene la estructura exacta</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Pides &quot;el mismo zapato de antes&quot; pero la IA genera uno diferente</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">No respeta poses específicas</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Quieres el zapato a 45° exactos, no &quot;más o menos así&quot;</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">No replica composiciones</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Necesitas la misma composición del catálogo para 20 productos</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">No aplica tu estilo de marca</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Cada generación tiene una estética ligeramente diferente</td>
+</tr>
+</tbody></table></div>
+
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            💡 **La solución:** Pasar de dar instrucciones de texto (ambiguas) a dar **instrucciones estructurales** (precisas). Esto es lo que hacen ControlNet y las LoRAs.
+        </p>
+    </div>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">La Pirámide de Control</h3>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>                    🎯 CONTROL MÁXIMO
+                   ╱                ╲
+                  ╱  ControlNet +    ╲
+                 ╱   LoRA Custom      ╲
+                ╱─────────────────────╲
+               ╱  ControlNet solo      ╲
+              ╱   (estructura/pose)     ╲
+             ╱─────────────────────────╲
+            ╱  Image-to-Image (img2img) ╲
+           ╱   (referencia visual)       ╲
+          ╱─────────────────────────────╲
+         ╱  Prompt Detallado + Seed      ╲
+        ╱   (texto descriptivo preciso)   ╲
+       ╱─────────────────────────────────╲
+      ╱  Prompt Simple                    ╲
+     ╱   (descripción básica)              ╲
+    ╱──────────────────────────────────────╲
+   🎲 CONTROL MÍNIMO (MÁXIMA ALEATORIEDAD)</code></pre>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="2-controlnet" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">5</span>
+                    ControlNet
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">La "Marioneta Virtual" de la IA</h3>
+<p class="prose-text text-gray-600 mb-6">ControlNet es un sistema que permite dar **instrucciones estructurales** a un modelo de generación de imagen. En lugar de describir con palabras, le das un "esqueleto" visual que la IA debe seguir.</p>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Tipos de ControlNet</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Tipo</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Qué detecta</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Analogía</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Uso en calzado</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Canny Edge</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Bordes y contornos</td>
+<td class="p-4 font-serif text-gray-600 align-top">El delineado de un dibujo</td>
+<td class="p-4 font-serif text-gray-600 align-top">Mantener la silueta exacta del zapato</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Depth Map</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Profundidad (cerca-lejos)</td>
+<td class="p-4 font-serif text-gray-600 align-top">Un mapa topográfico 3D</td>
+<td class="p-4 font-serif text-gray-600 align-top">Posicionar el zapato en el espacio exacto</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">OpenPose</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Esqueleto/postura humana</td>
+<td class="p-4 font-serif text-gray-600 align-top">Una marioneta de articulaciones</td>
+<td class="p-4 font-serif text-gray-600 align-top">Poses de modelo con zapatos</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Scribble</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Bocetos libres</td>
+<td class="p-4 font-serif text-gray-600 align-top">Un garabato como guía</td>
+<td class="p-4 font-serif text-gray-600 align-top">Sketch to Real con control estructural</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Segmentation</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Zonas semánticas</td>
+<td class="p-4 font-serif text-gray-600 align-top">Un mapa de colores por zona</td>
+<td class="p-4 font-serif text-gray-600 align-top">Definir qué es zapato, qué es fondo, qué es suelo</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Normal Map</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Superficie y relieve</td>
+<td class="p-4 font-serif text-gray-600 align-top">Las &quot;arrugas&quot; del terreno</td>
+<td class="p-4 font-serif text-gray-600 align-top">Texturas de piel y costuras con volumen exacto</td>
+</tr>
+</tbody></table></div>
+
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Flujo de trabajo con ControlNet</h3>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>1. IMAGEN DE REFERENCIA
+   (tu render de zapato de Clase 4)
+        ↓
+2. EXTRACCIÓN DE CONTROL
+   (Canny Edge: extrae los bordes/contornos)
+        ↓
+3. PROMPT + CONTROLNET
+   "Luxury brown leather oxford shoe, studio lighting"
+   + Canny Edge del zapato original como guía
+        ↓
+4. RESULTADO
+   Nuevo render que MANTIENE la silueta exacta
+   pero con nuevo material, color o iluminación</code></pre>
+    </div>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            🎯 **Caso de uso estrella:** Tienes UN zapato render perfecto. Con ControlNet generas 10 variaciones de color y material **manteniendo la estructura/silueta idéntica**. Imposible con prompt de texto solo.
+        </p>
+    </div>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Ejemplo práctico</h3>
+<p class="prose-text text-gray-600 mb-6">**Sin ControlNet:** "Generate a blue suede version of this shoe" → La IA genera un zapato azul, pero con diferente forma, diferente ángulo, diferente proporción.</p>
+<p class="prose-text text-gray-600 mb-6">**Con ControlNet (Canny Edge):** Extrae los bordes del zapato original → Usa esos bordes como guía → "Blue suede luxury shoe" → El resultado tiene **exactamente la misma silueta** pero en suede azul.</p>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="3-loras" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">6</span>
+                    LoRAs
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Fine-Tuning Ligero — Entrenar tu Propio Estilo</h3>
+<p class="prose-text text-gray-600 mb-6">Una **LoRA** (Low-Rank Adaptation) es un "módulo de memoria" pequeño que entrenas con tus propias imágenes para que la IA aprenda un concepto, estilo o producto específico.</p>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">¿Qué puedes entrenar con una LoRA?</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Tipo de LoRA</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Qué aprende</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Ejemplo para la tienda</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Producto</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Tu zapato exacto</td>
+<td class="p-4 font-serif text-gray-600 align-top">10-20 fotos de tu mocasín → LoRA → genera variaciones perfectas</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Estilo</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Tu estética de marca</td>
+<td class="p-4 font-serif text-gray-600 align-top">15-20 fotos editoriales de referencia → LoRA → todo lo que generes tendrá ese &quot;look&quot;</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Persona</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Un rostro/personaje</td>
+<td class="p-4 font-serif text-gray-600 align-top">Fotos del embajador/a de marca → LoRA → consistencia facial en todas las piezas</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Material</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Textura específica</td>
+<td class="p-4 font-serif text-gray-600 align-top">Macros de piel Vachetta → LoRA → todas las generaciones tienen esa textura exacta</td>
+</tr>
+</tbody></table></div>
+
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Proceso de entrenamiento</h3>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>1. RECOPILAR DATOS
+   - 10-20 imágenes de alta calidad
+   - Variedad de ángulos/iluminaciones
+   - Fondo limpio preferiblemente
+
+2. ETIQUETAR
+   - Describir cada imagen con un "trigger word" (ej: "lottusse_loafer")
+   - Tags de estilo, material, ángulo
+
+3. ENTRENAR
+   - Plataforma: Leonardo AI, Civitai, Replicate
+   - Tiempo: 15-30 minutos
+   - Resultado: archivo .safetensors (~50-200 MB)
+
+4. USAR
+   - Incluir el trigger word en el prompt
+   - "A lottusse_loafer on a marble pedestal, studio lighting"
+   - → Genera tu zapato exacto en la escena pedida</code></pre>
+    </div>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            ⚠️ **Diferencia clave:** ControlNet controla la **estructura**. LoRA controla el **concepto/estilo**. Usados juntos = control absoluto.
+        </p>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="4-negative-prompt-avanzado" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">7</span>
+                    Negative Prompt Avanzado
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">De "no quiero X" a control quirúrgico de calidad</h3>
+<p class="prose-text text-gray-600 mb-6">El Negative Prompt avanzado no es solo "qué no quieres ver", es una **plantilla de calidad profesional** que elimina los problemas más comunes:</p>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Plantilla de Negative Prompt para fotografía de producto</h3>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>NEGATIVE PROMPT:
+
+[Calidad]
+blurry, low quality, low resolution, pixelated, jpeg artifacts, noise, 
+grainy, out of focus, motion blur
+
+[Anatomía / Estructura]
+deformed, distorted, disfigured, mutated, extra fingers, extra limbs, 
+bad anatomy, bad proportions, asymmetric
+
+[Estilo no deseado]
+cartoon, anime, illustration, 3D render, CGI, painting, watercolor, 
+sketch, drawing, digital art, artificial look
+
+[Composición]
+cropped, cut off, out of frame, watermark, text, logo, signature, 
+username, border, vignette
+
+[Calzado específico]
+mismatched shoes, wrong number of shoes, floating shoes, melted soles, 
+impossible heel angle, stitching errors, uneven laces</code></pre>
+    </div>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            💡 **Tip pro:** Crea tu propia plantilla de Negative Prompt para la marca y reutilízala en TODAS las generaciones. Esto garantiza consistencia de calidad base.
+        </p>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="5-stable-diffusion" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">8</span>
+                    Stable Diffusion
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">El Ecosistema Open Source</h3>
+<p class="prose-text text-gray-600 mb-6">Stable Diffusion es un modelo de generación de imagen de **código abierto**. A diferencia de Gemini o DALL-E (cerrados), puedes descargarlo, modificarlo y ejecutarlo en tu propio ordenador.</p>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">¿Por qué importa para las empresas?</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Ventaja</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Explicación</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Privacidad total</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Las imágenes nunca salen de tu red corporativa</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Sin coste por generación</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Pagas el hardware, no por imagen</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Personalización extrema</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">LoRAs, ControlNets, modelos custom</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">ComfyUI</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Interfaz visual de nodos para crear pipelines de producción</td>
+</tr>
+</tbody></table></div>
+
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">ComfyUI — El "n8n de la imagen"</h3>
+<p class="prose-text text-gray-600 mb-6">ComfyUI es la interfaz visual de flujos nodales para Stable Diffusion:</p>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>[Prompt] → [Modelo SD] → [ControlNet] → [LoRA] → [Upscaling] → [Output]
+    ↓            ↓            ↓
+ [Negative]  [Sampler]   [Canny Edge]</code></pre>
+    </div>
+<p class="prose-text text-gray-600 mb-6">Cada nodo es un paso del pipeline. Puedes crear flujos complejos como:</p>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>"Para cada color en la lista → cargar ControlNet del zapato → aplicar LoRA 
+de mi marca → generar → upscale → guardar en carpeta organizada"</code></pre>
+    </div>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            🏭 **Para producción industrial:** ComfyUI es lo que usaremos en las Clases 17-18 para automatizar la generación masiva del catálogo.
+        </p>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="6-leonardo-ai" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">9</span>
+                    Leonardo AI
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">El Centro de Control para Diseñadores</h3>
+<p class="prose-text text-gray-600 mb-6">🔗 [leonardo.ai](https://leonardo.ai)</p>
+<p class="prose-text text-gray-600 mb-6">Leonardo AI combina lo mejor de los mundos: interfaz accesible + controles profesionales + LoRAs + ControlNet sin necesidad de instalación local.</p>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Funciones clave de Leonardo AI</h3>
+<h4 class="text-xl font-bold text-brand-dark mb-4 mt-8"><i class="fa-solid fa-arrow-right text-brand-accent mr-2 text-sm"></i> Blueprints (Plantillas de Estructura)</h4>
+<p class="prose-text text-gray-600 mb-6">Plantillas predefinidas de ControlNet que puedes aplicar con un clic:</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">Pose del zapato</li>
+<li class="pl-2">Composición del catálogo</li>
+<li class="pl-2">Ángulo de cámara estándar</li>
+</ul>
+<h4 class="text-xl font-bold text-brand-dark mb-4 mt-8"><i class="fa-solid fa-arrow-right text-brand-accent mr-2 text-sm"></i> Train Your LoRA</h4>
+<p class="prose-text text-gray-600 mb-6">Entrena un modelo con tus propias imágenes directamente en la plataforma:</p>
+<ol class="font-serif text-gray-600 text-lg list-decimal list-inside space-y-3 mb-8">
+<li class="pl-2">Sube 10-20 imágenes de tu producto</li>
+<li class="pl-2">Define el trigger word</li>
+<li class="pl-2">Leonardo entrena en ~20 minutos</li>
+<li class="pl-2">Usa tu LoRA en todas las generaciones futuras</li>
+</ol>
+<h4 class="text-xl font-bold text-brand-dark mb-4 mt-8"><i class="fa-solid fa-arrow-right text-brand-accent mr-2 text-sm"></i> Lienzo (Canvas)</h4>
+<p class="prose-text text-gray-600 mb-6">Editor visual integrado que combina:</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">Generación de imagen</li>
+<li class="pl-2">In-painting</li>
+<li class="pl-2">Out-painting</li>
+<li class="pl-2">Texto sobre imagen</li>
+<li class="pl-2">Composición por capas</li>
+</ul>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            🎨 **Flujo para diseño de catálogo:** Lienzo → generar zapato con LoRA → componer con fondo → añadir tipografía → exportar pieza de catálogo final sin salir de Leonardo.
+        </p>
+    </div>
+<h4 class="text-xl font-bold text-brand-dark mb-4 mt-8"><i class="fa-solid fa-arrow-right text-brand-accent mr-2 text-sm"></i> Tipografía AI</h4>
+<p class="prose-text text-gray-600 mb-6">Genera texto legible dentro de la imagen — uno de los pocos motores que hace esto bien. Perfecto para:</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">Carteles de tienda</li>
+<li class="pl-2">Banners con nombre de marca</li>
+<li class="pl-2">Posts con texto integrado en la imagen</li>
+</ul>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="7-figma-ia" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">10</span>
+                    Figma + IA
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Diseño Colaborativo Híbrido</h3>
+<p class="prose-text text-gray-600 mb-6">Figma sigue siendo la herramienta estándar de diseño UI/UX. Con plugins de IA, se convierte en un **hub híbrido** donde los renders generados con IA se integran en diseños profesionales.</p>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Plugins de IA para Figma</h3>
+<div class="overflow-x-auto mb-10 mt-6 shadow-sm rounded-xl border border-gray-200"><table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Plugin</th>
+<th class="bg-gray-50 border-b border-gray-200 p-4 font-bold text-brand-dark uppercase tracking-wider text-sm">Función</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white"><tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">AI Image Generator</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Genera imágenes dentro de Figma</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Magician</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Genera iconos, copies e imágenes con IA</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Automator</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Automatiza tareas repetitivas de diseño</td>
+</tr>
+<tr>
+<td class="p-4 font-serif text-gray-600 align-top"><strong class="font-bold text-gray-900">Content Reel</strong></td>
+<td class="p-4 font-serif text-gray-600 align-top">Rellena diseños con contenido realista generado</td>
+</tr>
+</tbody></table></div>
+
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">Flujo de trabajo Figma + IA para catálogo</h3>
+
+    <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-mono text-gray-400 font-bold uppercase tracking-widest">CODE</span>
+            <div class="flex space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+        </div>
+        <pre class="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm font-mono leading-relaxed"><code>1. Diseñar la PLANTILLA del catálogo en Figma (layout, tipografía, grid)
+2. Generar los RENDERS de zapatos con Gemini/Leonardo/Freepik
+3. IMPORTAR los renders a Figma como smart objects
+4. COMPONER las páginas del catálogo con la plantilla
+5. EXPORTAR en formato print-ready o web-ready</code></pre>
+    </div>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            🤝 **Ventaja:** El equipo de diseño ya conoce Figma. No necesitan aprender nuevas herramientas de composición — usan IA para la generación y Figma para el diseño final. Lo mejor de ambos mundos.
+        </p>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="8-quiz-y-pfc" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">11</span>
+                    Quiz y PFC
+                </h2>
+        <h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">📝 Quiz de Conocimientos (10 preguntas)</h3>
+<p class="prose-text text-gray-600 mb-6">**1.** ¿Cuál es la diferencia fundamental entre ControlNet y LoRA?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) ✅ ControlNet controla la estructura/pose; LoRA aprende un concepto/estilo específico</li>
+<li class="pl-2">b) ControlNet es de pago y LoRA es gratis</li>
+<li class="pl-2">c) ControlNet genera imágenes; LoRA genera texto</li>
+<li class="pl-2">d) Son la misma cosa con nombres diferentes</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**2.** ¿Qué tipo de ControlNet usarías para mantener la silueta exacta de un zapato?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) OpenPose</li>
+<li class="pl-2">b) Depth Map</li>
+<li class="pl-2">c) ✅ Canny Edge (bordes y contornos)</li>
+<li class="pl-2">d) Normal Map</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**3.** ¿Cuántas imágenes necesitas aproximadamente para entrenar una LoRA de producto?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) 1-2 imágenes</li>
+<li class="pl-2">b) ✅ 10-20 imágenes de alta calidad</li>
+<li class="pl-2">c) 500+ imágenes</li>
+<li class="pl-2">d) No se necesitan imágenes</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**4.** ¿Qué ventaja tiene Stable Diffusion frente a modelos cerrados como DALL-E?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Es más rápido siempre</li>
+<li class="pl-2">b) ✅ Código abierto: privacidad total, sin coste por generación, personalización extrema</li>
+<li class="pl-2">c) Las imágenes tienen mejor calidad siempre</li>
+<li class="pl-2">d) No tiene ventajas</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**5.** ¿Para qué sirve la función "Lienzo" de Leonardo AI?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Solo para dibujar bocetos</li>
+<li class="pl-2">b) ✅ Editor visual que combina generación, in-painting, out-painting, tipografía y composición por capas</li>
+<li class="pl-2">c) Para entrenar LoRAs</li>
+<li class="pl-2">d) Para generar vídeo</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**6.** ¿Qué es ComfyUI?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Una red social para diseñadores</li>
+<li class="pl-2">b) Un modelo de IA más potente que GPT</li>
+<li class="pl-2">c) ✅ Una interfaz visual de nodos para crear pipelines de generación con Stable Diffusion</li>
+<li class="pl-2">d) Un plugin de Photoshop</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**7.** ¿Qué es un "trigger word" en el contexto de LoRAs?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) La contraseña para acceder al modelo</li>
+<li class="pl-2">b) ✅ La palabra clave que activa tu LoRA entrenada en el prompt (ej: &quot;lottusse_loafer&quot;)</li>
+<li class="pl-2">c) Un hashtag para redes sociales</li>
+<li class="pl-2">d) Un comando de voz</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**8.** Si necesitas que el zapato mantenga EXACTAMENTE la misma estructura pero cambie de color, ¿qué combinas?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Solo un prompt más detallado</li>
+<li class="pl-2">b) LoRA + Upscaling</li>
+<li class="pl-2">c) ✅ ControlNet (Canny Edge para la estructura) + nuevo prompt de color</li>
+<li class="pl-2">d) In-painting manual</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**9.** ¿Para qué sirve el Negative Prompt en producción profesional?</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) ✅ Para eliminar defectos comunes y garantizar calidad base consistente (anti-blur, anti-distorsión, etc.)</li>
+<li class="pl-2">b) Para generar lo opuesto de lo que pides</li>
+<li class="pl-2">c) Para reducir el tiempo de generación</li>
+<li class="pl-2">d) Para hacer las imágenes en blanco y negro</li>
+</ul>
+<p class="prose-text text-gray-600 mb-6">**10.** El flujo ideal de diseño de catálogo con IA es:</p>
+<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">a) Solo Figma</li>
+<li class="pl-2">b) Solo Leonardo AI</li>
+<li class="pl-2">c) ✅ Generar renders con IA (Leonardo/Gemini) + Componer en Figma (layout, tipografía, export)</li>
+<li class="pl-2">d) Photoshop manual sin IA</li>
+</ul>
+<hr>
+<h3 class="text-2xl font-bold text-brand-dark mb-6 mt-12">🚀 PFC — Preparación para Clase 9</h3>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            La Clase 9 será la práctica de control quirúrgico con Leonardo AI y ControlNet. Prepara:
+        </p>
+    </div>
+<ol class="font-serif text-gray-600 text-lg list-decimal list-inside space-y-3 mb-8">
+<li class="pl-2"><strong class="font-bold text-gray-900">Seleccionar los 3 renders estrella</strong> de tus zapatos (los mejores de C04/C06)</li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Crear cuenta en Leonardo AI</strong> (si no la tienes) — <a href="https://leonardo.ai">leonardo.ai</a></li>
+<li class="pl-2"><strong class="font-bold text-gray-900">Preparar 10-15 imágenes</strong> de tu mejor modelo para entrenar una LoRA:<ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2">Mínimo 10 imágenes del mismo zapato</li>
+<li class="pl-2">Variedad de ángulos (frontal, lateral, 3/4, cenital, trasero)</li>
+<li class="pl-2">Fondo limpio preferiblemente</li>
+<li class="pl-2">Si no tienes fotos reales, usa los renders generados como base</li>
+</ul>
+</li>
+</ol>
+
+    <div class="callout-analogy p-6 rounded-xl mb-8 shadow-sm border border-amber-100">
+        <p class="font-serif text-amber-900 text-lg m-0">
+            <i class="fa-solid fa-lightbulb mr-3 text-brand-accent text-xl"></i>
+            📦 **Entregable:** Carpeta con los 3 renders estrella + set de 10-15 imágenes para LoRA, listos para la práctica.
+        </p>
+    </div>
+<hr>
+
+        </div></section> <!-- Close previous section -->
+        <section id="-recursos-adicionales" class="py-20 bg-brand-light border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center">
+                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">12</span>
+                    📎 Recursos Adicionales
+                </h2>
+        <ul class="font-serif text-gray-600 text-lg list-disc list-inside space-y-3 mb-8">
+<li class="pl-2"><a href="https://leonardo.ai">Leonardo AI</a> — ControlNet + LoRAs + Lienzo</li>
+<li class="pl-2"><a href="https://github.com/comfyanonymous/ComfyUI">ComfyUI</a> — Interfaz nodal open source</li>
+<li class="pl-2"><a href="https://civitai.com">Civitai</a> — Marketplace de LoRAs y modelos</li>
+<li class="pl-2"><a href="https://stability.ai">Stable Diffusion</a> — Modelo open source</li>
+<li class="pl-2"><a href="https://figma.com">Figma</a> — Diseño colaborativo</li>
+<li class="pl-2"><a href="https://runway.ml">Runway</a> — Pipeline visual</li>
+</ul>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-dark text-white py-12 border-t border-gray-800 mt-12">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <h2 class="text-xl font-bold tracking-tight text-white mb-4">
+                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+            </h2>
+            <p class="text-gray-500 font-mono text-sm">© 2026 Curso IA Generativa. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>
