@@ -61,6 +61,12 @@ export default async function middleware(request) {
         return Response.redirect(new URL('/login.html', request.url), 302);
     }
 
+    // Restrict access for logged-in users to only the allowed pages
+    const ALLOWED_PROTECTED_PATHS = ['/', '/index.html', '/modulo1.html'];
+    if (!ALLOWED_PROTECTED_PATHS.includes(pathname)) {
+        return Response.redirect(new URL('/index.html', request.url), 302);
+    }
+
     // Valid session — let the request through
     return;
 }
