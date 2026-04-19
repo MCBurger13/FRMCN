@@ -61,7 +61,22 @@ export default async function middleware(request) {
         return Response.redirect(new URL('/login.html', request.url), 303);
     }
 
-    // Restrict access for logged-in users to only the allowed pages
+    // Parse payload to check permissions
+    try {
+        const decoded = atob(token);
+        const lastDot = decoded.lastIndexOf('.');
+        const payloadStr = decoded.substring(0, lastDot);
+        const payload = JSON.parse(payloadStr);
+
+        // Full-access users (e.g. MARC) can see all modules — skip path restriction
+        if (payload.fullAccess === true) {
+            return;
+        }
+    } catch {
+        // If we can't parse, fall through to restricted check
+    }
+
+    // Restrict access for regular users to only the allowed pages
     const ALLOWED_PROTECTED_PATHS = ['/', '/index.html', '/modulo1.html'];
     if (!ALLOWED_PROTECTED_PATHS.includes(pathname)) {
         return Response.redirect(new URL('/', request.url), 303);

@@ -8,7 +8,7 @@ const USERS = [
     { username: 'MILGUELLAZARO', password: 'CURSOIA.M' },
     { username: 'MARTINPIRIS', password: 'CURSOIA.M' },
     { username: 'LAURANEGRE', password: 'CURSOIA.L' },
-    { username: 'biel', password: 'biel' }
+    { username: 'MARC', password: 'QWERTY.MSENY', fullAccess: true }
 ];
 
 async function signToken(payloadStr, secret) {
@@ -38,6 +38,7 @@ export async function POST(request) {
         if (user) {
             const payloadStr = JSON.stringify({
                 username: user.username,
+                fullAccess: user.fullAccess || false,
                 exp: Date.now() + 1000 * 60 * 60 * 24 * 7 // 7 días
             });
             const secret = process.env.SESSION_SECRET || 'insecure-default-change-me';
