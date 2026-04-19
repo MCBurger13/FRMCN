@@ -50,7 +50,7 @@ export default async function middleware(request) {
         .find((c) => c.startsWith('auth_token='));
 
     if (!authCookie) {
-        return Response.redirect(new URL('/login.html', request.url), 302);
+        return Response.redirect(new URL('/login.html', request.url), 303);
     }
 
     const token = authCookie.split('=').slice(1).join('=');
@@ -58,13 +58,13 @@ export default async function middleware(request) {
     const valid = await verifyToken(token, secret);
 
     if (!valid) {
-        return Response.redirect(new URL('/login.html', request.url), 302);
+        return Response.redirect(new URL('/login.html', request.url), 303);
     }
 
     // Restrict access for logged-in users to only the allowed pages
     const ALLOWED_PROTECTED_PATHS = ['/', '/index.html', '/modulo1.html'];
     if (!ALLOWED_PROTECTED_PATHS.includes(pathname)) {
-        return Response.redirect(new URL('/index.html', request.url), 302);
+        return Response.redirect(new URL('/index.html', request.url), 303);
     }
 
     // Valid session — let the request through

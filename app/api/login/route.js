@@ -42,7 +42,7 @@ export async function POST(request) {
             const secret = process.env.SESSION_SECRET || 'insecure-default-change-me';
             const token = await signToken(payloadStr, secret);
 
-            const response = NextResponse.redirect(new URL('/index.html', request.url), 302);
+            const response = NextResponse.redirect(new URL('/index.html', request.url), 303);
             response.cookies.set('auth_token', token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
@@ -52,9 +52,9 @@ export async function POST(request) {
             return response;
         }
 
-        return NextResponse.redirect(new URL('/login.html?error=1', request.url), 302);
+        return NextResponse.redirect(new URL('/login.html?error=1', request.url), 303);
     } catch (error) {
         console.error('Login error:', error);
-        return NextResponse.redirect(new URL('/login.html?error=1', request.url), 302);
+        return NextResponse.redirect(new URL('/login.html?error=1', request.url), 303);
     }
 }
