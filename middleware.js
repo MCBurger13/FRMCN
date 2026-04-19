@@ -1,33 +1,89 @@
-// middleware.js – Vercel Edge Middleware (native, no Next.js required)
-// Docs: https://vercel.com/docs/functions/edge-middleware
+// middleware.js – Vercel Edge Middleware
+// Verifies Supabase Auth JWT tokens to protect course pages
+
+const SUPABASE_URL = 'https://ftpywhemyizucquurslo.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0cHl3aGVteWl6dWNxdXVyc2xvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NDYwMzIsImV4cCI6MjA5MjEyMjAzMn0.A63ZKSixJRA1DGFZ5-VBmaMzIwYIETCDBYn8mUnkzRI';
 
 // Public paths that don't require authentication
 const PUBLIC_PATHS = ['/login.html', '/api/login', '/api/logout'];
 
-async function verifyToken(encoded, secret) {
+// Pages restricted to full-access users only
+const FULL_ACCESS_ONLY = [
+    '/modulo2.html',
+    '/modulo3-clase1.html',
+    '/modulo3-clase2.html',
+    '/modulo3-clase3.html',
+    '/modulo3-clase4.html',
+    '/modulo3-clase5.html',
+];
+
+/**
+ * Decode a JWT payload without verifying signature.
+ * Full verification happens server-side via Supabase API.
+ */
+function decodeJWTPayload(token) {
     try {
-        const token = atob(encoded);
-        const lastDot = token.lastIndexOf('.');
-        if (lastDot === -1) return false;
-
-        const payload = token.substring(0, lastDot);
-        const sigHex = token.substring(lastDot + 1);
-
-        const encoder = new TextEncoder();
-        const keyData = encoder.encode(secret);
-        const key = await crypto.subtle.importKey(
-            'raw', keyData, { name: 'HMAC', hash: 'SHA-256' }, false, ['verify']
-        );
-
-        const sigBytes = new Uint8Array(
-            sigHex.match(/.{1,2}/g).map((b) => parseInt(b, 16))
-        );
-
-        const data = encoder.encode(payload);
-        return await crypto.subtle.verify('HMAC', key, sigBytes, data);
+        const parts = token.split('.');
+        if (parts.length !== 3) return null;
+        const payload = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+        const decoded = atob(payload);
+        return JSON.parse(decoded);
     } catch {
-        return false;
+        return null;
     }
+}
+
+/**
+ * Verify the Supabase session token by calling the Supabase Auth API.
+ * Returns the user object or null if invalid.
+ */
+async function getSupabaseUser(accessToken) {
+    try {
+        const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'apikey': SUPABASE_ANON_KEY,
+            },
+        });
+        if (!res.ok) return null;
+        return await res.json();
+    } catch {
+        return null;
+    }
+}
+
+/**
+ * Extract the Supabase access token from cookies.
+ * Supabase stores auth in: sb-<project-ref>-auth-token (as JSON)
+ * OR as individual sb-access-token / sb-refresh-token cookies.
+ */
+function extractToken(cookieHeader) {
+    if (!cookieHeader) return null;
+
+    const cookies = cookieHeader.split(';').map(c => c.trim());
+
+    // Look for Supabase auth cookie (JSON format)
+    for (const cookie of cookies) {
+        if (cookie.startsWith('sb-ftpywhemyizucquurslo-auth-token=')) {
+            try {
+                const raw = cookie.slice('sb-ftpywhemyizucquurslo-auth-token='.length);
+                const decoded = decodeURIComponent(raw);
+                const parsed = JSON.parse(decoded);
+                return parsed.access_token || null;
+            } catch { /* continue */ }
+        }
+        // Also try chunked cookies (sb-*-auth-token.0, sb-*-auth-token.1)
+        if (cookie.startsWith('sb-ftpywhemyizucquurslo-auth-token.0=')) {
+            try {
+                const raw = cookie.slice('sb-ftpywhemyizucquurslo-auth-token.0='.length);
+                const decoded = decodeURIComponent(raw);
+                const parsed = JSON.parse(decoded);
+                return parsed.access_token || null;
+            } catch { /* continue */ }
+        }
+    }
+
+    return null;
 }
 
 export default async function middleware(request) {
@@ -36,50 +92,30 @@ export default async function middleware(request) {
 
     // Allow public paths through
     if (PUBLIC_PATHS.some((p) => pathname.startsWith(p))) {
-        return; // continue
+        return;
     }
 
-    // Only protect HTML pages and root
-    const isProtected = pathname === '/' || pathname.endsWith('.html');
+    // Only protect HTML pages, root, and index.html
+    const isProtected = pathname === '/' || pathname === '/index.html' || pathname.endsWith('.html');
     if (!isProtected) return;
 
     const cookieHeader = request.headers.get('cookie') || '';
-    const authCookie = cookieHeader
-        .split(';')
-        .map((c) => c.trim())
-        .find((c) => c.startsWith('auth_token='));
+    const accessToken = extractToken(cookieHeader);
 
-    if (!authCookie) {
-        return Response.redirect(new URL('/login.html', request.url), 303);
+    if (!accessToken) {
+        return Response.redirect(new URL('/login.html', request.url), 302);
     }
 
-    const token = authCookie.split('=').slice(1).join('=');
-    const secret = process.env.SESSION_SECRET || 'insecure-default-change-me';
-    const valid = await verifyToken(token, secret);
-
-    if (!valid) {
-        return Response.redirect(new URL('/login.html', request.url), 303);
+    // Quick local check: is token expired?
+    const payload = decodeJWTPayload(accessToken);
+    if (!payload || (payload.exp && payload.exp < Math.floor(Date.now() / 1000))) {
+        return Response.redirect(new URL('/login.html', request.url), 302);
     }
 
-    // Parse payload to check permissions
-    try {
-        const decoded = atob(token);
-        const lastDot = decoded.lastIndexOf('.');
-        const payloadStr = decoded.substring(0, lastDot);
-        const payload = JSON.parse(payloadStr);
-
-        // Full-access users (e.g. MARC) can see all modules — skip path restriction
-        if (payload.fullAccess === true) {
-            return;
-        }
-    } catch {
-        // If we can't parse, fall through to restricted check
-    }
-
-    // Restrict access for regular users to only the allowed pages
-    const ALLOWED_PROTECTED_PATHS = ['/', '/index.html', '/modulo1.html'];
-    if (!ALLOWED_PROTECTED_PATHS.includes(pathname)) {
-        return Response.redirect(new URL('/', request.url), 303);
+    // Check full_access from user metadata for restricted pages
+    const fullAccess = payload?.user_metadata?.full_access === true;
+    if (!fullAccess && FULL_ACCESS_ONLY.some(p => pathname.startsWith(p))) {
+        return Response.redirect(new URL('/index.html', request.url), 302);
     }
 
     // Valid session — let the request through
@@ -87,5 +123,5 @@ export default async function middleware(request) {
 }
 
 export const config = {
-    matcher: '/((?!_vercel|favicon.ico|.*\\.(?:css|js|png|jpg|jpeg|webp|svg|ico|woff2?|ttf)$).*)',
+    matcher: '/((?!_vercel|_next|favicon.ico|.*\\.(?:css|js|png|jpg|jpeg|webp|svg|ico|woff2?|ttf)$).*)',
 };

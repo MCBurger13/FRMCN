@@ -238,7 +238,7 @@
             Usuario o contraseña incorrectos.
         </div>
 
-        <form method="POST" action="/api/login">
+        <form id="loginForm">
             <div class="field">
                 <label for="username">Usuario</label>
                 <input type="text" id="username" name="username" placeholder="Tu nombre de usuario"
@@ -249,17 +249,45 @@
                 <input type="password" id="password" name="password" placeholder="••••••••"
                     autocomplete="current-password" required>
             </div>
-            <button type="submit" class="btn">Entrar al Curso →</button>
+            <button type="submit" class="btn" id="submitBtn">Entrar al Curso →</button>
         </form>
 
         <p class="footer-note">Acceso exclusivo para alumnos matriculados.</p>
     </div>
 
-    <script>
-        // Show error banner if redirected with ?error=1
-        if (new URLSearchParams(window.location.search).get('error') === '1') {
-            document.getElementById('errorMsg').style.display = 'flex';
-        }
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+        const SUPABASE_URL = 'https://ftpywhemyizucquurslo.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0cHl3aGVteWl6dWNxdXVyc2xvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NDYwMzIsImV4cCI6MjA5MjEyMjAzMn0.A63ZKSixJRA1DGFZ5-VBmaMzIwYIETCDBYn8mUnkzRI';
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const form = document.getElementById('loginForm');
+        const errorMsg = document.getElementById('errorMsg');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorMsg.style.display = 'none';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Entrando...';
+
+            const username = document.getElementById('username').value.trim().toLowerCase();
+            const password = document.getElementById('password').value;
+            const email = `${username}@cursoia.local`;
+
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+            if (error || !data.session) {
+                errorMsg.style.display = 'flex';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Entrar al Curso →';
+                return;
+            }
+
+            // Redirect to course index after successful login
+            window.location.href = '/index.html';
+        });
     </script>
 </body>
 
