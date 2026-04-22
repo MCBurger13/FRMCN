@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Plan Técnico y Curricular: AI Decision Hub - [m].seny [labs]">
+    <title>AI Decision Hub - Plan Técnico [m].seny [labs]</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0F172A',
+                            primary: '#4F46E5',
+                            accent: '#F59E0B',
+                            light: '#F8FAFC'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F8FAFC;
+            color: #334155;
+            scroll-behavior: smooth;
+        }
+        
+        h1, h2, h3, h4, h5, h6, button, .nav-link {
+            font-family: 'Inter', sans-serif;
+        }
+
+        p, li, .prose-text {
+            font-family: 'Merriweather', serif;
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Animations */
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+        }
+        .fade-in-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #4F46E5, #F59E0B);
+            z-index: 1000;
+            transition: width 0.2s ease;
+        }
+
+        /* Print styles */
+        @media print {
+            .no-print { display: none !important; }
+            body { background-color: white; }
+            .fade-in-on-scroll { opacity: 1 !important; transform: none !important; }
+            section { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="progress-bar no-print" id="progressBar"></div>
+
+    <!-- Navigation Header -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 no-print">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <h1 class="text-xl font-bold tracking-tight text-brand-dark">
+                    <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+                </h1>
+            </div>
+            <nav class="hidden lg:flex items-center space-x-6 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                <a href="#vision" class="hover:text-brand-primary transition-colors">1. Visión</a>
+                <a href="#stack" class="hover:text-brand-primary transition-colors">2. Stack</a>
+                <a href="#multi-ai" class="hover:text-brand-primary transition-colors">3. Multi-AI</a>
+                <a href="#roadmap" class="hover:text-brand-primary transition-colors">4. Roadmap</a>
+
+                <a href="/login.html" onclick="document.cookie='sb-ftpywhemyizucquurslo-auth-token=;path=/;max-age=0';localStorage.clear()"
+                    class="hidden md:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors ml-4"
+                    title="Cerrar sesión">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    Salir
+                </a>
+            </nav>
+            <button onclick="window.print()" class="bg-brand-dark text-white px-4 py-2 rounded text-xs font-bold hover:bg-gray-800 transition-colors flex items-center">
+                <i class="fa-solid fa-print mr-2"></i> Exportar PDF
+            </button>
+        </div>
+    </header>
+
+    <!-- Presentation Title (Hero) -->
+    <section class="bg-brand-dark text-white py-32 border-b-8 border-brand-primary relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-0 right-10 w-[30rem] h-[30rem] bg-brand-primary rounded-full blur-[120px]"></div>
+            <div class="absolute bottom-[-10rem] left-10 w-[25rem] h-[25rem] bg-emerald-500 rounded-full blur-[120px]"></div>
+        </div>
+        <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
+            <span class="inline-block py-1 px-3 bg-white/10 text-white border border-white/20 font-mono text-xs font-bold uppercase tracking-widest mb-6 rounded">
+                Documento de Arquitectura
+            </span>
+            <h1 class="text-5xl lg:text-7xl font-extrabold mb-6 leading-tight">
+                AI Decision Hub <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-emerald-400">Plan Técnico y Curricular</span>
+            </h1>
+            <p class="text-xl text-gray-300 font-serif max-w-2xl mx-auto italic text-center">
+                Análisis estructurado y plan de implementación para un pipeline de inteligencia comercial impulsado por IA.
+            </p>
+            <div class="mt-10 flex items-center justify-center space-x-6 text-sm text-gray-400 font-mono">
+                <span><i class="fa-solid fa-user-shield mr-2 text-brand-primary"></i> Lead Fullstack Engineer</span>
+                <span>•</span>
+                <span><i class="fa-solid fa-layer-group mr-2 text-emerald-400"></i> MVP Plan</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 1. Visión del Proyecto -->
+    <section id="vision" class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll">
+                <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">1</span>
+                Lectura del Proyecto
+            </h2>
+            
+            <div class="bg-indigo-50 border-l-4 border-brand-primary p-6 rounded-r-xl mb-10 fade-in-on-scroll">
+                <p class="font-serif text-indigo-900 text-lg m-0 font-bold">
+                    "No es un dashboard. Es un sistema de razonamiento automatizado sobre datos de negocio. Esa distinción define todo el stack."
+                </p>
+            </div>
+
+            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">
+                El <strong>AI Decision Hub</strong> se conceptualiza como un pipeline de inteligencia comercial robusto, estructurado en tres capas operativas fundamentales que transforman datos crudos en decisiones accionables:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 fade-in-on-scroll">
+                <div class="bg-white border border-gray-200 p-6 rounded-xl shadow-sm card-hover">
+                    <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-lg mb-4"><i class="fa-solid fa-database"></i></div>
+                    <h4 class="font-bold text-brand-dark mb-2">1. Ingesta de Datos</h4>
+                    <p class="text-sm font-serif text-gray-600">Recolección de fuentes heterogéneas (SAP, GA4, Zoho, Connectif, Paid Media) en una capa de <em>staging</em> unificada.</p>
+                </div>
+                <div class="bg-white border border-gray-200 p-6 rounded-xl shadow-sm card-hover">
+                    <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center text-lg mb-4"><i class="fa-solid fa-microchip"></i></div>
+                    <h4 class="font-bold text-brand-dark mb-2">2. Procesamiento AI</h4>
+                    <p class="text-sm font-serif text-gray-600">Motor de razonamiento (Claude/Gemini) que ingiere métricas y las transforma en lenguaje de decisión empresarial.</p>
+                </div>
+                <div class="bg-white border border-gray-200 p-6 rounded-xl shadow-sm card-hover">
+                    <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center text-lg mb-4"><i class="fa-solid fa-chart-line"></i></div>
+                    <h4 class="font-bold text-brand-dark mb-2">3. Output Estructurado</h4>
+                    <p class="text-sm font-serif text-gray-600">Entrega de la información en forma de reportes, alertas tempranas y recomendaciones accionables para la dirección.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Stack Tecnológico -->
+    <section id="stack" class="py-20 bg-brand-light border-t border-gray-200">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in-on-scroll">
+                <span class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-3 block"><i class="fa-solid fa-layer-group mr-2"></i> Arquitectura</span>
+                <h2 class="text-3xl font-extrabold text-brand-dark flex items-center justify-center mb-3">
+                    Stack Tecnológico Recomendado
+                </h2>
+                <p class="text-gray-500 font-serif">Selección de tecnologías robustas orientadas a la creación de un MVP productivo y escalable.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 fade-in-on-scroll">
+                <!-- Backend -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                    <h3 class="text-xl font-bold text-brand-dark mb-6 flex items-center border-b border-gray-100 pb-3">
+                        <i class="fa-brands fa-python text-blue-500 mr-3"></i> Backend & Orquestación
+                    </h3>
+                    <ul class="space-y-4 font-serif text-sm text-gray-600">
+                        <li><strong class="text-gray-900 font-sans">Python 3.12:</strong> Lenguaje principal del pipeline.</li>
+                        <li><strong class="text-gray-900 font-sans">FastAPI:</strong> API REST para conectar fuentes y servir outputs.</li>
+                        <li><strong class="text-gray-900 font-sans">LangChain / LlamaIndex:</strong> Orquestación de llamadas a AI con contexto.</li>
+                        <li><strong class="text-gray-900 font-sans">APScheduler:</strong> Ejecución del pipeline semanal automatizado.</li>
+                        <li><strong class="text-gray-900 font-sans">Pydantic & Pandas:</strong> Validación de schemas y cálculo de desviaciones (WoW/MoM).</li>
+                    </ul>
+                </div>
+
+                <!-- Integraciones -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                    <h3 class="text-xl font-bold text-brand-dark mb-6 flex items-center border-b border-gray-100 pb-3">
+                        <i class="fa-solid fa-plug text-emerald-500 mr-3"></i> Integraciones de Datos
+                    </h3>
+                    <ul class="space-y-4 font-serif text-sm text-gray-600">
+                        <li><strong class="text-gray-900 font-sans">Google Sheets API:</strong> Capa de <em>staging</em> universal. (Ideal para MVP: export SAP CSV → Sheets).</li>
+                        <li><strong class="text-gray-900 font-sans">GA4 Data API:</strong> Tráfico y <em>conversion rate</em>.</li>
+                        <li><strong class="text-gray-900 font-sans">Zoho CRM API:</strong> Segmentos RFM, BBDD clientes.</li>
+                        <li><strong class="text-gray-900 font-sans">Connectif API:</strong> Métricas de email marketing.</li>
+                    </ul>
+                </div>
+
+                <!-- Frontend -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                    <h3 class="text-xl font-bold text-brand-dark mb-6 flex items-center border-b border-gray-100 pb-3">
+                        <i class="fa-brands fa-react text-cyan-500 mr-3"></i> Frontend & Output
+                    </h3>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-bold rounded">Next.js 14 (App Router)</span>
+                        <span class="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-bold rounded">Tailwind CSS</span>
+                        <span class="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-bold rounded">shadcn/ui</span>
+                        <span class="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-bold rounded">Recharts</span>
+                        <span class="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-bold rounded">React Query</span>
+                    </div>
+                    <p class="font-serif text-sm text-gray-600">Interfaz web del hub para visualizar KPIs, sincronizar estado servidor/cliente y aprobar decisiones.</p>
+                </div>
+
+                <!-- DB & Infra -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                    <h3 class="text-xl font-bold text-brand-dark mb-6 flex items-center border-b border-gray-100 pb-3">
+                        <i class="fa-solid fa-server text-purple-500 mr-3"></i> DB & Infraestructura
+                    </h3>
+                    <ul class="space-y-3 font-serif text-sm text-gray-600">
+                        <li><strong class="text-gray-900 font-sans">PostgreSQL (Supabase):</strong> Persistencia de reportes y alertas.</li>
+                        <li><strong class="text-gray-900 font-sans">Redis:</strong> Caché de resultados AI (ahorro de costes).</li>
+                        <li><strong class="text-gray-900 font-sans">Google Cloud Run & Vercel:</strong> Deploy serverless (Backend/Frontend).</li>
+                        <li><strong class="text-gray-900 font-sans">Cloud Scheduler & Actions:</strong> CI/CD y triggers semanales.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Estrategia Multi-AI -->
+    <section id="multi-ai" class="py-20 bg-brand-dark text-white border-t border-gray-800">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in-on-scroll">
+                <h2 class="text-3xl font-extrabold flex items-center justify-center mb-3">
+                    <i class="fa-solid fa-brain text-brand-accent mr-3"></i> Por qué Claude + Google AI
+                </h2>
+                <p class="text-gray-400 font-serif">Un sistema robusto orquesta múltiples modelos inteligentemente según sus fortalezas nativas.</p>
+            </div>
+
+            <div class="overflow-x-auto fade-in-on-scroll bg-white/5 border border-white/10 rounded-2xl shadow-xl">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-black/30 text-xs uppercase tracking-wider text-gray-400 border-b border-white/10">
+                            <th class="p-5 font-bold w-1/4">Tarea</th>
+                            <th class="p-5 font-bold w-1/4">Herramienta Óptima</th>
+                            <th class="p-5 font-bold w-1/2">Razón Técnica</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm font-serif">
+                        <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                            <td class="p-5 text-gray-200 font-sans font-bold">Razonamiento, diagnóstico, recomendación</td>
+                            <td class="p-5"><span class="px-3 py-1 bg-orange-500/20 text-orange-400 rounded text-xs font-bold font-sans">Claude (Sonnet-4)</span></td>
+                            <td class="p-5 text-gray-400">Superior en razonamiento estructurado y generación de outputs accionables y lógicos.</td>
+                        </tr>
+                        <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                            <td class="p-5 text-gray-200 font-sans font-bold">Análisis de documentos / Sheets largos</td>
+                            <td class="p-5"><span class="px-3 py-1 bg-blue-500/20 text-blue-400 rounded text-xs font-bold font-sans">Gemini API</span></td>
+                            <td class="p-5 text-gray-400">Contexto nativo con Google Workspace y ventana masiva de contexto (1M tokens).</td>
+                        </tr>
+                        <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                            <td class="p-5 text-gray-200 font-sans font-bold">Embeddings y búsqueda semántica</td>
+                            <td class="p-5"><span class="px-3 py-1 bg-blue-500/20 text-blue-400 rounded text-xs font-bold font-sans">Gemini Text-Embedding</span></td>
+                            <td class="p-5 text-gray-400">Integración directa y optimizada con la infraestructura de Google Cloud.</td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="p-5 text-gray-200 font-sans font-bold">Generación de reportes en lenguaje natural</td>
+                            <td class="p-5"><span class="px-3 py-1 bg-orange-500/20 text-orange-400 rounded text-xs font-bold font-sans">Claude (Sonnet-4)</span></td>
+                            <td class="p-5 text-gray-400">Consistencia inigualable en el tono y cumplimiento estricto de la estructura de outputs (JSON/Markdown).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Roadmap Curricular -->
+    <section id="roadmap" class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in-on-scroll">
+                <span class="text-brand-primary font-bold tracking-widest text-xs uppercase mb-3 block"><i class="fa-solid fa-graduation-cap mr-2"></i> Currículo Propuesto</span>
+                <h2 class="text-3xl font-extrabold text-brand-dark flex items-center justify-center mb-3">
+                    Plan de Formación: 5 Clases
+                </h2>
+                <p class="text-gray-500 font-serif">Al final del programa, el alumno dispondrá de un MVP completamente funcional del AI Decision Hub.</p>
+            </div>
+
+            <div class="space-y-8 fade-in-on-scroll">
+                
+                <!-- Clase 1 -->
+                <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm card-hover relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1.5 h-full bg-orange-400"></div>
+                    <div class="flex flex-col md:flex-row md:items-start justify-between">
+                        <div class="md:w-3/4">
+                            <h3 class="text-xl font-bold text-brand-dark mb-2">Clase 1: Fundamentos — Claude API como Motor de Decisión</h3>
+                            <p class="font-serif text-sm text-gray-500 mb-4 bg-gray-50 inline-block px-3 py-1 rounded border border-gray-100">
+                                <strong>Concepto Central:</strong> Claude no es un chatbot, es un motor de razonamiento que consume datos estructurados y produce decisiones.
+                            </p>
+                            <h4 class="text-sm font-bold text-gray-800 mb-2">Qué aprende el alumno:</h4>
+                            <ul class="text-sm font-serif text-gray-600 space-y-1.5 mb-4">
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>Diferencia entre prompt naïve vs. prompt de sistema estructurado.</li>
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>Arquitectura de llamada a Claude API con rol analítico.</li>
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>Pasar KPIs como contexto estructurado (JSON) y recibir Insight/Diagnóstico.</li>
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>Uso de Pydantic schemas para validar respuestas de la IA.</li>
+                            </ul>
+                        </div>
+                        <div class="md:w-1/4 mt-4 md:mt-0 md:pl-6">
+                            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 h-full">
+                                <h5 class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2"><i class="fa-solid fa-code mr-1"></i> Práctica</h5>
+                                <p class="text-xs font-serif text-gray-700">Construir función Python que reciba un <em>dict</em> con KPIs (revenue, traffic, cr) y devuelva el insight estructurado.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clase 2 -->
+                <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm card-hover relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1.5 h-full bg-emerald-500"></div>
+                    <div class="flex flex-col md:flex-row md:items-start justify-between">
+                        <div class="md:w-3/4">
+                            <h3 class="text-xl font-bold text-brand-dark mb-2">Clase 2: Ingesta de Datos Reales — Sheets + GA4 API</h3>
+                            <p class="font-serif text-sm text-gray-500 mb-4 bg-gray-50 inline-block px-3 py-1 rounded border border-gray-100">
+                                <strong>Concepto Central:</strong> El pipeline empieza con datos reales, no mocks. Conectar las fuentes del MVP.
+                            </p>
+                            <h4 class="text-sm font-bold text-gray-800 mb-2">Qué aprende el alumno:</h4>
+                            <ul class="text-sm font-serif text-gray-600 space-y-1.5 mb-4">
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>Autenticación con Google Cloud (Service Account, OAuth2).</li>
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>Sheets API (como hub de datos para el equipo no-técnico) y GA4 Data API.</li>
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>Construcción de una capa DataCollector en Python.</li>
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>Cálculo automático de desviaciones (actual - target).</li>
+                            </ul>
+                        </div>
+                        <div class="md:w-1/4 mt-4 md:mt-0 md:pl-6">
+                            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 h-full">
+                                <h5 class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2"><i class="fa-solid fa-code mr-1"></i> Práctica</h5>
+                                <p class="text-xs font-serif text-gray-700">Pipeline que extrae datos de GA4 + Sheets (revenue SAP) y produce un JSON consolidado listo para procesar.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clase 3 -->
+                <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm card-hover relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1.5 h-full bg-blue-500"></div>
+                    <div class="flex flex-col md:flex-row md:items-start justify-between">
+                        <div class="md:w-3/4">
+                            <h3 class="text-xl font-bold text-brand-dark mb-2">Clase 3: Gemini + Arquitectura Multi-AI</h3>
+                            <p class="font-serif text-sm text-gray-500 mb-4 bg-gray-50 inline-block px-3 py-1 rounded border border-gray-100">
+                                <strong>Concepto Central:</strong> Orquestar múltiples IAs según sus fortalezas nativas.
+                            </p>
+                            <h4 class="text-sm font-bold text-gray-800 mb-2">Qué aprende el alumno:</h4>
+                            <ul class="text-sm font-serif text-gray-600 space-y-1.5 mb-4">
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>Gemini API: Procesamiento de contexto amplio y lectura de PDFs largos.</li>
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>LangChain: Orquestar llamadas secuenciales (Gemini extrae → Claude razona).</li>
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>Chain of Thought prompting y manejo de errores (alucinaciones).</li>
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>Introducción a LangSmith para observabilidad del modelo.</li>
+                            </ul>
+                        </div>
+                        <div class="md:w-1/4 mt-4 md:mt-0 md:pl-6">
+                            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 h-full">
+                                <h5 class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2"><i class="fa-solid fa-code mr-1"></i> Práctica</h5>
+                                <p class="text-xs font-serif text-gray-700">Pipeline completo: Gemini extrae KPIs de un PDF → Claude genera diagnóstico → Pydantic valida.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clase 4 -->
+                <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm card-hover relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1.5 h-full bg-purple-500"></div>
+                    <div class="flex flex-col md:flex-row md:items-start justify-between">
+                        <div class="md:w-3/4">
+                            <h3 class="text-xl font-bold text-brand-dark mb-2">Clase 4: Backend FastAPI + Scheduler + DB</h3>
+                            <p class="font-serif text-sm text-gray-500 mb-4 bg-gray-50 inline-block px-3 py-1 rounded border border-gray-100">
+                                <strong>Concepto Central:</strong> Pasar de script Python a sistema productivo con API, persistencia e ejecución automática.
+                            </p>
+                            <h4 class="text-sm font-bold text-gray-800 mb-2">Qué aprende el alumno:</h4>
+                            <ul class="text-sm font-serif text-gray-600 space-y-1.5 mb-4">
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>Estructurar FastAPI con endpoints: <code>/run-pipeline</code>, <code>/reports</code>.</li>
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>APScheduler para ejecución automática (Ej. lunes 6am).</li>
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>Supabase / PostgreSQL: Persistencia de reportes e histórico.</li>
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>Sistemas de alertas automatizadas y Deploy en Cloud Run (Docker).</li>
+                            </ul>
+                        </div>
+                        <div class="md:w-1/4 mt-4 md:mt-0 md:pl-6">
+                            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 h-full">
+                                <h5 class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2"><i class="fa-solid fa-code mr-1"></i> Práctica</h5>
+                                <p class="text-xs font-serif text-gray-700">Backend programado que corre el pipeline, guarda en BD y envía email resumen a los directivos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clase 5 -->
+                <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm card-hover relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1.5 h-full bg-cyan-500"></div>
+                    <div class="flex flex-col md:flex-row md:items-start justify-between">
+                        <div class="md:w-3/4">
+                            <h3 class="text-xl font-bold text-brand-dark mb-2">Clase 5: Frontend Next.js — El Hub de Decisión</h3>
+                            <p class="font-serif text-sm text-gray-500 mb-4 bg-gray-50 inline-block px-3 py-1 rounded border border-gray-100">
+                                <strong>Concepto Central:</strong> UI que convierte datos en decisiones visibles para directivos no-técnicos.
+                            </p>
+                            <h4 class="text-sm font-bold text-gray-800 mb-2">Qué aprende el alumno:</h4>
+                            <ul class="text-sm font-serif text-gray-600 space-y-1.5 mb-4">
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>Arquitectura Next.js 14 App Router.</li>
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>Consumir FastAPI desde el frontend con React Query.</li>
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>Visualización de KPIs con Recharts (target vs actual, semáforos).</li>
+                                <li><i class="fa-solid fa-check text-brand-primary mr-2 text-xs"></i>Sistema "Human-in-the-loop": botón para aprobar recomendaciones AI.</li>
+                            </ul>
+                        </div>
+                        <div class="md:w-1/4 mt-4 md:mt-0 md:pl-6">
+                            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 h-full">
+                                <h5 class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2"><i class="fa-solid fa-code mr-1"></i> Práctica</h5>
+                                <p class="text-xs font-serif text-gray-700">Dashboard UI completo desplegado en Vercel con tarjetas estructuradas, insights y acciones aprobables.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Resumen Secuencia Lógica -->
+            <div class="mt-16 bg-gray-50 border border-gray-200 p-8 rounded-xl text-center fade-in-on-scroll">
+                <h4 class="font-bold text-brand-dark uppercase tracking-widest text-sm mb-4">Secuencia Lógica del Programa</h4>
+                <div class="flex flex-col md:flex-row justify-center items-center space-y-3 md:space-y-0 md:space-x-4 font-serif text-sm text-gray-600">
+                    <span>Motor AI <strong class="text-brand-primary">(C1)</strong></span>
+                    <i class="fa-solid fa-arrow-right hidden md:block text-gray-300"></i>
+                    <i class="fa-solid fa-arrow-down block md:hidden text-gray-300"></i>
+                    <span>Ingesta Datos <strong class="text-emerald-500">(C2)</strong></span>
+                    <i class="fa-solid fa-arrow-right hidden md:block text-gray-300"></i>
+                    <i class="fa-solid fa-arrow-down block md:hidden text-gray-300"></i>
+                    <span>Orquestación <strong class="text-blue-500">(C3)</strong></span>
+                    <i class="fa-solid fa-arrow-right hidden md:block text-gray-300"></i>
+                    <i class="fa-solid fa-arrow-down block md:hidden text-gray-300"></i>
+                    <span>Producción <strong class="text-purple-500">(C4)</strong></span>
+                    <i class="fa-solid fa-arrow-right hidden md:block text-gray-300"></i>
+                    <i class="fa-solid fa-arrow-down block md:hidden text-gray-300"></i>
+                    <span>UI Negocio <strong class="text-cyan-500">(C5)</strong></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navegación entre Clases -->
+    <section class="py-12 bg-white border-t border-gray-200 no-print">
+        <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row justify-end items-center gap-4">
+            <a href="index.html" class="flex items-center px-6 py-3 bg-brand-primary text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors shadow-lg">
+                Volver al Temario <i class="fa-solid fa-house ml-2"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#050B14] text-white py-12 border-t border-gray-800 no-print">
+        <div class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+            <h2 class="text-xl font-bold mb-4 md:mb-0">
+                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
+            </h2>
+            <p class="text-sm text-gray-500 font-sans">Documento Técnico Interno © 2026</p>
+        </div>
+    </footer>
+
+    <!-- Script para animaciones de scroll y barra de progreso -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in-on-scroll').forEach(el => observer.observe(el));
+            
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrolled = (scrollTop / docHeight) * 100;
+                document.getElementById('progressBar').style.width = scrolled + '%';
+            });
+        });
+    </script>
+</body>
+</html>
