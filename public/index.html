@@ -575,15 +575,15 @@
                                 <div class="mt-4 p-4 bg-amber-50 border-l-2 border-brand-accent text-sm text-gray-700 font-serif italic">
                                     ${module.analogy}
                                 </div>
-                                ${module.id === 1 ? `
+                                ${module.id === 1 || module.id === 2 ? `
                                 <div class="mt-6">
-                                    <a href="modulo1.html" class="inline-flex items-center bg-brand-primary text-white px-6 py-3 rounded text-sm font-bold hover:bg-indigo-700 hover:-translate-y-0.5 transition-all shadow-lg shadow-indigo-200">
+                                    <a href="modulo${module.id}.html" class="inline-flex items-center bg-brand-primary text-white px-6 py-3 rounded text-sm font-bold hover:bg-indigo-700 hover:-translate-y-0.5 transition-all shadow-lg shadow-indigo-200">
                                         <i class="fa-solid fa-arrow-right-to-bracket mr-2"></i> Entrar al Módulo
                                         <i class="fa-solid fa-arrow-right ml-2"></i>
                                     </a>
                                 </div>
                                 ` : ''}
-                                ${fullAccess && (module.id === 2 || module.id === 4) ? `
+                                ${fullAccess && module.id === 4 ? `
                                 <div class="mt-6">
                                     <a href="modulo${module.id}.html" class="inline-flex items-center bg-brand-primary text-white px-6 py-3 rounded text-sm font-bold hover:bg-indigo-700 hover:-translate-y-0.5 transition-all shadow-lg shadow-indigo-200">
                                         <i class="fa-solid fa-arrow-right-to-bracket mr-2"></i> Entrar al Módulo
