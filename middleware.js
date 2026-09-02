@@ -1,4 +1,4 @@
-// proxy.js – Next.js Proxy (antes «middleware»; renombrado en Next 16)
+// middleware.js – Next.js Middleware (la convención «proxy» de Next 16 no la despliega Vercel todavía)
 // Verifica la sesión de Supabase (cookie) para proteger las páginas del curso y
 // aplica el nivel de acceso del alumno a cada módulo.
 //
@@ -79,7 +79,7 @@ function extractToken(cookieHeader) {
     return null;
 }
 
-export default async function proxy(request) {
+export default async function middleware(request) {
     const url = new URL(request.url);
     const { pathname } = url;
 

@@ -12,8 +12,8 @@ Web del alumno del curso «IA Generativa» de [m].seny. Páginas HTML planas en 
 | `public/theme.css` | Tokens y utilidades del design system (fuentes en `public/fonts/`). No se toca salvo para re-tematizar. |
 | `public/curso.css` | Componentes de clase, home y login. |
 | `public/curso.js` | Comportamiento común: sesión y nivel desde el JWT, progreso en Supabase con caché local, top bar, chips de secciones con scroll-spy, hero, nav inferior, copiar, test, tabs, checklist, home. |
-| `public/curso-data.js` | **Fuente de verdad** de módulos, clases, duraciones, herramientas y niveles de acceso. La usan la home, las clases y `proxy.js`. |
-| `proxy.js` | Proxy de Next (antes middleware): exige sesión y aplica `curso-data.js` (nivel de acceso por módulo; M9 bloqueado mientras `locked:true`). |
+| `public/curso-data.js` | **Fuente de verdad** de módulos, clases, duraciones, herramientas y niveles de acceso. La usan la home, las clases y `middleware.js`. |
+| `middleware.js` | Middleware de Next: exige sesión y aplica `curso-data.js` (nivel de acceso por módulo; M9 bloqueado mientras `locked:true`). |
 | `docs/plantilla-clase.html` | Esqueleto canónico de una clase con todos los componentes. |
 | `docs/brief-migracion.md` | Reglas para migrar o crear una clase. |
 | `tools/parity.mjs` | Test de paridad de contenido entre `git HEAD` y el árbol de trabajo (`node tools/parity.mjs public/x.html`, `--all`). |
@@ -42,4 +42,4 @@ Para ver las páginas sin login (solo piel): cualquier servidor estático sobre 
 
 ## Variables de entorno (Vercel)
 
-`SUPABASE_PROJECT_REF`, `SUPABASE_URL`, `SUPABASE_ANON_KEY` (todas con valor por defecto en `proxy.js`; la anon key es pública por diseño).
+`SUPABASE_PROJECT_REF`, `SUPABASE_URL`, `SUPABASE_ANON_KEY` (todas con valor por defecto en `middleware.js`; la anon key es pública por diseño).

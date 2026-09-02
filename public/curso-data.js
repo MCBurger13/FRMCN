@@ -2,7 +2,7 @@
    [m].seny /academy — curso-data.js
    FUENTE DE VERDAD ÚNICA de la estructura del curso: módulos, clases, niveles
    de acceso y helpers puros. La cargan index.html, las páginas de clase
-   (window.CURSO) y proxy.js (import). Aquí NO vive contenido lectivo.
+   (window.CURSO) y middleware.js (import). Aquí NO vive contenido lectivo.
 
    Cómo añadir una clase: añade el objeto en `classes` del módulo, en orden.
    Cómo publicar un módulo vacío: rellena `classes` (visible = tiene clases).
