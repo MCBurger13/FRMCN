@@ -1,1238 +1,394 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Módulo 3 Clase 5: Prompting Fotográfico Profesional — Fotorrealismo y Moda de Lujo - [m].seny [labs]">
-    <title>Módulo 3: Estudio Creativo (Clase 5) - [m].seny [labs]</title>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap"
-        rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Merriweather', 'serif'],
-                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
-                    },
-                    colors: {
-                        brand: {
-                            dark: '#0F172A',
-                            primary: '#4F46E5',
-                            accent: '#F59E0B',
-                            light: '#F8FAFC'
-                        },
-                        claude: {
-                            DEFAULT: '#D97757',
-                            light: '#FDF3F0',
-                            dark: '#B05D40'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body {
-            background-color: #F8FAFC;
-            color: #334155;
-            scroll-behavior: smooth;
-        }
-
-        h1, h2, h3, h4, h5, h6, button, .nav-link {
-            font-family: 'Inter', sans-serif;
-        }
-
-        p, li, .prose-text {
-            font-family: 'Merriweather', serif;
-            line-height: 1.6;
-            font-size: 1.125rem;
-            text-align: justify;
-        }
-
-        .text-center { text-align: center; }
-        .text-left { text-align: left; }
-
-        /* Callout Boxes */
-        .callout-analogy {
-            background-color: #FEF3C7;
-            border-left: 4px solid #F59E0B;
-        }
-
-        .callout-phrase {
-            background-color: #EEF2FF;
-            border-left: 4px solid #4F46E5;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
-        /* Animations */
-        .fade-in-on-scroll {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease-out;
-        }
-
-        .fade-in-on-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.1);
-        }
-
-        /* Progress Bar */
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #4F46E5, #F59E0B);
-            z-index: 1000;
-            transition: width 0.2s ease;
-        }
-
-        /* Table Styles */
-        .custom-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-            font-family: 'Inter', sans-serif;
-        }
-        .custom-table th {
-            background-color: #F1F5F9;
-            color: #1E293B;
-            font-weight: 700;
-            text-align: left;
-            padding: 1rem;
-            border-bottom: 2px solid #CBD5E1;
-        }
-        .custom-table td {
-            padding: 1rem;
-            border-bottom: 1px solid #E2E8F0;
-            color: #475569;
-        }
-        .custom-table tr:hover { background-color: #F8FAFC; }
-
-        /* Prompt / Code Block */
-        .prompt-block {
-            background-color: #0F172A;
-            color: #E2E8F0;
-            padding: 1.5rem;
-            border-radius: 0.75rem;
-            font-family: 'ui-monospace', monospace;
-            font-size: 0.95rem;
-            line-height: 1.7;
-            position: relative;
-            margin: 1rem 0;
-            border-left: 4px solid #4F46E5;
-        }
-
-        /* Quiz Styles */
-        .quiz-option {
-            padding: 1rem;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.75rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            background-color: rgba(255, 255, 255, 0.05);
-            color: #e2e8f0;
-        }
-        .quiz-option:hover { border-color: #4F46E5; background-color: rgba(79, 70, 229, 0.1); }
-        .quiz-option.selected { border-color: #F59E0B; background-color: rgba(245, 158, 11, 0.1); }
-
-        /* --- Framework de Capas: código de color --- */
-        .capa-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-            font-size: 0.7rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            padding: 0.35rem 0.75rem;
-            border-radius: 9999px;
-        }
-        .c-subject { background:#e2e8f0; color:#334155; }
-        .c-optics  { background:#e0e7ff; color:#4338ca; }
-        .c-light   { background:#fef3c7; color:#b45309; }
-        .c-film    { background:#ffe4e6; color:#be123c; }
-        .c-comp    { background:#d1fae5; color:#047857; }
-        .c-real    { background:#e0f2fe; color:#0369a1; }
-        .c-style   { background:#ede9fe; color:#6d28d9; }
-
-        /* Despiece: fragmentos resaltados dentro del prompt-block oscuro */
-        .frag { padding:0.1rem 0.35rem; border-radius:0.3rem; white-space:normal; }
-        .f-subject { background:rgba(226,232,240,0.14); color:#e2e8f0; }
-        .f-optics  { background:rgba(129,140,248,0.18); color:#a5b4fc; }
-        .f-light   { background:rgba(245,158,11,0.18);  color:#fcd34d; }
-        .f-film    { background:rgba(244,63,94,0.18);   color:#fda4af; }
-        .f-comp    { background:rgba(16,185,129,0.18);  color:#6ee7b7; }
-        .f-real    { background:rgba(56,189,248,0.18);  color:#7dd3fc; }
-        .f-style   { background:rgba(167,139,250,0.20); color:#c4b5fd; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M3 · Clase 5 — El prompt como objetivo · [m].seny /academy</title>
+<meta name="description" content="Deja de generar «imágenes de IA». Aprende a hablar el idioma de los fotógrafos —óptica, luz, película y composición— para producir fotorrealismo de moda y producto indistinguible de una campaña real.">
+<link rel="stylesheet" href="/theme.css">
+<link rel="stylesheet" href="/curso.css">
+<style>
+  /* Despiece por capas: en lugar de un código de 7 colores, cada fragmento del prompt
+     lleva un subrayado hairline y un superíndice mono con el número de capa. */
+  .capa{background:none;color:inherit;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:.26em;text-decoration-color:var(--color-accent-deep);}
+  .capa::after{content:attr(data-capa);font-family:var(--font-mono);font-size:.68em;letter-spacing:.06em;color:var(--color-accent-deep);vertical-align:super;margin:0 .1em 0 .25em;}
+  .code pre .capa{color:var(--color-paper);text-decoration-color:var(--color-accent);}
+  .code pre .capa::after{color:var(--color-accent);}
+  /* Checklist del entregable dentro de la card PFC (lima) */
+  .pfc .checklist{margin:14px 0 0;}
+  .pfc .checklist label,.pfc .checklist label::before,.pfc .checklist input:checked + label,.pfc .checklist input:checked + label::before{color:var(--color-accent-ink);}
+  .pfc .checklist label strong{font-weight:600;}
+  .pfc .checklist + p{margin-top:16px;font-family:var(--font-mono);font-size:var(--mono-l);letter-spacing:.04em;}
+</style>
 </head>
+<body data-class="m3c5">
+<main>
 
-<body class="antialiased">
+  <header class="hero">
+    <h1 class="display">El prompt como objetivo: fotografía profesional con IA.</h1>
+    <p class="sub">Deja de generar «imágenes de IA». Aprende a hablar el idioma de los fotógrafos —óptica, luz, película y composición— para producir fotorrealismo de moda y producto indistinguible de una campaña real.</p>
+  </header>
 
-    <div class="progress-bar" id="progressBar"></div>
+  <div class="content">
 
-    <!-- Navigation Header -->
-    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center">
-                <a href="index.html" class="no-underline group">
-                    <h1 class="text-xl font-bold tracking-tight text-brand-dark group-hover:text-brand-primary transition-colors cursor-pointer">
-                        <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
-                    </h1>
-                </a>
-            </div>
-            <nav class="hidden lg:flex items-center space-x-3 text-xs font-bold text-gray-500 uppercase tracking-wider">
-                <a href="#anatomia" class="hover:text-brand-primary transition-colors">Anatomía</a>
-                <a href="#optica" class="hover:text-brand-primary transition-colors">Óptica</a>
-                <a href="#luz" class="hover:text-brand-primary transition-colors">Luz</a>
-                <a href="#color" class="hover:text-brand-primary transition-colors">Color</a>
-                <a href="#composicion" class="hover:text-brand-primary transition-colors">Composición</a>
-                <a href="#realismo" class="hover:text-brand-primary transition-colors">Realismo</a>
-                <a href="#estilo" class="hover:text-brand-primary transition-colors">Estilo</a>
-                <a href="#laboratorio" class="hover:text-brand-primary transition-colors text-brand-accent">Laboratorio</a>
-                <a href="#practica" class="hover:text-brand-primary transition-colors">PFC</a>
-            </nav>
-            <a href="/login.html" onclick="document.cookie='sb-ndtoqnpomhtubcygkwlh-auth-token=;path=/;max-age=0';localStorage.clear()"
-                class="hidden lg:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors ml-4"
-                title="Cerrar sesión">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                    <polyline points="16 17 21 12 16 7" />
-                    <line x1="21" y1="12" x2="9" y2="12" />
-                </svg>
-                Salir
-            </a>
-        </div>
-    </header>
-
-    <!-- Presentation Title (Hero) -->
-    <section class="bg-brand-dark text-white py-32 border-b-8 border-brand-primary relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute top-10 left-10 w-96 h-96 bg-brand-primary rounded-full blur-3xl"></div>
-            <div class="absolute bottom-10 right-20 w-[30rem] h-[30rem] bg-brand-accent rounded-full blur-3xl"></div>
-        </div>
-        <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
-            <span class="inline-block py-1 px-3 bg-brand-primary/20 text-brand-primary font-mono text-sm font-bold uppercase tracking-widest mb-6 rounded">
-                Módulo 3 • Clase 5
-            </span>
-            <h1 class="text-5xl lg:text-7xl font-extrabold mb-6 leading-tight">
-                El Prompt como Objetivo<br>
-                <span class="text-brand-accent text-4xl lg:text-5xl">Fotografía Profesional con IA</span>
-            </h1>
-            <p class="text-xl text-gray-300 font-serif max-w-2xl mx-auto italic text-center">
-                Deja de generar "imágenes de IA". Aprende a hablar el idioma de los fotógrafos —óptica, luz, película y composición— para producir fotorrealismo de moda y producto indistinguible de una campaña real.
-            </p>
-            <div class="mt-10 flex items-center justify-center flex-wrap gap-x-4 gap-y-2 text-sm text-gray-400 font-mono">
-                <span><i class="fa-regular fa-clock mr-2"></i> 90 Minutos</span>
-                <span>•</span>
-                <span><i class="fa-solid fa-camera-retro mr-2"></i> Fotorrealismo & Moda de Lujo</span>
-            </div>
-        </div>
+    <!-- Intro (sin número: la numeración 01–10 coincide con las capas y con el orden original) -->
+    <section class="sec" id="intro" data-label="Intro" data-num="none">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Intro.</h2></div>
+      <p>Cualquiera sabe pedirle a una IA «una foto de unos zapatos». Muy pocos saben pedirle <em>«un plano de producto con lente macro a f/8, iluminación de tres puntos con beauty dish, película Ektar 100 y fondo de estudio infinito»</em>. Esa distancia —la del <strong>vocabulario técnico</strong>— es la que separa una imagen amateur de una campaña editorial. Hoy la cerramos.</p>
+      <div class="callout clave"><span class="k">[ Frase clave ]</span><p>«La IA no falla por falta de talento, sino por falta de vocabulario. Cada término técnico que añades no describe la imagen: contrata a un miembro más de tu equipo de producción.»</p></div>
     </section>
 
-    <!-- Intro -->
-    <section id="intro" class="py-20 bg-white">
-        <div class="max-w-5xl mx-auto px-6">
-            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">
-                Cualquiera sabe pedirle a una IA "una foto de unos zapatos". Muy pocos saben pedirle <em>"un plano de producto con lente macro a f/8, iluminación de tres puntos con beauty dish, película Ektar 100 y fondo de estudio infinito"</em>. Esa distancia —la del <strong>vocabulario técnico</strong>— es la que separa una imagen amateur de una campaña editorial. Hoy la cerramos.
-            </p>
+    <!-- 1. Anatomía: las 7 capas -->
+    <section class="sec" id="anatomia" data-label="Anatomía">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">La anatomía del prompt: las 7 capas.</h2></div>
+      <p>En la Clase 1 conociste las fórmulas visuales (S.C.I.E., P.E.P.A…). Hoy subimos un peldaño: para <strong>fotorrealismo</strong> no basta describir una escena, hay que <em>dirigir un set de rodaje</em>. Un buen prompt fotográfico se construye apilando <strong>7 capas</strong> en orden. Cada capa es una decisión que un profesional tomaría en un plató real.</p>
 
-            <div class="callout-phrase p-8 rounded-2xl fade-in-on-scroll">
-                <p class="italic text-brand-dark font-serif text-lg m-0">
-                    "La IA no falla por falta de talento, sino por falta de vocabulario. Cada término técnico que añades no describe la imagen: contrata a un miembro más de tu equipo de producción."
-                </p>
-            </div>
-        </div>
+      <div class="callout analogia"><span class="k">[ Analogía ]</span><p><strong>La analogía del equipo de rodaje:</strong> el <em>Sujeto</em> es tu modelo, la <em>Óptica</em> es tu cámara y objetivo, la <em>Luz</em> es tu gaffer, la <em>Película</em> es tu colorista, la <em>Composición</em> es el director, el <em>Realismo</em> es el maquillador de continuidad y el <em>Estilo</em> es el director de arte. Un prompt pobre despide a todo el equipo y deja a la IA improvisando sola.</p></div>
+
+      <div class="grid-cards two">
+        <div class="card"><span class="k">[ 01 ]</span><h4>Sujeto</h4><p>Qué o quién aparece y qué hace. La base narrativa: <em>«a young woman in a wool coat»</em>, <em>«a white leather sneaker»</em>.</p></div>
+        <div class="card"><span class="k">[ 02 ]</span><h4>Óptica</h4><p>Lente y apertura. Define perspectiva, desenfoque y «caché»: <em>85mm, f/2.8, medium format</em>.</p></div>
+        <div class="card"><span class="k">[ 03 ]</span><h4>Luz</h4><p>El esquema de iluminación. Esculpe volumen y ambiente: <em>butterfly lighting, softbox, golden hour</em>.</p></div>
+        <div class="card"><span class="k">[ 04 ]</span><h4>Película / Color</h4><p>La emulsión y la piel. Mata el look plástico de la IA: <em>Kodak Portra 400, film grain, subsurface scattering</em>.</p></div>
+        <div class="card"><span class="k">[ 05 ]</span><h4>Composición</h4><p>Dónde se pone la cámara y el sujeto: <em>three-quarter view, rule of thirds, negative space</em>.</p></div>
+        <div class="card"><span class="k">[ 06 ]</span><h4>Realismo</h4><p>La imperfección que engaña al ojo: <em>visible skin texture, flyaway hairs, raw photo</em>.</p></div>
+        <div class="card"><span class="k">[ 07 ]</span><h4>Estilo</h4><p>La etiqueta maestra y la atmósfera que invoca toda una estética de golpe: <em>high fashion editorial, commercial photography, cinematic still</em>.</p></div>
+      </div>
+
+      <div class="code prompt"><div class="ch"><span class="k">[ Plantilla · Las 7 capas ]</span><button type="button" class="btn-ghost" data-copy>Copiar</button></div><pre>[TIPO DE FOTO] of [SUJETO + acción], [LENTE + apertura], [ESQUEMA DE LUZ], shot on [PELÍCULA/COLOR], [COMPOSICIÓN/ENCUADRE], [REALISMO/IMPERFECCIÓN], [ESTILO/ATMÓSFERA].</pre></div>
+      <div class="callout regla"><span class="k">[ Regla de oro ]</span><p>Escribe siempre en <strong>inglés</strong> (los modelos entienden mejor la jerga técnica) y ordena de lo concreto (sujeto) a lo abstracto (estilo).</p></div>
     </section>
 
-    <!-- 1. Anatomía: Las 7 Capas -->
-    <section id="anatomia" class="py-20 bg-brand-light border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll">
-                <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">1</span>
-                La Anatomía del Prompt: Las 7 Capas
-            </h2>
+    <!-- 2. Capa óptica -->
+    <section class="sec" id="optica" data-label="Óptica">
+      <div class="chips"><span class="chip">Capa 02</span></div>
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Óptica y lentes.</h2></div>
+      <p>La lente es lo primero que decide un fotógrafo, porque define la <strong>estructura del rostro</strong> y la sensación de calidad. No es lo mismo un retrato con un 85mm (que embellece) que con un gran angular (que deforma). Estos son los pilares:</p>
 
-            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">
-                En la Clase 1 conociste las fórmulas visuales (S.C.I.E., P.E.P.A...). Hoy subimos un peldaño: para <strong>fotorrealismo</strong> no basta describir una escena, hay que <em>dirigir un set de rodaje</em>. Un buen prompt fotográfico se construye apilando <strong>7 capas</strong> en orden. Cada capa es una decisión que un profesional tomaría en un plató real.
-            </p>
+      <div class="grid-cards three">
+        <div class="card"><h4><code>85mm lens</code></h4><p>El estándar absoluto del retrato de moda. Comprime el fondo y embellece las proporciones sin distorsión.</p></div>
+        <div class="card"><h4><code>medium format lens</code></h4><p>Simula sensores gigantes (Hasselblad, Phase One). Máxima resolución y un look «caro» instantáneo.</p></div>
+        <div class="card"><h4><code>f/2.8 aperture</code></h4><p>El «sweet spot» profesional: mantiene el rostro entero enfocado y desenfoca el fondo con suavidad.</p></div>
+        <div class="card"><h4><code>f/1.8 aperture</code></h4><p>Bokeh cremoso extremo. Aísla el rostro del entorno cuando el fondo es caótico.</p></div>
+        <div class="card"><h4><code>135mm lens</code></h4><p>Teleobjetivo corto que aísla al sujeto y adelgaza el rostro. Rey de la editorial en exteriores.</p></div>
+        <div class="card"><h4><code>macro lens</code></h4><p>Detalle microscópico y profundidad milimétrica. Imprescindible para «beauty», texturas y <strong>producto de calzado</strong>.</p></div>
+      </div>
 
-            <!-- La analogía del set -->
-            <div class="bg-amber-50 p-6 rounded-r-xl border-l-4 border-brand-accent shadow-sm my-8 fade-in-on-scroll">
-                <p class="font-serif text-amber-900 text-base m-0 leading-relaxed">
-                    <i class="fa-solid fa-clapperboard text-brand-accent mr-2"></i>
-                    <strong>La analogía del equipo de rodaje:</strong> el <em>Sujeto</em> es tu modelo, la <em>Óptica</em> es tu cámara y objetivo, la <em>Luz</em> es tu gaffer, la <em>Película</em> es tu colorista, la <em>Composición</em> es el director, el <em>Realismo</em> es el maquillador de continuidad y el <em>Estilo</em> es el director de arte. Un prompt pobre despide a todo el equipo y deja a la IA improvisando sola.
-                </p>
-            </div>
+      <div class="callout aviso"><span class="k">[ ! ] Aviso</span><p><strong>Cuidado:</strong> los gran angulares (<code>14mm–24mm</code>) alargan piernas y exageran la altura, pero <strong>deforman los rostros</strong> en IA. Úsalos para cuerpo entero vanguardista, nunca para primeros planos.</p></div>
 
-            <!-- Las 7 capas visual -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10 fade-in-on-scroll">
-                <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm flex items-start gap-4">
-                    <span class="capa-pill c-subject shrink-0">01 · Sujeto</span>
-                    <p class="font-serif text-gray-600 text-sm m-0">Qué o quién aparece y qué hace. La base narrativa: <em>"a young woman in a wool coat"</em>, <em>"a white leather sneaker"</em>.</p>
-                </div>
-                <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm flex items-start gap-4">
-                    <span class="capa-pill c-optics shrink-0">02 · Óptica</span>
-                    <p class="font-serif text-gray-600 text-sm m-0">Lente y apertura. Define perspectiva, desenfoque y "caché": <em>85mm, f/2.8, medium format</em>.</p>
-                </div>
-                <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm flex items-start gap-4">
-                    <span class="capa-pill c-light shrink-0">03 · Luz</span>
-                    <p class="font-serif text-gray-600 text-sm m-0">El esquema de iluminación. Esculpe volumen y ambiente: <em>butterfly lighting, softbox, golden hour</em>.</p>
-                </div>
-                <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm flex items-start gap-4">
-                    <span class="capa-pill c-film shrink-0">04 · Película / Color</span>
-                    <p class="font-serif text-gray-600 text-sm m-0">La emulsión y la piel. Mata el look plástico de la IA: <em>Kodak Portra 400, film grain, subsurface scattering</em>.</p>
-                </div>
-                <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm flex items-start gap-4">
-                    <span class="capa-pill c-comp shrink-0">05 · Composición</span>
-                    <p class="font-serif text-gray-600 text-sm m-0">Dónde se pone la cámara y el sujeto: <em>three-quarter view, rule of thirds, negative space</em>.</p>
-                </div>
-                <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm flex items-start gap-4">
-                    <span class="capa-pill c-real shrink-0">06 · Realismo</span>
-                    <p class="font-serif text-gray-600 text-sm m-0">La imperfección que engaña al ojo: <em>visible skin texture, flyaway hairs, raw photo</em>.</p>
-                </div>
-                <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm flex items-start gap-4 md:col-span-2">
-                    <span class="capa-pill c-style shrink-0">07 · Estilo</span>
-                    <p class="font-serif text-gray-600 text-sm m-0">La etiqueta maestra y la atmósfera que invoca toda una estética de golpe: <em>high fashion editorial, commercial photography, cinematic still</em>.</p>
-                </div>
-            </div>
-
-            <!-- Plantilla copiable -->
-            <div class="fade-in-on-scroll">
-                <div class="bg-slate-900 text-white rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
-                    <div class="bg-slate-950 px-6 py-4 border-b border-slate-800 flex justify-between items-center">
-                        <span class="text-sm font-mono text-brand-accent font-bold uppercase tracking-wider">
-                            <i class="fa-solid fa-code mr-2"></i> Plantilla de las 7 Capas
-                        </span>
-                        <button onclick="copyToClipboard('tpl-capas', this)" class="text-xs font-bold text-slate-400 hover:text-white transition-colors border border-slate-700 hover:border-slate-500 px-4 py-2 rounded-lg bg-slate-900 flex items-center">
-                            <i class="fa-regular fa-copy mr-2"></i> Copiar
-                        </button>
-                    </div>
-                    <div id="tpl-capas" class="p-6 font-mono text-gray-300 text-sm md:text-base leading-relaxed whitespace-pre-wrap">[TIPO DE FOTO] of [SUJETO + acción], [LENTE + apertura], [ESQUEMA DE LUZ], shot on [PELÍCULA/COLOR], [COMPOSICIÓN/ENCUADRE], [REALISMO/IMPERFECCIÓN], [ESTILO/ATMÓSFERA].</div>
-                </div>
-                <p class="text-center text-sm font-serif text-gray-500 mt-4 italic">Regla de oro: escribe siempre en <strong>inglés</strong> (los modelos entienden mejor la jerga técnica) y ordena de lo concreto (sujeto) a lo abstracto (estilo).</p>
-            </div>
-        </div>
+      <div class="callout nota"><span class="k">[ Nota ]</span><p><strong>Extra de realismo:</strong> añade <code>chromatic aberration</code> (halos de color en los bordes) o <code>anamorphic lens</code> (destellos horizontales de cine) para que el ojo perciba cristal real. La Guía Maestra recoge 30 tipos de óptica; estos 6 cubren el 90% de tus campañas.</p></div>
     </section>
 
-    <!-- 2. Capa Óptica -->
-    <section id="optica" class="py-20 bg-white border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6">
-            <div class="fade-in-on-scroll mb-8">
-                <span class="capa-pill c-optics mb-4"><i class="fa-solid fa-camera"></i> Capa 02</span>
-                <h2 class="text-3xl font-bold text-brand-dark mt-4 flex items-center">
-                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">2</span>
-                    Óptica y Lentes
-                </h2>
-            </div>
-            <p class="prose-text mb-10 text-gray-600 fade-in-on-scroll">
-                La lente es lo primero que decide un fotógrafo, porque define la <strong>estructura del rostro</strong> y la sensación de calidad. No es lo mismo un retrato con un 85mm (que embellece) que con un gran angular (que deforma). Estos son los pilares:
-            </p>
+    <!-- 3. Capa de luz -->
+    <section class="sec" id="luz" data-label="Luz">
+      <div class="chips"><span class="chip">Capa 03</span></div>
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Iluminación y textura de luz.</h2></div>
+      <p>La luz esculpe los pómulos, define la mandíbula y revela la textura de la ropa. Es, junto con la óptica, lo que más distingue una foto «de estudio» de una foto «de móvil». Aprende estos esquemas por su nombre propio:</p>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 fade-in-on-scroll">
-                <div class="bg-gray-50 border border-gray-200 p-6 rounded-2xl card-hover">
-                    <code class="text-brand-primary font-bold text-sm">85mm lens</code>
-                    <p class="font-serif text-gray-600 text-sm mt-3 m-0">El estándar absoluto del retrato de moda. Comprime el fondo y embellece las proporciones sin distorsión.</p>
-                </div>
-                <div class="bg-gray-50 border border-gray-200 p-6 rounded-2xl card-hover">
-                    <code class="text-brand-primary font-bold text-sm">medium format lens</code>
-                    <p class="font-serif text-gray-600 text-sm mt-3 m-0">Simula sensores gigantes (Hasselblad, Phase One). Máxima resolución y un look "caro" instantáneo.</p>
-                </div>
-                <div class="bg-gray-50 border border-gray-200 p-6 rounded-2xl card-hover">
-                    <code class="text-brand-primary font-bold text-sm">f/2.8 aperture</code>
-                    <p class="font-serif text-gray-600 text-sm mt-3 m-0">El "sweet spot" profesional: mantiene el rostro entero enfocado y desenfoca el fondo con suavidad.</p>
-                </div>
-                <div class="bg-gray-50 border border-gray-200 p-6 rounded-2xl card-hover">
-                    <code class="text-brand-primary font-bold text-sm">f/1.8 aperture</code>
-                    <p class="font-serif text-gray-600 text-sm mt-3 m-0">Bokeh cremoso extremo. Aísla el rostro del entorno cuando el fondo es caótico.</p>
-                </div>
-                <div class="bg-gray-50 border border-gray-200 p-6 rounded-2xl card-hover">
-                    <code class="text-brand-primary font-bold text-sm">135mm lens</code>
-                    <p class="font-serif text-gray-600 text-sm mt-3 m-0">Teleobjetivo corto que aísla al sujeto y adelgaza el rostro. Rey de la editorial en exteriores.</p>
-                </div>
-                <div class="bg-gray-50 border border-gray-200 p-6 rounded-2xl card-hover">
-                    <code class="text-brand-primary font-bold text-sm">macro lens</code>
-                    <p class="font-serif text-gray-600 text-sm mt-3 m-0">Detalle microscópico y profundidad milimétrica. Imprescindible para "beauty", texturas y <strong>producto de calzado</strong>.</p>
-                </div>
-            </div>
+      <div class="grid-cards two">
+        <div class="card"><h4><code>butterfly lighting</code></h4><p>El esquema rey de belleza y moda: luz frontal elevada que potencia los pómulos con una sombra simétrica bajo la nariz.</p></div>
+        <div class="card"><h4><code>softbox lighting</code></h4><p>Luz difusa, suave y envolvente. Pieles perfectas sin sombras duras: el pan de cada día de la cosmética.</p></div>
+        <div class="card"><h4><code>rembrandt lighting</code></h4><p>El triángulo de luz en la mejilla. Dramático y sofisticado, ideal para alta costura y retrato masculino.</p></div>
+        <div class="card"><h4><code>golden hour</code></h4><p>Luz lateral cálida y dorada. El look lifestyle de tarde por excelencia: natural, aspiracional, sin esfuerzo.</p></div>
+        <div class="card"><h4><code>rim / backlight</code></h4><p>Luz trasera que perfila cabello y hombros. Separa al sujeto de fondos oscuros y da un halo premium.</p></div>
+        <div class="card"><h4><code>cinematic lighting</code></h4><p>Le pide a la IA que aplique «lógica de Hollywood»: luz motivada, contrastada y de alta calidad.</p></div>
+      </div>
 
-            <div class="bg-red-50 border-l-4 border-red-400 p-5 rounded-r-xl mt-8 fade-in-on-scroll">
-                <p class="font-serif text-red-800 text-sm m-0"><i class="fa-solid fa-triangle-exclamation mr-2"></i> <strong>Cuidado:</strong> los gran angulares (<code>14mm–24mm</code>) alargan piernas y exageran la altura, pero <strong>deforman los rostros</strong> en IA. Úsalos para cuerpo entero vanguardista, nunca para primeros planos.</p>
-            </div>
-
-            <p class="prose-text mt-8 text-gray-500 text-base fade-in-on-scroll">
-                <i class="fa-solid fa-flask text-brand-primary mr-2"></i> <strong>Extra de realismo:</strong> añade <code>chromatic aberration</code> (halos de color en los bordes) o <code>anamorphic lens</code> (destellos horizontales de cine) para que el ojo perciba cristal real. La Guía Maestra recoge 30 tipos de óptica; estos 6 cubren el 90% de tus campañas.
-            </p>
-        </div>
+      <div class="callout nota"><span class="k">[ Nota ]</span><p><strong>Para arriesgar:</strong> <code>split lighting</code> (media cara en penumbra, misterio), <code>high-key</code> (comercial minimalista sin sombras), <code>low-key</code> (nocturno íntimo) o <code>hard flash</code> (el look crudo estilo Terry Richardson de revista indie).</p></div>
     </section>
 
-    <!-- 3. Capa de Luz -->
-    <section id="luz" class="py-20 bg-brand-light border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6">
-            <div class="fade-in-on-scroll mb-8">
-                <span class="capa-pill c-light mb-4"><i class="fa-solid fa-lightbulb"></i> Capa 03</span>
-                <h2 class="text-3xl font-bold text-brand-dark mt-4 flex items-center">
-                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">3</span>
-                    Iluminación y Textura de Luz
-                </h2>
-            </div>
-            <p class="prose-text mb-10 text-gray-600 fade-in-on-scroll">
-                La luz esculpe los pómulos, define la mandíbula y revela la textura de la ropa. Es, junto con la óptica, lo que más distingue una foto "de estudio" de una foto "de móvil". Aprende estos esquemas por su nombre propio:
-            </p>
+    <!-- 4. Capa de color / película -->
+    <section class="sec" id="color" data-label="Color">
+      <div class="chips"><span class="chip">Capa 04</span></div>
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Película, color y piel.</h2></div>
+      <p>Esta es <strong>la capa secreta</strong>. El motivo por el que una imagen de IA «canta» a plástico y CGI es la ausencia de textura fotomecánica. Emular un carrete de película real y forzar la textura de la piel es lo que engaña definitivamente al cerebro.</p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in-on-scroll">
-                <div class="bg-white border border-gray-200 p-6 rounded-2xl card-hover flex items-start gap-4">
-                    <div class="w-11 h-11 bg-amber-100 text-brand-accent rounded-xl flex items-center justify-center text-lg shrink-0"><i class="fa-solid fa-crown"></i></div>
-                    <div>
-                        <code class="text-brand-accent font-bold text-sm">butterfly lighting</code>
-                        <p class="font-serif text-gray-600 text-sm mt-2 m-0">El esquema rey de belleza y moda: luz frontal elevada que potencia los pómulos con una sombra simétrica bajo la nariz.</p>
-                    </div>
-                </div>
-                <div class="bg-white border border-gray-200 p-6 rounded-2xl card-hover flex items-start gap-4">
-                    <div class="w-11 h-11 bg-amber-100 text-brand-accent rounded-xl flex items-center justify-center text-lg shrink-0"><i class="fa-solid fa-square-full"></i></div>
-                    <div>
-                        <code class="text-brand-accent font-bold text-sm">softbox lighting</code>
-                        <p class="font-serif text-gray-600 text-sm mt-2 m-0">Luz difusa, suave y envolvente. Pieles perfectas sin sombras duras: el pan de cada día de la cosmética.</p>
-                    </div>
-                </div>
-                <div class="bg-white border border-gray-200 p-6 rounded-2xl card-hover flex items-start gap-4">
-                    <div class="w-11 h-11 bg-amber-100 text-brand-accent rounded-xl flex items-center justify-center text-lg shrink-0"><i class="fa-solid fa-moon"></i></div>
-                    <div>
-                        <code class="text-brand-accent font-bold text-sm">rembrandt lighting</code>
-                        <p class="font-serif text-gray-600 text-sm mt-2 m-0">El triángulo de luz en la mejilla. Dramático y sofisticado, ideal para alta costura y retrato masculino.</p>
-                    </div>
-                </div>
-                <div class="bg-white border border-gray-200 p-6 rounded-2xl card-hover flex items-start gap-4">
-                    <div class="w-11 h-11 bg-amber-100 text-brand-accent rounded-xl flex items-center justify-center text-lg shrink-0"><i class="fa-solid fa-sun"></i></div>
-                    <div>
-                        <code class="text-brand-accent font-bold text-sm">golden hour</code>
-                        <p class="font-serif text-gray-600 text-sm mt-2 m-0">Luz lateral cálida y dorada. El look lifestyle de tarde por excelencia: natural, aspiracional, sin esfuerzo.</p>
-                    </div>
-                </div>
-                <div class="bg-white border border-gray-200 p-6 rounded-2xl card-hover flex items-start gap-4">
-                    <div class="w-11 h-11 bg-amber-100 text-brand-accent rounded-xl flex items-center justify-center text-lg shrink-0"><i class="fa-solid fa-highlighter"></i></div>
-                    <div>
-                        <code class="text-brand-accent font-bold text-sm">rim / backlight</code>
-                        <p class="font-serif text-gray-600 text-sm mt-2 m-0">Luz trasera que perfila cabello y hombros. Separa al sujeto de fondos oscuros y da un halo premium.</p>
-                    </div>
-                </div>
-                <div class="bg-white border border-gray-200 p-6 rounded-2xl card-hover flex items-start gap-4">
-                    <div class="w-11 h-11 bg-amber-100 text-brand-accent rounded-xl flex items-center justify-center text-lg shrink-0"><i class="fa-solid fa-film"></i></div>
-                    <div>
-                        <code class="text-brand-accent font-bold text-sm">cinematic lighting</code>
-                        <p class="font-serif text-gray-600 text-sm mt-2 m-0">Le pide a la IA que aplique "lógica de Hollywood": luz motivada, contrastada y de alta calidad.</p>
-                    </div>
-                </div>
-            </div>
+      <div class="callout clave"><span class="k">[ Frase clave ]</span><p>«La imperfección es la nueva perfección. Un poro, una peca y un grano de película valen más que mil megapíxeles.»</p></div>
 
-            <p class="prose-text mt-8 text-gray-500 text-base fade-in-on-scroll">
-                <i class="fa-solid fa-palette text-brand-accent mr-2"></i> <strong>Para arriesgar:</strong> <code>split lighting</code> (media cara en penumbra, misterio), <code>high-key</code> (comercial minimalista sin sombras), <code>low-key</code> (nocturno íntimo) o <code>hard flash</code> (el look crudo estilo Terry Richardson de revista indie).
-            </p>
-        </div>
+      <div class="grid-cards three">
+        <div class="card"><h4><code>Kodak Portra 400</code></h4><p>El mejor parámetro de color para piel humana: grano fino, contraste moderado y tonos cálidos y reales.</p></div>
+        <div class="card"><h4><code>subsurface scattering</code></h4><p>Simula cómo la luz penetra y rebota dentro de la piel. La hace translúcida y viva. Crítico en fotorrealismo.</p></div>
+        <div class="card"><h4><code>visible skin texture</code></h4><p>El antídoto nº1 contra el look plástico. Orden directa para renderizar poros y textura dérmica real.</p></div>
+        <div class="card"><h4><code>35mm film grain</code></h4><p>Ruido de película analógica. Unifica la imagen y le da la textura inconfundible de una foto física.</p></div>
+        <div class="card"><h4><code>teal and orange</code></h4><p>Gradación de cine moderna: la piel (naranja) resalta contra el fondo (cian). Look editorial premium.</p></div>
+        <div class="card"><h4><code>muted colors</code></h4><p>Paleta desaturada en tonos tierra. La estética del «lujo silencioso» (Quiet Luxury) de The Row o Loro Piana.</p></div>
+      </div>
+
+      <div class="callout nota"><span class="k">[ Si buscas blanco y negro ]</span><p><code>Ilford HP5</code> para un B/N clásico de contraste orgánico y atemporal · <code>Kodak Tri-X 400</code> para el grano marcado y rebelde del fotoperiodismo de moda (estilo Peter Lindbergh).</p></div>
     </section>
 
-    <!-- 4. Capa de Color / Película -->
-    <section id="color" class="py-20 bg-white border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6">
-            <div class="fade-in-on-scroll mb-8">
-                <span class="capa-pill c-film mb-4"><i class="fa-solid fa-film"></i> Capa 04</span>
-                <h2 class="text-3xl font-bold text-brand-dark mt-4 flex items-center">
-                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">4</span>
-                    Película, Color y Piel
-                </h2>
-            </div>
-            <p class="prose-text mb-6 text-gray-600 fade-in-on-scroll">
-                Esta es <strong>la capa secreta</strong>. El motivo por el que una imagen de IA "canta" a plástico y CGI es la ausencia de textura fotomecánica. Emular un carrete de película real y forzar la textura de la piel es lo que engaña definitivamente al cerebro.
-            </p>
+    <!-- 5. Capa de composición -->
+    <section class="sec" id="composicion" data-label="Composición">
+      <div class="chips"><span class="chip">Capa 05</span></div>
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Composición y encuadre.</h2></div>
+      <p>Dónde colocas la cámara frente al sujeto cambia por completo la lectura emocional. El mismo zapato disparado a ras de suelo (<em>low angle</em>) transmite poder; a vista de pájaro, delicadeza. Las herramientas del director:</p>
 
-            <div class="callout-phrase p-6 rounded-2xl mb-10 fade-in-on-scroll">
-                <p class="italic text-brand-dark font-serif text-base m-0"><i class="fa-solid fa-quote-left text-brand-primary mr-2"></i> La imperfección es la nueva perfección. Un poro, una peca y un grano de película valen más que mil megapíxeles.</p>
-            </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Parámetro</th><th>Qué hace</th><th>Cuándo usarlo</th></tr></thead>
+        <tbody>
+          <tr><td><code>three-quarter view</code></td><td>Cuerpo/rostro girado a 45°.</td><td>El ángulo más favorecedor: estiliza la mandíbula y aporta volumen.</td></tr>
+          <tr><td><code>rule of thirds</code></td><td>Sujeto alineado a los tercios.</td><td>Composiciones elegantes y equilibradas por defecto.</td></tr>
+          <tr><td><code>full body shot</code></td><td>Cuerpo entero.</td><td>Mostrar el look completo: caída de la ropa y <strong>calzado</strong>.</td></tr>
+          <tr><td><code>low angle shot</code></td><td>Cámara baja mirando hacia arriba.</td><td>Da poder, estatura y arrogancia. Muy usado en moda y sneakers.</td></tr>
+          <tr><td><code>negative space</code></td><td>Mucho espacio vacío alrededor.</td><td>Diseño editorial: deja hueco para el titular y el logo.</td></tr>
+          <tr><td><code>extreme close-up</code></td><td>Plano detalle (labios, ojo, costura).</td><td>Beauty, joyería y macro de textura del producto.</td></tr>
+        </tbody>
+      </table></div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 fade-in-on-scroll">
-                <div class="bg-rose-50 border border-rose-200 p-6 rounded-2xl card-hover">
-                    <code class="text-rose-700 font-bold text-sm">Kodak Portra 400</code>
-                    <p class="font-serif text-gray-600 text-sm mt-3 m-0">El mejor parámetro de color para piel humana: grano fino, contraste moderado y tonos cálidos y reales.</p>
-                </div>
-                <div class="bg-rose-50 border border-rose-200 p-6 rounded-2xl card-hover">
-                    <code class="text-rose-700 font-bold text-sm">subsurface scattering</code>
-                    <p class="font-serif text-gray-600 text-sm mt-3 m-0">Simula cómo la luz penetra y rebota dentro de la piel. La hace translúcida y viva. Crítico en fotorrealismo.</p>
-                </div>
-                <div class="bg-rose-50 border border-rose-200 p-6 rounded-2xl card-hover">
-                    <code class="text-rose-700 font-bold text-sm">visible skin texture</code>
-                    <p class="font-serif text-gray-600 text-sm mt-3 m-0">El antídoto nº1 contra el look plástico. Orden directa para renderizar poros y textura dérmica real.</p>
-                </div>
-                <div class="bg-rose-50 border border-rose-200 p-6 rounded-2xl card-hover">
-                    <code class="text-rose-700 font-bold text-sm">35mm film grain</code>
-                    <p class="font-serif text-gray-600 text-sm mt-3 m-0">Ruido de película analógica. Unifica la imagen y le da la textura inconfundible de una foto física.</p>
-                </div>
-                <div class="bg-rose-50 border border-rose-200 p-6 rounded-2xl card-hover">
-                    <code class="text-rose-700 font-bold text-sm">teal and orange</code>
-                    <p class="font-serif text-gray-600 text-sm mt-3 m-0">Gradación de cine moderna: la piel (naranja) resalta contra el fondo (cian). Look editorial premium.</p>
-                </div>
-                <div class="bg-rose-50 border border-rose-200 p-6 rounded-2xl card-hover">
-                    <code class="text-rose-700 font-bold text-sm">muted colors</code>
-                    <p class="font-serif text-gray-600 text-sm mt-3 m-0">Paleta desaturada en tonos tierra. La estética del "lujo silencioso" (Quiet Luxury) de The Row o Loro Piana.</p>
-                </div>
-            </div>
-
-            <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 mt-8 fade-in-on-scroll">
-                <h4 class="font-bold text-brand-dark text-sm uppercase tracking-wider mb-3"><i class="fa-solid fa-circle-half-stroke mr-2 text-gray-500"></i> Si buscas blanco y negro</h4>
-                <p class="font-serif text-gray-600 text-sm m-0"><code>Ilford HP5</code> para un B/N clásico de contraste orgánico y atemporal · <code>Kodak Tri-X 400</code> para el grano marcado y rebelde del fotoperiodismo de moda (estilo Peter Lindbergh).</p>
-            </div>
-        </div>
+      <div class="callout aviso"><span class="k">[ ! ] Aviso</span><p><strong>Planos que destrozan el fotorrealismo:</strong> el <code>extreme wide shot</code> convierte al sujeto en una hormiga (la IA arruina los rostros a distancia) y el <code>bird's eye view</code> suele romper las proporciones anatómicas. Úsalos con cabeza.</p></div>
     </section>
 
-    <!-- 5. Capa de Composición -->
-    <section id="composicion" class="py-20 bg-brand-light border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6">
-            <div class="fade-in-on-scroll mb-8">
-                <span class="capa-pill c-comp mb-4"><i class="fa-solid fa-crop-simple"></i> Capa 05</span>
-                <h2 class="text-3xl font-bold text-brand-dark mt-4 flex items-center">
-                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">5</span>
-                    Composición y Encuadre
-                </h2>
-            </div>
-            <p class="prose-text mb-10 text-gray-600 fade-in-on-scroll">
-                Dónde colocas la cámara frente al sujeto cambia por completo la lectura emocional. El mismo zapato disparado a ras de suelo (<em>low angle</em>) transmite poder; a vista de pájaro, delicadeza. Las herramientas del director:
-            </p>
+    <!-- 6. Capa de realismo -->
+    <section class="sec" id="realismo" data-label="Realismo">
+      <div class="chips"><span class="chip">Capa 06</span></div>
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Realismo e imperfección física.</h2></div>
+      <p>Estos son los detalles que el cerebro humano escanea de forma inconsciente para decidir si una foto es real. La IA tiende a hacer todo demasiado perfecto, joven y simétrico; tu trabajo es <strong>ensuciarlo</strong> con inteligencia:</p>
 
-            <div class="overflow-x-auto fade-in-on-scroll">
-                <table class="custom-table">
-                    <thead>
-                        <tr>
-                            <th>Parámetro</th>
-                            <th>Qué hace</th>
-                            <th>Cuándo usarlo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code class="text-emerald-700 font-bold">three-quarter view</code></td>
-                            <td>Cuerpo/rostro girado a 45°.</td>
-                            <td>El ángulo más favorecedor: estiliza la mandíbula y aporta volumen.</td>
-                        </tr>
-                        <tr>
-                            <td><code class="text-emerald-700 font-bold">rule of thirds</code></td>
-                            <td>Sujeto alineado a los tercios.</td>
-                            <td>Composiciones elegantes y equilibradas por defecto.</td>
-                        </tr>
-                        <tr>
-                            <td><code class="text-emerald-700 font-bold">full body shot</code></td>
-                            <td>Cuerpo entero.</td>
-                            <td>Mostrar el look completo: caída de la ropa y <strong>calzado</strong>.</td>
-                        </tr>
-                        <tr>
-                            <td><code class="text-emerald-700 font-bold">low angle shot</code></td>
-                            <td>Cámara baja mirando hacia arriba.</td>
-                            <td>Da poder, estatura y arrogancia. Muy usado en moda y sneakers.</td>
-                        </tr>
-                        <tr>
-                            <td><code class="text-emerald-700 font-bold">negative space</code></td>
-                            <td>Mucho espacio vacío alrededor.</td>
-                            <td>Diseño editorial: deja hueco para el titular y el logo.</td>
-                        </tr>
-                        <tr>
-                            <td><code class="text-emerald-700 font-bold">extreme close-up</code></td>
-                            <td>Plano detalle (labios, ojo, costura).</td>
-                            <td>Beauty, joyería y macro de textura del producto.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+      <div class="grid-cards two">
+        <div class="card"><h4><code>raw photo / unedited</code></h4><p>Fuerza a la IA a no aplicar «filtros de belleza» post-procesados. Imprescindible para realismo puro.</p></div>
+        <div class="card"><h4><code>messy hair / flyaway hairs</code></h4><p>El truco nº1 para engañar al ojo: pelos sueltos a contraluz. La IA suele hacer peinados demasiado perfectos.</p></div>
+        <div class="card"><h4><code>catchlights in eyes</code></h4><p>El reflejo de la fuente de luz en la pupila. Da vida y humedad a la mirada; sin él, ojos de maniquí.</p></div>
+        <div class="card"><h4><code>asymmetrical facial features</code></h4><p>Rostros no perfectamente simétricos. La asimetría genera confianza visual y rompe el «rostro IA estándar».</p></div>
+        <div class="card"><h4><code>fine wrinkles / natural imperfections</code></h4><p>Arruguitas de expresión, pecas, rojeces. Edad y humanidad reales frente a la piel lisa de plástico.</p></div>
+        <div class="card"><h4><code>shot on iPhone</code></h4><p>Falso UGC (contenido de usuario). Calidad «móvil» creíble para campañas nativas de redes sociales.</p></div>
+      </div>
 
-            <div class="bg-red-50 border-l-4 border-red-400 p-5 rounded-r-xl mt-6 fade-in-on-scroll">
-                <p class="font-serif text-red-800 text-sm m-0"><i class="fa-solid fa-triangle-exclamation mr-2"></i> <strong>Planos que destrozan el fotorrealismo:</strong> el <code>extreme wide shot</code> convierte al sujeto en una hormiga (la IA arruina los rostros a distancia) y el <code>bird's eye view</code> suele romper las proporciones anatómicas. Úsalos con cabeza.</p>
-            </div>
-        </div>
+      <div class="callout nota"><span class="k">[ Nota ]</span><p><strong>Defectos ópticos con encanto:</strong> <code>vignetting</code> (esquinas oscurecidas que enmarcan), <code>lens dust</code> / <code>smudged lens</code> (suciedad táctil del mundo real) y <code>motion blur</code> (movimiento congelado con vida). Un toque, no una sopa: si abusas, degradas la nitidez.</p></div>
     </section>
 
-    <!-- 6. Capa de Realismo -->
-    <section id="realismo" class="py-20 bg-white border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6">
-            <div class="fade-in-on-scroll mb-8">
-                <span class="capa-pill c-real mb-4"><i class="fa-solid fa-fingerprint"></i> Capa 06</span>
-                <h2 class="text-3xl font-bold text-brand-dark mt-4 flex items-center">
-                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">6</span>
-                    Realismo e Imperfección Física
-                </h2>
-            </div>
-            <p class="prose-text mb-10 text-gray-600 fade-in-on-scroll">
-                Estos son los detalles que el cerebro humano escanea de forma inconsciente para decidir si una foto es real. La IA tiende a hacer todo demasiado perfecto, joven y simétrico; tu trabajo es <strong>ensuciarlo</strong> con inteligencia:
-            </p>
+    <!-- 7. Capa de estilo -->
+    <section class="sec" id="estilo" data-label="Estilo">
+      <div class="chips"><span class="chip">Capa 07</span></div>
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Estilo, atmósfera y formato.</h2></div>
+      <p>Las <strong>etiquetas maestras</strong>. Una sola de estas palabras invoca de golpe toda una tradición estética: iluminación, poses, encuadre y color coherentes entre sí. Son el atajo más potente del prompting fotográfico.</p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in-on-scroll">
-                <div class="bg-sky-50 border border-sky-200 p-6 rounded-2xl card-hover">
-                    <code class="text-sky-700 font-bold text-sm">raw photo / unedited</code>
-                    <p class="font-serif text-gray-600 text-sm mt-2 m-0">Fuerza a la IA a no aplicar "filtros de belleza" post-procesados. Imprescindible para realismo puro.</p>
-                </div>
-                <div class="bg-sky-50 border border-sky-200 p-6 rounded-2xl card-hover">
-                    <code class="text-sky-700 font-bold text-sm">messy hair / flyaway hairs</code>
-                    <p class="font-serif text-gray-600 text-sm mt-2 m-0">El truco nº1 para engañar al ojo: pelos sueltos a contraluz. La IA suele hacer peinados demasiado perfectos.</p>
-                </div>
-                <div class="bg-sky-50 border border-sky-200 p-6 rounded-2xl card-hover">
-                    <code class="text-sky-700 font-bold text-sm">catchlights in eyes</code>
-                    <p class="font-serif text-gray-600 text-sm mt-2 m-0">El reflejo de la fuente de luz en la pupila. Da vida y humedad a la mirada; sin él, ojos de maniquí.</p>
-                </div>
-                <div class="bg-sky-50 border border-sky-200 p-6 rounded-2xl card-hover">
-                    <code class="text-sky-700 font-bold text-sm">asymmetrical facial features</code>
-                    <p class="font-serif text-gray-600 text-sm mt-2 m-0">Rostros no perfectamente simétricos. La asimetría genera confianza visual y rompe el "rostro IA estándar".</p>
-                </div>
-                <div class="bg-sky-50 border border-sky-200 p-6 rounded-2xl card-hover">
-                    <code class="text-sky-700 font-bold text-sm">fine wrinkles / natural imperfections</code>
-                    <p class="font-serif text-gray-600 text-sm mt-2 m-0">Arruguitas de expresión, pecas, rojeces. Edad y humanidad reales frente a la piel lisa de plástico.</p>
-                </div>
-                <div class="bg-sky-50 border border-sky-200 p-6 rounded-2xl card-hover">
-                    <code class="text-sky-700 font-bold text-sm">shot on iPhone</code>
-                    <p class="font-serif text-gray-600 text-sm mt-2 m-0">Falso UGC (contenido de usuario). Calidad "móvil" creíble para campañas nativas de redes sociales.</p>
-                </div>
-            </div>
+      <div class="grid-cards two">
+        <div class="card"><h4><code>high fashion editorial</code></h4><p>La etiqueta suprema: poses escultóricas, luz impecable y ropa vanguardista, nivel MET Gala.</p></div>
+        <div class="card"><h4><code>editorial fashion photography</code></h4><p>Invoca instantáneamente la estética de Vogue, Harper's Bazaar o Numéro.</p></div>
+        <div class="card"><h4><code>commercial photography</code></h4><p>Iluminación perfecta, color saturado, todo en foco. Campañas limpias y vallas publicitarias.</p></div>
+        <div class="card"><h4><code>lookbook style</code></h4><p>Fondo simple, pose recta que muestra la caída de la prenda. El e-commerce de lujo (SSENSE, Farfetch).</p></div>
+        <div class="card"><h4><code>studio backdrop</code></h4><p>Papel continuo (gris, blanco o pintado). La base del catálogo clásico de producto.</p></div>
+        <div class="card"><h4><code>overcast sky</code></h4><p>Luz de cielo nublado: la mejor para no distorsionar el color real de una prenda de lujo (sin sombras duras).</p></div>
+      </div>
 
-            <p class="prose-text mt-8 text-gray-500 text-base fade-in-on-scroll">
-                <i class="fa-solid fa-camera-rotate text-sky-600 mr-2"></i> <strong>Defectos ópticos con encanto:</strong> <code>vignetting</code> (esquinas oscurecidas que enmarcan), <code>lens dust</code> / <code>smudged lens</code> (suciedad táctil del mundo real) y <code>motion blur</code> (movimiento congelado con vida). Un toque, no una sopa: si abusas, degradas la nitidez.
-            </p>
-        </div>
+      <div class="callout nota"><span class="k">[ Nota ]</span><p><strong>Atmósferas de carácter:</strong> <code>noir atmosphere</code> (sombras de cine negro para trajes y relojería), <code>cyberpunk aesthetics</code> (neón y charol), <code>documentary style</code> (crudo y honesto) o <code>cinematic still</code> (fotograma de superproducción).</p></div>
     </section>
 
-    <!-- 7. Capa de Estilo -->
-    <section id="estilo" class="py-20 bg-brand-light border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6">
-            <div class="fade-in-on-scroll mb-8">
-                <span class="capa-pill c-style mb-4"><i class="fa-solid fa-wand-magic-sparkles"></i> Capa 07</span>
-                <h2 class="text-3xl font-bold text-brand-dark mt-4 flex items-center">
-                    <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">7</span>
-                    Estilo, Atmósfera y Formato
-                </h2>
-            </div>
-            <p class="prose-text mb-10 text-gray-600 fade-in-on-scroll">
-                Las <strong>etiquetas maestras</strong>. Una sola de estas palabras invoca de golpe toda una tradición estética: iluminación, poses, encuadre y color coherentes entre sí. Son el atajo más potente del prompting fotográfico.
-            </p>
+    <!-- 8. Laboratorio: el despiece de la consistencia -->
+    <section class="sec" id="laboratorio" data-label="Laboratorio">
+      <p class="sec-eyebrow">[ Sección estrella ]</p>
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Laboratorio de prompts: el despiece de la consistencia.</h2></div>
+      <p>Vamos a coger un prompt profesional y a <strong>abrirlo en canal</strong>. Verás que no es magia: son 7 capas ensambladas. Y una vez lo entiendes por partes, desbloqueas el verdadero superpoder de una marca: la <strong>consistencia</strong>.</p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in-on-scroll">
-                <div class="bg-white border-l-4 border-brand-primary p-6 rounded-r-xl shadow-sm">
-                    <code class="text-brand-primary font-bold text-sm">high fashion editorial</code>
-                    <p class="font-serif text-gray-600 text-sm mt-2 m-0">La etiqueta suprema: poses escultóricas, luz impecable y ropa vanguardista, nivel MET Gala.</p>
-                </div>
-                <div class="bg-white border-l-4 border-brand-primary p-6 rounded-r-xl shadow-sm">
-                    <code class="text-brand-primary font-bold text-sm">editorial fashion photography</code>
-                    <p class="font-serif text-gray-600 text-sm mt-2 m-0">Invoca instantáneamente la estética de Vogue, Harper's Bazaar o Numéro.</p>
-                </div>
-                <div class="bg-white border-l-4 border-brand-accent p-6 rounded-r-xl shadow-sm">
-                    <code class="text-brand-accent font-bold text-sm">commercial photography</code>
-                    <p class="font-serif text-gray-600 text-sm mt-2 m-0">Iluminación perfecta, color saturado, todo en foco. Campañas limpias y vallas publicitarias.</p>
-                </div>
-                <div class="bg-white border-l-4 border-brand-accent p-6 rounded-r-xl shadow-sm">
-                    <code class="text-brand-accent font-bold text-sm">lookbook style</code>
-                    <p class="font-serif text-gray-600 text-sm mt-2 m-0">Fondo simple, pose recta que muestra la caída de la prenda. El e-commerce de lujo (SSENSE, Farfetch).</p>
-                </div>
-                <div class="bg-white border-l-4 border-claude p-6 rounded-r-xl shadow-sm">
-                    <code class="text-claude font-bold text-sm">studio backdrop</code>
-                    <p class="font-serif text-gray-600 text-sm mt-2 m-0">Papel continuo (gris, blanco o pintado). La base del catálogo clásico de producto.</p>
-                </div>
-                <div class="bg-white border-l-4 border-claude p-6 rounded-r-xl shadow-sm">
-                    <code class="text-claude font-bold text-sm">overcast sky</code>
-                    <p class="font-serif text-gray-600 text-sm mt-2 m-0">Luz de cielo nublado: la mejor para no distorsionar el color real de una prenda de lujo (sin sombras duras).</p>
-                </div>
-            </div>
+      <!-- El prompt maestro despiezado: cada fragmento lleva su número de capa -->
+      <div class="code prompt"><div class="ch"><span class="k">[ Prompt maestro · Editorial de moda ]</span><button type="button" class="btn-ghost" data-copy data-copy-source="#master-prompt">Copiar limpio</button></div><pre><mark class="capa" data-capa="01">Editorial fashion photograph of a young woman in a tailored wool coat</mark>, <mark class="capa" data-capa="02">85mm lens, f/2.8 aperture</mark>, <mark class="capa" data-capa="03">butterfly lighting with a soft catchlight</mark>, <mark class="capa" data-capa="04">shot on Kodak Portra 400, 35mm film grain, subsurface scattering</mark>, <mark class="capa" data-capa="05">three-quarter view, rule of thirds, negative space on the right</mark>, <mark class="capa" data-capa="06">visible skin texture, flyaway hairs, natural skin imperfections</mark>, <mark class="capa" data-capa="07">high fashion editorial, medium format Hasselblad look, muted quiet-luxury palette</mark>.</pre></div>
+      <!-- copia limpia (sin marcas) que usa el botón Copiar -->
+      <div id="master-prompt" hidden>Editorial fashion photograph of a young woman in a tailored wool coat, 85mm lens, f/2.8 aperture, butterfly lighting with a soft catchlight, shot on Kodak Portra 400, 35mm film grain, subsurface scattering, three-quarter view, rule of thirds, negative space on the right, visible skin texture, flyaway hairs, natural skin imperfections, high fashion editorial, medium format Hasselblad look, muted quiet-luxury palette.</div>
 
-            <p class="prose-text mt-8 text-gray-500 text-base fade-in-on-scroll">
-                <i class="fa-solid fa-masks-theater text-brand-primary mr-2"></i> <strong>Atmósferas de carácter:</strong> <code>noir atmosphere</code> (sombras de cine negro para trajes y relojería), <code>cyberpunk aesthetics</code> (neón y charol), <code>documentary style</code> (crudo y honesto) o <code>cinematic still</code> (fotograma de superproducción).
-            </p>
-        </div>
+      <!-- Leyenda de capas -->
+      <div class="chips">
+        <span class="chip">01 Sujeto</span>
+        <span class="chip">02 Óptica</span>
+        <span class="chip">03 Luz</span>
+        <span class="chip">04 Película</span>
+        <span class="chip">05 Composición</span>
+        <span class="chip">06 Realismo</span>
+        <span class="chip">07 Estilo</span>
+      </div>
+
+      <!-- Despiece -->
+      <h3>Por qué cada fragmento está ahí</h3>
+      <div class="glossary">
+        <div class="row"><h4 class="term">Óptica<small>Capa 02</small></h4><p class="def"><code>85mm + f/2.8</code> embellece las proporciones y aísla a la modelo con un fondo cremoso, pero mantiene el rostro entero nítido. Cero distorsión.</p></div>
+        <div class="row"><h4 class="term">Luz<small>Capa 03</small></h4><p class="def"><code>butterfly + catchlight</code> potencia los pómulos y pone vida en la mirada. El esquema rey de la belleza.</p></div>
+        <div class="row"><h4 class="term">Película<small>Capa 04</small></h4><p class="def"><code>Portra 400 + grain + subsurface</code> es el trío antiplástico: tono de piel real, textura física y piel translúcida y viva.</p></div>
+        <div class="row"><h4 class="term">Composición<small>Capa 05</small></h4><p class="def"><code>three-quarter + negative space</code> estiliza la mandíbula y deja aire a la derecha para el titular de la campaña.</p></div>
+        <div class="row"><h4 class="term">Realismo<small>Capa 06</small></h4><p class="def"><code>skin texture + flyaway hairs</code> son los detalles que el ojo escanea para creerse la foto. Sin ellos, maniquí.</p></div>
+        <div class="row"><h4 class="term">Estilo<small>Capa 07</small></h4><p class="def"><code>high fashion editorial + Hasselblad + quiet luxury</code> fija el «acabado caro» y la paleta sobria de una gran casa de moda.</p></div>
+      </div>
+
+      <!-- El superpoder: consistencia -->
+      <h3>El superpoder: consistencia por despiece</h3>
+      <p>Una marca no necesita una foto genial: necesita <strong>doce fotos que parezcan la misma campaña</strong>. El truco es congelar 6 capas y mover solo 1. Mira lo que pasa si dejamos TODO intacto y cambiamos únicamente la capa de <span class="chip">Luz</span>:</p>
+
+      <div class="grid-cards">
+        <div class="card dim"><span class="k">Shot 01</span><h4>Portada</h4><p><code>butterfly lighting</code></p></div>
+        <div class="card dim"><span class="k">Shot 02</span><h4>Interior</h4><p><code>rembrandt lighting</code></p></div>
+        <div class="card dim"><span class="k">Shot 03</span><h4>Lifestyle</h4><p><code>golden hour</code></p></div>
+        <div class="card dim"><span class="k">Shot 04</span><h4>Detalle</h4><p><code>rim / backlight</code></p></div>
+      </div>
+
+      <div class="callout ok"><span class="k">[ La lección ]</span><p>Misma modelo, misma óptica, misma película, mismo estilo → cuatro fotos distintas pero <strong>inequívocamente de la misma marca</strong>. Esta es la base sobre la que en una clase posterior montarás la consistencia de personaje (<code>--cref</code>, LoRAs, embajador virtual). El despiece es lo que hace la consistencia <em>controlable</em>.</p></div>
+
+      <!-- Diagnóstico por capas: el despiece a la inversa -->
+      <h3>La consulta: diagnóstico por capas</h3>
+      <p>El despiece también funciona al revés. Cuando una imagen «canta» a IA, no regeneres a ciegas: <strong>identifica la capa enferma</strong> y corrige solo esa. Los síntomas más comunes:</p>
+
+      <div class="glossary">
+        <div class="row"><h4 class="term">Piel de plástico / muñeca<small>04 Película</small></h4><p class="def">Añade <code>visible skin texture, Kodak Portra 400, subsurface scattering</code> — y borra el cliché <code>«8k, ultra detailed, masterpiece»</code>, que empuja al look CGI.</p></div>
+        <div class="row"><h4 class="term">Rostro deformado o alargado<small>02 Óptica</small></h4><p class="def">Estás en gran angular. Cambia a <code>85mm lens</code> y evita alejar tanto la cámara que el rostro pierda píxeles.</p></div>
+        <div class="row"><h4 class="term">Parece un render 3D, no una foto<small>06 Realismo</small></h4><p class="def">Falta imperfección: <code>raw photo, flyaway hairs, 35mm film grain</code>. La perfección absoluta es el delator nº1.</p></div>
+        <div class="row"><h4 class="term">El producto pierde su color real<small>04 Película</small></h4><p class="def">Fuerza <code>true color / color accurate</code> y pásate a luz neutra: <code>softbox</code> u <code>overcast sky</code>. Nada de golden hour para catálogo.</p></div>
+        <div class="row"><h4 class="term">El fondo roba el protagonismo<small>02 Óptica</small></h4><p class="def">Ábrete a <code>f/1.8</code> para fundirlo en bokeh, o resuélvelo en composición con <code>negative space</code>.</p></div>
+        <div class="row"><h4 class="term">La serie no pega entre sí<small>Todas</small></h4><p class="def">No es una capa: es el método. Congela 6 capas, mueve solo 1 y fija la <em>seed</em> si tu herramienta lo permite (Clase 1).</p></div>
+      </div>
     </section>
 
-    <!-- 8. Laboratorio: El Despiece de la Consistencia -->
-    <section id="laboratorio" class="py-24 bg-brand-dark text-white border-t-8 border-brand-accent">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-14 fade-in-on-scroll">
-                <span class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-3 block"><i class="fa-solid fa-flask-vial mr-2"></i> Sección Estrella</span>
-                <h2 class="text-4xl lg:text-5xl font-extrabold mb-4">
-                    <span class="w-11 h-11 bg-brand-accent text-brand-dark rounded-full inline-flex items-center justify-center mr-3 text-2xl shadow-lg align-middle">8</span>
-                    Laboratorio de Prompts
-                </h2>
-                <p class="text-2xl font-serif italic text-gray-300">El Despiece de la Consistencia</p>
-            </div>
+    <!-- 9. Bibliotecas de prompts -->
+    <section class="sec" id="bibliotecas" data-label="Bibliotecas">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Bibliotecas de prompts: roba como un artista.</h2></div>
+      <p>No hace falta inventar desde cero. Los mejores prompts fotográficos ya están escritos y publicados junto a su imagen resultante. Estas son las canteras donde hacer <strong>ingeniería inversa</strong> de cualquier estilo que te enamore:</p>
 
-            <p class="font-serif text-gray-300 text-lg max-w-3xl mx-auto text-center mb-14 fade-in-on-scroll">
-                Vamos a coger un prompt profesional y a <strong>abrirlo en canal</strong>. Verás que no es magia: son 7 capas ensambladas. Y una vez lo entiendes por partes, desbloqueas el verdadero superpoder de una marca: la <strong class="text-brand-accent">consistencia</strong>.
-            </p>
+      <div class="grid-cards two">
+        <a class="card link" href="https://prompthero.com/" target="_blank" rel="noopener"><h4>PromptHero →</h4><p>El mayor buscador de prompts (Midjourney, DALL·E, SD). Filtra por <em>«photography»</em> y copia estructuras probadas.</p></a>
+        <a class="card link" href="https://lexica.art/" target="_blank" rel="noopener"><h4>Lexica →</h4><p>Buscador visual de imágenes con su prompt exacto. La mejor herramienta para ingeniería inversa de estilos.</p></a>
+        <a class="card link" href="https://www.midjourney.com/explore" target="_blank" rel="noopener"><h4>Midjourney Explore →</h4><p>El feed oficial de la comunidad (requiere cuenta). La cantera de referencia para moda y fotorrealismo de gama alta.</p></a>
+        <a class="card link" href="https://www.freepik.com/pikaso" target="_blank" rel="noopener"><h4>Freepik / Pikaso →</h4><p>Inspiración y generación integradas en el ecosistema que ya usas (Spaces). Prompts de ejemplo reutilizables.</p></a>
+        <a class="card link" href="https://promptbase.com/" target="_blank" rel="noopener"><h4>PromptBase →</h4><p>Mercado para comprar y vender prompts afinados. Útil para ver qué se cotiza en fotografía de producto.</p></a>
+        <a class="card link" href="https://civitai.com/images" target="_blank" rel="noopener"><h4>Civitai →</h4><p>Miles de imágenes con su prompt y modelo. <strong>Nota:</strong> activa el filtro de contenido seguro (SFW) para uso profesional.</p></a>
+      </div>
 
-            <!-- El prompt maestro despiezado -->
-            <div class="bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden fade-in-on-scroll mb-8">
-                <div class="bg-slate-950 px-6 py-4 border-b border-slate-800 flex justify-between items-center flex-wrap gap-3">
-                    <span class="text-sm font-mono text-brand-accent font-bold uppercase tracking-wider"><i class="fa-solid fa-scissors mr-2"></i> Prompt Maestro — Editorial de Moda</span>
-                    <button onclick="copyToClipboard('master-prompt', this)" class="text-xs font-bold text-slate-400 hover:text-white transition-colors border border-slate-700 hover:border-slate-500 px-4 py-2 rounded-lg bg-slate-900 flex items-center">
-                        <i class="fa-regular fa-copy mr-2"></i> Copiar limpio
-                    </button>
-                </div>
-                <div class="p-8 font-mono text-base leading-loose">
-                    <span class="frag f-subject">Editorial fashion photograph of a young woman in a tailored wool coat</span><span class="text-slate-500">, </span><span class="frag f-optics">85mm lens, f/2.8 aperture</span><span class="text-slate-500">, </span><span class="frag f-light">butterfly lighting with a soft catchlight</span><span class="text-slate-500">, </span><span class="frag f-film">shot on Kodak Portra 400, 35mm film grain, subsurface scattering</span><span class="text-slate-500">, </span><span class="frag f-comp">three-quarter view, rule of thirds, negative space on the right</span><span class="text-slate-500">, </span><span class="frag f-real">visible skin texture, flyaway hairs, natural skin imperfections</span><span class="text-slate-500">, </span><span class="frag f-style">high fashion editorial, medium format Hasselblad look, muted quiet-luxury palette</span><span class="text-slate-500">.</span>
-                </div>
-                <!-- copia limpia oculta -->
-                <div id="master-prompt" class="hidden">Editorial fashion photograph of a young woman in a tailored wool coat, 85mm lens, f/2.8 aperture, butterfly lighting with a soft catchlight, shot on Kodak Portra 400, 35mm film grain, subsurface scattering, three-quarter view, rule of thirds, negative space on the right, visible skin texture, flyaway hairs, natural skin imperfections, high fashion editorial, medium format Hasselblad look, muted quiet-luxury palette.</div>
-            </div>
-
-            <!-- Leyenda de colores -->
-            <div class="flex flex-wrap justify-center gap-3 mb-14 fade-in-on-scroll">
-                <span class="capa-pill c-subject">01 Sujeto</span>
-                <span class="capa-pill c-optics">02 Óptica</span>
-                <span class="capa-pill c-light">03 Luz</span>
-                <span class="capa-pill c-film">04 Película</span>
-                <span class="capa-pill c-comp">05 Composición</span>
-                <span class="capa-pill c-real">06 Realismo</span>
-                <span class="capa-pill c-style">07 Estilo</span>
-            </div>
-
-            <!-- Tabla de despiece -->
-            <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 lg:p-8 mb-16 fade-in-on-scroll">
-                <h3 class="text-xl font-bold text-white mb-6"><i class="fa-solid fa-list-check text-brand-accent mr-2"></i> Por qué cada fragmento está ahí</h3>
-                <div class="space-y-4 font-serif text-sm">
-                    <div class="flex items-start gap-4 border-b border-slate-800 pb-4"><span class="capa-pill c-optics shrink-0">Óptica</span><p class="text-slate-300 m-0"><code class="text-indigo-300">85mm + f/2.8</code> embellece las proporciones y aísla a la modelo con un fondo cremoso, pero mantiene el rostro entero nítido. Cero distorsión.</p></div>
-                    <div class="flex items-start gap-4 border-b border-slate-800 pb-4"><span class="capa-pill c-light shrink-0">Luz</span><p class="text-slate-300 m-0"><code class="text-amber-300">butterfly + catchlight</code> potencia los pómulos y pone vida en la mirada. El esquema rey de la belleza.</p></div>
-                    <div class="flex items-start gap-4 border-b border-slate-800 pb-4"><span class="capa-pill c-film shrink-0">Película</span><p class="text-slate-300 m-0"><code class="text-rose-300">Portra 400 + grain + subsurface</code> es el trío antiplástico: tono de piel real, textura física y piel translúcida y viva.</p></div>
-                    <div class="flex items-start gap-4 border-b border-slate-800 pb-4"><span class="capa-pill c-comp shrink-0">Composición</span><p class="text-slate-300 m-0"><code class="text-emerald-300">three-quarter + negative space</code> estiliza la mandíbula y deja aire a la derecha para el titular de la campaña.</p></div>
-                    <div class="flex items-start gap-4 border-b border-slate-800 pb-4"><span class="capa-pill c-real shrink-0">Realismo</span><p class="text-slate-300 m-0"><code class="text-sky-300">skin texture + flyaway hairs</code> son los detalles que el ojo escanea para creerse la foto. Sin ellos, maniquí.</p></div>
-                    <div class="flex items-start gap-4"><span class="capa-pill c-style shrink-0">Estilo</span><p class="text-slate-300 m-0"><code class="text-violet-300">high fashion editorial + Hasselblad + quiet luxury</code> fija el "acabado caro" y la paleta sobria de una gran casa de moda.</p></div>
-                </div>
-            </div>
-
-            <!-- El superpoder: consistencia -->
-            <div class="fade-in-on-scroll">
-                <div class="text-center mb-10">
-                    <h3 class="text-3xl font-bold text-white mb-3"><i class="fa-solid fa-clone text-brand-accent mr-2"></i> El superpoder: consistencia por despiece</h3>
-                    <p class="font-serif text-gray-300 max-w-3xl mx-auto">Una marca no necesita una foto genial: necesita <strong>doce fotos que parezcan la misma campaña</strong>. El truco es congelar 6 capas y mover solo 1. Mira lo que pasa si dejamos TODO intacto y cambiamos únicamente la capa de <span class="capa-pill c-light">Luz</span>:</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-                    <div class="bg-slate-800/60 border border-slate-700 rounded-2xl p-5">
-                        <div class="aspect-square rounded-xl bg-gradient-to-br from-amber-400/30 to-slate-900 border border-slate-700 flex items-center justify-center mb-4"><i class="fa-solid fa-crown text-3xl text-amber-300/70"></i></div>
-                        <h5 class="font-bold text-white text-sm mb-1">Shot 01 · Portada</h5>
-                        <code class="text-amber-300 text-xs">butterfly lighting</code>
-                    </div>
-                    <div class="bg-slate-800/60 border border-slate-700 rounded-2xl p-5">
-                        <div class="aspect-square rounded-xl bg-gradient-to-br from-indigo-400/30 to-slate-900 border border-slate-700 flex items-center justify-center mb-4"><i class="fa-solid fa-moon text-3xl text-indigo-300/70"></i></div>
-                        <h5 class="font-bold text-white text-sm mb-1">Shot 02 · Interior</h5>
-                        <code class="text-amber-300 text-xs">rembrandt lighting</code>
-                    </div>
-                    <div class="bg-slate-800/60 border border-slate-700 rounded-2xl p-5">
-                        <div class="aspect-square rounded-xl bg-gradient-to-br from-orange-400/40 to-slate-900 border border-slate-700 flex items-center justify-center mb-4"><i class="fa-solid fa-sun text-3xl text-orange-300/80"></i></div>
-                        <h5 class="font-bold text-white text-sm mb-1">Shot 03 · Lifestyle</h5>
-                        <code class="text-amber-300 text-xs">golden hour</code>
-                    </div>
-                    <div class="bg-slate-800/60 border border-slate-700 rounded-2xl p-5">
-                        <div class="aspect-square rounded-xl bg-gradient-to-br from-sky-400/30 to-slate-900 border border-slate-700 flex items-center justify-center mb-4"><i class="fa-solid fa-highlighter text-3xl text-sky-300/70"></i></div>
-                        <h5 class="font-bold text-white text-sm mb-1">Shot 04 · Detalle</h5>
-                        <code class="text-amber-300 text-xs">rim / backlight</code>
-                    </div>
-                </div>
-
-                <div class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-6">
-                    <p class="font-serif text-amber-100/90 text-base m-0"><i class="fa-solid fa-lightbulb text-brand-accent mr-2"></i> <strong>La lección:</strong> misma modelo, misma óptica, misma película, mismo estilo → cuatro fotos distintas pero <strong>inequívocamente de la misma marca</strong>. Esta es la base sobre la que en la Clase 6 montarás la consistencia de personaje (<code>--cref</code>, LoRAs, embajador virtual). El despiece es lo que hace la consistencia <em>controlable</em>.</p>
-                </div>
-            </div>
-
-            <!-- Diagnóstico por capas: el despiece a la inversa -->
-            <div class="mt-16 fade-in-on-scroll">
-                <div class="text-center mb-10">
-                    <h3 class="text-3xl font-bold text-white mb-3"><i class="fa-solid fa-stethoscope text-brand-accent mr-2"></i> La consulta: diagnóstico por capas</h3>
-                    <p class="font-serif text-gray-300 max-w-3xl mx-auto">El despiece también funciona al revés. Cuando una imagen "canta" a IA, no regeneres a ciegas: <strong>identifica la capa enferma</strong> y corrige solo esa. Los síntomas más comunes:</p>
-                </div>
-
-                <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 lg:p-8">
-                    <div class="space-y-4 font-serif text-sm">
-                        <div class="flex flex-col md:flex-row md:items-start gap-3 md:gap-4 border-b border-slate-800 pb-4">
-                            <p class="text-white font-bold m-0 md:w-64 shrink-0"><i class="fa-solid fa-circle-exclamation text-red-400 mr-2"></i>Piel de plástico / muñeca</p>
-                            <span class="capa-pill c-film shrink-0">04 Película</span>
-                            <p class="text-slate-300 m-0">Añade <code class="text-rose-300">visible skin texture, Kodak Portra 400, subsurface scattering</code> — y borra el cliché <code class="text-red-400">"8k, ultra detailed, masterpiece"</code>, que empuja al look CGI.</p>
-                        </div>
-                        <div class="flex flex-col md:flex-row md:items-start gap-3 md:gap-4 border-b border-slate-800 pb-4">
-                            <p class="text-white font-bold m-0 md:w-64 shrink-0"><i class="fa-solid fa-circle-exclamation text-red-400 mr-2"></i>Rostro deformado o alargado</p>
-                            <span class="capa-pill c-optics shrink-0">02 Óptica</span>
-                            <p class="text-slate-300 m-0">Estás en gran angular. Cambia a <code class="text-indigo-300">85mm lens</code> y evita alejar tanto la cámara que el rostro pierda píxeles.</p>
-                        </div>
-                        <div class="flex flex-col md:flex-row md:items-start gap-3 md:gap-4 border-b border-slate-800 pb-4">
-                            <p class="text-white font-bold m-0 md:w-64 shrink-0"><i class="fa-solid fa-circle-exclamation text-red-400 mr-2"></i>Parece un render 3D, no una foto</p>
-                            <span class="capa-pill c-real shrink-0">06 Realismo</span>
-                            <p class="text-slate-300 m-0">Falta imperfección: <code class="text-sky-300">raw photo, flyaway hairs, 35mm film grain</code>. La perfección absoluta es el delator nº1.</p>
-                        </div>
-                        <div class="flex flex-col md:flex-row md:items-start gap-3 md:gap-4 border-b border-slate-800 pb-4">
-                            <p class="text-white font-bold m-0 md:w-64 shrink-0"><i class="fa-solid fa-circle-exclamation text-red-400 mr-2"></i>El producto pierde su color real</p>
-                            <span class="capa-pill c-film shrink-0">04 Película</span>
-                            <p class="text-slate-300 m-0">Fuerza <code class="text-rose-300">true color / color accurate</code> y pásate a luz neutra: <code class="text-amber-300">softbox</code> u <code class="text-amber-300">overcast sky</code>. Nada de golden hour para catálogo.</p>
-                        </div>
-                        <div class="flex flex-col md:flex-row md:items-start gap-3 md:gap-4 border-b border-slate-800 pb-4">
-                            <p class="text-white font-bold m-0 md:w-64 shrink-0"><i class="fa-solid fa-circle-exclamation text-red-400 mr-2"></i>El fondo roba el protagonismo</p>
-                            <span class="capa-pill c-optics shrink-0">02 Óptica</span>
-                            <p class="text-slate-300 m-0">Ábrete a <code class="text-indigo-300">f/1.8</code> para fundirlo en bokeh, o resuélvelo en composición con <code class="text-emerald-300">negative space</code>.</p>
-                        </div>
-                        <div class="flex flex-col md:flex-row md:items-start gap-3 md:gap-4">
-                            <p class="text-white font-bold m-0 md:w-64 shrink-0"><i class="fa-solid fa-circle-exclamation text-red-400 mr-2"></i>La serie no pega entre sí</p>
-                            <span class="capa-pill c-style shrink-0">Todas</span>
-                            <p class="text-slate-300 m-0">No es una capa: es el método. Congela 6 capas, mueve solo 1 y fija la <em>seed</em> si tu herramienta lo permite (Clase 1).</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div class="callout nota"><span class="k">[ Tu biblioteca personal ]</span><p>La <em>Guía Maestra de Prompts</em> que acompaña esta clase recoge <strong>+180 parámetros</strong> organizados por las mismas 6 capas técnicas. Conviértela en tu diccionario de cabecera: no memorices, consulta.</p></div>
     </section>
 
-    <!-- 9. Bibliotecas de Prompts -->
-    <section id="bibliotecas" class="py-20 bg-white border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll">
-                <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">9</span>
-                Bibliotecas de Prompts: Roba como un Artista
-            </h2>
-            <p class="prose-text mb-10 text-gray-600 fade-in-on-scroll">
-                No hace falta inventar desde cero. Los mejores prompts fotográficos ya están escritos y publicados junto a su imagen resultante. Estas son las canteras donde hacer <strong>ingeniería inversa</strong> de cualquier estilo que te enamore:
-            </p>
+    <!-- 10. Práctica, test y PFC (banda tinta) -->
+    <section class="sec sec-dark" id="practica" data-label="Práctica &amp; PFC">
+      <p class="sec-eyebrow">[ Parte práctica ]</p>
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Tu catálogo fotográfico.</h2></div>
+      <p class="sec-intro">Aplica las 7 capas a tu marca de zapatos. De la teoría a un render que venda.</p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in-on-scroll">
-                <a href="https://prompthero.com/" target="_blank" rel="noopener noreferrer" class="block bg-gray-50 border border-gray-200 rounded-2xl p-6 card-hover hover:border-brand-primary group">
-                    <h4 class="font-bold text-brand-dark text-lg mb-1 group-hover:text-brand-primary transition-colors"><i class="fa-solid fa-magnifying-glass text-brand-primary mr-2"></i> PromptHero <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 ml-1"></i></h4>
-                    <p class="font-serif text-gray-600 text-sm m-0">El mayor buscador de prompts (Midjourney, DALL·E, SD). Filtra por <em>"photography"</em> y copia estructuras probadas.</p>
-                </a>
-                <a href="https://lexica.art/" target="_blank" rel="noopener noreferrer" class="block bg-gray-50 border border-gray-200 rounded-2xl p-6 card-hover hover:border-brand-primary group">
-                    <h4 class="font-bold text-brand-dark text-lg mb-1 group-hover:text-brand-primary transition-colors"><i class="fa-solid fa-images text-brand-primary mr-2"></i> Lexica <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 ml-1"></i></h4>
-                    <p class="font-serif text-gray-600 text-sm m-0">Buscador visual de imágenes con su prompt exacto. La mejor herramienta para ingeniería inversa de estilos.</p>
-                </a>
-                <a href="https://www.midjourney.com/explore" target="_blank" rel="noopener noreferrer" class="block bg-gray-50 border border-gray-200 rounded-2xl p-6 card-hover hover:border-brand-primary group">
-                    <h4 class="font-bold text-brand-dark text-lg mb-1 group-hover:text-brand-primary transition-colors"><i class="fa-solid fa-compass text-brand-primary mr-2"></i> Midjourney Explore <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 ml-1"></i></h4>
-                    <p class="font-serif text-gray-600 text-sm m-0">El feed oficial de la comunidad (requiere cuenta). La cantera de referencia para moda y fotorrealismo de gama alta.</p>
-                </a>
-                <a href="https://www.freepik.com/pikaso" target="_blank" rel="noopener noreferrer" class="block bg-gray-50 border border-gray-200 rounded-2xl p-6 card-hover hover:border-brand-primary group">
-                    <h4 class="font-bold text-brand-dark text-lg mb-1 group-hover:text-brand-primary transition-colors"><i class="fa-solid fa-feather text-brand-primary mr-2"></i> Freepik / Pikaso <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 ml-1"></i></h4>
-                    <p class="font-serif text-gray-600 text-sm m-0">Inspiración y generación integradas en el ecosistema que ya usas (Spaces). Prompts de ejemplo reutilizables.</p>
-                </a>
-                <a href="https://promptbase.com/" target="_blank" rel="noopener noreferrer" class="block bg-gray-50 border border-gray-200 rounded-2xl p-6 card-hover hover:border-brand-primary group">
-                    <h4 class="font-bold text-brand-dark text-lg mb-1 group-hover:text-brand-primary transition-colors"><i class="fa-solid fa-store text-brand-primary mr-2"></i> PromptBase <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 ml-1"></i></h4>
-                    <p class="font-serif text-gray-600 text-sm m-0">Mercado para comprar y vender prompts afinados. Útil para ver qué se cotiza en fotografía de producto.</p>
-                </a>
-                <a href="https://civitai.com/images" target="_blank" rel="noopener noreferrer" class="block bg-gray-50 border border-gray-200 rounded-2xl p-6 card-hover hover:border-brand-primary group">
-                    <h4 class="font-bold text-brand-dark text-lg mb-1 group-hover:text-brand-primary transition-colors"><i class="fa-solid fa-layer-group text-brand-primary mr-2"></i> Civitai <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 ml-1"></i></h4>
-                    <p class="font-serif text-gray-600 text-sm m-0">Miles de imágenes con su prompt y modelo. <strong class="text-amber-600">Nota:</strong> activa el filtro de contenido seguro (SFW) para uso profesional.</p>
-                </a>
-            </div>
+      <h3>Ejercicios de la sesión</h3>
+      <ol class="exercises">
+        <li><h4>Despiece inverso</h4><p>Elige una foto de campaña que admires en Lexica/PromptHero e identifica sus 7 capas. Escríbelas.</p></li>
+        <li><h4>Plano de producto</h4><p>Genera una foto de estudio de tu zapato con el prompt base de abajo. Escala el resultado con Magnific.</p></li>
+        <li><h4>Serie consistente</h4><p>Congela 6 capas y mueve solo 1 (luz o fondo) para producir 4 tomas de la misma «campaña».</p></li>
+      </ol>
 
-            <div class="callout-analogy p-6 rounded-xl mt-10 shadow-sm border border-amber-100 fade-in-on-scroll">
-                <p class="font-serif text-amber-900 text-base m-0"><i class="fa-solid fa-book-bookmark mr-2 text-brand-accent"></i> <strong>Tu biblioteca personal:</strong> la <em>Guía Maestra de Prompts</em> que acompaña esta clase recoge <strong>+180 parámetros</strong> organizados por las mismas 6 capas técnicas. Conviértela en tu diccionario de cabecera: no memorices, consulta.</p>
-            </div>
-        </div>
+      <!-- Prompt base de producto, despiezado con la misma numeración de capas del Laboratorio -->
+      <div class="code prompt"><div class="ch"><span class="k">[ Prompt base · Producto de calzado (despiezado) ]</span><button type="button" class="btn-ghost" data-copy data-copy-source="#shoe-prompt">Copiar limpio</button></div><pre><mark class="capa" data-capa="01">Commercial product photograph of a white leather sneaker on a seamless light-grey studio backdrop</mark>, <mark class="capa" data-capa="02">macro lens, f/8 aperture for edge-to-edge sharpness</mark>, <mark class="capa" data-capa="03">three-point softbox lighting with a beauty-dish rim</mark>, <mark class="capa" data-capa="04">true color accurate, Ektar 100 vibrancy</mark>, <mark class="capa" data-capa="05">centered symmetry with generous negative space</mark>, <mark class="capa" data-capa="06">dust-free clean surface, sharp focus</mark>, <mark class="capa" data-capa="07">high-end commercial photography</mark>.</pre></div>
+      <!-- copia limpia (sin marcas) que usa el botón Copiar -->
+      <div id="shoe-prompt" hidden>Commercial product photograph of a white leather sneaker on a seamless light-grey studio backdrop, macro lens, f/8 aperture for edge-to-edge sharpness, three-point softbox lighting with a beauty-dish rim, true color accurate, Ektar 100 vibrancy, centered symmetry with generous negative space, dust-free clean surface, sharp focus, high-end commercial photography.</div>
+
+      <div class="callout nota"><span class="k">[ Fíjate en el detalle ]</span><p>En producto, la capa <span class="chip">06 Realismo</span> se <strong>invierte</strong>. Con personas buscas imperfección humana (<code>flyaway hairs</code>); con producto buscas limpieza clínica (<code>dust-free, sharp focus</code>). La capa es la misma, la intención cambia con el sujeto.</p></div>
+      <p class="sec-intro">Cambia <code>white leather sneaker</code> por tu modelo y juega con la capa de Estilo (<code>lookbook style</code>, <code>cinematic still</code>) para diferentes usos.</p>
+
+      <div class="quiz" data-quiz="quizData" data-title="Autodiagnóstico de la Clase 5"></div>
+
+      <div class="pfc">
+        <span class="k">[ PFC — Marca de zapatos ]</span>
+        <h3>Mini-catálogo fotorrealista</h3>
+        <p><strong>Entregable PFC — Módulo 3.</strong> Entrega una serie de producto de tu marca de zapatos aplicando las 7 capas:</p>
+        <ul class="checklist">
+          <li><input type="checkbox" id="chk-1"><label for="chk-1"><span><strong>Plano de producto en estudio</strong> — 1 render limpio sobre fondo infinito.</span></label></li>
+          <li><input type="checkbox" id="chk-2"><label for="chk-2"><span><strong>Serie consistente (×4)</strong> — 4 tomas cambiando solo 1 capa.</span></label></li>
+          <li><input type="checkbox" id="chk-3"><label for="chk-3"><span><strong>Plano lifestyle / editorial</strong> — El zapato puesto, con modelo o contexto real.</span></label></li>
+          <li><input type="checkbox" id="chk-4"><label for="chk-4"><span><strong>Ficha de prompts</strong> — Los prompts usados, despiezados por capas.</span></label></li>
+        </ul>
+        <p><code>PFC_M3_Fotografia_[NombreMarca]/</code> · Alimenta el catálogo final</p>
+      </div>
     </section>
 
-    <!-- 10. Práctica y PFC -->
-    <section id="practica" class="py-24 bg-brand-dark text-white border-t-8 border-brand-accent">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16 fade-in-on-scroll">
-                <span class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-3 block"><i class="fa-solid fa-shoe-prints mr-2"></i> Parte Práctica</span>
-                <h2 class="text-4xl lg:text-5xl font-extrabold mb-6">
-                    <span class="w-11 h-11 bg-brand-accent text-brand-dark rounded-full inline-flex items-center justify-center mr-3 text-2xl shadow-lg align-middle">10</span>
-                    Tu Catálogo Fotográfico
-                </h2>
-                <p class="text-gray-400 font-serif text-xl max-w-3xl mx-auto">Aplica las 7 capas a tu marca de zapatos. De la teoría a un render que venda.</p>
-            </div>
+  </div><!-- /.content -->
+  <!-- nav inferior y pie: los genera curso.js -->
+</main>
 
-            <!-- Ejercicio con prompt de producto -->
-            <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-8 lg:p-12 shadow-2xl mb-12 fade-in-on-scroll">
-                <h3 class="text-2xl font-bold text-white mb-6"><i class="fa-solid fa-list-ol text-brand-accent mr-2"></i> Ejercicios de la sesión</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                    <div class="bg-slate-800/60 p-6 rounded-xl border border-slate-700">
-                        <div class="w-11 h-11 bg-indigo-500/20 text-indigo-300 rounded-xl flex items-center justify-center mb-4 text-lg font-bold">1</div>
-                        <h5 class="font-bold text-white mb-2">Despiece inverso</h5>
-                        <p class="text-sm font-serif text-slate-400 m-0">Elige una foto de campaña que admires en Lexica/PromptHero e identifica sus 7 capas. Escríbelas.</p>
-                    </div>
-                    <div class="bg-slate-800/60 p-6 rounded-xl border border-slate-700">
-                        <div class="w-11 h-11 bg-amber-500/20 text-amber-300 rounded-xl flex items-center justify-center mb-4 text-lg font-bold">2</div>
-                        <h5 class="font-bold text-white mb-2">Plano de producto</h5>
-                        <p class="text-sm font-serif text-slate-400 m-0">Genera una foto de estudio de tu zapato con el prompt base de abajo. Escala el resultado con Magnific.</p>
-                    </div>
-                    <div class="bg-slate-800/60 p-6 rounded-xl border border-slate-700">
-                        <div class="w-11 h-11 bg-emerald-500/20 text-emerald-300 rounded-xl flex items-center justify-center mb-4 text-lg font-bold">3</div>
-                        <h5 class="font-bold text-white mb-2">Serie consistente</h5>
-                        <p class="text-sm font-serif text-slate-400 m-0">Congela 6 capas y mueve solo 1 (luz o fondo) para producir 4 tomas de la misma "campaña".</p>
-                    </div>
-                </div>
-
-                <!-- Prompt base de producto (despiezado con el código de color del Laboratorio) -->
-                <div class="bg-slate-950 rounded-2xl overflow-hidden border border-slate-800">
-                    <div class="px-6 py-4 border-b border-slate-800 flex justify-between items-center flex-wrap gap-3">
-                        <span class="text-sm font-mono text-brand-accent font-bold uppercase tracking-wider"><i class="fa-solid fa-shoe-prints mr-2"></i> Prompt base — Producto de calzado (despiezado)</span>
-                        <button onclick="copyToClipboard('shoe-prompt', this)" class="text-xs font-bold text-slate-400 hover:text-white transition-colors border border-slate-700 hover:border-slate-500 px-4 py-2 rounded-lg bg-slate-900 flex items-center">
-                            <i class="fa-regular fa-copy mr-2"></i> Copiar limpio
-                        </button>
-                    </div>
-                    <div class="p-6 font-mono text-sm leading-loose">
-                        <span class="frag f-subject">Commercial product photograph of a white leather sneaker on a seamless light-grey studio backdrop</span><span class="text-slate-500">, </span><span class="frag f-optics">macro lens, f/8 aperture for edge-to-edge sharpness</span><span class="text-slate-500">, </span><span class="frag f-light">three-point softbox lighting with a beauty-dish rim</span><span class="text-slate-500">, </span><span class="frag f-film">true color accurate, Ektar 100 vibrancy</span><span class="text-slate-500">, </span><span class="frag f-comp">centered symmetry with generous negative space</span><span class="text-slate-500">, </span><span class="frag f-real">dust-free clean surface, sharp focus</span><span class="text-slate-500">, </span><span class="frag f-style">high-end commercial photography</span><span class="text-slate-500">.</span>
-                    </div>
-                    <!-- copia limpia oculta -->
-                    <div id="shoe-prompt" class="hidden">Commercial product photograph of a white leather sneaker on a seamless light-grey studio backdrop, macro lens, f/8 aperture for edge-to-edge sharpness, three-point softbox lighting with a beauty-dish rim, true color accurate, Ektar 100 vibrancy, centered symmetry with generous negative space, dust-free clean surface, sharp focus, high-end commercial photography.</div>
-                </div>
-                <div class="bg-sky-500/10 border border-sky-500/30 rounded-2xl p-5 mt-6">
-                    <p class="font-serif text-sky-100/90 text-sm m-0"><i class="fa-solid fa-arrows-rotate text-sky-300 mr-2"></i> <strong>Fíjate en el detalle:</strong> en producto, la capa <span class="capa-pill c-real">06 Realismo</span> se <strong>invierte</strong>. Con personas buscas imperfección humana (<code class="text-sky-300">flyaway hairs</code>); con producto buscas limpieza clínica (<code class="text-sky-300">dust-free, sharp focus</code>). La capa es la misma, la intención cambia con el sujeto.</p>
-                </div>
-                <p class="text-sm font-serif text-slate-500 mt-4 italic text-center">Cambia <code class="text-slate-300">white leather sneaker</code> por tu modelo y juega con la capa de Estilo (<code class="text-slate-300">lookbook style</code>, <code class="text-slate-300">cinematic still</code>) para diferentes usos.</p>
-            </div>
-
-            <!-- Quiz Interactivo -->
-            <div class="border-t border-slate-800 pt-16 mb-16 fade-in-on-scroll">
-                <h3 class="text-3xl font-bold mb-8 text-white text-center"><i class="fa-solid fa-clipboard-check text-brand-accent mr-3"></i> Autodiagnóstico de la Clase 5</h3>
-                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 lg:p-12 shadow-2xl text-white">
-                    <div id="quizContainer"><!-- Quiz renderizado por JS --></div>
-                    <div class="text-center mt-10 pt-8 border-t border-slate-800">
-                        <button id="validateBtn" onclick="submitQuiz()" class="px-10 py-4 bg-brand-primary hover:bg-indigo-600 text-white font-bold rounded-xl transition-all shadow-lg uppercase tracking-wider text-sm">
-                            Validar Respuestas
-                        </button>
-                        <div id="quiz-result" class="hidden mt-6 p-5 rounded-xl font-bold font-sans text-center transition-all"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Entregable PFC -->
-            <div class="border-t-8 border-brand-primary bg-white rounded-3xl p-10 lg:p-16 shadow-2xl relative overflow-hidden fade-in-on-scroll text-gray-800">
-                <div class="absolute top-0 right-0 w-64 h-64 bg-brand-primary/5 rounded-bl-full -z-10"></div>
-                <div class="flex items-center mb-6">
-                    <div class="w-16 h-16 bg-brand-primary text-white rounded-2xl flex items-center justify-center text-3xl shadow-lg mr-6 shrink-0">
-                        <i class="fa-solid fa-camera-retro"></i>
-                    </div>
-                    <div>
-                        <span class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-1 block">Entregable PFC — Módulo 3</span>
-                        <h3 class="text-3xl lg:text-4xl font-extrabold text-brand-dark">Mini-catálogo fotorrealista</h3>
-                    </div>
-                </div>
-
-                <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-8">
-                    <p class="font-serif text-gray-700 mb-8 text-lg">Entrega una serie de producto de tu marca de zapatos aplicando las 7 capas:</p>
-                    <div class="space-y-4">
-                        <label class="flex items-center space-x-3 cursor-pointer p-3 bg-white rounded-xl border border-gray-200 hover:border-brand-primary transition-all">
-                            <input type="checkbox" class="w-5 h-5 text-brand-primary rounded focus:ring-brand-primary">
-                            <span class="font-bold text-gray-800">Plano de producto en estudio</span>
-                            <span class="text-gray-500 font-serif text-sm">— 1 render limpio sobre fondo infinito.</span>
-                        </label>
-                        <label class="flex items-center space-x-3 cursor-pointer p-3 bg-white rounded-xl border border-gray-200 hover:border-brand-primary transition-all">
-                            <input type="checkbox" class="w-5 h-5 text-brand-primary rounded focus:ring-brand-primary">
-                            <span class="font-bold text-gray-800">Serie consistente (×4)</span>
-                            <span class="text-gray-500 font-serif text-sm">— 4 tomas cambiando solo 1 capa.</span>
-                        </label>
-                        <label class="flex items-center space-x-3 cursor-pointer p-3 bg-white rounded-xl border border-gray-200 hover:border-brand-primary transition-all">
-                            <input type="checkbox" class="w-5 h-5 text-brand-primary rounded focus:ring-brand-primary">
-                            <span class="font-bold text-gray-800">Plano lifestyle / editorial</span>
-                            <span class="text-gray-500 font-serif text-sm">— El zapato puesto, con modelo o contexto real.</span>
-                        </label>
-                        <label class="flex items-center space-x-3 cursor-pointer p-3 bg-white rounded-xl border border-gray-200 hover:border-brand-primary transition-all">
-                            <input type="checkbox" class="w-5 h-5 text-brand-primary rounded focus:ring-brand-primary">
-                            <span class="font-bold text-gray-800">Ficha de prompts</span>
-                            <span class="text-gray-500 font-serif text-sm">— Los prompts usados, despiezados por capas.</span>
-                        </label>
-                    </div>
-                    <div class="mt-8 pt-6 border-t border-gray-200 flex items-center justify-between flex-wrap gap-3">
-                        <span class="text-gray-400 font-mono text-xs">PFC_M3_Fotografia_[NombreMarca]/</span>
-                        <span class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold uppercase tracking-widest">Alimenta el catálogo final</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Navegación entre Clases -->
-    <section class="py-12 bg-white border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <a href="modulo3-clase4.html"
-                class="flex items-center px-6 py-3 text-gray-600 border border-gray-300 rounded-xl font-bold hover:text-brand-primary hover:border-brand-primary transition-all bg-white shadow-sm w-full sm:w-auto justify-center">
-                <i class="fa-solid fa-arrow-left mr-2"></i> Anterior: Clase 4
-            </a>
-            <a href="index.html"
-                class="flex items-center px-6 py-3 text-gray-600 border border-gray-300 rounded-xl font-bold hover:text-brand-primary hover:border-brand-primary transition-all bg-white shadow-sm w-full sm:w-auto justify-center">
-                <i class="fa-solid fa-house mr-2"></i> Volver al Temario
-            </a>
-            <a href="index.html"
-                class="flex items-center px-6 py-3 bg-brand-primary text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors shadow-lg w-full sm:w-auto justify-center">
-                Finalizar Módulo 3 <i class="fa-solid fa-check ml-2"></i>
-            </a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-brand-dark text-white py-16 border-t border-gray-800">
-        <div class="max-w-5xl mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold mb-4">
-                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
-            </h2>
-            <p class="text-gray-400 mb-10 max-w-lg mx-auto font-serif text-center">
-                Empoderando a la próxima generación de empresas con inteligencia artificial práctica y estratégica.
-            </p>
-            <div class="w-12 h-px bg-gray-800 mx-auto my-6"></div>
-            <p class="text-xs text-gray-500 font-sans text-center">
-                Material de Apoyo Formativo - Módulo 3 (Clase 5)<br>
-                © 2026 [m].seny [labs]. Todos los derechos reservados.
-            </p>
-        </div>
-    </footer>
-
-    <!-- Lógica de Interactividad -->
-    <script>
-        // 1. Copiado al portapapeles (fallback execCommand)
-        function copyToClipboard(elementId, btn) {
-            const el = document.getElementById(elementId);
-            let text = el.innerText || el.textContent;
-
-            const tempTextArea = document.createElement("textarea");
-            tempTextArea.value = text;
-            tempTextArea.style.position = "fixed";
-            tempTextArea.style.left = "-9999px";
-            document.body.appendChild(tempTextArea);
-            tempTextArea.focus();
-            tempTextArea.select();
-
-            try {
-                document.execCommand('copy');
-                const originalHTML = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i> Copiado';
-                btn.classList.add('text-emerald-400');
-                btn.classList.remove('text-slate-400');
-                setTimeout(() => {
-                    btn.innerHTML = originalHTML;
-                    btn.classList.remove('text-emerald-400');
-                    btn.classList.add('text-slate-400');
-                }, 2000);
-            } catch (err) {
-                console.error('No se pudo copiar', err);
-            }
-            document.body.removeChild(tempTextArea);
-        }
-
-        // 2. Quiz
-        const quizData = [
-            {
-                question: "En la fórmula de Las 7 Capas, ¿cuál es el orden correcto de escritura?",
-                options: [
-                    { text: "Del estilo abstracto al sujeto concreto.", correct: false },
-                    { text: "De lo concreto (sujeto) a lo abstracto (estilo).", correct: true },
-                    { text: "Da igual el orden, la IA lo reordena.", correct: false },
-                    { text: "Siempre empezando por la iluminación.", correct: false }
-                ]
-            },
-            {
-                question: "¿Qué lente es el estándar absoluto para el retrato de moda y belleza?",
-                options: [
-                    { text: "14mm wide-angle.", correct: false },
-                    { text: "Fisheye lens.", correct: false },
-                    { text: "85mm lens.", correct: true },
-                    { text: "CCTV lens.", correct: false }
-                ]
-            },
-            {
-                question: "¿Cuál es 'la capa secreta' que mata el look de plástico/CGI de la IA?",
-                options: [
-                    { text: "La composición y el encuadre.", correct: false },
-                    { text: "La emulación de película y la textura de piel (Portra 400, film grain, subsurface scattering).", correct: true },
-                    { text: "El aspect ratio.", correct: false },
-                    { text: "El negative prompt.", correct: false }
-                ]
-            },
-            {
-                question: "El esquema de iluminación 'rey' para potenciar los pómulos en moda y belleza es:",
-                options: [
-                    { text: "Butterfly lighting.", correct: true },
-                    { text: "Underlighting / Frankenstein light.", correct: false },
-                    { text: "Fluorescent lighting.", correct: false },
-                    { text: "Bare bulb lighting.", correct: false }
-                ]
-            },
-            {
-                question: "¿Por qué añadimos 'flyaway hairs' y 'visible skin texture' a un prompt?",
-                options: [
-                    { text: "Para reducir el tiempo de generación.", correct: false },
-                    { text: "Porque son imperfecciones que el cerebro escanea para creerse que la foto es real.", correct: true },
-                    { text: "Para forzar el blanco y negro.", correct: false },
-                    { text: "Para aumentar la resolución a 8K.", correct: false }
-                ]
-            },
-            {
-                question: "En 'El Despiece de la Consistencia', ¿cómo se logra una serie que parezca la misma campaña?",
-                options: [
-                    { text: "Regenerando con seeds totalmente aleatorias cada vez.", correct: false },
-                    { text: "Cambiando las 7 capas en cada imagen.", correct: false },
-                    { text: "Congelando 6 capas y moviendo solo 1 (p. ej. la luz).", correct: true },
-                    { text: "Usando un prompt distinto e inconexo para cada foto.", correct: false }
-                ]
-            },
-            {
-                question: "Para un plano de producto de calzado nítido de lado a lado, ¿qué apertura es la adecuada?",
-                options: [
-                    { text: "f/1.4 (desenfoque extremo).", correct: false },
-                    { text: "f/8 (máxima nitidez global).", correct: true },
-                    { text: "f/1.8 (bokeh cremoso).", correct: false },
-                    { text: "La apertura no afecta a la nitidez.", correct: false }
-                ]
-            },
-            {
-                question: "¿Cuál de estas es una biblioteca para hacer ingeniería inversa de prompts a partir de imágenes?",
-                options: [
-                    { text: "Lexica.", correct: true },
-                    { text: "Gamma.", correct: false },
-                    { text: "Opus Clip.", correct: false },
-                    { text: "NotebookLM.", correct: false }
-                ]
-            },
-            {
-                question: "Diagnóstico: tu render tiene la piel de plástico, como de muñeca. ¿Qué haces?",
-                options: [
-                    { text: "Añadir '8k, ultra detailed, masterpiece' para subir la calidad.", correct: false },
-                    { text: "Corregir la Capa 04: visible skin texture, Kodak Portra 400, subsurface scattering.", correct: true },
-                    { text: "Cambiar la composición a bird's eye view.", correct: false },
-                    { text: "Regenerar con seeds aleatorias hasta que salga bien.", correct: false }
-                ]
-            }
-        ];
-
-        function renderQuiz() {
-            const container = document.getElementById('quizContainer');
-            container.innerHTML = '';
-            quizData.forEach((q, idx) => {
-                const qDiv = document.createElement('div');
-                qDiv.className = 'mb-8';
-                qDiv.innerHTML = `
-                    <h4 class="text-xl font-bold text-white mb-4">
-                        <span class="text-brand-accent">${idx + 1}.</span> ${q.question}
-                    </h4>
-                    <div class="space-y-3">
-                        ${q.options.map((opt, optIdx) => `
-                            <div class="quiz-option flex items-center p-4 rounded-xl border border-slate-700 bg-slate-800/40 cursor-pointer transition-colors" onclick="selectAnswer(event, ${idx}, ${optIdx})">
-                                <input type="radio" name="q${idx}" value="${optIdx}" class="hidden">
-                                <div class="w-5 h-5 rounded-full border-2 border-slate-500 mr-4 radio-custom flex-shrink-0 transition-colors"></div>
-                                <span class="font-serif text-sm">${opt.text}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-                container.appendChild(qDiv);
-            });
-        }
-
-        function selectAnswer(e, qIdx, optIdx) {
-            const optionContainer = e.currentTarget;
-            const parentDiv = optionContainer.closest('.space-y-3');
-
-            parentDiv.querySelectorAll('.quiz-option').forEach(opt => {
-                opt.classList.remove('border-brand-accent', 'bg-brand-primary/10');
-                opt.classList.add('border-slate-700', 'bg-slate-800/40');
-                const radio = opt.querySelector('.radio-custom');
-                radio.className = "w-5 h-5 rounded-full border-2 border-slate-500 mr-4 radio-custom flex-shrink-0 transition-colors";
-            });
-
-            optionContainer.classList.remove('border-slate-700', 'bg-slate-800/40');
-            optionContainer.classList.add('border-brand-accent', 'bg-brand-primary/10');
-            const radio = optionContainer.querySelector('.radio-custom');
-            radio.className = "w-5 h-5 rounded-full border-2 border-brand-accent bg-brand-accent mr-4 radio-custom flex-shrink-0 transition-colors";
-            optionContainer.querySelector('input').checked = true;
-        }
-
-        function submitQuiz() {
-            let correctCount = 0;
-            let answered = true;
-            quizData.forEach((q, idx) => {
-                if (!document.querySelector(`input[name="q${idx}"]:checked`)) answered = false;
-            });
-
-            const resultDiv = document.getElementById('quiz-result');
-            if (!answered) {
-                resultDiv.className = "mt-6 p-4 rounded-xl font-bold font-sans text-center bg-red-900/30 text-red-400 border border-red-500/50 block";
-                resultDiv.innerHTML = "<i class='fa-solid fa-triangle-exclamation mr-2'></i> Por favor, responde a todas las preguntas antes de validar.";
-                return;
-            }
-
-            const btn = document.getElementById('validateBtn');
-            btn.disabled = true;
-            btn.classList.add('opacity-50', 'cursor-not-allowed');
-
-            quizData.forEach((q, idx) => {
-                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
-                const optIdx = parseInt(selected.value);
-                const isCorrect = q.options[optIdx].correct;
-                const optionDiv = selected.closest('.quiz-option');
-                const parentDiv = optionDiv.parentElement;
-                parentDiv.style.pointerEvents = "none";
-
-                if (isCorrect) {
-                    correctCount++;
-                    optionDiv.classList.remove('border-brand-accent', 'bg-brand-primary/10');
-                    optionDiv.classList.add('border-emerald-500', 'bg-emerald-500/20', 'text-emerald-300');
-                    optionDiv.querySelector('.radio-custom').className = "w-5 h-5 rounded-full bg-emerald-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-[10px] fa-solid fa-check border-emerald-500";
-                } else {
-                    optionDiv.classList.remove('border-brand-accent', 'bg-brand-primary/10');
-                    optionDiv.classList.add('border-red-500', 'bg-red-500/20', 'text-red-300');
-                    optionDiv.querySelector('.radio-custom').className = "w-5 h-5 rounded-full bg-red-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-[10px] fa-solid fa-xmark border-red-500";
-                    const allOptions = parentDiv.querySelectorAll('.quiz-option');
-                    q.options.forEach((opt, oIdx) => {
-                        if (opt.correct) {
-                            allOptions[oIdx].classList.remove('border-slate-700', 'bg-slate-800/40');
-                            allOptions[oIdx].classList.add('border-emerald-500', 'bg-emerald-500/20', 'text-emerald-300');
-                        }
-                    });
-                }
-            });
-
-            resultDiv.className = "mt-8 p-6 rounded-2xl font-sans text-center bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 block";
-            const percentage = Math.round((correctCount / quizData.length) * 100);
-            let feedback = "";
-            if (percentage === 100) feedback = "¡Perfecto! Piensas como un director de fotografía.";
-            else if (percentage >= 70) feedback = "¡Gran trabajo! Dominas las 7 capas del fotorrealismo.";
-            else feedback = "Repasa el Despiece y la fórmula de Las 7 Capas antes de tu sesión de producto.";
-
-            resultDiv.innerHTML = `
-                <div class="text-3xl mb-3 font-bold"><i class="fa-solid fa-ranking-star mr-2"></i> Puntuación: ${correctCount} / ${quizData.length}</div>
-                <div class="text-base font-serif text-emerald-100/80">${feedback}</div>
-            `;
-        }
-
-        // 3. Init
-        document.addEventListener('DOMContentLoaded', () => {
-            renderQuiz();
-
-            const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) entry.target.classList.add('visible');
-                });
-            }, observerOptions);
-            document.querySelectorAll('.fade-in-on-scroll').forEach(el => observer.observe(el));
-
-            window.addEventListener('scroll', () => {
-                const scrollTop = window.scrollY;
-                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-                const scrolled = (scrollTop / docHeight) * 100;
-                document.getElementById('progressBar').style.width = scrolled + '%';
-            });
-        });
-    </script>
+<script src="/curso-data.js"></script>
+<script src="/curso.js"></script>
+<script>
+  // Preguntas del test: verbatim de la página original. a = índice de la opción correcta.
+  // `var` (no `const`): curso.js lee el array como window[data-quiz].
+  var quizData = [
+    {
+      q: "En la fórmula de Las 7 Capas, ¿cuál es el orden correcto de escritura?",
+      opts: [
+        "Del estilo abstracto al sujeto concreto.",
+        "De lo concreto (sujeto) a lo abstracto (estilo).",
+        "Da igual el orden, la IA lo reordena.",
+        "Siempre empezando por la iluminación."
+      ],
+      a: 1
+    },
+    {
+      q: "¿Qué lente es el estándar absoluto para el retrato de moda y belleza?",
+      opts: [
+        "14mm wide-angle.",
+        "Fisheye lens.",
+        "85mm lens.",
+        "CCTV lens."
+      ],
+      a: 2
+    },
+    {
+      q: "¿Cuál es 'la capa secreta' que mata el look de plástico/CGI de la IA?",
+      opts: [
+        "La composición y el encuadre.",
+        "La emulación de película y la textura de piel (Portra 400, film grain, subsurface scattering).",
+        "El aspect ratio.",
+        "El negative prompt."
+      ],
+      a: 1
+    },
+    {
+      q: "El esquema de iluminación 'rey' para potenciar los pómulos en moda y belleza es:",
+      opts: [
+        "Butterfly lighting.",
+        "Underlighting / Frankenstein light.",
+        "Fluorescent lighting.",
+        "Bare bulb lighting."
+      ],
+      a: 0
+    },
+    {
+      q: "¿Por qué añadimos 'flyaway hairs' y 'visible skin texture' a un prompt?",
+      opts: [
+        "Para reducir el tiempo de generación.",
+        "Porque son imperfecciones que el cerebro escanea para creerse que la foto es real.",
+        "Para forzar el blanco y negro.",
+        "Para aumentar la resolución a 8K."
+      ],
+      a: 1
+    },
+    {
+      q: "En 'El Despiece de la Consistencia', ¿cómo se logra una serie que parezca la misma campaña?",
+      opts: [
+        "Regenerando con seeds totalmente aleatorias cada vez.",
+        "Cambiando las 7 capas en cada imagen.",
+        "Congelando 6 capas y moviendo solo 1 (p. ej. la luz).",
+        "Usando un prompt distinto e inconexo para cada foto."
+      ],
+      a: 2
+    },
+    {
+      q: "Para un plano de producto de calzado nítido de lado a lado, ¿qué apertura es la adecuada?",
+      opts: [
+        "f/1.4 (desenfoque extremo).",
+        "f/8 (máxima nitidez global).",
+        "f/1.8 (bokeh cremoso).",
+        "La apertura no afecta a la nitidez."
+      ],
+      a: 1
+    },
+    {
+      q: "¿Cuál de estas es una biblioteca para hacer ingeniería inversa de prompts a partir de imágenes?",
+      opts: [
+        "Lexica.",
+        "Gamma.",
+        "Opus Clip.",
+        "NotebookLM."
+      ],
+      a: 0
+    },
+    {
+      q: "Diagnóstico: tu render tiene la piel de plástico, como de muñeca. ¿Qué haces?",
+      opts: [
+        "Añadir '8k, ultra detailed, masterpiece' para subir la calidad.",
+        "Corregir la Capa 04: visible skin texture, Kodak Portra 400, subsurface scattering.",
+        "Cambiar la composición a bird's eye view.",
+        "Regenerar con seeds aleatorias hasta que salga bien."
+      ],
+      a: 1
+    }
+  ];
+</script>
 </body>
-
 </html>

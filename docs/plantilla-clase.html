@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--
+  ============================================================================
+  PLANTILLA DE PÁGINA DE CLASE · [m].seny /academy
+  Este archivo NO se sirve (vive en docs/). Es la referencia canónica de cómo
+  se escribe una clase migrada: anatomía, clases CSS de cada componente y
+  reglas. Copia su esqueleto para migrar una clase de public/.
+
+  REGLAS
+  1. El contenido no cambia: mismos textos, mismos ejemplos, mismos prompts,
+     mismas preguntas del test (verbatim). Solo cambian piel y estructura.
+  2. Nada de Tailwind, Font Awesome, emoji, alert(), colores hardcodeados,
+     fade-in-on-scroll ni footer propio. Iconos = motivo [ ] en mono.
+  3. curso.js genera solo: top bar, chips de secciones, eyebrow y meta del hero,
+     numeración de secciones, nav inferior, pie y el botón «Clase vista».
+     La página escribe: hero (h1 + sub), secciones y su contenido, el array
+     del test y los widgets propios.
+  4. Un solo <h1> (el del hero). Cada sección es <section class="sec" id="…"
+     data-label="…"> con <div class="sec-head"><span class="sec-num"></span><h2>.
+     Los H2 acaban en punto («El fin del «stock».»). Los ids se conservan.
+  5. La última sección (Práctica / PFC / test) lleva además la clase sec-dark
+     (banda tinta a sangre). Solo una banda tinta por página.
+  6. Las etiquetas mono siempre entre corchetes: [ FRASE CLAVE ], [ ANALOGÍA ],
+     [ ! ], [ PROMPT ], [ TERMINAL ], [ PFC — MARCA DE ZAPATOS ].
+  7. Enlaces externos: <a href target="_blank" rel="noopener">. Botones
+     externos: class="btn-ghost" con «→». Enlaces rotos (href="#") se convierten
+     en texto sin enlace.
+  8. Copiar: <button type="button" class="btn-ghost" data-copy>Copiar</button>
+     dentro de .code .ch; opcional data-copy-mode="strip-chevron csv-tabs" y
+     data-copy-source="#id" (copia otro elemento).
+  9. Test: <div class="quiz" data-quiz="quizData" data-title="Test de conocimientos"></div>
+     + <script>const quizData=[{q:'…', opts:['…','…'], a:0, why:'…'}];</script>
+     (a = índice de la correcta; why opcional).
+  10. Cabeceras del hero: <html lang="es">, <title> «M3 · Clase 1 — Título · [m].seny /academy»
+      (curso.js lo reescribe igualmente), meta description con el subtítulo.
+  ============================================================================
+-->
+<title>M3 · Clase 1 — Los titanes del píxel · [m].seny /academy</title>
+<meta name="description" content="Generación de imagen estática y dirección de arte corporativa.">
+<link rel="stylesheet" href="/theme.css">
+<link rel="stylesheet" href="/curso.css">
+</head>
+<!-- data-class = id de la clase en curso-data.js -->
+<body data-class="m3c1">
+<main>
+
+  <!-- HERO: eyebrow y meta los pone curso.js desde curso-data.js -->
+  <header class="hero">
+    <h1 class="display">Estudio creativo IA: los titanes del píxel.</h1>
+    <p class="sub">Generación de imagen estática y dirección de arte corporativa.</p>
+    <!-- opcional: chips de tecnologías (M8) -->
+    <!-- <div class="chips"><span class="chip">Obsidian Vault</span><span class="chip">Claude Code</span></div> -->
+  </header>
+
+  <div class="content">
+
+    <!-- ── SECCIÓN tipo: prosa + antes/ahora + frase clave ── -->
+    <section class="sec" id="roi" data-label="El fin del «stock»">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">El fin del «stock».</h2></div>
+      <p>Prosa normal. <strong>Negrita</strong> para lo importante, <code>código inline</code> para nombres técnicos.</p>
+      <div class="ba">
+        <div class="before"><p class="k">Antes — stock &amp; agencias</p><p>Texto de la situación anterior.</p></div>
+        <div class="after"><p class="k">Ahora — IA generativa</p><p><strong>Dirigir</strong> la creación de la imagen exacta.</p></div>
+      </div>
+      <div class="callout clave"><span class="k">[ Frase clave ]</span><p>«Cita destacada de la clase.»</p></div>
+      <!-- Variantes de callout: .analogia [ ANALOGÍA ] · .nota [ NOTA ] · .aviso [ ! ] AVISO · .regla [ REGLA DE ORO ] (tinta) · .ok [✓] BUENA PRÁCTICA -->
+      <div class="callout analogia"><span class="k">[ Analogía ]</span><p>Como un tren sobre raíles…</p></div>
+      <div class="callout aviso"><span class="k">[ ! ] Aviso</span><p>Si es gratis, el producto eres tú.</p></div>
+    </section>
+
+    <!-- ── SECCIÓN tipo: glosario ── -->
+    <section class="sec" id="glosario" data-label="Glosario">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Glosario ejecutivo.</h2></div>
+      <p class="sec-intro">Introducción breve en muted.</p>
+      <div class="glossary">
+        <div class="row"><h3 class="term">Prompt visual<small>Texto → imagen</small></h3><p class="def">Definición del término. <span class="an">[ Analogía ] Frase corta si la hay.</span></p></div>
+        <div class="row"><h3 class="term">Seed (semilla)</h3><p class="def">Definición.</p></div>
+      </div>
+    </section>
+
+    <!-- ── SECCIÓN tipo: stepper / flujo / grid de cards / tabla ── -->
+    <section class="sec" id="flujo" data-label="Flujo">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Flujo de trabajo.</h2></div>
+      <div class="stepper">
+        <div class="step"><span class="n">01</span><h4>Ideación</h4><p>Prompt inicial.</p></div>
+        <div class="step"><span class="n">02</span><h4>Fijar base</h4><p>Guardar el seed.</p></div>
+        <div class="step final"><span class="n">[✓]</span><h4>Acabado final</h4><p>Upscaling.</p></div>
+      </div>
+      <!-- Pasos largos: <div class="stepper vertical"> … cada .step puede contener .code, listas, etc. -->
+      <div class="flow">
+        <div class="node"><span class="k">Entra</span><h4>Excel de ventas</h4><p>Fuente.</p></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="node ink"><span class="k">Cerebro</span><h4>Vault</h4><p>Notas enlazadas.</p></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="node"><span class="k">Sale</span><h4>Informe</h4><p>Resultado.</p></div>
+      </div>
+      <div class="grid-cards">
+        <div class="card"><span class="k">[ 01 ]</span><h4>Título de card</h4><p>Texto breve.</p></div>
+        <div class="card dim"><span class="k">Eje 1</span><h4>Otra card</h4><ul class="list-mono check"><li>Punto con check</li></ul></div>
+        <a class="card link card-live" href="https://…" target="_blank" rel="noopener"><span class="k">Modelo</span><h4>Card enlace →</h4><p>Toda la card es enlace.</p></a>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Concepto</th><th>Skill</th><th>Agente</th></tr></thead>
+        <tbody><tr><td>Cuándo</td><td>Tarea repetible</td><td>Rol con criterio</td></tr></tbody>
+      </table></div>
+      <div class="stats"><div class="stat"><span class="v">1.240</span><span class="l">Tokens aprox.</span></div></div>
+      <ul class="list-mono"><li>Viñeta con [·]</li><li class="check">Ítem con [✓]</li><li class="cross">Ítem con [×]</li></ul>
+    </section>
+
+    <!-- ── SECCIÓN tipo: fórmulas, código y prompts ── -->
+    <section class="sec" id="prompts" data-label="Fórmulas">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">El arte del prompt visual.</h2></div>
+      <div class="formula">
+        <div class="head"><span class="eyebrow brackets"> S.C.I.E. </span><span>Fotografía realista</span></div>
+        <div class="tiles">
+          <div class="tile"><span class="l">S</span><span class="t">Sujeto</span><span class="e">«Mujer ejecutiva de 40 años…»</span></div>
+          <div class="tile"><span class="l">C</span><span class="t">Contexto</span><span class="e">«Sala de juntas…»</span></div>
+        </div>
+        <div class="code prompt example"><div class="ch"><span class="k">[ Ejemplo práctico ]</span><button type="button" class="btn-ghost" data-copy>Copiar</button></div><pre>«Un par de zapatos Oxford…»</pre></div>
+      </div>
+      <!-- Código: label [ TERMINAL ] / [ YAML ] / [ MARKDOWN ] / [ ARCHIVO · CLAUDE.md ]; spans .hl (destacado), .cm (comentario), .ac (lima) -->
+      <div class="code"><div class="ch"><span class="k">[ Terminal ]</span><button type="button" class="btn-ghost" data-copy>Copiar</button></div><pre><span class="cm"># comentario</span>
+npm install <span class="hl">markitdown</span></pre></div>
+      <!-- Prompt largo: .code.prompt (texto con saltos, pre-wrap). Con chevrones «&gt; » usa data-copy-mode="strip-chevron" -->
+      <div class="code prompt"><div class="ch"><span class="k">[ Prompt · Fase 2 ]</span><button type="button" class="btn-ghost" data-copy data-copy-mode="strip-chevron">Copiar</button></div><pre>&gt; Actúa como un consultor…
+&gt; Contexto: …</pre></div>
+      <!-- Árbol / diagrama ASCII: .code con pre.tree -->
+    </section>
+
+    <!-- ── SECCIÓN tipo: herramientas y tabs ── -->
+    <section class="sec" id="herramientas" data-label="Herramientas">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Primer contacto.</h2></div>
+      <div class="tools">
+        <div class="tool card-live">
+          <p class="k">El velocista del ecosistema</p>
+          <h3 class="display">Gemini Nano Banana 2</h3>
+          <p>Descripción de la herramienta.</p>
+          <p class="use"><strong>Mejor uso:</strong> brainstorming en vivo.</p>
+          <div class="feats"><div><b>Chips expresivos</b>Variaciones rápidas.</div><div><b>Tiempo real</b>Render instantáneo.</div></div>
+          <div class="links"><a class="btn-ghost" href="https://gemini.google.com" target="_blank" rel="noopener">Chat →</a></div>
+        </div>
+      </div>
+      <div class="tabs">
+        <div role="tablist" aria-label="Agentes">
+          <button type="button" role="tab" aria-selected="true" aria-controls="tab-orq" id="tabb-orq">orchestrator.md</button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="tab-red" id="tabb-red">redactor.md</button>
+        </div>
+        <div role="tabpanel" id="tab-orq" aria-labelledby="tabb-orq"><div class="code"><div class="ch"><span class="k">[ Archivo · orchestrator.md ]</span><button type="button" class="btn-ghost" data-copy>Copiar</button></div><pre>---
+name: orchestrator
+---</pre></div></div>
+        <div role="tabpanel" id="tab-red" aria-labelledby="tabb-red" hidden><div class="code"><div class="ch"><span class="k">[ Archivo · redactor.md ]</span><button type="button" class="btn-ghost" data-copy>Copiar</button></div><pre>---
+name: redactor
+---</pre></div></div>
+      </div>
+      <figure class="figure"><img class="media-duotone" src="/img/m3c4-anatomia-nodo.png" alt="Anatomía de un nodo" loading="lazy"><figcaption>[ Captura ] Panel de propiedades del nodo</figcaption></figure>
+    </section>
+
+    <!-- ── ÚLTIMA SECCIÓN: práctica, PFC y test (banda tinta) ── -->
+    <section class="sec sec-dark" id="practica" data-label="Práctica &amp; PFC">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Práctica &amp; PFC.</h2></div>
+      <ol class="exercises">
+        <li><h4>Prompting base (S.C.I.E.)</h4><p>Genera una foto de estudio de zapatos en dos herramientas.</p></li>
+        <li><h4>Composición modular</h4><p>Sube el zapato como asunto y cambia el entorno.</p>
+          <div class="code prompt"><div class="ch"><span class="k">[ Prompt ]</span><button type="button" class="btn-ghost" data-copy>Copiar</button></div><pre>Texto del prompt del ejercicio.</pre></div></li>
+      </ol>
+      <ul class="checklist">
+        <li><input type="checkbox" id="chk-1"><label for="chk-1">Entregable 1: catálogo de 3 modelos</label></li>
+      </ul>
+      <!-- Etiqueta del PFC según la página: [ PFC — MARCA DE ZAPATOS ] · [ PFC — TRANSVERSAL ] · [ RETO DE LA CLASE ] -->
+      <div class="pfc">
+        <span class="k">[ PFC — Marca de zapatos ]</span>
+        <h3>Definición del core</h3>
+        <p>Encargo del proyecto en una o dos frases.</p>
+        <div class="steps">
+          <div><span class="n">01</span><h4>Documento de análisis</h4><p>Qué entregar.</p></div>
+          <div><span class="n">02</span><h4>Roadmap</h4><p>Qué entregar.</p></div>
+        </div>
+      </div>
+      <div class="quiz" data-quiz="quizData" data-title="Test de conocimientos"></div>
+    </section>
+
+  </div><!-- /.content -->
+  <!-- nav inferior y pie: los genera curso.js -->
+</main>
+
+<script src="/curso-data.js"></script>
+<script src="/curso.js"></script>
+<script>
+  // Preguntas del test: verbatim de la página original. a = índice de la correcta.
+  const quizData = [
+    { q: '¿Para qué sirve guardar el «Seed» de una imagen?', opts: ['Es el ADN matemático: permite variaciones consistentes.', 'Aumenta la resolución final.', 'Fija la proporción 16:9.'], a: 0, why: 'El Seed es la base de la consistencia.' }
+  ];
+</script>
+</body>
+</html>

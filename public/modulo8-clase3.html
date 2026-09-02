@@ -1,618 +1,194 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Módulo 8 Clase 3: Orquestación Avanzada de Agentes y Pipelines de Producción - [m].seny [labs]">
-    <title>Módulo 8: Orquestación Multi-Agente (Clase 3) - [m].seny [labs]</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Merriweather', 'serif'],
-                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
-                    },
-                    colors: {
-                        brand: {
-                            dark: '#0F172A',
-                            primary: '#4F46E5',
-                            accent: '#F59E0B',
-                            light: '#F8FAFC'
-                        },
-                        claude: {
-                            DEFAULT: '#D97757',
-                            light: '#FDF3F0',
-                            dark: '#B05D40'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body {
-            background-color: #F8FAFC;
-            color: #334155;
-            scroll-behavior: smooth;
-        }
-        
-        h1, h2, h3, h4, h5, h6, button, .nav-link {
-            font-family: 'Inter', sans-serif;
-        }
-
-        p, li, .prose-text {
-            font-family: 'Merriweather', serif;
-            line-height: 1.6;
-            font-size: 1.125rem;
-            text-align: justify;
-        }
-
-        .text-center { text-align: center; }
-        .text-left { text-align: left; }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
-        /* Animations */
-        .fade-in-on-scroll {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease-out;
-        }
-        .fade-in-on-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(217, 119, 87, 0.15);
-        }
-
-        /* Progress Bar */
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #4F46E5, #D97757);
-            z-index: 1000;
-            transition: width 0.2s ease;
-        }
-
-        /* Quiz Styles */
-        .quiz-option {
-            padding: 1rem;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.75rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            background-color: rgba(255, 255, 255, 0.05);
-            color: #e2e8f0;
-        }
-        .quiz-option:hover {
-            border-color: #D97757;
-            background-color: rgba(217, 119, 87, 0.1);
-        }
-        .quiz-option.selected {
-            border-color: #F59E0B;
-            background-color: rgba(245, 158, 11, 0.1);
-        }
-        .quiz-option.correct {
-            border-color: #10b981;
-            background-color: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-        }
-        .quiz-option.incorrect {
-            border-color: #ef4444;
-            background-color: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M8 · Clase 3 — Orquestación avanzada: pipelines multi-agente · [m].seny /academy</title>
+<meta name="description" content="De hilos de chat aislados a redes complejas de especialistas coordinados en Claude Code y Claude Cowork.">
+<link rel="stylesheet" href="/theme.css">
+<link rel="stylesheet" href="/curso.css">
 </head>
-<body class="antialiased">
+<body data-class="m8c3">
+<main>
 
-    <div class="progress-bar" id="progressBar"></div>
+  <header class="hero">
+    <h1 class="display">Orquestación avanzada: pipelines multi-agente.</h1>
+    <p class="sub">De hilos de chat aislados a redes complejas de especialistas coordinados en Claude Code y Claude Cowork.</p>
+  </header>
 
-    <!-- Navigation Header -->
-    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
-        <!-- Consistent max-w-5xl container for unified margins -->
-        <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center">
-                <a href="index.html" class="no-underline group">
-                    <h1 class="text-xl font-bold tracking-tight text-brand-dark group-hover:text-brand-primary transition-colors cursor-pointer">
-                        <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
-                    </h1>
-                </a>
-            </div>
-            <!-- Cohesive md:flex Navigation Menu -->
-            <nav class="hidden md:flex items-center space-x-4 text-xs font-bold text-gray-500 uppercase tracking-wider">
-                <a href="#modelo-mental" class="hover:text-claude transition-colors">1. MODELO MENTAL</a>
-                <a href="#triada" class="hover:text-claude transition-colors">2. LA TRÍADA</a>
-                <a href="#componentes" class="hover:text-claude transition-colors">3. COMPONENTES</a>
-                <a href="#creacion" class="hover:text-claude transition-colors">4. CREACIÓN</a>
-                <a href="#pipeline-visual" class="hover:text-claude transition-colors">5. PIPELINE</a>
-                <a href="#agentes-detalle" class="hover:text-claude transition-colors">6. AGENTES</a>
-                <a href="#practica" class="hover:text-claude transition-colors text-claude">7. TEST</a>
-            </nav>
-            <!-- Cohesive "Salir" session button -->
-            <a href="/login.html" onclick="document.cookie='sb-ndtoqnpomhtubcygkwlh-auth-token=;path=/;max-age=0';localStorage.clear()"
-                class="hidden md:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors ml-4"
-                title="Cerrar sesión">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                    <polyline points="16 17 21 12 16 7" />
-                    <line x1="21" y1="12" x2="9" y2="12" />
-                </svg>
-                Salir
-            </a>
-        </div>
-    </header>
+  <div class="content">
 
-    <!-- Hero Section -->
-    <section class="bg-[#0f172a] text-white py-32 border-b-8 border-claude relative overflow-hidden">
-        <div class="absolute inset-0 opacity-20">
-            <div class="absolute top-0 right-0 w-[40rem] h-[40rem] bg-claude rounded-full blur-[150px]"></div>
-            <div class="absolute bottom-0 left-0 w-[30rem] h-[30rem] bg-indigo-600 rounded-full blur-[150px]"></div>
-        </div>
-        <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
-            <span class="inline-block py-1 px-3 bg-white/10 text-white border border-white/20 font-mono text-sm font-bold uppercase tracking-widest mb-6 rounded">
-                Módulo 8 • Clase 3
-            </span>
-            <h1 class="text-5xl lg:text-7xl font-extrabold mb-6 leading-tight">
-                Orquestación Avanzada:<br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-claude to-orange-300">Pipelines Multi-Agente</span>
-            </h1>
-            <p class="text-xl text-gray-300 font-serif max-w-2xl mx-auto italic text-center">
-                De hilos de chat aislados a redes complejas de especialistas coordinados en Claude Code y Claude Cowork.
-            </p>
-            <div class="mt-10 flex items-center justify-center space-x-6 text-sm text-gray-400 font-mono">
-                <span><i class="fa-solid fa-brain mr-2 text-claude"></i> Teoría: 30 min</span>
-                <span>•</span>
-                <span><i class="fa-solid fa-gears mr-2 text-claude"></i> Práctica: 30 min</span>
-            </div>
-        </div>
+    <!-- 1. El modelo mental -->
+    <section class="sec" id="modelo-mental" data-label="Modelo mental">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">El modelo mental: una redacción, varios cerebros.</h2></div>
+      <p>La limitación más crítica de cualquier sistema conversacional tradicional es la saturación de la <strong>ventana de contexto</strong>. Cuando forzamos a una sola sesión de chat a leer bases de datos completas, realizar análisis, depurar código y redactar informes de forma secuencial, el modelo sufre de «ruido cognitivo» severo, activa compactaciones de memoria y pierde precisión (<em>Lost in the Middle</em>).</p>
+      <div class="grid-cards two">
+        <div class="card dim"><span class="k">[ 01 ]</span><h4>Patrón Orchestrator-Workers</h4><p>El orquestador principal (Claude Opus o Sonnet) actúa como un director ejecutivo. Tiene el objetivo global en mente, planifica, divide tareas y delega la ejecución de micro-tareas complejas a subagentes especialistas, recibiendo únicamente un resumen con el entregable consolidado.</p></div>
+        <div class="card dim"><span class="k">[ 02 ]</span><h4>Aislamiento de contexto</h4><p>Cada subagente corre en su propia ventana de contexto aislada. Esto garantiza que sus micro-decisiones no saturen la conversación principal y que las herramientas de ejecución (como Bash o Python) se acoten estrictamente a lo que requiere su especialidad.</p></div>
+      </div>
+      <div class="callout analogia"><span class="k">[ Analogía ]</span><p><strong>Símil de la redacción de noticias:</strong> En una redacción de prensa, el redactor jefe no escribe la sección de deportes, economía y clima de su puño y letra al mismo tiempo. Delega en tres redactores especializados. Cada especialista trabaja de manera independiente y le entrega una columna limpia y sintetizada. El redactor jefe solo ensambla la portada final.</p></div>
     </section>
 
-    <!-- 1. El Modelo Mental -->
-    <section id="modelo-mental" class="py-20 bg-white">
-        <div class="max-w-5xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll">
-                <span class="w-10 h-10 bg-claude text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">1</span>
-                El Modelo Mental: Una Redacción, Varios Cerebros
-            </h2>
-            
-            <p class="prose-text mb-8 text-slate-600 fade-in-on-scroll">
-                La limitación más crítica de cualquier sistema conversacional tradicional es la saturación de la <strong>ventana de contexto</strong>. Cuando forzamos a una sola sesión de chat a leer bases de datos completas, realizar análisis, depurar código y redactar informes de forma secuencial, el modelo sufre de "ruido cognitivo" severo, activa compactaciones de memoria y pierde precisión (<em>Lost in the Middle</em>).
-            </p>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 fade-in-on-scroll">
-                <div class="bg-slate-50 border-l-4 border-claude p-6 rounded-r-xl shadow-sm">
-                    <h3 class="font-bold text-brand-dark text-lg mb-2"><i class="fa-solid fa-users-gear mr-2 text-claude"></i> Patrón Orchestrator-Workers</h3>
-                    <p class="font-serif text-sm text-slate-600">
-                        El orquestador principal (Claude Opus o Sonnet) actúa como un director ejecutivo. Tiene el objetivo global en mente, planifica, divide tareas y delega la ejecución de micro-tareas complejas a subagentes especialistas, recibiendo únicamente un resumen con el entregable consolidado.
-                    </p>
-                </div>
-                <div class="bg-slate-50 border-l-4 border-indigo-500 p-6 rounded-r-xl shadow-sm">
-                    <h3 class="font-bold text-brand-dark text-lg mb-2"><i class="fa-solid fa-shield-halved mr-2 text-indigo-500"></i> Aislamiento de Contexto</h3>
-                    <p class="font-serif text-sm text-slate-600">
-                        Cada subagente corre en su propia ventana de contexto aislada. Esto garantiza que sus micro-decisiones no saturen la conversación principal y que las herramientas de ejecución (como Bash o Python) se acoten estrictamente a lo que requiere su especialidad.
-                    </p>
-                </div>
-            </div>
-
-            <div class="bg-amber-50 p-6 rounded-xl border-l-4 border-brand-accent fade-in-on-scroll">
-                <p class="font-serif text-amber-900 text-sm m-0">
-                    <i class="fa-solid fa-lightbulb text-brand-accent mr-2"></i> <strong>Símil de la Redacción de Noticias:</strong> En una redacción de prensa, el redactor jefe no escribe la sección de deportes, economía y clima de su puño y letra al mismo tiempo. Delega en tres redactores especializados. Cada especialista trabaja de manera independiente y le entrega una columna limpia y sintetizada. El redactor jefe solo ensambla la portada final.
-                </p>
-            </div>
+    <!-- 2. La tríada: Chat vs. Cowork vs. Code -->
+    <section class="sec" id="triada" data-label="La tríada">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">La tríada de Claude: elegir el entorno adecuado.</h2></div>
+      <p class="sec-intro">Anthropic ofrece tres entornos diferenciados según el grado de control técnico y la naturaleza del flujo de trabajo de cada usuario.</p>
+      <div class="grid-cards three">
+        <div class="card">
+          <span class="k">[ 01 ]</span>
+          <h4>Claude Chat (web/móvil)</h4>
+          <p>La interfaz conversacional tradicional.</p>
+          <ul class="list-mono">
+            <li class="check">Preguntas y respuestas rápidas.</li>
+            <li class="check">Redacción creativa y formateo ágil.</li>
+            <li class="cross">Sin acceso a archivos locales o herramientas de sistema.</li>
+          </ul>
+          <p><span class="k">Perfil: General</span></p>
         </div>
+        <div class="card">
+          <span class="k">[ 02 · Productividad ]</span>
+          <h4>Claude Cowork</h4>
+          <p>El agente de escritorio de conocimiento.</p>
+          <ul class="list-mono">
+            <li class="check">Ejecución de flujos complejos multi-paso.</li>
+            <li class="check">Lectura y escritura de carpetas locales.</li>
+            <li class="check">Integración visual de plugins y conectores.</li>
+          </ul>
+          <p><span class="k">Perfil: Knowledge Worker / Manager</span></p>
+        </div>
+        <div class="card ink">
+          <span class="k">[ 03 ]</span>
+          <h4>Claude Code (CLI)</h4>
+          <p>La interfaz de comandos agéntica.</p>
+          <ul class="list-mono">
+            <li class="check">Operaciones autónomas sobre repositorios.</li>
+            <li class="check">Ejecución directa de comandos bash y scripts.</li>
+            <li class="check">Control granular de agentes y skills en .md.</li>
+          </ul>
+          <p><span class="k">Perfil: Desarrollador / Analista Técnico</span></p>
+        </div>
+      </div>
     </section>
 
-    <!-- 2. La Tríada: Chat vs. Cowork vs. Code -->
-    <section id="triada" class="py-20 bg-brand-light border-t border-gray-200">
-        <div class="max-w-6xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll">
-                <span class="w-10 h-10 bg-claude text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">2</span>
-                La Tríada de Claude: Elegir el Entorno Adecuado
-            </h2>
-            <p class="prose-text mb-8 text-slate-600 fade-in-on-scroll">
-                Anthropic ofrece tres entornos diferenciados según el grado de control técnico y la naturaleza del flujo de trabajo de cada usuario.
-            </p>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 fade-in-on-scroll">
-                <!-- Chat -->
-                <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="w-12 h-12 bg-orange-50 text-claude rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-comments"></i></div>
-                        <h3 class="font-bold text-brand-dark text-lg mb-2">Claude Chat (web/móvil)</h3>
-                        <p class="font-serif text-sm text-gray-500 mb-4">La interfaz conversacional tradicional.</p>
-                        <ul class="text-xs font-serif text-gray-600 space-y-2 mb-6">
-                            <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Preguntas y respuestas rápidas.</li>
-                            <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Redacción creativa y formateo ágil.</li>
-                            <li><i class="fa-solid fa-xmark text-red-500 mr-2"></i> Sin acceso a archivos locales o herramientas de sistema.</li>
-                        </ul>
-                    </div>
-                    <span class="text-xs font-bold text-slate-400 tracking-widest uppercase">Perfil: General</span>
-                </div>
-
-                <!-- Cowork -->
-                <div class="bg-white p-6 rounded-2xl border-2 border-claude shadow-sm flex flex-col justify-between relative overflow-hidden">
-                    <div class="absolute top-0 right-0 bg-claude text-white text-[9px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">Productividad</div>
-                    <div>
-                        <div class="w-12 h-12 bg-claude-light text-claude rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-desktop"></i></div>
-                        <h3 class="font-bold text-brand-dark text-lg mb-2">Claude Cowork</h3>
-                        <p class="font-serif text-sm text-gray-500 mb-4">El agente de escritorio de conocimiento.</p>
-                        <ul class="text-xs font-serif text-gray-600 space-y-2 mb-6">
-                            <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Ejecución de flujos complejos multi-paso.</li>
-                            <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Lectura y escritura de carpetas locales.</li>
-                            <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Integración visual de plugins y conectores.</li>
-                        </ul>
-                    </div>
-                    <span class="text-xs font-bold text-claude tracking-widest uppercase">Perfil: Knowledge Worker / Manager</span>
-                </div>
-
-                <!-- Code -->
-                <div class="bg-[#0f172a] text-white p-6 rounded-2xl shadow-xl flex flex-col justify-between">
-                    <div>
-                        <div class="w-12 h-12 bg-gray-800 text-cyan-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-terminal"></i></div>
-                        <h3 class="font-bold text-white text-lg mb-2">Claude Code (CLI)</h3>
-                        <p class="font-serif text-sm text-gray-400 mb-4">La interfaz de comandos agéntica.</p>
-                        <ul class="text-xs font-serif text-gray-400 space-y-2 mb-6">
-                            <li><i class="fa-solid fa-check text-cyan-400 mr-2"></i> Operaciones autónomas sobre repositorios.</li>
-                            <li><i class="fa-solid fa-check text-cyan-400 mr-2"></i> Ejecución directa de comandos bash y scripts.</li>
-                            <li><i class="fa-solid fa-check text-cyan-400 mr-2"></i> Control granular de agentes y skills en .md.</li>
-                        </ul>
-                    </div>
-                    <span class="text-xs font-bold text-cyan-400 tracking-widest uppercase">Perfil: Desarrollador / Analista Técnico</span>
-                </div>
-            </div>
+    <!-- 3. Componentes del ecosistema -->
+    <section class="sec" id="componentes" data-label="Componentes">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">La anatomía extensible: skills, conectores y plugins.</h2></div>
+      <p class="sec-intro">Para automatizar tu entorno de forma robusta en Cowork o Code, debes comprender cómo se expanden las capacidades del modelo.</p>
+      <div class="grid-cards three">
+        <div class="card dim">
+          <span class="k">[ 01 ]</span>
+          <h4>Skills</h4>
+          <p>Son el <strong>cómo hacer las cosas</strong>. Archivos de Markdown que especifican procedimientos, reglas de formato e instrucciones precisas de ejecución que Claude carga bajo demanda.</p>
+          <p><span class="k">[ Carga bajo demanda ]</span></p>
         </div>
+        <div class="card dim">
+          <span class="k">[ 02 ]</span>
+          <h4>Connectors (MCP)</h4>
+          <p>Son las <strong>ventanas al mundo real</strong>. Basados en el estándar de Anthropic (Model Context Protocol), enlazan de manera nativa a Claude con apps como Google Drive, Slack, Notion o HubSpot.</p>
+          <p><span class="k">[ Integración de datos ]</span></p>
+        </div>
+        <div class="card dim">
+          <span class="k">[ 03 ]</span>
+          <h4>Plugins (.plugin)</h4>
+          <p>Son el <strong>paquete empaquetado total</strong>. Un archivo ZIP o carpeta que reúne en una sola unidad Skills, subagentes (Agents), conectores MCP y Hooks de sistema automatizados.</p>
+          <p><span class="k">[ Ecosistema completo ]</span></p>
+        </div>
+      </div>
+
+      <h3>El secreto de la Progressive Disclosure (carga escalonada)</h3>
+      <p>En Claude Code y plugins estructurados, los skills se diseñan con carga escalonada de 3 capas. Esto reduce los costes en tokens radicalmente en un 90%:</p>
+      <div class="grid-cards three">
+        <div class="card"><span class="k">Capa 1</span><h4>Metadata (fijo)</h4><p>Claude mantiene fijos en la ventana de contexto solo el <code>name</code> y <code>description</code> de todos los skills del directorio. Esto permite al orquestador saber que existen gastando muy pocos tokens fijos.</p></div>
+        <div class="card"><span class="k">Capa 2</span><h4>Body (al activarse)</h4><p>Solo cuando Claude decide que un skill se ajusta a la petición, el cuerpo del fichero <code>SKILL.md</code> con todas sus instrucciones detalladas se vuelca e inyecta en el contexto de la sesión.</p></div>
+        <div class="card"><span class="k">Capa 3</span><h4>References (bajo demanda)</h4><p>La documentación extendida de la carpeta <code>references/</code> nunca entra automáticamente al contexto. Claude debe llamar de manera explícita a la herramienta de lectura para leerlos.</p></div>
+      </div>
     </section>
 
-    <!-- 3. Componentes del Ecosistema -->
-    <section id="componentes" class="py-20 bg-white border-b border-gray-200">
-        <div class="max-w-6xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-brand-dark mb-4 flex items-center fade-in-on-scroll">
-                <span class="w-10 h-10 bg-claude text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">3</span>
-                La Anatomía Extensible: Skills, Conectores y Plugins
-            </h2>
-            <p class="prose-text mb-12 text-slate-600 fade-in-on-scroll">
-                Para automatizar tu entorno de forma robusta en Cowork o Code, debes comprender cómo se expanden las capacidades del modelo.
-            </p>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 fade-in-on-scroll">
-                <!-- Skills -->
-                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 card-hover">
-                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-2xl mr-4 shrink-0 mb-4"><i class="fa-solid fa-graduation-cap"></i></div>
-                    <h3 class="font-bold text-brand-dark text-lg mb-2">Skills</h3>
-                    <p class="font-serif text-sm text-gray-500 leading-relaxed mb-4">
-                        Son el <strong>cómo hacer las cosas</strong>. Archivos de Markdown que especifican procedimientos, reglas de formato e instrucciones precisas de ejecución que Claude carga bajo demanda.
-                    </p>
-                    <span class="text-xs font-bold text-blue-500 uppercase tracking-widest bg-blue-50 px-2 py-1 rounded">Carga Bajo Demanda</span>
-                </div>
-
-                <!-- Connectors -->
-                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 card-hover">
-                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-2xl mr-4 shrink-0 mb-4"><i class="fa-solid fa-plug"></i></div>
-                    <h3 class="font-bold text-brand-dark text-lg mb-2">Connectors (MCP)</h3>
-                    <p class="font-serif text-sm text-gray-500 leading-relaxed mb-4">
-                        Son las <strong>ventanas al mundo real</strong>. Basados en el estándar de Anthropic (Model Context Protocol), enlazan de manera nativa a Claude con apps como Google Drive, Slack, Notion o HubSpot.
-                    </p>
-                    <span class="text-xs font-bold text-emerald-500 uppercase tracking-widest bg-emerald-50 px-2 py-1 rounded">Integración de Datos</span>
-                </div>
-
-                <!-- Plugins -->
-                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 card-hover">
-                    <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-2xl mr-4 shrink-0 mb-4"><i class="fa-solid fa-box-open"></i></div>
-                    <h3 class="font-bold text-brand-dark text-lg mb-2">Plugins (.plugin)</h3>
-                    <p class="font-serif text-sm text-gray-500 leading-relaxed mb-4">
-                        Son el <strong>paquete empaquetado total</strong>. Un archivo ZIP o carpeta que reúne en una sola unidad Skills, subagentes (Agents), conectores MCP y Hooks de sistema automatizados.
-                    </p>
-                    <span class="text-xs font-bold text-purple-500 uppercase tracking-widest bg-purple-50 px-2 py-1 rounded">Ecosistema Completo</span>
-                </div>
-            </div>
-
-            <!-- Progressive Disclosure -->
-            <div class="bg-blue-50 rounded-2xl p-8 border border-blue-200 fade-in-on-scroll">
-                <h3 class="text-xl font-bold text-blue-900 mb-3"><i class="fa-solid fa-circle-info mr-2"></i> El Secreto de la Progressive Disclosure (Carga Escalonada)</h3>
-                <p class="font-serif text-sm text-blue-900 mb-6">
-                    En Claude Code y plugins estructurados, los skills se diseñan con carga escalonada de 3 capas. Esto reduce los costes en tokens radicalmente en un 90%:
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-white p-4 rounded-xl border border-blue-100 shadow-sm">
-                        <strong class="text-xs text-blue-500 font-mono uppercase block mb-1">Capa 1: Metadata (Fijo)</strong>
-                        <p class="text-xs font-serif text-gray-600">Claude mantiene fijos en la ventana de contexto solo el <code>name</code> y <code>description</code> de todos los skills del directorio. Esto permite al orquestador saber que existen gastando muy pocos tokens fijos.</p>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl border border-blue-100 shadow-sm">
-                        <strong class="text-xs text-blue-500 font-mono uppercase block mb-1">Capa 2: Body (Al Activarse)</strong>
-                        <p class="text-xs font-serif text-gray-600">Solo cuando Claude decide que un skill se ajusta a la petición, el cuerpo del fichero <code>SKILL.md</code> con todas sus instrucciones detalladas se vuelca e inyecta en el contexto de la sesión.</p>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl border border-blue-100 shadow-sm">
-                        <strong class="text-xs text-blue-500 font-mono uppercase block mb-1">Capa 3: References (Bajo Demanda)</strong>
-                        <p class="text-xs font-serif text-gray-600">La documentación extendida de la carpeta <code>references/</code> nunca entra automáticamente al contexto. Claude debe llamar de manera explícita a la herramienta de lectura para leerlos.</p>
-                    </div>
-                </div>
-            </div>
+    <!-- 4. Cómo crear agentes -->
+    <section class="sec" id="creacion" data-label="Creación">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Cómo crear agentes y subagentes.</h2></div>
+      <p>Dependiendo de si utilizas la terminal con <strong>Claude Code</strong> o la interfaz de escritorio con <strong>Claude Cowork</strong>, la creación y configuración de agentes se adapta con flujos optimizados. A continuación, exploramos los dos caminos sin desbordar el contexto:</p>
+      <div class="grid-cards two">
+        <div class="card">
+          <span class="k">[ CLI ]</span>
+          <h4>En Claude Code (CLI)</h4>
+          <p>Anthropic recomienda encarecidamente utilizar el asistente interactivo integrado. Esto evita errores de sintaxis en el formato YAML del frontmatter y agiliza el proceso de desarrollo.</p>
+          <div class="code"><div class="ch"><span class="k">[ Terminal ]</span><button type="button" class="btn-ghost" data-copy>Copiar</button></div><pre><span class="ac">$</span> claude /agents</pre></div>
+          <p>Este comando despliega una interfaz paso a paso que te guía para definir el nombre, la descripción (triggers), el modelo y las herramientas permitidas.</p>
+          <p><span class="k">Ruta de guardado automático:</span><code>.claude/agents/ (A nivel de proyecto)</code></p>
         </div>
+        <div class="card">
+          <span class="k">[ Desktop ]</span>
+          <h4>En Claude Cowork (Desktop)</h4>
+          <p>En el ecosistema visual de escritorio, los subagentes se integran mediante empaquetados modulares o asistentes conversacionales integrados:</p>
+          <ul class="list-mono">
+            <li class="check"><strong>Plugin Create</strong><br>Asistente visual integrado que te guía en lenguaje natural para programar y consolidar tus subagentes desde un chat.</li>
+            <li class="check"><strong>Archivos .plugin (ZIP)</strong><br>Puedes empaquetar tus archivos Markdown y subirlos como un archivo comprimido que se despliega al instante en tu Workspace.</li>
+          </ul>
+          <p><span class="k">Estructura del empaquetado:</span><code>plugin/agents/mi-agente.md</code></p>
+        </div>
+      </div>
     </section>
 
-    <!-- 4. Cómo Crear Agentes -->
-    <section id="creacion" class="py-20 bg-brand-light border-b border-gray-200">
-        <div class="max-w-5xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll">
-                <span class="w-10 h-10 bg-claude text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">4</span>
-                Cómo Crear Agentes y Subagentes
-            </h2>
-            
-            <p class="prose-text mb-10 text-slate-600 fade-in-on-scroll">
-                Dependiendo de si utilizas la terminal con <strong>Claude Code</strong> o la interfaz de escritorio con <strong>Claude Cowork</strong>, la creación y configuración de agentes se adapta con flujos optimizados. A continuación, exploramos los dos caminos sin desbordar el contexto:
-            </p>
+    <!-- 5. El pipeline visual de los 5 agentes -->
+    <section class="sec" id="pipeline-visual" data-label="Pipeline">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Pipeline de inteligencia de marketing (caso de estudio).</h2></div>
+      <p class="sec-intro">A continuación se muestra de forma gráfica y reactiva el pipeline de procesamiento multi-agente. Un orquestador central (Claude Opus) reparte y delega de manera secuencial a 5 subagentes especialistas, compartiendo una capa persistente de archivos e histórico de métricas.</p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch fade-in-on-scroll">
-                <!-- Claude Code CLI -->
-                <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between card-hover">
-                    <div>
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-10 h-10 bg-[#0f172a] text-cyan-400 rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-terminal"></i></div>
-                            <h3 class="font-bold text-brand-dark text-lg">En Claude Code (CLI)</h3>
-                        </div>
-                        <p class="font-serif text-sm text-slate-600 mb-4 leading-relaxed">
-                            Anthropic recomienda encarecidamente utilizar el asistente interactivo integrado. Esto evita errores de sintaxis en el formato YAML del frontmatter y agiliza el proceso de desarrollo.
-                        </p>
-                        
-                        <div class="bg-[#0f172a] text-white font-mono text-xs p-4 rounded-xl mb-4 overflow-x-auto border border-gray-700 max-w-full">
-                            <span class="text-cyan-400">$</span> claude /agents
-                        </div>
-                        
-                        <p class="font-serif text-sm text-slate-600 leading-relaxed mb-6">
-                            Este comando despliega una interfaz paso a paso que te guía para definir el nombre, la descripción (triggers), el modelo y las herramientas permitidas.
-                        </p>
-                    </div>
-                    
-                    <div class="mt-auto pt-4 border-t border-slate-100">
-                        <span class="text-xs font-bold font-mono text-slate-400 block mb-1">Ruta de guardado automático:</span>
-                        <code class="text-xs bg-slate-100 text-claude font-mono px-2 py-1 rounded block truncate" title=".claude/agents/">.claude/agents/ (A nivel de proyecto)</code>
-                    </div>
-                </div>
-
-                <!-- Claude Cowork Desktop -->
-                <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between card-hover">
-                    <div>
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-10 h-10 bg-orange-50 text-claude rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-desktop"></i></div>
-                            <h3 class="font-bold text-brand-dark text-lg">En Claude Cowork (Desktop)</h3>
-                        </div>
-                        <p class="font-serif text-sm text-slate-600 mb-6 leading-relaxed">
-                            En el ecosistema visual de escritorio, los subagentes se integran mediante empaquetados modulares o asistentes conversacionales integrados:
-                        </p>
-                        
-                        <ul class="text-sm font-serif text-slate-600 space-y-4 mb-6">
-                            <li class="flex items-start gap-3">
-                                <span class="text-indigo-500 mt-1 shrink-0"><i class="fa-solid fa-circle-check"></i></span>
-                                <div>
-                                    <strong class="font-sans text-slate-800 text-sm block">Plugin Create</strong>
-                                    <span class="text-xs text-slate-500 leading-relaxed">Asistente visual integrado que te guía en lenguaje natural para programar y consolidar tus subagentes desde un chat.</span>
-                                </div>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="text-indigo-500 mt-1 shrink-0"><i class="fa-solid fa-circle-check"></i></span>
-                                <div>
-                                    <strong class="font-sans text-slate-800 text-sm block">Archivos .plugin (ZIP)</strong>
-                                    <span class="text-xs text-slate-500 leading-relaxed">Puedes empaquetar tus archivos Markdown y subirlos como un archivo comprimido que se despliega al instante en tu Workspace.</span>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="mt-auto pt-4 border-t border-slate-100">
-                        <span class="text-xs font-bold font-mono text-slate-400 block mb-1">Estructura del empaquetado:</span>
-                        <code class="text-xs bg-slate-100 text-indigo-600 font-mono px-2 py-1 rounded block truncate" title="plugin/agents/">plugin/agents/mi-agente.md</code>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div class="flow">
+        <div class="node"><span class="k">Usuario</span><h4>Petición / Objetivo Global</h4></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="node ink"><span class="k">Orquestador (Opus)</span><h4>0. marketing-orchestrator</h4><p>Planifica · Delega · Consolida · Contexto limpio</p></div>
+      </div>
+      <div class="flow">
+        <div class="node"><span class="k">Worker 1</span><h4>paid-media-analyzer</h4><p>Lee Drive y normaliza datos crudos</p></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="node"><span class="k">Worker 2</span><h4>behavior-insights</h4><p>Saca patrones e histórico</p></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="node"><span class="k">Worker 3</span><h4>report-builder</h4><p>Informes ejecutivos por campo</p></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="node"><span class="k">Worker 4</span><h4>deck-dashboard</h4><p>Genera PPTX y dashboards</p></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="node"><span class="k">Worker 5</span><h4>synergy-strategist</h4><p>Sinergias y decisiones cruzadas</p></div>
+      </div>
+      <div class="flow">
+        <div class="node"><span class="k">Capa compartida</span><h4>Archivos locales de proyecto</h4><p>historic-paidmedia.md · historic-crm.md · memoria persistente de sesión</p></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="node ink"><span class="k">Entregable final</span><h4>Informes + Deck PPTX + Dashboard + Sinergias</h4></div>
+      </div>
     </section>
 
-    <!-- 5. El Pipeline Visual de los 5 Agentes -->
-    <section id="pipeline-visual" class="py-20 bg-white border-t border-gray-200">
-        <div class="max-w-6xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-brand-dark mb-4 flex items-center fade-in-on-scroll">
-                <span class="w-10 h-10 bg-claude text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">5</span>
-                Pipeline de Inteligencia de Marketing (Caso de Estudio)
-            </h2>
-            <p class="prose-text mb-12 text-slate-600 fade-in-on-scroll">
-                A continuación se muestra de forma gráfica y reactiva el pipeline de procesamiento multi-agente. Un orquestador central (Claude Opus) reparte y delega de manera secuencial a 5 subagentes especialistas, compartiendo una capa persistente de archivos e histórico de métricas.
-            </p>
-
-            <!-- Interactive CSS Diagram -->
-            <div class="bg-slate-950 rounded-3xl p-8 border border-gray-800 shadow-2xl mb-16 fade-in-on-scroll overflow-x-auto">
-                <div class="min-w-[900px] flex flex-col items-center py-6">
-                    
-                    <!-- Usuario -->
-                    <div class="bg-gray-800 border border-gray-700 rounded-xl px-6 py-3 text-center mb-6 shadow-md text-white">
-                        <span class="text-xs uppercase tracking-widest text-brand-accent font-bold">Usuario</span>
-                        <h4 class="font-bold">Petición / Objetivo Global</h4>
-                    </div>
-
-                    <!-- Flecha Down -->
-                    <div class="text-brand-accent text-xl mb-4"><i class="fa-solid fa-arrow-down"></i></div>
-
-                    <!-- Orquestador -->
-                    <div class="bg-slate-900 border-2 border-claude rounded-2xl p-6 text-center mb-10 shadow-xl max-w-lg w-full relative">
-                        <div class="absolute -top-3 right-4 bg-claude text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Orquestador (Opus)</div>
-                        <h3 class="font-extrabold text-white text-lg mb-1">0. marketing-orchestrator</h3>
-                        <p class="text-xs font-mono text-gray-400">Planifica • Delega • Consolida • Contexto Limpio</p>
-                    </div>
-
-                    <!-- Fila de Agentes Conectados (Workers) -->
-                    <div class="grid grid-cols-5 gap-4 w-full mb-10 relative">
-                        <!-- Conectores visuales en CSS -->
-                        <div class="absolute top-1/2 left-8 right-8 h-0.5 bg-claude/30 -z-10 transform -translate-y-1/2"></div>
-                        
-                        <!-- Worker 1 -->
-                        <div class="bg-slate-900/60 border border-slate-700 rounded-xl p-4 text-center relative hover:border-claude transition-all duration-300">
-                            <span class="w-6 h-6 bg-claude text-white rounded-full flex items-center justify-center font-bold text-xs mx-auto mb-2">1</span>
-                            <h4 class="font-bold text-xs text-slate-100">paid-media-analyzer</h4>
-                            <p class="text-[9px] text-gray-400 font-serif mt-1">Lee Drive y normaliza datos crudos</p>
-                        </div>
-
-                        <!-- Worker 2 -->
-                        <div class="bg-slate-900/60 border border-slate-700 rounded-xl p-4 text-center relative hover:border-claude transition-all duration-300">
-                            <span class="w-6 h-6 bg-claude text-white rounded-full flex items-center justify-center font-bold text-xs mx-auto mb-2">2</span>
-                            <h4 class="font-bold text-xs text-slate-100">behavior-insights</h4>
-                            <p class="text-[9px] text-gray-400 font-serif mt-1">Saca patrones e histórico</p>
-                        </div>
-
-                        <!-- Worker 3 -->
-                        <div class="bg-slate-900/60 border border-slate-700 rounded-xl p-4 text-center relative hover:border-claude transition-all duration-300">
-                            <span class="w-6 h-6 bg-claude text-white rounded-full flex items-center justify-center font-bold text-xs mx-auto mb-2">3</span>
-                            <h4 class="font-bold text-xs text-slate-100">report-builder</h4>
-                            <p class="text-[9px] text-gray-400 font-serif mt-1">Informes ejecutivos por campo</p>
-                        </div>
-
-                        <!-- Worker 4 -->
-                        <div class="bg-slate-900/60 border border-slate-700 rounded-xl p-4 text-center relative hover:border-claude transition-all duration-300">
-                            <span class="w-6 h-6 bg-claude text-white rounded-full flex items-center justify-center font-bold text-xs mx-auto mb-2">4</span>
-                            <h4 class="font-bold text-xs text-slate-100">deck-dashboard</h4>
-                            <p class="text-[9px] text-gray-400 font-serif mt-1">Genera PPTX y dashboards</p>
-                        </div>
-
-                        <!-- Worker 5 -->
-                        <div class="bg-slate-900/60 border border-slate-700 rounded-xl p-4 text-center relative hover:border-claude transition-all duration-300">
-                            <span class="w-6 h-6 bg-claude text-white rounded-full flex items-center justify-center font-bold text-xs mx-auto mb-2">5</span>
-                            <h4 class="font-bold text-xs text-slate-100">synergy-strategist</h4>
-                            <p class="text-[9px] text-gray-400 font-serif mt-1">Sinergias y decisiones cruzadas</p>
-                        </div>
-                    </div>
-
-                    <!-- Capa de Datos Compartida -->
-                    <div class="bg-emerald-950/20 border-2 border-emerald-500/30 rounded-2xl p-4 text-center w-full max-w-3xl">
-                        <span class="text-xs uppercase tracking-widest text-emerald-400 font-bold"><i class="fa-solid fa-database mr-1"></i> Capa Compartida</span>
-                        <p class="text-[11px] font-mono text-gray-400 mt-1">Archivos locales de proyecto • historic-paidmedia.md • historic-crm.md • memoria persistente de sesión</p>
-                    </div>
-
-                    <!-- Flecha Down -->
-                    <div class="text-emerald-400 text-xl mt-4 mb-4"><i class="fa-solid fa-arrow-down"></i></div>
-
-                    <!-- Entregable Final -->
-                    <div class="bg-gradient-to-r from-indigo-950 to-purple-950 border border-indigo-500/30 rounded-xl p-4 text-center max-w-md w-full">
-                        <span class="text-xs uppercase tracking-widest text-white/50 font-bold">Entregable Final</span>
-                        <h4 class="font-bold text-white">Informes + Deck PPTX + Dashboard + Sinergias</h4>
-                    </div>
-
-                </div>
-            </div>
+    <!-- 6. Despiece de los agentes e instrucciones de configuración -->
+    <section class="sec" id="agentes-detalle" data-label="Agentes">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Anatomía de los 5 agentes especialistas.</h2></div>
+      <p class="sec-intro">Explora el diseño técnico exacto de cada subagente. Haz clic en las pestañas para inspeccionar su configuración YAML de entrada, su modelo recomendado, su lista blanca de herramientas y su sistema de instrucciones de comportamiento (<em>system prompt</em>).</p>
+      <div class="tabs">
+        <div role="tablist" aria-label="Agentes del pipeline">
+          <button type="button" role="tab" aria-selected="true" aria-controls="tab-ag0" id="tabb-ag0">0. El Orquestador</button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="tab-ag1" id="tabb-ag1">1. paid-media-analyzer</button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="tab-ag2" id="tabb-ag2">2. behavior-insights</button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="tab-ag3" id="tabb-ag3">3. report-builder</button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="tab-ag4" id="tabb-ag4">4. deck-dashboard</button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="tab-ag5" id="tabb-ag5">5. synergy-strategist</button>
         </div>
+        <div id="agent-panels"><!-- paneles generados desde agentsCode (script al final) --></div>
+      </div>
     </section>
 
-    <!-- 6. Despiece de los Agentes e Instrucciones de Configuración -->
-    <section id="agentes-detalle" class="py-20 bg-brand-light border-t border-gray-200">
-        <div class="max-w-6xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-brand-dark mb-4 flex items-center fade-in-on-scroll">
-                <span class="w-10 h-10 bg-claude text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">6</span>
-                Anatomía de los 5 Agentes Especialistas
-            </h2>
-            <p class="prose-text mb-12 text-slate-600 fade-in-on-scroll">
-                Explora el diseño técnico exacto de cada subagente. Haz clic en las pestañas para inspeccionar su configuración YAML de entrada, su modelo recomendado, su lista blanca de herramientas y su sistema de instrucciones de comportamiento (*system prompt*).
-            </p>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch fade-in-on-scroll">
-                <!-- Tabs list -->
-                <div class="lg:col-span-4 flex flex-col space-y-2">
-                    <button onclick="switchAgentTab(0)" id="tab-btn-0" class="tab-btn active text-left p-4 rounded-xl border border-gray-200 bg-white font-bold text-brand-dark hover:border-claude transition-all">0. El Orquestador</button>
-                    <button onclick="switchAgentTab(1)" id="tab-btn-1" class="tab-btn text-left p-4 rounded-xl border border-gray-200 bg-white font-bold text-slate-500 hover:border-claude transition-all">1. paid-media-analyzer</button>
-                    <button onclick="switchAgentTab(2)" id="tab-btn-2" class="tab-btn text-left p-4 rounded-xl border border-gray-200 bg-white font-bold text-slate-500 hover:border-claude transition-all">2. behavior-insights</button>
-                    <button onclick="switchAgentTab(3)" id="tab-btn-3" class="tab-btn text-left p-4 rounded-xl border border-gray-200 bg-white font-bold text-slate-500 hover:border-claude transition-all">3. report-builder</button>
-                    <button onclick="switchAgentTab(4)" id="tab-btn-4" class="tab-btn text-left p-4 rounded-xl border border-gray-200 bg-white font-bold text-slate-500 hover:border-claude transition-all">4. deck-dashboard</button>
-                    <button onclick="switchAgentTab(5)" id="tab-btn-5" class="tab-btn text-left p-4 rounded-xl border border-gray-200 bg-white font-bold text-slate-500 hover:border-claude transition-all">5. synergy-strategist</button>
-                </div>
-
-                <!-- Display Tab Panel -->
-                <div class="lg:col-span-8 bg-[#0f172a] rounded-2xl shadow-2xl border border-slate-800 overflow-hidden flex flex-col min-h-[500px]">
-                    <div class="bg-slate-950 px-6 py-4 border-b border-slate-800 flex justify-between items-center shrink-0">
-                        <span id="agent-file-name" class="text-xs font-mono text-claude font-bold uppercase tracking-wider"><i class="fa-solid fa-file-code mr-2"></i> orchestrator.md</span>
-                        <button onclick="copyCurrentAgentCode()" class="text-xs text-slate-400 hover:text-white transition-colors border border-slate-700 hover:border-slate-500 px-3 py-1.5 rounded-lg flex items-center">
-                            <i class="fa-regular fa-copy mr-2"></i> Copiar Código
-                        </button>
-                    </div>
-                    <!-- Displayed Prompt Code -->
-                    <div class="p-8 flex-grow overflow-auto font-mono text-gray-300 text-xs leading-relaxed whitespace-pre" id="agent-code-panel"></div>
-                </div>
-            </div>
-        </div>
+    <!-- 7. Test (banda tinta) -->
+    <section class="sec sec-dark" id="practica" data-label="Test">
+      <p class="sec-eyebrow">[ Validación de conceptos ]</p>
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Test de arquitectura agéntica.</h2></div>
+      <p class="sec-intro">Demuestra tu conocimiento técnico sobre el diseño y la coordinación de subagentes en Cowork y Code.</p>
+      <div class="quiz" data-quiz="quizData" data-title="Test de arquitectura agéntica"></div>
     </section>
 
-    <!-- 7. Cuestionario de Autodiagnóstico -->
-    <section id="practica" class="py-24 bg-brand-dark text-white border-t-8 border-claude">
-        <div class="max-w-4xl mx-auto px-6 fade-in-on-scroll">
-            <div class="text-center mb-16">
-                <span class="text-claude font-bold tracking-widest text-xs uppercase mb-3 block"><i class="fa-solid fa-clipboard-question mr-2"></i> Validación de Conceptos</span>
-                <h2 class="text-3xl lg:text-4xl font-extrabold mb-4">Test de Arquitectura Agéntica</h2>
-                <p class="text-gray-400 font-serif">Demuestra tu conocimiento técnico sobre el diseño y la coordinación de subagentes en Cowork y Code.</p>
-            </div>
+  </div><!-- /.content -->
+  <!-- nav inferior y pie: los genera curso.js -->
+</main>
 
-            <div class="bg-gray-900 border border-gray-700 rounded-2xl p-8 lg:p-12 shadow-2xl">
-                <div id="quizContainer">
-                    <!-- Quiz se renderiza vía JS aquí -->
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Navegación entre Clases -->
-    <section class="py-12 bg-white border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <a href="modulo8-clase2.html"
-                class="flex items-center px-6 py-3 text-gray-600 border border-gray-300 rounded-xl font-bold hover:text-brand-primary hover:border-brand-primary transition-all bg-white shadow-sm w-full sm:w-auto justify-center">
-                <i class="fa-solid fa-arrow-left mr-2"></i> Anterior: Clase 2
-            </a>
-            <a href="index.html"
-                class="flex items-center px-6 py-3 text-gray-600 border border-gray-300 rounded-xl font-bold hover:text-brand-primary hover:border-brand-primary transition-all bg-white shadow-sm w-full sm:w-auto justify-center">
-                <i class="fa-solid fa-home mr-2"></i> Volver al Temario
-            </a>
-            <a href="index.html"
-                class="flex items-center px-6 py-3 bg-brand-primary text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors shadow-lg w-full sm:w-auto justify-center">
-                Finalizar Módulo <i class="fa-solid fa-flag-checkered ml-2"></i>
-            </a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-[#050B14] text-white py-12 border-t border-gray-800">
-        <div class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
-            <h2 class="text-xl font-bold mb-4 md:mb-0">
-                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
-            </h2>
-            <p class="text-sm text-gray-500 font-sans">Material de Apoyo Formativo - Módulo 8 (Clase 3) © 2026</p>
-        </div>
-    </footer>
-
-    <!-- JS Logic -->
-    <script>
-        // --- CODES STORE (5 Agents + Orchestrator from DOC 3) ---
-        const agentsCode = [
-            {
-                fileName: "orchestrator.md",
-                code: `---
+<script src="/curso-data.js"></script>
+<script src="/curso.js"></script>
+<script>
+  // --- CODES STORE (5 Agents + Orchestrator from DOC 3) --- verbatim de la página original.
+  const agentsCode = [
+      {
+          fileName: "orchestrator.md",
+          code: `---
 name: marketing-orchestrator
 description: Coordina el pipeline de inteligencia de marketing. Úsalo
   cuando se pida analizar campañas end-to-end, desde datos crudos hasta
@@ -622,24 +198,24 @@ effort: high
 ---
 Eres el orquestador de un equipo de inteligencia de marketing.
 Tu trabajo NO es analizar tú; es planificar, delegar y consolidar.
- 
+
 Flujo obligatorio (respeta las dependencias):
 1. Lanza paid-media-analyzer sobre la carpeta de Drive indicada.
 2. Pasa su salida a behavior-insights para patrones + comparativa histórica.
 3. Pasa ambas a report-builder para los informes por campo.
 4. Pasa los informes a deck-dashboard para presentación y dashboards.
 5. Cierra con synergy-strategist para conclusiones entre departamentos.
- 
+
 Reglas:
 - Cada subagente trabaja en su propio contexto. Pásale SOLO lo que necesita.
 - Conserva tu contexto limpio: recibe resúmenes, no volcados completos.
 - Si un agente falla o devuelve datos incompletos, reintenta con
   instrucciones más específicas antes de continuar.
 - Entrega final: carpeta /outputs con informes, deck y resumen ejecutivo.`
-            },
-            {
-                fileName: "paid-media-analyzer.md",
-                code: `---
+      },
+      {
+          fileName: "paid-media-analyzer.md",
+          code: `---
 name: paid-media-analyzer
 description: Lee y normaliza datos de paid media, ROAS y CRM desde Drive.
   Úsalo como PRIMER paso de cualquier análisis de campañas, cuando haya
@@ -650,27 +226,27 @@ skills: [data-analyst, xlsx]
 ---
 Eres analista de datos de paid media. Solo extraes y normalizas; no
 interpretas (eso es del siguiente agente).
- 
+
 Dónde buscar:
 - Carpeta de Drive indicada por el orquestador.
 - Tipos de archivo: exports de Google Ads, Meta Ads, TikTok Ads,
   LinkedIn Ads, GA4 y el CRM (CSV/XLSX).
- 
+
 Métricas que debes localizar y normalizar por campaña/canal/fecha:
 - Inversión (spend), impresiones, clics, CTR, CPC, CPM.
 - Conversiones, CPA, tasa de conversión, valor de conversión.
 - ROAS = valor de conversión / inversión.
 - Del CRM: leads, MQL, SQL, oportunidades, ventas, ciclo de venta, LTV.
- 
+
 Tu salida (estructurada, lista para el siguiente agente):
 - Tabla normalizada única (mismos nombres de columna entre fuentes).
 - Cobertura temporal y huecos de datos detectados.
 - Anomalías evidentes (gasto sin conversiones, picos atípicos).
 - NO saques conclusiones de negocio. Solo datos limpios + banderas.`
-            },
-            {
-                fileName: "behavior-insights.md",
-                code: `---
+      },
+      {
+          fileName: "behavior-insights.md",
+          code: `---
 name: behavior-insights
 description: Extrae patrones de comportamiento, buyer persona y rendimiento
   de campaña a partir de datos normalizados. Compara con el histórico y lo
@@ -681,9 +257,9 @@ skills: [data-analyst, xlsx, docx]
 memory: true
 ---
 Eres analista de comportamiento y estrategia de audiencias.
- 
+
 Entrada: la tabla normalizada del paid-media-analyzer.
- 
+
 Qué debes producir:
 - Patrones de comportamiento por canal, formato y segmento.
 - Definición / refinamiento de buyer persona basada en datos reales
@@ -691,19 +267,19 @@ Qué debes producir:
 - Rendimiento comparado de campañas (qué escala, qué saturó, qué cae).
 - Compartir con el histórico: variación vs trimestres anteriores,
   tendencias sostenidas vs ruido puntual.
- 
+
 Gestión del histórico (CRÍTICO):
 - Mantén un archivo .md por tipo de dato: historic-paidmedia.md,
   historic-crm.md, historic-personas.md, etc.
 - Al terminar, AÑADE una entrada fechada con las métricas clave del
   periodo y los cambios observados. No sobrescribas; acumula.
 - Si no existe el histórico, créalo con este periodo como línea base.
- 
+
 Entrega: informe de insights + histórico actualizado.`
-            },
-            {
-                fileName: "report-builder.md",
-                code: `---
+      },
+      {
+          fileName: "report-builder.md",
+          code: `---
 name: report-builder
 description: Crea informes por campo (canal, campaña, audiencia, funnel)
   con propuestas de mejora objetivas basadas en datos e histórico.
@@ -713,9 +289,9 @@ model: sonnet
 skills: [docx, xlsx, data-analyst]
 ---
 Eres consultor de marketing que redacta informes accionables.
- 
+
 Entrada: insights + histórico de los agentes anteriores.
- 
+
 Para CADA campo (canal, campaña, audiencia, etapa de funnel) produce:
 - Estado actual: qué dicen los números, sin adornos.
 - Lectura vs histórico: ¿mejora, empeora o se mantiene? ¿desde cuándo?
@@ -723,18 +299,18 @@ Para CADA campo (canal, campaña, audiencia, etapa de funnel) produce:
 - Propuesta de mejora OBJETIVA: acción concreta, métrica objetivo
   esperada, y por qué (anclada en lo que ya funcionó históricamente).
 - Prioridad: alto/medio/bajo impacto x esfuerzo.
- 
+
 Reglas:
 - Cada propuesta debe ser verificable: "subir CPA objetivo a X" no
   "optimizar campañas". Nada de recomendaciones genéricas.
 - Si los datos no soportan una conclusión, dilo explícitamente.
- 
+
 Entrega: un .docx por campo + un .xlsx maestro con las propuestas
 priorizadas.`
-            },
-            {
-                fileName: "deck-dashboard.md",
-                code: `---
+      },
+      {
+          fileName: "deck-dashboard.md",
+          code: `---
 name: deck-dashboard
 description: Crea presentaciones y dashboards interactivos a partir de los
   informes. Úsalo tras report-builder, cuando haga falta material visual
@@ -744,27 +320,27 @@ model: sonnet
 skills: [pptx, xlsx]
 ---
 Eres diseñador de comunicación de datos.
- 
+
 Entrada: los informes por campo del report-builder.
- 
+
 Produce:
 - Presentación (PPTX): una historia, no un volcado. Estructura sugerida:
   resumen ejecutivo > rendimiento global > hallazgos por campo >
   propuestas priorizadas > siguientes pasos. Una idea por slide.
 - Dashboard interactivo: KPIs principales con filtros por canal y
   periodo, gráficos de tendencia vs histórico, y semáforos de objetivos.
- 
+
 Reglas de diseño:
 - Cada slide responde a una pregunta de negocio concreta.
 - Los gráficos muestran la comparativa con el histórico, no solo el dato
   aislado.
 - Sin jerga: el deck lo verá gente de otros departamentos.
- 
+
 Entrega: deck.pptx + dashboard (xlsx con tablas dinámicas, o HTML).`
-            },
-            {
-                fileName: "synergy-strategist.md",
-                code: `---
+      },
+      {
+          fileName: "synergy-strategist.md",
+          code: `---
 name: synergy-strategist
 description: Genera conclusiones data-driven para mejorar cada campo y
   crear sinergias entre departamentos y estrategias. Es el ÚLTIMO paso,
@@ -776,9 +352,9 @@ skills: [docx, pptx]
 ---
 Eres director de estrategia. No repites lo que dijeron los demás:
 conectas los puntos que ellos vieron por separado.
- 
+
 Entrada: insights, informes y deck de los agentes anteriores.
- 
+
 Produce:
 - Conclusiones data-driven transversales: qué patrón aparece en varios
   campos a la vez y qué significa para el negocio.
@@ -788,283 +364,133 @@ Produce:
   el equipo de contenido y el de ventas con esa señal?
 - Estrategias combinadas: 3-5 jugadas que crucen equipos, con el dato
   que las justifica y el impacto esperado.
- 
+
 Reglas:
 - Cada sinergia parte de una evidencia concreta del análisis, no de una
   buena intención.
 - Prioriza por impacto y por facilidad de coordinación entre equipos.
- 
+
 Entrega: documento de estrategia + slides de cierre para el deck.`
-            }
-        ];
+      }
+  ];
 
-        let activeAgentIdx = 0;
+  // Paneles de las pestañas: un .code por agente, generado desde agentsCode.
+  // Se ejecuta antes de DOMContentLoaded, así que curso.js (tabs + copiar) los encuentra al arrancar.
+  (function () {
+    var host = document.getElementById('agent-panels');
+    if (!host) return;
+    function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+    host.innerHTML = agentsCode.map(function (a, i) {
+      var code = esc(a.code).replace(/^(---[\s\S]*?---)/, '<span class="hl">$1</span>');
+      return '<div role="tabpanel" id="tab-ag' + i + '" aria-labelledby="tabb-ag' + i + '"' + (i ? ' hidden' : '') + '>' +
+        '<div class="code"><div class="ch"><span class="k">[ Archivo · ' + esc(a.fileName) + ' ]</span><button type="button" class="btn-ghost" data-copy>Copiar</button></div><pre>' + code + '</pre></div>' +
+        '</div>';
+    }).join('');
+  })();
 
-        function switchAgentTab(idx) {
-            activeAgentIdx = idx;
-            const container = document.getElementById('agent-code-panel');
-            const fileNameEl = document.getElementById('agent-file-name');
-            
-            // Highlight active tab button
-            document.querySelectorAll('.tab-btn').forEach((btn, bIdx) => {
-                if(bIdx === idx) {
-                    btn.className = "tab-btn text-left p-4 rounded-xl border-2 border-claude bg-claude/10 font-bold text-claude transition-all";
-                } else {
-                    btn.className = "tab-btn text-left p-4 rounded-xl border border-gray-200 bg-white font-bold text-slate-500 hover:border-claude transition-all";
-                }
-            });
-
-            fileNameEl.innerHTML = `<i class="fa-solid fa-file-code mr-2"></i> ${agentsCode[idx].fileName}`;
-            
-            // Format YAML highlighting
-            let rawCode = agentsCode[idx].code;
-            let formatted = rawCode
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/(---[\s\S]*?---)/, '<span class="text-[#f87171] font-sans font-bold">$1</span>') // YAML
-                .replace(/(^# .*)/gm, '<span class="text-claude font-bold">$1</span>') // Titles
-                .replace(/(^## .*)/gm, '<span class="text-indigo-400 font-bold">$1</span>') // Subtitles
-                .replace(/(^-\s.*)/gm, '<span class="text-emerald-400">$1</span>'); // bullet points
-
-            container.innerHTML = formatted;
-        }
-
-        function copyCurrentAgentCode() {
-            const tempTextArea = document.createElement("textarea");
-            tempTextArea.value = agentsCode[activeAgentIdx].code;
-            document.body.appendChild(tempTextArea);
-            tempTextArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempTextArea);
-            alert("Código de " + agentsCode[activeAgentIdx].fileName + " copiado al portapapeles.");
-        }
-
-        // --- QUIZ DATA ---
-        const quizData = [
-            {
-                question: "¿Cuál es el motivo técnico principal para implementar un patrón de delegación multi-agente (Orchestrator-Workers)?",
-                options: [
-                    { text: "Reducir el tiempo de espera por llamada a la API.", correct: false },
-                    { text: "Evitar la saturación de la ventana de contexto aislando las tareas de cada especialista.", correct: true },
-                    { text: "Asegurar que todas las llamadas usen obligatoriamente Claude Opus.", correct: false },
-                    { text: "Eludir las restricciones de cuota de Anthropic.", correct: false }
-                ]
-            },
-            {
-                question: "En Claude Code, ¿en qué campo del frontmatter YAML de un subagente se configuran las condiciones que el orquestador lee para decidir si delegar la tarea automáticamente?",
-                options: [
-                    { text: "name", correct: false },
-                    { text: "tools", correct: false },
-                    { text: "description", correct: true },
-                    { text: "trigger", correct: false }
-                ]
-            },
-            {
-                question: "Al finalizar su ejecución, ¿qué le devuelve exactamente un subagente al orquestador principal?",
-                options: [
-                    { text: "Toda su ventana de contexto con el historial de llamadas intermedio.", correct: false },
-                    { text: "Un resumen consolidado o entregable final, descartándose su contexto interno de trabajo.", correct: true },
-                    { text: "Su archivo .mcp de conexión a herramientas externas.", correct: false },
-                    { text: "Un código JSON encriptado con la firma de Anthropic.", correct: false }
-                ]
-            },
-            {
-                question: "Si necesitas que tus subagentes recuerden datos históricos de campañas anteriores sesión tras sesión, ¿cómo se gestiona esta persistencia en la arquitectura?",
-                options: [
-                    { text: "Se guardan en la memoria RAM del ordenador automáticamente.", correct: false },
-                    { text: "Utilizando y actualizando archivos físicos dedicados (como historic-*.md) en la capa de archivos compartida.", correct: true },
-                    { text: "Claude los guarda en su servidor global de forma invisible.", correct: false },
-                    { text: "No es posible tener persistencia entre sesiones en esta versión.", correct: false }
-                ]
-            },
-            {
-                question: "¿Cuál es la misión fundamental de 'paid-media-analyzer' (Agente 1) en el pipeline de marketing?",
-                options: [
-                    { text: "Redactar propuestas de mejora creativas para redes sociales.", correct: false },
-                    { text: "Extraer, limpiar y normalizar datos crudos de Drive, entregándolos estructurados sin interpretar.", correct: true },
-                    { text: "Generar el diseño final de los informes corporativos en formato .docx.", correct: false },
-                    { text: "Configurar la conexión OAuth de Google Analytics.", correct: false }
-                ]
-            },
-            {
-                question: "¿Cuál de las siguientes afirmaciones sobre las Scheduled Tasks (Tareas Programadas) es VERDADERA?",
-                options: [
-                    { text: "Tienen acceso directo al historial completo de tus chats anteriores.", correct: false },
-                    { text: "Se ejecutan en paralelo con otras tareas del sistema compartiendo contexto activo.", correct: false },
-                    { text: "Cada ejecución arranca de cero de forma totalmente autocontenida y requiere prompts específicos que no asuman memoria previa.", correct: true },
-                    { text: "Solo pueden ejecutarse con el modelo Claude Haiku.", correct: false }
-                ]
-            },
-            {
-                question: "¿Qué modelo de Anthropic se recomienda explícitamente para el Orquestador y el Synergy-Strategist en el pipeline debido a la necesidad de razonamiento complejo?",
-                options: [
-                    { text: "Claude Haiku", correct: false },
-                    { text: "Claude Sonnet", correct: false },
-                    { text: "Claude Opus", correct: true },
-                    { text: "Google Gemini Flash", correct: false }
-                ]
-            },
-            {
-                question: "En la jerarquía de instrucciones de Claude Cowork, ¿qué capa afecta a absolutamente TODAS las sesiones de la aplicación?",
-                options: [
-                    { text: "Global instructions (en Settings > Cowork).", correct: true },
-                    { text: "Folder instructions.", correct: false },
-                    { text: "El prompt del mensaje enviado.", correct: false },
-                    { text: "El archivo CLAUDE.md del proyecto.", correct: false }
-                ]
-            },
-            {
-                question: "Si queremos compartir un 'bundle' empaquetado de subagentes, conectores y habilidades con el resto del equipo en Cowork, ¿qué componente creamos?",
-                options: [
-                    { text: "Un archivo AGENT.md.", correct: false },
-                    { text: "Un Plugin (.plugin).", correct: true },
-                    { text: "Un conector MCP.", correct: false },
-                    { text: "Una Scheduled Task.", correct: false }
-                ]
-            },
-            {
-                question: "¿Cuál es el rol técnico del agente 'synergy-strategist' (Agente 5) en el flujo?",
-                options: [
-                    { text: "Normalizar tablas de Google Sheets.", correct: false },
-                    { text: "Diseñar las diapositivas de la presentación final en PPTX.", correct: false },
-                    { text: "Conectar los puntos de forma transversal, proponiendo sinergias y estrategias basadas en datos reales entre departamentos.", correct: true },
-                    { text: "Enviar correos masivos a través del conector de Gmail.", correct: false }
-                ]
-            }
-        ];
-
-        function renderQuiz() {
-            const container = document.getElementById('quizContainer');
-            container.innerHTML = '';
-            
-            quizData.forEach((q, idx) => {
-                const qDiv = document.createElement('div');
-                qDiv.className = 'mb-8';
-                qDiv.innerHTML = `
-                    <h4 class="text-xl font-bold text-white mb-4"><span class="text-claude">${idx + 1}.</span> ${q.question}</h4>
-                    <div class="space-y-3">
-                        ${q.options.map((opt, optIdx) => `
-                            <div class="quiz-option group flex items-center bg-gray-800/50 border-gray-700 text-gray-300" onclick="selectAnswer(event, ${idx}, ${optIdx})">
-                                <input type="radio" name="q${idx}" value="${optIdx}" class="hidden">
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-500 mr-4 flex-shrink-0 group-hover:border-claude radio-custom transition-colors"></div>
-                                <span class="font-serif text-sm md:text-base">${opt.text}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-                container.appendChild(qDiv);
-            });
-            
-            const btnDiv = document.createElement('div');
-            btnDiv.className = "mt-10 pt-8 border-t border-gray-700 text-center";
-            btnDiv.innerHTML = `
-                <button onclick="submitQuiz()" class="px-10 py-4 bg-claude text-white font-bold rounded-xl hover:bg-orange-500 transition-colors shadow-lg text-lg uppercase tracking-wider">
-                    Validar Respuestas
-                </button>
-            `;
-            container.appendChild(btnDiv);
-        }
-
-        function selectAnswer(e, qIdx, optIdx) {
-            const optionContainer = e.currentTarget;
-            const parentDiv = optionContainer.closest('.space-y-3');
-            
-            const allOptions = parentDiv.querySelectorAll('.quiz-option');
-            allOptions.forEach(opt => {
-                opt.classList.remove('selected', 'bg-orange-50/10', 'border-brand-accent');
-                opt.classList.add('bg-gray-800/50', 'border-gray-700');
-                opt.querySelector('.radio-custom').classList.remove('bg-brand-accent', 'border-brand-accent');
-                opt.querySelector('.radio-custom').classList.add('border-gray-500');
-            });
-            
-            optionContainer.classList.add('selected', 'bg-orange-50/10', 'border-brand-accent');
-            optionContainer.classList.remove('bg-gray-800/50', 'border-gray-700');
-            const radioCustom = optionContainer.querySelector('.radio-custom');
-            radioCustom.classList.remove('border-gray-500');
-            radioCustom.classList.add('bg-brand-accent', 'border-brand-accent');
-            
-            const input = optionContainer.querySelector('input');
-            input.checked = true;
-        }
-
-        function submitQuiz() {
-            let correctCount = 0;
-            let answeredCount = 0;
-            
-            quizData.forEach((q, idx) => {
-                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
-                if (selected) {
-                    answeredCount++;
-                    const optIdx = selected.value;
-                    const isCorrect = q.options[optIdx].correct;
-                    const optionDiv = selected.closest('.quiz-option');
-                    const parentDiv = optionDiv.parentElement;
-                    
-                    parentDiv.style.pointerEvents = "none";
-                    
-                    if (isCorrect) {
-                        correctCount++;
-                        optionDiv.classList.remove('selected', 'bg-orange-50/10', 'border-brand-accent');
-                        optionDiv.classList.add('correct', 'bg-emerald-950/20', 'border-emerald-500', 'text-emerald-400');
-                        optionDiv.querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-emerald-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-check border-emerald-500";
-                    } else {
-                        optionDiv.classList.remove('selected', 'bg-orange-50/10', 'border-brand-accent');
-                        optionDiv.classList.add('incorrect', 'bg-red-950/20', 'border-red-500', 'text-red-400');
-                        optionDiv.querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-red-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-xmark border-red-500";
-                        
-                        const allOptions = parentDiv.querySelectorAll('.quiz-option');
-                        q.options.forEach((opt, oIdx) => {
-                            if(opt.correct) {
-                                allOptions[oIdx].classList.remove('bg-gray-800/50', 'border-gray-700');
-                                allOptions[oIdx].classList.add('bg-emerald-950/20', 'border-emerald-500', 'text-emerald-400');
-                                allOptions[oIdx].querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-emerald-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-check border-emerald-500";
-                            }
-                        });
-                    }
-                }
-            });
-            
-            if (answeredCount < quizData.length) {
-                alert("Por favor, responde a todas las preguntas antes de validar.");
-                return;
-            }
-            
-            const percentage = Math.round((correctCount / quizData.length) * 100);
-            let message = "";
-            if (percentage === 100) message = "🏆 ¡Excelente! Eres un arquitecto de orquestación de agentes certificado.";
-            else if (percentage >= 80) message = "👍 ¡Muy bien! Tienes claros los conceptos de persistencia y triggers.";
-            else if (percentage >= 60) message = "✅ ¡Aprobado! Aunque te conviene repasar las diferencias de diseño entre Code y Cowork.";
-            else message = "📚 Te sugerimos volver a inspeccionar los códigos de sistema de los 5 agentes.";
-            
-            alert(`Puntuación Final: ${correctCount}/${quizData.length} (${percentage}%)\n\n${message}`);
-        }
-
-        // --- INIT ---
-        document.addEventListener('DOMContentLoaded', () => {
-            renderQuiz();
-            switchAgentTab(0);
-            
-            // Scroll Observer for Fade-ins
-            const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.fade-in-on-scroll').forEach(el => observer.observe(el));
-            
-            // Progress Bar
-            window.addEventListener('scroll', () => {
-                const scrollTop = window.scrollY;
-                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-                const scrolled = (scrollTop / docHeight) * 100;
-                document.getElementById('progressBar').style.width = scrolled + '%';
-            });
-        });
-    </script>
+  // Preguntas del test: verbatim de la página original. a = índice de la opción correcta.
+  const quizData = [
+    {
+      q: "¿Cuál es el motivo técnico principal para implementar un patrón de delegación multi-agente (Orchestrator-Workers)?",
+      opts: [
+        "Reducir el tiempo de espera por llamada a la API.",
+        "Evitar la saturación de la ventana de contexto aislando las tareas de cada especialista.",
+        "Asegurar que todas las llamadas usen obligatoriamente Claude Opus.",
+        "Eludir las restricciones de cuota de Anthropic."
+      ],
+      a: 1
+    },
+    {
+      q: "En Claude Code, ¿en qué campo del frontmatter YAML de un subagente se configuran las condiciones que el orquestador lee para decidir si delegar la tarea automáticamente?",
+      opts: [
+        "name",
+        "tools",
+        "description",
+        "trigger"
+      ],
+      a: 2
+    },
+    {
+      q: "Al finalizar su ejecución, ¿qué le devuelve exactamente un subagente al orquestador principal?",
+      opts: [
+        "Toda su ventana de contexto con el historial de llamadas intermedio.",
+        "Un resumen consolidado o entregable final, descartándose su contexto interno de trabajo.",
+        "Su archivo .mcp de conexión a herramientas externas.",
+        "Un código JSON encriptado con la firma de Anthropic."
+      ],
+      a: 1
+    },
+    {
+      q: "Si necesitas que tus subagentes recuerden datos históricos de campañas anteriores sesión tras sesión, ¿cómo se gestiona esta persistencia en la arquitectura?",
+      opts: [
+        "Se guardan en la memoria RAM del ordenador automáticamente.",
+        "Utilizando y actualizando archivos físicos dedicados (como historic-*.md) en la capa de archivos compartida.",
+        "Claude los guarda en su servidor global de forma invisible.",
+        "No es posible tener persistencia entre sesiones en esta versión."
+      ],
+      a: 1
+    },
+    {
+      q: "¿Cuál es la misión fundamental de 'paid-media-analyzer' (Agente 1) en el pipeline de marketing?",
+      opts: [
+        "Redactar propuestas de mejora creativas para redes sociales.",
+        "Extraer, limpiar y normalizar datos crudos de Drive, entregándolos estructurados sin interpretar.",
+        "Generar el diseño final de los informes corporativos en formato .docx.",
+        "Configurar la conexión OAuth de Google Analytics."
+      ],
+      a: 1
+    },
+    {
+      q: "¿Cuál de las siguientes afirmaciones sobre las Scheduled Tasks (Tareas Programadas) es VERDADERA?",
+      opts: [
+        "Tienen acceso directo al historial completo de tus chats anteriores.",
+        "Se ejecutan en paralelo con otras tareas del sistema compartiendo contexto activo.",
+        "Cada ejecución arranca de cero de forma totalmente autocontenida y requiere prompts específicos que no asuman memoria previa.",
+        "Solo pueden ejecutarse con el modelo Claude Haiku."
+      ],
+      a: 2
+    },
+    {
+      q: "¿Qué modelo de Anthropic se recomienda explícitamente para el Orquestador y el Synergy-Strategist en el pipeline debido a la necesidad de razonamiento complejo?",
+      opts: [
+        "Claude Haiku",
+        "Claude Sonnet",
+        "Claude Opus",
+        "Google Gemini Flash"
+      ],
+      a: 2
+    },
+    {
+      q: "En la jerarquía de instrucciones de Claude Cowork, ¿qué capa afecta a absolutamente TODAS las sesiones de la aplicación?",
+      opts: [
+        "Global instructions (en Settings > Cowork).",
+        "Folder instructions.",
+        "El prompt del mensaje enviado.",
+        "El archivo CLAUDE.md del proyecto."
+      ],
+      a: 0
+    },
+    {
+      q: "Si queremos compartir un 'bundle' empaquetado de subagentes, conectores y habilidades con el resto del equipo en Cowork, ¿qué componente creamos?",
+      opts: [
+        "Un archivo AGENT.md.",
+        "Un Plugin (.plugin).",
+        "Un conector MCP.",
+        "Una Scheduled Task."
+      ],
+      a: 1
+    },
+    {
+      q: "¿Cuál es el rol técnico del agente 'synergy-strategist' (Agente 5) en el flujo?",
+      opts: [
+        "Normalizar tablas de Google Sheets.",
+        "Diseñar las diapositivas de la presentación final en PPTX.",
+        "Conectar los puntos de forma transversal, proponiendo sinergias y estrategias basadas en datos reales entre departamentos.",
+        "Enviar correos masivos a través del conector de Gmail."
+      ],
+      a: 2
+    }
+  ];
+</script>
 </body>
 </html>

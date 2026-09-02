@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Temario /academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&family=Chivo+Mono:wght@300..600&display=swap">
+<style>
+/* ── [m].seny tokens (design_handoff_curso_mseny/_ds/tokens) ───────────── */
+:root{
+  color-scheme:light;
+  --color-ink:#0a0a0b; --color-ink-soft:#151517;
+  --color-paper:#f7f6f2; --color-paper-dim:#edebe3;
+  --color-accent:#c8f542; --color-accent-deep:#0f766e; --color-accent-ink:#253a06;
+  --color-muted:#5f5f66; --color-mist:#a5a5ab;
+  --color-line:#e0ddd3; --color-line-dark:#26262a;
+  --font-display:'Bricolage Grotesque','Bricolage Grotesque Variable',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Instrument Sans','Instrument Sans Variable',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'Chivo Mono','Chivo Mono Variable',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --ease-expo:cubic-bezier(0.16,1,0.3,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--color-paper);scroll-behavior:smooth}
+body{margin:0;background:var(--color-paper);color:var(--color-ink);font-family:var(--font-body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--color-accent);color:var(--color-accent-ink)}
+:focus-visible{outline:2px solid currentColor;outline-offset:3px;border-radius:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}html{scroll-behavior:auto}}
+[hidden]{display:none!important}
+
+.display{font-family:var(--font-display);font-weight:640;line-height:.98;letter-spacing:-.025em;text-wrap:balance}
+.eyebrow{font-family:var(--font-mono);font-size:13px;font-weight:400;letter-spacing:.1em;text-transform:uppercase}
+.brackets::before,.brackets-ink::before{content:'[';margin-right:.06em}
+.brackets::after,.brackets-ink::after{content:']';margin-left:.06em}
+.brackets::before,.brackets::after{color:var(--color-accent)}
+.brackets-ink::before,.brackets-ink::after{color:var(--color-accent-deep)}
+.btn-accent{display:inline-flex;align-items:center;gap:.6rem;background:var(--color-accent);color:var(--color-accent-ink);font-weight:600;border-radius:999px;padding:.95rem 1.9rem;border:0;cursor:pointer;font-family:var(--font-body);font-size:1rem;transition:transform .35s var(--ease-expo),box-shadow .35s var(--ease-expo);box-shadow:0 0 0 0 rgb(200 245 66/0)}
+.btn-accent:hover{transform:translateY(-2px);box-shadow:0 12px 32px -8px rgb(200 245 66/.55)}
+.btn-accent:active{transform:translateY(0)}
+.btn-ghost{display:inline-flex;align-items:center;gap:.6rem;font-weight:600;border-radius:999px;padding:.95rem 1.9rem;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer;font-family:var(--font-body);font-size:1rem;transition:background-color .3s ease,transform .3s var(--ease-expo)}
+.btn-ghost:hover{background-color:color-mix(in srgb,currentColor 12%,transparent);transform:translateY(-2px)}
+.link-live{background-image:linear-gradient(currentColor,currentColor);background-size:0% 1.5px;background-repeat:no-repeat;background-position:0 100%;transition:background-size .35s var(--ease-expo);padding-bottom:2px}
+.link-live:hover{background-size:100% 1.5px}
+.card-live{transition:border-color .3s ease,transform .3s var(--ease-expo),background-color .3s ease}
+.card-live:hover{border-color:var(--color-accent-deep);transform:translateY(-2px)}
+.step-in{animation:step-in .45s var(--ease-expo) both}
+@keyframes step-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ── barra de prototipo (no forma parte del diseño) ─────────────────────── */
+#proto{position:sticky;top:0;z-index:60;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:8px 16px;background:var(--color-paper-dim);border-bottom:1px solid var(--color-line);font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-muted)}
+#proto .lbl{color:var(--color-accent-deep)}
+#proto .grp{display:inline-flex;align-items:center;gap:6px}
+#proto button{font:inherit;letter-spacing:inherit;text-transform:inherit;border:1px solid var(--color-line);background:transparent;color:var(--color-muted);border-radius:999px;padding:5px 12px;cursor:pointer;min-height:28px}
+#proto button[aria-pressed="true"]{background:var(--color-ink);color:var(--color-paper);border-color:var(--color-ink)}
+#proto .sep{opacity:.5}
+
+/* ── layout home (prototipo curso-home.dc.html) ─────────────────────────── */
+#home{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 45px)}
+#rail{background:var(--color-ink);color:var(--color-paper);padding:28px 24px;display:flex;flex-direction:column;gap:28px}
+.wordmark{font-family:var(--font-display);font-weight:700;letter-spacing:-.025em;font-size:1.15rem;line-height:1;color:var(--color-paper);display:inline-flex;align-items:baseline;gap:.28em}
+.wordmark b{font-weight:inherit;color:var(--color-accent)}
+.wordmark .sub{font-family:var(--font-mono);font-weight:400;color:var(--color-accent);font-size:.8em;letter-spacing:0}
+#prog-label{margin:0 0 8px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-mist)}
+#prog-num{margin:0 0 12px;font-size:30px;color:var(--color-paper);font-variant-numeric:tabular-nums}
+#prog-num small{font-size:16px;color:var(--color-mist);font-family:var(--font-body);font-weight:400;letter-spacing:0}
+.track{display:block;height:6px;border-radius:999px;background:var(--color-line-dark);overflow:hidden}
+.track i{display:block;height:100%;width:0;background:var(--color-accent);border-radius:999px;transition:width .6s var(--ease-expo)}
+#prog-pct{margin:8px 0 0;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;color:var(--color-mist)}
+#rail-nav{display:flex;flex-direction:column;gap:4px;font-family:var(--font-mono);font-size:12px;letter-spacing:.04em}
+#rail-nav a{display:grid;grid-template-columns:30px 1fr auto;gap:6px;align-items:center;padding:8px 10px;border-radius:10px;color:var(--color-mist);min-height:36px;white-space:nowrap;transition:background-color .3s ease,color .3s ease}
+#rail-nav a .c{font-size:10.5px;color:var(--color-mist)}
+#rail-nav a:hover{background:color-mix(in srgb,var(--color-paper) 6%,transparent);color:var(--color-paper)}
+#rail-nav a.done{color:var(--color-accent)}
+#rail-nav a.current{color:var(--color-paper)}
+#rail-nav a.locked{opacity:.55}
+#rail-nav a[aria-current="true"]{background:var(--color-ink-soft);color:var(--color-paper)}
+#rail .salir{margin-top:auto;align-self:flex-start;color:var(--color-mist);font-size:13px}
+
+#main{background:var(--color-paper);padding:40px 44px 72px;min-width:0}
+#main>.eyebrow{color:var(--color-accent-deep);margin:0 0 12px}
+#main h1{margin:0 0 24px;font-size:clamp(1.9rem,4.5vw,2.4rem);color:var(--color-ink)}
+
+/* card «continuar» */
+#continue{background:var(--color-ink);color:var(--color-paper);border-radius:24px;padding:28px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px}
+#continue .k{margin:0 0 8px;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent)}
+#continue h2{margin:0 0 6px;font-size:26px;color:var(--color-paper)}
+#continue p{margin:0;font-size:14px;color:var(--color-mist)}
+#continue .btn-accent{flex:none}
+#continue.all-done .k{color:var(--color-mist)}
+
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:36px 0 14px}
+.sec-head .eyebrow{color:var(--color-accent-deep);margin:0}
+.sec-head .count{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-muted)}
+
+/* ── filas de clase (compartidas por las dos vistas) ────────────────────── */
+.clase{display:grid;grid-template-columns:36px 34px minmax(0,1fr) auto 18px;align-items:center;gap:12px;padding:12px 16px;min-height:48px;border-top:1px solid var(--color-line);border-radius:16px;transition:background-color .3s ease}
+.clase:hover{background:var(--color-paper-dim)}
+.clase .mark{font-family:var(--font-mono);font-size:13px;color:var(--color-muted)}
+.clase .num{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;color:var(--color-muted)}
+.clase .name{font-size:15px;font-weight:500;color:var(--color-ink);line-height:1.3;min-width:0}
+.clase .meta{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-muted);white-space:nowrap}
+.clase .arrow{font-family:var(--font-mono);color:var(--color-muted);transition:transform .35s var(--ease-expo)}
+.clase:hover .arrow{transform:translateX(4px)}
+.clase.viewed .mark{color:var(--color-accent-deep)}
+.clase.viewed .name{color:var(--color-muted);font-weight:400}
+.clase.next .mark{color:var(--color-accent-deep)}
+.clase.next .name{font-weight:600}
+.clase .pill{display:inline-block;margin-left:10px;padding:3px 9px;border-radius:999px;background:var(--color-accent);color:var(--color-accent-ink);font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;vertical-align:middle}
+.clase.locked{cursor:default}
+.clase.locked:hover{background:transparent}
+.clase.locked:hover .arrow{transform:none}
+.clase.locked .mark,.clase.locked .num,.clase.locked .arrow{color:color-mix(in srgb,var(--color-muted) 55%,transparent)}
+.clase.locked .name{color:color-mix(in srgb,var(--color-ink) 55%,transparent);font-weight:500}
+.clase.locked .meta{color:var(--color-accent-deep)}
+.band{background:var(--color-paper-dim);border-radius:14px;padding:12px 16px;font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;color:var(--color-accent-deep)}
+
+/* ── VISTA A · temario en filas desplegables ────────────────────────────── */
+#mods{display:flex;flex-direction:column;gap:12px}
+details.mod{border:1px solid var(--color-line);border-radius:24px;background:var(--color-paper);overflow:hidden;transition:border-color .3s ease,transform .3s var(--ease-expo)}
+details.mod:hover{border-color:var(--color-accent-deep)}
+details.mod.current{border-color:var(--color-accent-deep)}
+details.mod.done{background:var(--color-ink);border-color:var(--color-line-dark);color:var(--color-paper)}
+details.mod.done:hover{border-color:var(--color-accent)}
+summary.mod-head{list-style:none;cursor:pointer;display:grid;grid-template-columns:52px minmax(0,1fr) 140px 44px;align-items:center;gap:16px;padding:20px 24px;min-height:44px}
+summary.mod-head::-webkit-details-marker{display:none}
+.mod-num{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;white-space:nowrap;color:color-mix(in srgb,var(--color-ink) 45%,transparent)}
+.done .mod-num{color:color-mix(in srgb,var(--color-paper) 55%,transparent)}
+.current .mod-num,.mod-num.teal{color:var(--color-accent-deep)}
+.mod-title{margin:0;font-family:var(--font-display);font-weight:600;font-size:19px;letter-spacing:-.02em;line-height:1.15;color:var(--color-ink);text-wrap:balance}
+.done .mod-title{color:var(--color-accent)}
+.locked .mod-title{color:color-mix(in srgb,var(--color-ink) 55%,transparent)}
+.mod-meta{margin:4px 0 0;font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-muted)}
+.done .mod-meta{color:var(--color-mist)}
+.current .mod-meta{color:var(--color-accent-deep)}
+.mod-bar{display:block;height:2px;border-radius:999px;background:color-mix(in srgb,var(--color-ink) 10%,transparent);overflow:hidden}
+.done .mod-bar{background:var(--color-line-dark)}
+.mod-bar i{display:block;height:100%;width:0;border-radius:999px;background:var(--color-accent-deep);transition:width .6s var(--ease-expo)}
+.done .mod-bar i{background:var(--color-accent)}
+.locked .mod-bar{visibility:hidden}
+.mod-toggle{width:44px;height:44px;display:grid;place-items:center;font-family:var(--font-mono);font-size:18px;line-height:1;color:var(--color-muted);transition:transform .35s var(--ease-expo),color .3s ease}
+.done .mod-toggle{color:var(--color-mist)}
+details[open]>summary .mod-toggle{transform:rotate(45deg);color:var(--color-accent-deep)}
+.done[open]>summary .mod-toggle{color:var(--color-accent)}
+details.mod .clases{list-style:none;margin:0;padding:0 8px 8px}
+details.mod .clases li:first-child .clase{border-top:0}
+.done .clase{border-top-color:var(--color-line-dark)}
+.done .clase:hover{background:var(--color-ink-soft)}
+.done .clase .name{color:var(--color-paper)}
+.done .clase .num,.done .clase .meta,.done .clase .arrow{color:var(--color-mist)}
+.done .clase.viewed .mark{color:var(--color-accent)}
+.done .clase.viewed .name{color:var(--color-mist)}
+details.mod .band{margin:0 16px 16px}
+
+/* ── VISTA B · maestro-detalle (juez del panel de diseño) ───────────────── */
+#chips{display:none}
+.md-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.detalle{grid-column:1 / -1;background:var(--color-paper);border:1px solid var(--color-line);border-radius:24px;padding:clamp(18px,4vw,28px);display:flex;flex-direction:column;gap:18px;scroll-margin-top:24px}
+.detalle.current{border-color:var(--color-accent-deep)}
+.detalle .head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 28px}
+.detalle .head .l{flex:1 1 320px;min-width:0}
+.detalle .head .r{flex:0 1 220px;min-width:180px}
+.detalle .k{margin:0;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-deep)}
+.detalle h2{margin:6px 0 6px;font-size:26px;color:var(--color-ink)}
+.detalle .desc{margin:0;font-size:14.5px;line-height:1.5;color:var(--color-muted)}
+.detalle .stat{display:flex;justify-content:space-between;gap:10px;margin:0 0 8px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-muted)}
+.detalle .clases{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.detalle .clase{border:1px solid var(--color-line);min-height:52px}
+.detalle .clase.next{border-color:var(--color-accent-deep)}
+.detalle .foot{border-top:1px solid var(--color-line);padding-top:16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+.detalle .foot .s{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-muted)}
+.detalle .foot .btn-ghost{color:var(--color-ink);font-size:14px;padding:10px 20px}
+.mod-card{background:var(--color-paper);border:1px solid var(--color-line);border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:8px;min-height:150px}
+.mod-card .num{font-family:var(--font-mono);font-size:11px;color:color-mix(in srgb,var(--color-ink) 45%,transparent)}
+.mod-card h3{margin:0;font-family:var(--font-display);font-weight:600;font-size:19px;letter-spacing:-.02em;line-height:1.15;color:var(--color-ink)}
+.mod-card .meta{margin:0 0 12px;font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-muted)}
+.mod-card .bar{margin-top:auto;display:block;height:2px;border-radius:999px;background:color-mix(in srgb,var(--color-ink) 10%,transparent);overflow:hidden}
+.mod-card .bar i{display:block;height:100%;border-radius:999px;background:var(--color-accent-deep)}
+.mod-card.done{background:var(--color-ink);border-color:var(--color-line-dark)}
+.mod-card.done .num{color:color-mix(in srgb,var(--color-paper) 55%,transparent)}
+.mod-card.done h3{color:var(--color-accent)}
+.mod-card.done .meta{color:var(--color-mist)}
+.mod-card.done .bar{background:var(--color-line-dark)}
+.mod-card.done .bar i{background:var(--color-accent)}
+.mod-card.current{border-color:var(--color-accent-deep)}
+.mod-card.current .num{color:var(--color-accent-deep)}
+.mod-card.locked .num{color:var(--color-accent-deep)}
+.mod-card.locked h3{color:color-mix(in srgb,var(--color-ink) 55%,transparent)}
+.mod-card.locked .bar{visibility:hidden}
+.mod-card[aria-current="true"]{background:var(--color-paper-dim)}
+.mod-card.done[aria-current="true"]{background:var(--color-ink);border-color:var(--color-accent)}
+
+.empty{margin:0;padding:18px 24px 24px;font-size:14px;color:var(--color-muted);border-top:1px solid var(--color-line)}
+
+/* ── móvil ──────────────────────────────────────────────────────────────── */
+@media (max-width:820px){
+  #home{grid-template-columns:1fr;min-height:0}
+  #proto{position:static}
+  #proto .hint{display:none}
+  #rail{padding-bottom:20px;gap:20px}
+  #rail-nav{display:none}
+  #rail .salir{margin-top:0}
+  #main{padding:28px 20px 56px}
+  body.md #chips{display:flex;position:sticky;top:0;z-index:50;background:var(--color-paper);border-bottom:1px solid var(--color-line);padding:6px 20px;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -20px 20px}
+  #chips::-webkit-scrollbar{display:none}
+  #chips a{flex:none;display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:999px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-muted);white-space:nowrap}
+  #chips a[aria-current="true"]{background:var(--color-accent);color:var(--color-accent-ink)}
+  summary.mod-head{grid-template-columns:36px minmax(0,1fr) 44px;grid-template-rows:auto auto;gap:6px 12px;padding:16px 18px}
+  summary.mod-head>.mod-num{grid-column:1;grid-row:1}
+  summary.mod-head>.mod-body{grid-column:2;grid-row:1}
+  summary.mod-head>.mod-toggle{grid-column:3;grid-row:1}
+  summary.mod-head>.mod-bar{grid-column:1 / -1;grid-row:2;margin-top:4px}
+  .clase{grid-template-columns:28px minmax(0,1fr) 18px;grid-template-rows:auto auto;gap:2px 10px;padding:12px}
+  .clase .num{display:none}
+  .clase .mark{grid-column:1;grid-row:1}
+  .clase .name{grid-column:2;grid-row:1}
+  .clase .arrow{grid-column:3;grid-row:1}
+  .clase .meta{grid-column:2;grid-row:2;white-space:normal}
+  .detalle .head .r{flex:1 1 100%;min-width:0}
+}
+</style>
+</head>
+<body>
+
+<div id="proto" role="region" aria-label="Controles del prototipo">
+  <span class="lbl">[ prototipo ]</span>
+  <span class="grp"><span>Temario</span>
+    <button type="button" data-view="rows" aria-pressed="true">A · filas desplegables</button>
+    <button type="button" data-view="md" aria-pressed="false">B · maestro-detalle</button></span>
+  <span class="sep">·</span>
+  <span class="grp"><span>Ver como</span>
+    <button type="button" data-access="full" aria-pressed="true">acceso completo</button>
+    <button type="button" data-access="hidden" aria-pressed="false">restringido · M9 oculto</button>
+    <button type="button" data-access="locked" aria-pressed="false">restringido · M9 bloqueado</button></span>
+  <span class="sep hint">·</span>
+  <span class="hint">Clic en una clase = marcar / desmarcar vista</span>
+  <span class="sep">·</span>
+  <button type="button" id="reset">reiniciar progreso</button>
+</div>
+
+<div id="home">
+  <aside id="rail">
+    <a class="wordmark" href="#"><span><b>[m]</b>.seny</span><span class="sub">/academy</span></a>
+    <div>
+      <p id="prog-label">Tu progreso</p>
+      <p id="prog-num" class="display"><span id="prog-n">0</span><small> /<span id="prog-total">0</span> publicadas</small></p>
+      <span class="track"><i id="prog-fill"></i></span>
+      <p id="prog-pct">0% DEL CURSO PUBLICADO</p>
+    </div>
+    <nav id="rail-nav" aria-label="Módulos"></nav>
+    <a href="#" class="link-live salir">Salir →</a>
+  </aside>
+
+  <main id="main">
+    <nav id="chips" aria-label="Módulos"></nav>
+    <p class="eyebrow brackets-ink"> Hola, <span id="alumno">Marta</span> </p>
+    <h1 class="display" id="headline">Sigue donde lo dejaste.</h1>
+
+    <div id="continue">
+      <div>
+        <p class="k" id="cont-k"></p>
+        <h2 class="display" id="cont-title"></h2>
+        <p id="cont-sub"></p>
+      </div>
+      <a href="#" class="btn-accent" id="cont-cta">Continuar <span aria-hidden="true">→</span></a>
+    </div>
+
+    <section id="temario" aria-labelledby="temario-title">
+      <div class="sec-head"><p class="eyebrow brackets-ink" id="temario-title"> Temario </p><span class="count" id="temario-count"></span></div>
+      <div id="mods"></div>
+    </section>
+
+    <section id="md" aria-labelledby="md-title" hidden>
+      <div class="sec-head"><p class="eyebrow brackets-ink" id="md-title"> Temario </p><span class="count" id="md-count"></span></div>
+      <div class="md-grid" id="md-grid"></div>
+    </section>
+  </main>
+</div>
+
+<script>
+/* ── curso-data.js (propuesta de fuente de verdad única para home y clases) ── */
+const CURSO = {
+  modules: [
+    { id:'m1', num:1, title:'El Paisaje de los LLMs', short:'LLMs', visible:true, gated:false,
+      desc:'Una inmersión comparativa en los principales modelos de lenguaje. No se trata de usar todos, sino de saber cuál usar para cada tarea específica (Codificación, Análisis, Creatividad).',
+      classes:[{ id:'m1c1', file:'modulo1.html', num:1, title:'El Paisaje de los LLMs', kind:'módulo completo', duration:'2 h 20 min' }] },
+    { id:'m2', num:2, title:'Glosario y Fundamentos', short:'Fundamentos', visible:true, gated:false,
+      desc:'Fundamentos esenciales para comunicarse con equipos técnicos y entender las limitaciones reales de la tecnología (Alucinaciones, Tokens, Context Window).',
+      classes:[{ id:'m2c1', file:'modulo2.html', num:1, title:'Glosario y Fundamentos (Alfabetización Técnica)', kind:'módulo completo', duration:'5 h' }] },
+    { id:'m3', num:3, title:'Estudio Creativo IA (Imagen)', short:'Imagen', visible:true, gated:false,
+      desc:'Creación de activos visuales profesionales para marketing, prototipado de productos y contenido social sin necesidad de un departamento de diseño externo.',
+      classes:[
+        { id:'m3c1', file:'modulo3-clase1.html', num:1, title:'Los titanes del píxel', kind:'teórica', duration:'1 h' },
+        { id:'m3c2', file:'modulo3-clase2.html', num:2, title:'Composición y tiempo real', kind:'teórica', duration:'1 h' },
+        { id:'m3c3', file:'modulo3-clase3.html', num:3, title:'Magnific AI: el ecosistema total', kind:'práctica', duration:'45–60 min' },
+        { id:'m3c4', file:'modulo3-clase4.html', num:4, title:'Freepik Spaces: la anatomía de los nodos', kind:'práctica', duration:'45 min' },
+        { id:'m3c5', file:'modulo3-clase5.html', num:5, title:'El prompt como objetivo: fotografía profesional con IA', kind:'teórica', duration:'90 min' } ] },
+    { id:'m4', num:4, title:'Estudio Creativo 2 (Vídeo)', short:'Vídeo', visible:false, gated:false, desc:'', classes:[] },
+    { id:'m5', num:5, title:'Automatización de Imágenes', short:'Automatización', visible:false, gated:false, desc:'', classes:[] },
+    { id:'m6', num:6, title:'Docs Inteligente & Google', short:'Docs & Google', visible:false, gated:false, desc:'', classes:[] },
+    { id:'m7', num:7, title:'Programación Web y Scraping', short:'Web & Scraping', visible:false, gated:false, desc:'', classes:[] },
+    { id:'m8', num:8, title:'Agentes Autónomos', short:'Agentes', visible:true, gated:false,
+      desc:'Introducción a sistemas que no solo responden, sino que ejecutan. IAs capaces de planificar tareas, navegar por la web y realizar secuencias complejas.',
+      classes:[
+        { id:'m8c1', file:'modulo8-clase1.html', num:1, title:'Claude: el asistente de IA como socio de trabajo', kind:'teórica', duration:'40–50 min' },
+        { id:'m8c2', file:'modulo8-clase2.html', num:2, title:'Claude Cowork: guía de referencia', kind:'referencia', duration:'' },
+        { id:'m8c3', file:'modulo8-clase3.html', num:3, title:'Orquestación avanzada: pipelines multi-agente', kind:'práctica', duration:'30 min' },
+        { id:'m8c4', file:'modulo8-clase4.html', num:4, title:'El cerebro local autónomo: ingesta segura a Obsidian', kind:'práctica', duration:'' },
+        { id:'m8c5', file:'modulo8-clase5.html', num:5, title:'El cerebro de empresa: agentes, departamentos y plugins', kind:'teórica', duration:'' },
+        { id:'m8c6', file:'modulo8-clase6.html', num:6, title:'El cerebro que se busca y se teje solo', kind:'teórica', duration:'' },
+        { id:'m8c7', file:'modulo8-clase7.html', num:7, title:'Tu software propio: el portal de mando', kind:'teórica', duration:'' } ] },
+    { id:'m9', num:9, title:'MVP Empresarial (PFC)', short:'PFC Final', visible:true, gated:true,
+      desc:'Aplicación transversal. Simulación de lanzamiento de una línea de negocio: desde el naming y logo hasta la estrategia de go-to-market.',
+      classes:[{ id:'m9c1', file:'pfc-marketing.html', num:1, title:'AI Decision Hub: plan técnico y curricular', kind:'práctica', duration:'' }] },
+  ],
+};
+
+/* ── estado del prototipo ──────────────────────────────────────────────── */
+const KEY = 'academy-proto-v2';
+let view = 'rows';           // 'rows' | 'md'
+let access = 'full';         // 'full' | 'hidden' | 'locked'
+let selected = null;         // módulo seleccionado en la vista B
+let viewed = new Set(['m1c1','m2c1','m3c1','m3c2']); // escenario: Marta va por M3·C3
+try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s) { viewed = new Set(s.viewed); view = s.view || view; access = s.access || access; } } catch (e) {}
+function persist(){ try { localStorage.setItem(KEY, JSON.stringify({ viewed:[...viewed], view, access })); } catch (e) {} }
+
+const esc = s => String(s).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+const plural = (n, s, p) => n === 1 ? s : p;
+
+/* ── derivación (lo que haría curso.js en producción) ──────────────────── */
+function model(){
+  const mods = CURSO.modules.filter(m => m.visible && (access !== 'hidden' || !m.gated));
+  const accessible = m => access === 'full' || !m.gated;
+  const counting = mods.filter(accessible);
+  const classes = counting.flatMap(m => m.classes.map(c => ({ ...c, mod:m })));
+  const next = classes.find(c => !viewed.has(c.id)) || null;
+  const done = classes.filter(c => viewed.has(c.id)).length;
+  const out = mods.map(m => {
+    const total = m.classes.length, seen = m.classes.filter(c => viewed.has(c.id)).length;
+    const state = !accessible(m) ? 'locked' : (total && seen === total) ? 'done' : (next && next.mod.id === m.id) ? 'current' : 'pending';
+    return { ...m, total, seen, state, pct: total ? Math.round(seen / total * 100) : 0,
+      rows: m.classes.map(c => ({ ...c, st: state === 'locked' ? 'locked' : viewed.has(c.id) ? 'viewed' : (next && next.id === c.id) ? 'next' : 'pending' })) };
+  });
+  return { mods: out, classes, next, done, total: classes.length, pct: classes.length ? Math.round(done / classes.length * 100) : 0 };
+}
+const MARK = { done:'[✓]', current:'→', pending:'[ ]', locked:'[ – ]', viewed:'[✓]', next:'→' };
+
+function rowHtml(c, mod, inDetail){
+  const mark = MARK[c.st];
+  const meta = c.st === 'locked' ? 'Acceso completo' : [c.kind, c.duration].filter(Boolean).join(' · ');
+  const inner = `<span class="mark" aria-hidden="true">${mark}</span><span class="num">C${c.num}</span>
+      <span class="name">${esc(c.title)}${c.st === 'next' ? '<span class="pill">En curso</span>' : ''}</span>
+      <span class="meta">${esc(meta)}</span><span class="arrow" aria-hidden="true">→</span>`;
+  if (c.st === 'locked') return `<li><span class="clase locked" aria-disabled="true">${inner}</span></li>`;
+  return `<li><a class="clase ${c.st}${inDetail ? ' card-live' : ''}" href="${c.file}" data-toggle="${c.id}" aria-label="Clase ${c.num}: ${esc(c.title)}${c.st === 'viewed' ? ' (vista)' : ''}"${c.st === 'next' ? ' aria-current="true"' : ''}>${inner}</a></li>`;
+}
+function modMeta(m){
+  if (m.state === 'done') return `${m.total} ${plural(m.total,'clase','clases')} · Completado [✓]`;
+  if (m.state === 'locked') return `${m.total} ${plural(m.total,'clase','clases')} · Solo acceso completo [ – ]`;
+  return `${m.state === 'current' ? 'En curso · ' : ''}${m.total} ${plural(m.total,'clase','clases')}${m.seen ? ` · ${m.seen}/${m.total}` : ''}${m.gated ? ' · 100% práctico' : ''}`;
+}
+
+/* ── render ────────────────────────────────────────────────────────────── */
+function render(){
+  const M = model();
+  document.body.classList.toggle('md', view === 'md');
+  if (view === 'md' && (!selected || !M.mods.some(m => m.id === selected))) selected = (M.mods.find(m => m.state === 'current') || M.mods[0] || {}).id || null;
+
+  // rail + chips
+  document.getElementById('prog-n').textContent = M.done;
+  document.getElementById('prog-total').textContent = M.total;
+  document.getElementById('prog-fill').style.width = M.pct + '%';
+  document.getElementById('prog-pct').textContent = M.pct + '% DEL CURSO PUBLICADO';
+  const navItem = m => `<a href="#${m.id}" class="${m.state}" data-nav="${m.id}"${view === 'md' && selected === m.id ? ' aria-current="true"' : ''}><span aria-hidden="true">${MARK[m.state]}</span><span>M${m.num} · ${esc(m.short)}</span><span class="c">${m.state === 'pending' || m.state === 'current' ? (m.seen ? `${m.seen}/${m.total}` : '') : ''}</span></a>`;
+  document.getElementById('rail-nav').innerHTML = M.mods.map(navItem).join('');
+  document.getElementById('chips').innerHTML = M.mods.map(m => `<a href="#${m.id}" data-nav="${m.id}"${selected === m.id ? ' aria-current="true"' : ''}>${MARK[m.state]} M${m.num}</a>`).join('');
+
+  // cabecera + continuar
+  const cont = document.getElementById('continue'), nx = M.next;
+  if (nx) {
+    const left = nx.mod.classes.filter(c => !viewed.has(c.id)).length;
+    document.getElementById('headline').textContent = M.done ? 'Sigue donde lo dejaste.' : 'Empieza por el principio.';
+    document.getElementById('cont-k').textContent = `M${nx.mod.num} · Clase ${nx.num} — ${M.done ? 'En curso' : 'Primera clase'}`;
+    document.getElementById('cont-title').textContent = nx.title;
+    document.getElementById('cont-sub').textContent = left > 1 ? `Te ${plural(left,'queda','quedan')} ${left} clases de este módulo.` : 'Última clase de este módulo.';
+    document.getElementById('cont-cta').innerHTML = (M.done ? 'Continuar' : 'Empezar') + ' <span aria-hidden="true">→</span>';
+    document.getElementById('cont-cta').href = nx.file;
+    cont.classList.remove('all-done');
+  } else {
+    document.getElementById('headline').textContent = 'Has completado el curso.';
+    document.getElementById('cont-k').textContent = `${M.total} / ${M.total} · Completado [✓]`;
+    document.getElementById('cont-title').textContent = `Has visto las ${M.total} clases.`;
+    document.getElementById('cont-sub').textContent = 'Puedes repasar cualquier clase desde el temario.';
+    document.getElementById('cont-cta').innerHTML = 'Repasar desde M1 <span aria-hidden="true">→</span>';
+    document.getElementById('cont-cta').href = M.classes[0] ? M.classes[0].file : '#';
+    cont.classList.add('all-done');
+  }
+
+  const countTxt = `${M.mods.length} ${plural(M.mods.length,'módulo','módulos')} · ${M.total} ${plural(M.total,'clase','clases')}`;
+  document.getElementById('temario').hidden = view !== 'rows';
+  document.getElementById('md').hidden = view !== 'md';
+
+  /* Vista A · filas */
+  if (view === 'rows') {
+    document.getElementById('temario-count').textContent = countTxt;
+    const openIds = new Set([...document.querySelectorAll('details.mod[open]')].map(d => d.dataset.mod));
+    const first = !document.querySelector('details.mod');
+    document.getElementById('mods').innerHTML = M.mods.map(m => {
+      const open = first ? m.state === 'current' : openIds.has(m.id);
+      const body = m.total ? `<ol class="clases">${m.rows.map(c => rowHtml(c, m, false)).join('')}</ol>` : `<p class="empty">Este módulo aún no tiene clases publicadas.</p>`;
+      const band = m.state === 'locked' ? `<p class="band">[ ! ] Este módulo se desbloquea con el acceso completo.</p>` : '';
+      return `<details class="mod ${m.state}" id="row-${m.id}" data-mod="${m.id}"${open ? ' open' : ''}>
+        <summary class="mod-head">
+          <span class="mod-num${m.gated && m.state !== 'done' ? ' teal' : ''}">M${m.num}</span>
+          <span class="mod-body"><h3 class="mod-title">${esc(m.title)}</h3><p class="mod-meta">${esc(modMeta(m))}</p></span>
+          <span class="mod-bar" aria-hidden="true"><i style="width:${m.pct}%"></i></span>
+          <span class="mod-toggle" aria-hidden="true">+</span>
+        </summary>${body}${band}</details>`;
+    }).join('');
+  }
+
+  /* Vista B · maestro-detalle */
+  if (view === 'md') {
+    document.getElementById('md-count').textContent = countTxt;
+    const m = M.mods.find(x => x.id === selected);
+    const stTxt = { done:'completado', current:'en curso', pending:'pendiente', locked:'acceso completo' }[m.state];
+    const seenTxt = `${m.rows.filter(c => c.st === 'viewed').length} vistas · ${m.rows.filter(c => c.st === 'next').length} en curso · ${m.rows.filter(c => c.st === 'pending').length} pendientes`;
+    const cta = m.state === 'locked' ? '' : m.state === 'done' ? `<a class="btn-ghost" href="${m.classes[0].file}">Repasar M${m.num} →</a>`
+      : `<a class="btn-ghost" href="${(m.rows.find(c => c.st === 'next') || m.rows.find(c => c.st === 'pending') || m.rows[0]).file}">${m.seen ? `Seguir en C${(m.rows.find(c => c.st !== 'viewed') || m.rows[0]).num}` : `Empezar M${m.num}`} →</a>`;
+    const detail = `<section class="detalle ${m.state} step-in" aria-labelledby="det-title" aria-live="polite">
+      <div class="head">
+        <div class="l"><p class="k">[ M${m.num} · ${m.total} ${plural(m.total,'clase','clases')} · ${stTxt} ]</p><h2 class="display" id="det-title" tabindex="-1">${esc(m.title)}</h2><p class="desc">${esc(m.desc)}</p></div>
+        ${m.state === 'locked' ? '' : `<div class="r"><p class="stat"><span>${m.seen} / ${m.total} vistas</span><span>${m.pct}%</span></p><span class="mod-bar" aria-hidden="true"><i style="width:${m.pct}%"></i></span></div>`}
+      </div>
+      <ol class="clases">${m.rows.map(c => rowHtml(c, m, true)).join('')}</ol>
+      ${m.state === 'locked' ? `<p class="band">[ ! ] Este módulo se desbloquea con el acceso completo.</p>` : `<div class="foot"><span class="s">[·] ${seenTxt}</span>${cta}</div>`}
+    </section>`;
+    const cards = M.mods.map(x => `<a class="mod-card ${x.state}${x.state === 'locked' ? '' : ' card-live'}" href="#${x.id}" data-nav="${x.id}"${selected === x.id ? ' aria-current="true"' : ''}>
+      <span class="num">${x.state === 'current' ? `M${x.num} — En curso` : x.gated && x.state !== 'done' ? `M${x.num} — PFC final` : `M${x.num}`}</span>
+      <h3>${esc(x.title)}</h3><p class="meta">${esc(modMeta(x))}</p>
+      <span class="bar" aria-hidden="true"><i style="width:${x.pct}%"></i></span></a>`).join('');
+    document.getElementById('md-grid').innerHTML = detail + cards;
+  }
+}
+
+/* ── interacción ───────────────────────────────────────────────────────── */
+function select(id, scroll){
+  selected = id; render();
+  if (scroll) {
+    const d = document.querySelector('.detalle');
+    const top = d.getBoundingClientRect().top;
+    if (top < 0 || top > innerHeight * 0.4) d.scrollIntoView({ block:'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-toggle]');
+  if (a) { e.preventDefault(); const id = a.dataset.toggle; viewed.has(id) ? viewed.delete(id) : viewed.add(id); persist(); render(); return; }
+  const nav = e.target.closest('[data-nav]');
+  if (nav) {
+    e.preventDefault();
+    if (view === 'md') { history.replaceState(null, '', '#' + nav.dataset.nav); select(nav.dataset.nav, true); }
+    else { const d = document.getElementById('row-' + nav.dataset.nav); if (d) { d.open = true; d.scrollIntoView({ behavior:'smooth', block:'start' }); } }
+    return;
+  }
+  const v = e.target.closest('[data-view]');
+  if (v) { view = v.dataset.view; document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-pressed', String(b === v))); persist(); render(); return; }
+  const acc = e.target.closest('[data-access]');
+  if (acc) { access = acc.dataset.access; document.querySelectorAll('[data-access]').forEach(b => b.setAttribute('aria-pressed', String(b === acc))); persist(); render(); return; }
+  if (e.target.id === 'reset') { viewed = new Set(); persist(); render(); }
+});
+window.addEventListener('hashchange', () => { const id = location.hash.slice(1); if (view === 'md' && id) select(id, true); });
+document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === view)));
+document.querySelectorAll('[data-access]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.access === access)));
+if (location.hash) selected = location.hash.slice(1);
+render();
+</script>
+
+</body>
+</html>

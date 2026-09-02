@@ -1,814 +1,236 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Módulo 3 Clase 4: Freepik Spaces y Nodos - [m].seny [labs]">
-    <title>Módulo 3: Estudio Creativo (Clase 4) - [m].seny [labs]</title>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap"
-        rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Merriweather', 'serif'],
-                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
-                    },
-                    colors: {
-                        brand: {
-                            dark: '#0F172A',
-                            primary: '#4F46E5',
-                            accent: '#F59E0B',
-                            light: '#F8FAFC'
-                        },
-                        claude: {
-                            DEFAULT: '#D97757',
-                            light: '#FDF3F0',
-                            dark: '#B05D40'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body {
-            background-color: #F8FAFC;
-            color: #334155;
-            scroll-behavior: smooth;
-        }
-
-        h1, h2, h3, h4, h5, h6, button, .nav-link {
-            font-family: 'Inter', sans-serif;
-        }
-
-        p, li, .prose-text {
-            font-family: 'Merriweather', serif;
-            line-height: 1.6;
-            font-size: 1.125rem;
-            text-align: justify;
-        }
-
-        .text-center { text-align: center; }
-        .text-left { text-align: left; }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
-        /* Animations */
-        .fade-in-on-scroll {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease-out;
-        }
-
-        .fade-in-on-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.1);
-        }
-
-        /* Progress Bar */
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #4F46E5, #F59E0B);
-            z-index: 1000;
-            transition: width 0.2s ease;
-        }
-
-        /* Quiz Styles */
-        .quiz-option {
-            padding: 1rem;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.75rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            background-color: rgba(255, 255, 255, 0.05);
-            color: #e2e8f0;
-        }
-
-        .quiz-option:hover {
-            border-color: #4F46E5;
-            background-color: rgba(79, 70, 229, 0.1);
-        }
-        
-        .quiz-option.selected {
-            border-color: #F59E0B;
-            background-color: rgba(245, 158, 11, 0.1);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M3 · Clase 4 — Freepik Spaces: la anatomía de los nodos · [m].seny /academy</title>
+<meta name="description" content="Del lienzo interactivo a la automatización masiva. Comprendiendo la simplificación modular frente a las herramientas independientes.">
+<link rel="stylesheet" href="/theme.css">
+<link rel="stylesheet" href="/curso.css">
 </head>
+<body data-class="m3c4">
+<main>
 
-<body class="antialiased">
+  <header class="hero">
+    <h1 class="display">Freepik Spaces: la anatomía de los nodos.</h1>
+    <p class="sub">Del lienzo interactivo a la automatización masiva. Comprendiendo la simplificación modular frente a las herramientas independientes.</p>
+  </header>
 
-    <div class="progress-bar" id="progressBar"></div>
+  <div class="content">
 
-    <!-- Navigation Header -->
-    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
-        <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center">
-                <a href="index.html" class="no-underline group">
-                    <h1 class="text-xl font-bold tracking-tight text-brand-dark group-hover:text-brand-primary transition-colors cursor-pointer">
-                        <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
-                    </h1>
-                </a>
-            </div>
-            <nav class="hidden md:flex items-center space-x-4 text-xs font-bold text-gray-500 uppercase tracking-wider">
-                <a href="#intro" class="hover:text-brand-primary transition-colors">1. Paradigma</a>
-                <a href="#anatomia" class="hover:text-brand-primary transition-colors">2. Anatomía</a>
-                <a href="#upscaler" class="hover:text-brand-primary transition-colors">3. Upscaler</a>
-                <a href="#gen-img-vid" class="hover:text-brand-primary transition-colors">4. Imagen/Video</a>
-                <a href="#logica" class="hover:text-brand-primary transition-colors">5. Lógica</a>
-                <a href="#practica" class="hover:text-brand-primary transition-colors text-brand-accent">6. PFC</a>
-            </nav>
-            <a href="/login.html" onclick="document.cookie='sb-ndtoqnpomhtubcygkwlh-auth-token=;path=/;max-age=0';localStorage.clear()"
-                class="hidden md:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors ml-4"
-                title="Cerrar sesión">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                    <polyline points="16 17 21 12 16 7" />
-                    <line x1="21" y1="12" x2="9" y2="12" />
-                </svg>
-                Salir
-            </a>
-        </div>
-    </header>
-
-    <!-- Presentation Title (Hero) -->
-    <section class="bg-brand-dark text-white py-32 border-b-8 border-brand-primary relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute top-10 left-10 w-96 h-96 bg-brand-primary rounded-full blur-3xl"></div>
-            <div class="absolute bottom-10 right-20 w-[30rem] h-[30rem] bg-brand-accent rounded-full blur-3xl"></div>
-        </div>
-        <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
-            <span class="inline-block py-1 px-3 bg-brand-primary/20 text-brand-primary font-mono text-sm font-bold uppercase tracking-widest mb-6 rounded">
-                Módulo 3 • Clase 4
-            </span>
-            <h1 class="text-5xl lg:text-7xl font-extrabold mb-6 leading-tight">
-                Freepik Spaces:<br>
-                <span class="text-brand-accent text-4xl lg:text-5xl">La Anatomía de los Nodos</span>
-            </h1>
-            <p class="text-xl text-gray-300 font-serif max-w-2xl mx-auto italic text-center">
-                Del lienzo interactivo a la automatización masiva. Comprendiendo la simplificación modular frente a las herramientas independientes.
-            </p>
-            <div class="mt-10 flex items-center justify-center space-x-4 text-sm text-gray-400 font-mono">
-                <span><i class="fa-regular fa-clock mr-2"></i> 45 Minutos</span>
-                <span>•</span>
-                <span><i class="fa-solid fa-diagram-project mr-2"></i> Procesamiento en Lote (Batch)</span>
-            </div>
-        </div>
+    <!-- 1. El paradigma -->
+    <section class="sec" id="intro" data-label="Paradigma">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">El paradigma: nodos vs. herramientas independientes.</h2></div>
+      <p>Es muy común en plataformas modulares como <strong>Freepik Spaces</strong> que la versión en «nodo» de una herramienta esté algo más simplificada o adaptada respecto a su equivalente web independiente (standalone). Esto no es un error, es una decisión de diseño arquitectónico.</p>
+      <div class="ba">
+        <div class="before"><p class="k">Standalone (App web)</p><p>Controles milimétricos, pinceles de máscara manuales, interfaces complejas. Diseñado para trabajar <strong>una sola imagen a la vez</strong> con máxima atención al detalle manual.</p></div>
+        <div class="after"><p class="k">Versión nodo (Spaces)</p><p>Sacrifica el control manual para evitar sobrecargar el lienzo (canvas) y respetar los límites técnicos del servidor al procesar <strong>flujos en lote (batch processing) y pipelines automáticos</strong>.</p></div>
+      </div>
+      <div class="callout nota"><span class="k">[ Nota ]</span><p><strong>El Panel de Propiedades:</strong> para ser 100% precisos con la realidad actual de Freepik Spaces, recuerda que la interfaz se divide. En el <em>bloque del lienzo</em> ves entradas/salidas y previsualizaciones, pero la verdadera configuración de cada nodo vive en el <strong>Panel de Propiedades (barra lateral derecha)</strong> cuando haces clic sobre él.</p></div>
     </section>
 
-    <!-- 1. El Paradigma -->
-    <section id="intro" class="py-20 bg-white">
-        <div class="max-w-5xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll">
-                <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">1</span>
-                El Paradigma: Nodos vs. Herramientas Independientes
-            </h2>
-
-            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">
-                Es muy común en plataformas modulares como <strong>Freepik Spaces</strong> que la versión en "nodo" de una herramienta esté algo más simplificada o adaptada respecto a su equivalente web independiente (standalone). Esto no es un error, es una decisión de diseño arquitectónico.
-            </p>
-
-            <div class="grid md:grid-cols-2 gap-8 mb-12 fade-in-on-scroll">
-                <div class="bg-gray-50 border border-gray-200 p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                    <h4 class="font-bold text-gray-400 uppercase text-xs mb-3 tracking-widest"><i class="fa-solid fa-window-maximize mr-2"></i> Standalone (App Web)</h4>
-                    <p class="font-serif text-gray-600 text-sm leading-relaxed">Controles milimétricos, pinceles de máscara manuales, interfaces complejas. Diseñado para trabajar <strong>una sola imagen a la vez</strong> con máxima atención al detalle manual.</p>
-                </div>
-                <div class="bg-indigo-50 border border-brand-primary/30 p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                    <h4 class="font-bold text-brand-primary uppercase text-xs mb-3 tracking-widest"><i class="fa-solid fa-diagram-project mr-2"></i> Versión Nodo (Spaces)</h4>
-                    <p class="font-serif text-gray-800 text-sm leading-relaxed">Sacrifica el control manual para evitar sobrecargar el lienzo (canvas) y respetar los límites técnicos del servidor al procesar <strong>flujos en lote (batch processing) y pipelines automáticos</strong>.</p>
-                </div>
-            </div>
-
-            <!-- Analogía Component -->
-            <div class="bg-amber-50 p-6 rounded-r-xl border-l-4 border-brand-accent shadow-sm my-6 fade-in-on-scroll">
-                <p class="font-serif text-amber-900 text-sm m-0 leading-relaxed">
-                    <i class="fa-solid fa-lightbulb text-brand-accent mr-2"></i> 
-                    <strong>El Panel de Propiedades:</strong> Para ser 100% precisos con la realidad actual de Freepik Spaces, recuerda que la interfaz se divide. En el <em>bloque del lienzo</em> ves entradas/salidas y previsualizaciones, pero la verdadera configuración de cada nodo vive en el <strong>Panel de Propiedades (Barra lateral derecha)</strong> cuando haces clic sobre él.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 2. Anatomía de un Nodo -->
-    <section id="anatomia" class="py-20 bg-brand-light border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll">
-                <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">2</span>
-                Anatomía Visual de un Nodo
-            </h2>
-            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">
-                Observa cómo se estructura la interfaz base de un nodo (en este caso de generación) dentro del lienzo interactivo de Freepik Spaces.
-            </p>
-            <div class="bg-white p-4 rounded-2xl shadow-md border border-gray-200 fade-in-on-scroll max-w-2xl mx-auto">
-                <img src="Captura de pantalla 2026-06-04 010521.png" alt="Anatomía del Nodo en Freepik Spaces" class="w-full h-auto rounded-xl border border-gray-100">
-                <p class="text-center text-sm font-serif text-gray-500 mt-4 italic">El panel principal contiene el cuadro de prompt directo, controles rápidos (como el escalado o ratio) y opciones base del modelo.</p>
-            </div>
-        </div>
+    <!-- 2. Anatomía de un nodo -->
+    <section class="sec" id="anatomia" data-label="Anatomía">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Anatomía visual de un nodo.</h2></div>
+      <p>Observa cómo se estructura la interfaz base de un nodo (en este caso de generación) dentro del lienzo interactivo de Freepik Spaces.</p>
+      <figure class="figure">
+        <img class="media-duotone" src="/img/m3c4-anatomia-nodo.png" alt="Anatomía del nodo en Freepik Spaces" loading="lazy">
+        <figcaption>[ Captura ] El panel principal contiene el cuadro de prompt directo, controles rápidos (como el escalado o ratio) y opciones base del modelo.</figcaption>
+      </figure>
     </section>
 
     <!-- 3. Nodo Upscaler -->
-    <section id="upscaler" class="py-20 bg-white border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll">
-                <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">3</span>
-                El Nodo Upscaler (Tecnología Magnific)
-            </h2>
-            <p class="prose-text mb-12 text-gray-600 fade-in-on-scroll">
-                A diferencia de la web de Magnific donde puedes encadenar escalados enormes libremente, el nodo en Spaces está optimizado para flujos continuos y posee límites de seguridad.
-            </p>
-
-            <div class="space-y-6 fade-in-on-scroll">
-                <div class="bg-indigo-50 p-6 rounded-2xl shadow-sm border border-indigo-100 flex items-start">
-                    <div class="w-10 h-10 bg-white text-brand-primary rounded-full flex items-center justify-center text-lg mr-4 shrink-0 shadow-sm">
-                        <i class="fa-solid fa-magnifying-glass-plus"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-brand-dark mb-2 text-base">Límites de Escalado</h4>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed">El factor está limitado a opciones predefinidas (habitualmente <strong>2x</strong> o <strong>4x</strong>) dependiendo de la resolución original, acotando el tope máximo para que el lienzo no colapse durante el procesamiento.</p>
-                    </div>
-                </div>
-
-                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm border border-gray-200">
-                    <div class="flex items-center mb-6">
-                        <div class="w-10 h-10 bg-white text-brand-accent rounded-full flex items-center justify-center text-lg mr-4 shrink-0 shadow-sm">
-                            <i class="fa-solid fa-sliders"></i>
-                        </div>
-                        <h4 class="font-bold text-brand-dark text-base">Sliders del Motor</h4>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                            <h5 class="font-bold text-gray-800 text-sm mb-2">Creativity</h5>
-                            <p class="font-serif text-gray-600 text-sm leading-relaxed">Define cuánta libertad tiene la IA para inventar e interpretar detalles nuevos que no estaban en la imagen original.</p>
-                        </div>
-                        <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                            <h5 class="font-bold text-gray-800 text-sm mb-2">HDR</h5>
-                            <p class="font-serif text-gray-600 text-sm leading-relaxed">Parámetro fundamental en Magnific. Controla el microcontraste y la agresividad visual de las texturas resultantes.</p>
-                        </div>
-                        <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                            <h5 class="font-bold text-gray-800 text-sm mb-2">Resemblance</h5>
-                            <p class="font-serif text-gray-600 text-sm leading-relaxed">Fuerza a la IA a mantenerse estrictamente fiel a la paleta de colores y las formas base de la imagen de entrada.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm border border-gray-200 flex items-start">
-                    <div class="w-10 h-10 bg-white text-claude rounded-full flex items-center justify-center text-lg mr-4 shrink-0 shadow-sm">
-                        <i class="fa-solid fa-layer-group"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-brand-dark mb-2 text-base">Presets y Prompts</h4>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed">Cuenta con un menú 'Optimize for' (Portraits, Art, Nature, Films...) y una caja de <strong>Prompt Interno</strong> para guiar directamente el escalado sin necesitar conectar un nodo de texto externo.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <section class="sec" id="upscaler" data-label="Upscaler">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">El nodo Upscaler (tecnología Magnific).</h2></div>
+      <p class="sec-intro">A diferencia de la web de Magnific donde puedes encadenar escalados enormes libremente, el nodo en Spaces está optimizado para flujos continuos y posee límites de seguridad.</p>
+      <div class="callout aviso"><span class="k">[ ! ] Límites de escalado</span><p>El factor está limitado a opciones predefinidas (habitualmente <strong>2x</strong> o <strong>4x</strong>) dependiendo de la resolución original, acotando el tope máximo para que el lienzo no colapse durante el procesamiento.</p></div>
+      <h3>Sliders del motor</h3>
+      <div class="grid-cards three">
+        <div class="card"><span class="k">[ 01 ]</span><h4>Creativity</h4><p>Define cuánta libertad tiene la IA para inventar e interpretar detalles nuevos que no estaban en la imagen original.</p></div>
+        <div class="card"><span class="k">[ 02 ]</span><h4>HDR</h4><p>Parámetro fundamental en Magnific. Controla el microcontraste y la agresividad visual de las texturas resultantes.</p></div>
+        <div class="card"><span class="k">[ 03 ]</span><h4>Resemblance</h4><p>Fuerza a la IA a mantenerse estrictamente fiel a la paleta de colores y las formas base de la imagen de entrada.</p></div>
+      </div>
+      <div class="callout nota"><span class="k">[ Presets y prompts ]</span><p>Cuenta con un menú «Optimize for» (Portraits, Art, Nature, Films…) y una caja de <strong>Prompt Interno</strong> para guiar directamente el escalado sin necesitar conectar un nodo de texto externo.</p></div>
     </section>
 
-    <!-- 4. Imagen y Video -->
-    <section id="gen-img-vid" class="py-20 bg-brand-light border-t border-gray-200">
-        <div class="max-w-6xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-brand-dark mb-12 flex items-center fade-in-on-scroll">
-                <span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">4</span>
-                Generadores de Imagen y Video
-            </h2>
+    <!-- 4. Generadores de imagen y video -->
+    <section class="sec" id="gen-img-vid" data-label="Imagen / Video">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Generadores de imagen y video.</h2></div>
 
-            <!-- Image Generator Section -->
-            <div class="mb-16 fade-in-on-scroll">
-                <div class="flex items-center mb-6">
-                    <div class="w-12 h-12 bg-indigo-100 text-brand-primary rounded-xl flex items-center justify-center text-2xl mr-4">
-                        <i class="fa-solid fa-image"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-brand-dark">Image Generator</h3>
-                </div>
-                <p class="font-serif text-gray-600 text-base mb-6">El bloque en el lienzo incluye una caja principal para teclear tu prompt directamente. Sus propiedades principales incluyen:</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:border-brand-primary transition-colors">
-                        <h4 class="font-bold text-brand-dark text-sm uppercase tracking-wider mb-3 flex items-center"><i class="fa-solid fa-robot text-brand-primary mr-2"></i> Selector de Modelo</h4>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed">Desplegable con los modelos integrados en la plataforma (Mystic, Flux, Nano Banana, Freepik Core).</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:border-brand-primary transition-colors">
-                        <h4 class="font-bold text-brand-dark text-sm uppercase tracking-wider mb-3 flex items-center"><i class="fa-solid fa-crop text-brand-primary mr-2"></i> Aspect Ratio</h4>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed">Botones visuales de proporción (16:9, 1:1, 9:16...) para adaptar de forma rápida el lienzo final al formato necesario.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:border-brand-primary transition-colors">
-                        <h4 class="font-bold text-brand-dark text-sm uppercase tracking-wider mb-3 flex items-center"><i class="fa-solid fa-layer-group text-brand-primary mr-2"></i> Number / Batch</h4>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed">Selector visual integrado que te permite generar de 1 a 4 variantes de imagen simultáneamente en la misma ejecución.</p>
-                    </div>
-                </div>
-            </div>
+      <h3>Image Generator</h3>
+      <p>El bloque en el lienzo incluye una caja principal para teclear tu prompt directamente. Sus propiedades principales incluyen:</p>
+      <div class="grid-cards three">
+        <div class="card"><span class="k">[ 01 ]</span><h4>Selector de modelo</h4><p>Desplegable con los modelos integrados en la plataforma (Mystic, Flux, Nano Banana, Freepik Core).</p></div>
+        <div class="card"><span class="k">[ 02 ]</span><h4>Aspect Ratio</h4><p>Botones visuales de proporción (16:9, 1:1, 9:16…) para adaptar de forma rápida el lienzo final al formato necesario.</p></div>
+        <div class="card"><span class="k">[ 03 ]</span><h4>Number / Batch</h4><p>Selector visual integrado que te permite generar de 1 a 4 variantes de imagen simultáneamente en la misma ejecución.</p></div>
+      </div>
 
-            <hr class="border-gray-200 mb-16">
+      <hr class="rule">
 
-            <!-- Video Generator Section -->
-            <div class="fade-in-on-scroll">
-                <div class="flex items-center mb-6">
-                    <div class="w-12 h-12 bg-amber-100 text-brand-accent rounded-xl flex items-center justify-center text-2xl mr-4">
-                        <i class="fa-solid fa-film"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-brand-dark">Video Generator</h3>
-                </div>
-                <p class="font-serif text-gray-600 text-base mb-6">Aquí la simplificación es más evidente respecto a plataformas web de vídeo independientes. Las propiedades clave son:</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:border-brand-accent transition-colors">
-                        <h4 class="font-bold text-brand-dark text-sm uppercase tracking-wider mb-3 flex items-center"><i class="fa-solid fa-robot text-brand-accent mr-2"></i> Selector de Modelo</h4>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed">Acceso a motores líderes de generación de video generativo como Luma, Kling, Runway o Minimax.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:border-brand-accent transition-colors">
-                        <h4 class="font-bold text-brand-dark text-sm uppercase tracking-wider mb-3 flex items-center"><i class="fa-solid fa-plug text-brand-accent mr-2"></i> Conectores Físicos</h4>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed">Acepta entradas directas visuales desde otros nodos mediante puertos específicos de <em>"Start Frame"</em> o <em>"End Frame"</em>.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:border-brand-accent transition-colors">
-                        <h4 class="font-bold text-brand-dark text-sm uppercase tracking-wider mb-3 flex items-center"><i class="fa-solid fa-video text-brand-accent mr-2"></i> Camera Motions</h4>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed">Opciones en la barra lateral para <em>Pan</em> (paneo horizontal), <em>Tilt</em> (inclinación) y <em>Zoom</em> (siempre y cuando el modelo subyacente lo soporte).</p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+      <h3>Video Generator</h3>
+      <p>Aquí la simplificación es más evidente respecto a plataformas web de vídeo independientes. Las propiedades clave son:</p>
+      <div class="grid-cards three">
+        <div class="card"><span class="k">[ 01 ]</span><h4>Selector de modelo</h4><p>Acceso a motores líderes de generación de video generativo como Luma, Kling, Runway o Minimax.</p></div>
+        <div class="card"><span class="k">[ 02 ]</span><h4>Conectores físicos</h4><p>Acepta entradas directas visuales desde otros nodos mediante puertos específicos de <em>«Start Frame»</em> o <em>«End Frame»</em>.</p></div>
+        <div class="card"><span class="k">[ 03 ]</span><h4>Camera Motions</h4><p>Opciones en la barra lateral para <em>Pan</em> (paneo horizontal), <em>Tilt</em> (inclinación) y <em>Zoom</em> (siempre y cuando el modelo subyacente lo soporte).</p></div>
+      </div>
     </section>
 
-    <!-- 5. Lógica: Listas y Asistentes -->
-    <section id="logica" class="py-20 bg-white border-t border-gray-200">
-        <div class="max-w-6xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-brand-dark mb-12 flex items-center fade-in-on-scroll">
-                <span class="w-10 h-10 bg-claude text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">5</span>
-                Nodos de Lógica: Automatización y Cerebros
-            </h2>
+    <!-- 5. Lógica: listas y asistentes -->
+    <section class="sec" id="logica" data-label="Lógica">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Nodos de lógica: automatización y cerebros.</h2></div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 fade-in-on-scroll mb-10">
-                <!-- List Node -->
-                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-200 shadow-sm flex flex-col">
-                    <div class="flex items-center mb-6">
-                        <div class="w-14 h-14 bg-orange-100 text-claude rounded-xl flex items-center justify-center text-2xl mr-4">
-                            <i class="fa-solid fa-list-ul"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-brand-dark">List Node (Listas)</h3>
-                    </div>
-                    <p class="font-serif text-gray-600 text-sm mb-6 leading-relaxed">El motor primario para gestionar colecciones de datos. Aporta la información base que estructurará tus flujos y generaciones en lote a lo largo de todo el pipeline.</p>
-                    
-                    <div class="bg-white rounded-xl p-5 border border-gray-100 flex-grow">
-                        <h4 class="font-bold text-brand-dark text-sm uppercase tracking-wider mb-3">Celdas de Texto Manuales</h4>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed">Puedes hacer clic en <strong>"Add Row" (Añadir fila)</strong> y escribir manualmente tus variables (ej. "Rojo", "Azul", "Verde") directamente en el nodo. Esta información se empaqueta y puede ser conectada a otros nodos para iterar los procesos de forma automatizada.</p>
-                    </div>
-                </div>
+      <h3>List Node (Listas)</h3>
+      <p>El motor primario para gestionar colecciones de datos. Aporta la información base que estructurará tus flujos y generaciones en lote a lo largo de todo el pipeline.</p>
+      <div class="callout nota"><span class="k">[ Celdas de texto manuales ]</span><p>Puedes hacer clic en <strong>«Add Row» (Añadir fila)</strong> y escribir manualmente tus variables (ej. «Rojo», «Azul», «Verde») directamente en el nodo. Esta información se empaqueta y puede ser conectada a otros nodos para iterar los procesos de forma automatizada.</p></div>
 
-                <!-- Assistant Node -->
-                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-200 shadow-sm flex flex-col">
-                    <div class="flex items-center mb-6">
-                        <div class="w-14 h-14 bg-indigo-100 text-brand-primary rounded-xl flex items-center justify-center text-2xl mr-4">
-                            <i class="fa-solid fa-robot"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-brand-dark">Assistant Node (LLM)</h3>
-                    </div>
-                    <p class="font-serif text-gray-600 text-sm mb-6 leading-relaxed">El "cerebro" analítico y conversacional. Actúa como director de operaciones integrado directamente dentro de tu pipeline visual.</p>
-                    
-                    <div class="bg-white rounded-xl p-5 border border-gray-100 flex-grow">
-                        <h4 class="font-bold text-brand-dark text-sm uppercase tracking-wider mb-3">Panel de Propiedades</h4>
-                        <div class="space-y-4">
-                            <p class="font-serif text-gray-600 text-sm leading-relaxed"><strong>Selector de Modelo:</strong> Te permite elegir el cerebro detrás del asistente, variando entre modelos ágiles y rápidos o modelos de razonamiento profundo.</p>
-                            <p class="font-serif text-gray-600 text-sm leading-relaxed"><strong>System Prompt:</strong> Campo donde defines la instrucción base, otorgándole el "rol perpetuo" al nodo de forma independiente al texto que le llega por el conector.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Premium Code Box Component (Full Width) -->
-                <div class="col-span-1 lg:col-span-2 fade-in-on-scroll">
-                    <div class="bg-slate-900 text-white rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
-                        <div class="bg-slate-950 px-6 py-4 border-b border-slate-800 flex justify-between items-center">
-                            <span class="text-sm font-mono text-brand-accent font-bold uppercase tracking-wider">
-                                <i class="fa-solid fa-terminal mr-2"></i> Ejemplo de System_Prompt.md (Assistant Node)
-                            </span>
-                            <button onclick="copyToClipboard('sys-prompt', this)" class="text-xs font-bold text-slate-400 hover:text-white transition-colors border border-slate-700 hover:border-slate-500 px-4 py-2 rounded-lg bg-slate-900 flex items-center">
-                                <i class="fa-regular fa-copy mr-2"></i> Copiar Código
-                            </button>
-                        </div>
-                        <div id="sys-prompt" class="p-6 font-mono text-gray-300 text-sm md:text-base leading-relaxed whitespace-pre overflow-x-auto"><span class="text-brand-primary"># ROL PERPETUO DEL NODO (System Prompt)</span>
+      <h3>Assistant Node (LLM)</h3>
+      <p>El «cerebro» analítico y conversacional. Actúa como director de operaciones integrado directamente dentro de tu pipeline visual.</p>
+      <div class="callout nota"><span class="k">[ Panel de propiedades ]</span>
+        <p><strong>Selector de modelo:</strong> te permite elegir el cerebro detrás del asistente, variando entre modelos ágiles y rápidos o modelos de razonamiento profundo.</p>
+        <p><strong>System Prompt:</strong> campo donde defines la instrucción base, otorgándole el «rol perpetuo» al nodo de forma independiente al texto que le llega por el conector.</p>
+      </div>
+
+      <div class="code prompt"><div class="ch"><span class="k">[ Ejemplo · System_Prompt.md (Assistant Node) ]</span><button type="button" class="btn-ghost" data-copy>Copiar</button></div><pre id="sys-prompt"><span class="ac"># ROL PERPETUO DEL NODO (System Prompt)</span>
 Actúa como un Director Creativo experto en moda retail.
-Tu objetivo es evaluar el texto de entrada (variables) y transformarlo 
+Tu objetivo es evaluar el texto de entrada (variables) y transformarlo
 en un prompt descriptivo en inglés, altamente optimizado para la IA visual.
 
-<span class="text-claude"># REGLAS ESTRUCTURALES</span>
+<span class="ac"># REGLAS ESTRUCTURALES</span>
 1. Responde ÚNICAMENTE con el prompt en inglés resultante.
-2. Añade siempre al final los términos técnicos: "cinematic lighting, photorealistic, 8k".</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+2. Añade siempre al final los términos técnicos: "cinematic lighting, photorealistic, 8k".</pre></div>
     </section>
 
-    <!-- 6. Práctica y Quiz (Dark Section) -->
-    <section id="practica" class="py-24 bg-brand-dark text-white border-t-8 border-brand-accent">
-        <div class="max-w-6xl mx-auto px-6">
-            <!-- Proyecto Fin de Curso (PFC) -->
-            <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-10 lg:p-16 shadow-2xl relative overflow-hidden fade-in-on-scroll mb-20">
-                <div class="absolute top-0 right-0 w-80 h-80 bg-brand-primary/20 rounded-bl-full -z-0 blur-2xl"></div>
-                <div class="flex items-center mb-8 relative z-10">
-                    <div class="w-16 h-16 bg-brand-primary text-white rounded-2xl flex items-center justify-center text-3xl shadow-lg mr-6 shrink-0">
-                        <i class="fa-solid fa-network-wired"></i>
-                    </div>
-                    <div>
-                        <span class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-1 block">Transversal</span>
-                        <h3 class="text-3xl lg:text-4xl font-extrabold text-white">PFC: Tu Primer Pipeline Automático</h3>
-                    </div>
-                </div>
+    <!-- 6. Práctica, PFC y test (banda tinta) -->
+    <section class="sec sec-dark" id="practica" data-label="Práctica &amp; PFC">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Práctica.</h2></div>
 
-                <div class="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-8 relative z-10">
-                    <h4 class="font-bold text-white text-xl mb-4 flex items-center">
-                        <i class="fa-solid fa-bullseye text-brand-accent mr-3"></i> Tarea: Procesamiento de Prompts en Lote
-                    </h4>
-                    <p class="font-serif text-slate-300 mb-8 text-lg">
-                        Diseña un flujo visual (pipeline) en Freepik Spaces que alimente al generador de imágenes usando variables personalizadas de texto. De esta forma construirás una campaña con múltiples variaciones de tu producto base en una sola ejecución.
-                    </p>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-slate-900 p-6 rounded-xl shadow-sm border border-slate-700 hover:border-brand-accent transition-colors">
-                            <div class="w-12 h-12 bg-indigo-500/20 text-indigo-300 rounded-xl flex items-center justify-center mb-5 text-xl font-bold">
-                                <i class="fa-solid fa-robot"></i>
-                            </div>
-                            <h5 class="font-bold text-white mb-2">1. Asistente Redactor</h5>
-                            <p class="text-sm font-serif text-slate-400">Crear un <em>Assistant Node</em> en el lienzo y configurar su System Prompt interno para que actúe exclusivamente como redactor experto de prompts fotográficos.</p>
-                        </div>
-                        <div class="bg-slate-900 p-6 rounded-xl shadow-sm border border-slate-700 hover:border-brand-accent transition-colors">
-                            <div class="w-12 h-12 bg-amber-500/20 text-amber-300 rounded-xl flex items-center justify-center mb-5 text-xl font-bold">
-                                <i class="fa-solid fa-image"></i>
-                            </div>
-                            <h5 class="font-bold text-white mb-2">2. Creación Visual</h5>
-                            <p class="text-sm font-serif text-slate-400">Conectar la salida de texto al <em>Image Generator</em> para crear las diferentes imágenes a partir de los inputs y listas de referencias proporcionadas.</p>
-                        </div>
-                        <div class="bg-slate-900 p-6 rounded-xl shadow-sm border border-slate-700 hover:border-brand-accent transition-colors">
-                            <div class="w-12 h-12 bg-emerald-500/20 text-emerald-300 rounded-xl flex items-center justify-center mb-5 text-xl font-bold">
-                                <i class="fa-solid fa-diagram-project"></i>
-                            </div>
-                            <h5 class="font-bold text-white mb-2">3. Renderizado y Expansión</h5>
-                            <p class="text-sm font-serif text-slate-400">Renderizar los primeros resultados visuales y repetir el proceso, haciendo crecer el flujo o añadiendo nuevas ramas paralelas a tu gusto.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quiz Interactivo -->
-            <div class="border-t border-slate-800 pt-16 mb-12 fade-in-on-scroll">
-                <h3 class="text-3xl font-bold mb-8 text-white text-center">
-                    <i class="fa-solid fa-clipboard-check text-brand-accent mr-3"></i> Cuestionario de Evaluación (Clase 4)
-                </h3>
-                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 lg:p-12 shadow-2xl text-white">
-                    <div id="quizContainer">
-                        <!-- Quiz renderizado por JS -->
-                    </div>
-                    
-                    <div class="text-center mt-10 pt-8 border-t border-slate-800">
-                        <button id="validateBtn" onclick="submitQuiz()" class="px-10 py-4 bg-brand-primary hover:bg-indigo-600 text-white font-bold rounded-xl transition-all shadow-lg uppercase tracking-wider text-sm">
-                            Validar Respuestas
-                        </button>
-                        <div id="quiz-result" class="hidden mt-6 p-5 rounded-xl font-bold font-sans text-center transition-all"></div>
-                    </div>
-                </div>
-            </div>
+      <div class="pfc">
+        <span class="k">[ PFC — Transversal ]</span>
+        <h3>PFC: tu primer pipeline automático</h3>
+        <p><strong>Tarea: procesamiento de prompts en lote</strong></p>
+        <p>Diseña un flujo visual (pipeline) en Freepik Spaces que alimente al generador de imágenes usando variables personalizadas de texto. De esta forma construirás una campaña con múltiples variaciones de tu producto base en una sola ejecución.</p>
+        <div class="steps">
+          <div><span class="n">01</span><h4>Asistente redactor</h4><p>Crear un <em>Assistant Node</em> en el lienzo y configurar su System Prompt interno para que actúe exclusivamente como redactor experto de prompts fotográficos.</p></div>
+          <div><span class="n">02</span><h4>Creación visual</h4><p>Conectar la salida de texto al <em>Image Generator</em> para crear las diferentes imágenes a partir de los inputs y listas de referencias proporcionadas.</p></div>
+          <div><span class="n">03</span><h4>Renderizado y expansión</h4><p>Renderizar los primeros resultados visuales y repetir el proceso, haciendo crecer el flujo o añadiendo nuevas ramas paralelas a tu gusto.</p></div>
         </div>
+      </div>
+
+      <div class="quiz" data-quiz="quizData" data-title="Cuestionario de evaluación (Clase 4)"></div>
     </section>
 
-    <!-- Navegación entre Clases -->
-    <section class="py-12 bg-white border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <a href="modulo3-clase3.html"
-                class="flex items-center px-6 py-3 text-gray-600 border border-gray-300 rounded-xl font-bold hover:text-brand-primary hover:border-brand-primary transition-all bg-white shadow-sm w-full sm:w-auto justify-center">
-                <i class="fa-solid fa-arrow-left mr-2"></i> Anterior: Clase 3
-            </a>
-            <a href="index.html"
-                class="flex items-center px-6 py-3 text-gray-600 border border-gray-300 rounded-xl font-bold hover:text-brand-primary hover:border-brand-primary transition-all bg-white shadow-sm w-full sm:w-auto justify-center">
-                <i class="fa-solid fa-home mr-2"></i> Volver al Temario
-            </a>
-            <a href="modulo3-clase5.html"
-                class="flex items-center px-6 py-3 bg-brand-primary text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors shadow-lg w-full sm:w-auto justify-center">
-                Siguiente: Clase 5 <i class="fa-solid fa-arrow-right ml-2"></i>
-            </a>
-        </div>
-    </section>
+  </div><!-- /.content -->
+  <!-- nav inferior y pie: los genera curso.js -->
+</main>
 
-    <!-- Footer -->
-    <footer class="bg-brand-dark text-white py-16 border-t border-gray-800">
-        <div class="max-w-5xl mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold mb-4">
-                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
-            </h2>
-            <p class="text-gray-400 mb-10 max-w-lg mx-auto font-serif text-center">
-                Empoderando a la próxima generación de empresas con inteligencia artificial práctica y estratégica.
-            </p>
-            <div class="w-12 h-px bg-gray-800 mx-auto my-6"></div>
-            <p class="text-xs text-gray-500 font-sans text-center">
-                Material de Apoyo Formativo - Módulo 3 (Clase 4)<br>
-                © 2026 [m].seny [labs]. Todos los derechos reservados.
-            </p>
-        </div>
-    </footer>
-
-    <!-- Lógica de Interactividad -->
-    <script>
-        // 1. Lógica de Copiado Portapapeles (Fallback document.execCommand)
-        function copyToClipboard(elementId, btn) {
-            const el = document.getElementById(elementId);
-            let text = el.innerText || el.textContent;
-            
-            const tempTextArea = document.createElement("textarea");
-            tempTextArea.value = text;
-            tempTextArea.style.position = "fixed";
-            tempTextArea.style.left = "-9999px";
-            document.body.appendChild(tempTextArea);
-            tempTextArea.focus();
-            tempTextArea.select();
-            
-            try {
-                document.execCommand('copy');
-                const originalHTML = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i> Copiado';
-                btn.classList.add('text-emerald-400');
-                btn.classList.remove('text-slate-400');
-                
-                setTimeout(() => { 
-                    btn.innerHTML = originalHTML; 
-                    btn.classList.remove('text-emerald-400');
-                    btn.classList.add('text-slate-400');
-                }, 2000);
-            } catch (err) {
-                console.error('No se pudo copiar', err);
-            }
-            document.body.removeChild(tempTextArea);
-        }
-
-        // 2. Lógica del Quiz (Renderizado y Validación IN-DOM)
-        const quizData = [
-            {
-                question: "¿Cuál es el motivo principal por el que los nodos en Freepik Spaces están simplificados respecto a sus aplicaciones web independientes?",
-                options: [
-                    { text: "Para forzar a los usuarios a comprar suscripciones premium.", correct: false },
-                    { text: "Para evitar sobrecargar el lienzo y respetar los límites técnicos al procesar flujos en lote (pipelines).", correct: true },
-                    { text: "Porque la tecnología de nodos aún está en fase beta experimental.", correct: false },
-                    { text: "Para hacer la interfaz más atractiva visualmente a nivel de código.", correct: false }
-                ]
-            },
-            {
-                question: "En Freepik Spaces, ¿dónde encuentras la verdadera configuración y opciones avanzadas de un nodo?",
-                options: [
-                    { text: "Están siempre ocultas en el código fuente de la página.", correct: false },
-                    { text: "Exclusivamente escritas sobre el bloque del lienzo (canvas).", correct: false },
-                    { text: "Se despliegan en el menú superior izquierdo al hacer doble clic.", correct: false },
-                    { text: "En el Panel de Propiedades (Barra lateral derecha) al hacer clic sobre el nodo.", correct: true }
-                ]
-            },
-            {
-                question: "A diferencia de la web oficial de Magnific, ¿qué limitación tiene el Nodo Upscaler en Spaces?",
-                options: [
-                    { text: "El factor de escalado está limitado a opciones predefinidas por el sistema (como 2x o 4x).", correct: true },
-                    { text: "No permite introducir ningún tipo de prompt para guiar la imagen.", correct: false },
-                    { text: "Solo funciona con imágenes en blanco y negro.", correct: false },
-                    { text: "Carece de controles de creatividad o de fidelidad a la imagen original.", correct: false }
-                ]
-            },
-            {
-                question: "Dentro del Nodo Upscaler, ¿qué función cumple el control de 'HDR'?",
-                options: [
-                    { text: "Cambia el formato de salida a video.", correct: false },
-                    { text: "Controla el microcontraste y la agresividad de las texturas.", correct: true },
-                    { text: "Fuerza a la IA a mantener exactamente la misma paleta de colores.", correct: false },
-                    { text: "Aumenta la resolución exclusivamente en rostros humanos.", correct: false }
-                ]
-            },
-            {
-                question: "¿Qué propiedad principal encuentras en el Panel de Propiedades del Generador de Imágenes para elegir su comportamiento?",
-                options: [
-                    { text: "El botón exclusivo de 'Negative Prompt'.", correct: false },
-                    { text: "Un nodo de texto externo de conexión obligatoria.", correct: false },
-                    { text: "El Selector de Modelo (Mystic, Flux, Nano Banana, Freepik Core).", correct: true },
-                    { text: "La barra de línea de tiempo de fotogramas.", correct: false }
-                ]
-            },
-            {
-                question: "Si deseas realizar Inpainting manual (usar pinceles de máscara) en Freepik Spaces, ¿puedes hacerlo dentro del Nodo Generador de Imágenes estándar?",
-                options: [
-                    { text: "Sí, la herramienta de pincel se despliega en el Panel de Propiedades.", correct: false },
-                    { text: "No, las herramientas de edición manual requieren nodos separados (como el Image Editor Node).", correct: true },
-                    { text: "Sí, pero solo si utilizas el modelo Mystic.", correct: false },
-                    { text: "No, el Inpainting está completamente prohibido en entornos modulares.", correct: false }
-                ]
-            },
-            {
-                question: "En el Nodo Generador de Video, ¿cómo se introducen las imágenes de inicio o fin para animar?",
-                options: [
-                    { text: "Usando los puertos físicos de conexión 'Start Frame' y 'End Frame'.", correct: true },
-                    { text: "Subiendo los archivos manualmente en el Panel de Propiedades.", correct: false },
-                    { text: "Poniendo la URL de la imagen en el System Prompt.", correct: false },
-                    { text: "Este nodo solo genera video desde texto, no admite imágenes base.", correct: false }
-                ]
-            },
-            {
-                question: "Según el manual, ¿qué herramientas avanzadas suelen estar ausentes o reducidas en el Nodo Generador de Video (ej. Kling/Luma) dentro de Spaces?",
-                options: [
-                    { text: "El selector de ratio de aspecto.", correct: false },
-                    { text: "Los parámetros de Paneo (Pan) y Zoom.", correct: false },
-                    { text: "Los pinceles de movimiento (Motion Brush) y extensiones complejas.", correct: true },
-                    { text: "La capacidad de usar una caja de texto para el prompt.", correct: false }
-                ]
-            },
-            {
-                question: "¿Cómo se introducen los datos manualmente en el 'List Node' (Nodo de Listas)?",
-                options: [
-                    { text: "Conectando obligatoriamente un archivo de Excel externo.", correct: false },
-                    { text: "Haciendo clic en 'Add Row' (Añadir fila) y escribiendo las variables directamente.", correct: true },
-                    { text: "Usando el modo 'Cross-product / Matrix' en el panel izquierdo.", correct: false },
-                    { text: "Las listas en Spaces solo se pueden autogenerar con IA.", correct: false }
-                ]
-            },
-            {
-                question: "En el 'Assistant Node' (LLM), ¿para qué sirve el campo 'System Prompt / Instrucción base'?",
-                options: [
-                    { text: "Para definir el 'rol' perpetuo del nodo, independientemente del texto que reciba por el conector de entrada.", correct: true },
-                    { text: "Para generar el Negative Prompt de las imágenes.", correct: false },
-                    { text: "Para escribir los datos que luego serán transformados en listas.", correct: false },
-                    { text: "Para seleccionar la versión de ChatGPT o Claude que procesará el texto.", correct: false }
-                ]
-            }
-        ];
-
-        function renderQuiz() {
-            const container = document.getElementById('quizContainer');
-            container.innerHTML = '';
-
-            quizData.forEach((q, idx) => {
-                const qDiv = document.createElement('div');
-                qDiv.className = 'mb-8';
-                qDiv.innerHTML = `
-                    <h4 class="text-xl font-bold text-white mb-4">
-                        <span class="text-brand-accent">${idx + 1}.</span> ${q.question}
-                    </h4>
-                    <div class="space-y-3">
-                        ${q.options.map((opt, optIdx) => `
-                            <div class="quiz-option flex items-center p-4 rounded-xl border border-slate-700 bg-slate-800/40 cursor-pointer transition-colors" onclick="selectAnswer(event, ${idx}, ${optIdx})">
-                                <input type="radio" name="q${idx}" value="${optIdx}" class="hidden">
-                                <div class="w-5 h-5 rounded-full border-2 border-slate-500 mr-4 radio-custom flex-shrink-0 transition-colors"></div>
-                                <span class="font-serif text-sm">${opt.text}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-                container.appendChild(qDiv);
-            });
-        }
-
-        function selectAnswer(e, qIdx, optIdx) {
-            const optionContainer = e.currentTarget;
-            const parentDiv = optionContainer.closest('.space-y-3');
-
-            // Limpiar selección previa
-            parentDiv.querySelectorAll('.quiz-option').forEach(opt => {
-                opt.classList.remove('border-brand-accent', 'bg-brand-primary/10');
-                opt.classList.add('border-slate-700', 'bg-slate-800/40');
-                const radio = opt.querySelector('.radio-custom');
-                radio.className = "w-5 h-5 rounded-full border-2 border-slate-500 mr-4 radio-custom flex-shrink-0 transition-colors";
-            });
-
-            // Aplicar nueva selección
-            optionContainer.classList.remove('border-slate-700', 'bg-slate-800/40');
-            optionContainer.classList.add('border-brand-accent', 'bg-brand-primary/10');
-            
-            const radio = optionContainer.querySelector('.radio-custom');
-            radio.className = "w-5 h-5 rounded-full border-2 border-brand-accent bg-brand-accent mr-4 radio-custom flex-shrink-0 transition-colors";
-            
-            const input = optionContainer.querySelector('input');
-            input.checked = true;
-        }
-
-        function submitQuiz() {
-            let correctCount = 0;
-            let answered = true;
-
-            // Validación de si se respondieron todas
-            quizData.forEach((q, idx) => {
-                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
-                if (!selected) answered = false;
-            });
-
-            const resultDiv = document.getElementById('quiz-result');
-
-            if (!answered) {
-                resultDiv.className = "mt-6 p-4 rounded-xl font-bold font-sans text-center bg-red-900/30 text-red-400 border border-red-500/50 block";
-                resultDiv.innerHTML = "<i class='fa-solid fa-triangle-exclamation mr-2'></i> Por favor, responde a todas las preguntas antes de validar.";
-                return;
-            }
-
-            // Bloquear botón
-            const btn = document.getElementById('validateBtn');
-            btn.disabled = true;
-            btn.classList.add('opacity-50', 'cursor-not-allowed');
-
-            // Calificar
-            quizData.forEach((q, idx) => {
-                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
-                const optIdx = parseInt(selected.value);
-                const isCorrect = q.options[optIdx].correct;
-                
-                const optionDiv = selected.closest('.quiz-option');
-                const parentDiv = optionDiv.parentElement;
-
-                // Bloquear clicks
-                parentDiv.style.pointerEvents = "none";
-
-                if (isCorrect) {
-                    correctCount++;
-                    optionDiv.classList.remove('border-brand-accent', 'bg-brand-primary/10');
-                    optionDiv.classList.add('border-emerald-500', 'bg-emerald-500/20', 'text-emerald-300');
-                    optionDiv.querySelector('.radio-custom').className = "w-5 h-5 rounded-full bg-emerald-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-[10px] fa-solid fa-check border-emerald-500";
-                } else {
-                    optionDiv.classList.remove('border-brand-accent', 'bg-brand-primary/10');
-                    optionDiv.classList.add('border-red-500', 'bg-red-500/20', 'text-red-300');
-                    optionDiv.querySelector('.radio-custom').className = "w-5 h-5 rounded-full bg-red-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-[10px] fa-solid fa-xmark border-red-500";
-
-                    // Mostrar la correcta
-                    const allOptions = parentDiv.querySelectorAll('.quiz-option');
-                    q.options.forEach((opt, oIdx) => {
-                        if (opt.correct) {
-                            const correctDiv = allOptions[oIdx];
-                            correctDiv.classList.remove('border-slate-700', 'bg-slate-800/40');
-                            correctDiv.classList.add('border-emerald-500', 'bg-emerald-500/20', 'text-emerald-300');
-                        }
-                    });
-                }
-            });
-
-            // Mostrar resultado en DOM
-            resultDiv.className = "mt-8 p-6 rounded-2xl font-sans text-center bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 block";
-            
-            const percentage = Math.round((correctCount / quizData.length) * 100);
-            let feedback = "";
-            if(percentage === 100) feedback = "¡Perfecto! Dominas la anatomía de los nodos.";
-            else if (percentage >= 70) feedback = "¡Gran trabajo! Has comprendido los conceptos clave de la automatización.";
-            else feedback = "Te recomendamos repasar las diferencias entre el lienzo y el Panel de Propiedades.";
-
-            resultDiv.innerHTML = `
-                <div class="text-3xl mb-3 font-bold"><i class="fa-solid fa-ranking-star mr-2"></i> Puntuación: ${correctCount} / ${quizData.length}</div>
-                <div class="text-base font-serif text-emerald-100/80">${feedback}</div>
-            `;
-        }
-
-        // Initialize features
-        document.addEventListener('DOMContentLoaded', () => {
-            renderQuiz();
-
-            // Scroll Observer for Fade-ins
-            const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.fade-in-on-scroll').forEach(el => observer.observe(el));
-
-            // Progress Bar
-            window.addEventListener('scroll', () => {
-                const scrollTop = window.scrollY;
-                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-                const scrolled = (scrollTop / docHeight) * 100;
-                document.getElementById('progressBar').style.width = scrolled + '%';
-            });
-        });
-    </script>
+<script src="/curso-data.js"></script>
+<script src="/curso.js"></script>
+<script>
+  // Preguntas del test: verbatim de la página original. a = índice de la opción correcta.
+  // `var` (no `const`): curso.js lee el array como window[data-quiz] y un `const` global no crea esa propiedad.
+  var quizData = [
+    {
+      q: "¿Cuál es el motivo principal por el que los nodos en Freepik Spaces están simplificados respecto a sus aplicaciones web independientes?",
+      opts: [
+        "Para forzar a los usuarios a comprar suscripciones premium.",
+        "Para evitar sobrecargar el lienzo y respetar los límites técnicos al procesar flujos en lote (pipelines).",
+        "Porque la tecnología de nodos aún está en fase beta experimental.",
+        "Para hacer la interfaz más atractiva visualmente a nivel de código."
+      ],
+      a: 1
+    },
+    {
+      q: "En Freepik Spaces, ¿dónde encuentras la verdadera configuración y opciones avanzadas de un nodo?",
+      opts: [
+        "Están siempre ocultas en el código fuente de la página.",
+        "Exclusivamente escritas sobre el bloque del lienzo (canvas).",
+        "Se despliegan en el menú superior izquierdo al hacer doble clic.",
+        "En el Panel de Propiedades (Barra lateral derecha) al hacer clic sobre el nodo."
+      ],
+      a: 3
+    },
+    {
+      q: "A diferencia de la web oficial de Magnific, ¿qué limitación tiene el Nodo Upscaler en Spaces?",
+      opts: [
+        "El factor de escalado está limitado a opciones predefinidas por el sistema (como 2x o 4x).",
+        "No permite introducir ningún tipo de prompt para guiar la imagen.",
+        "Solo funciona con imágenes en blanco y negro.",
+        "Carece de controles de creatividad o de fidelidad a la imagen original."
+      ],
+      a: 0
+    },
+    {
+      q: "Dentro del Nodo Upscaler, ¿qué función cumple el control de 'HDR'?",
+      opts: [
+        "Cambia el formato de salida a video.",
+        "Controla el microcontraste y la agresividad de las texturas.",
+        "Fuerza a la IA a mantener exactamente la misma paleta de colores.",
+        "Aumenta la resolución exclusivamente en rostros humanos."
+      ],
+      a: 1
+    },
+    {
+      q: "¿Qué propiedad principal encuentras en el Panel de Propiedades del Generador de Imágenes para elegir su comportamiento?",
+      opts: [
+        "El botón exclusivo de 'Negative Prompt'.",
+        "Un nodo de texto externo de conexión obligatoria.",
+        "El Selector de Modelo (Mystic, Flux, Nano Banana, Freepik Core).",
+        "La barra de línea de tiempo de fotogramas."
+      ],
+      a: 2
+    },
+    {
+      q: "Si deseas realizar Inpainting manual (usar pinceles de máscara) en Freepik Spaces, ¿puedes hacerlo dentro del Nodo Generador de Imágenes estándar?",
+      opts: [
+        "Sí, la herramienta de pincel se despliega en el Panel de Propiedades.",
+        "No, las herramientas de edición manual requieren nodos separados (como el Image Editor Node).",
+        "Sí, pero solo si utilizas el modelo Mystic.",
+        "No, el Inpainting está completamente prohibido en entornos modulares."
+      ],
+      a: 1
+    },
+    {
+      q: "En el Nodo Generador de Video, ¿cómo se introducen las imágenes de inicio o fin para animar?",
+      opts: [
+        "Usando los puertos físicos de conexión 'Start Frame' y 'End Frame'.",
+        "Subiendo los archivos manualmente en el Panel de Propiedades.",
+        "Poniendo la URL de la imagen en el System Prompt.",
+        "Este nodo solo genera video desde texto, no admite imágenes base."
+      ],
+      a: 0
+    },
+    {
+      q: "Según el manual, ¿qué herramientas avanzadas suelen estar ausentes o reducidas en el Nodo Generador de Video (ej. Kling/Luma) dentro de Spaces?",
+      opts: [
+        "El selector de ratio de aspecto.",
+        "Los parámetros de Paneo (Pan) y Zoom.",
+        "Los pinceles de movimiento (Motion Brush) y extensiones complejas.",
+        "La capacidad de usar una caja de texto para el prompt."
+      ],
+      a: 2
+    },
+    {
+      q: "¿Cómo se introducen los datos manualmente en el 'List Node' (Nodo de Listas)?",
+      opts: [
+        "Conectando obligatoriamente un archivo de Excel externo.",
+        "Haciendo clic en 'Add Row' (Añadir fila) y escribiendo las variables directamente.",
+        "Usando el modo 'Cross-product / Matrix' en el panel izquierdo.",
+        "Las listas en Spaces solo se pueden autogenerar con IA."
+      ],
+      a: 1
+    },
+    {
+      q: "En el 'Assistant Node' (LLM), ¿para qué sirve el campo 'System Prompt / Instrucción base'?",
+      opts: [
+        "Para definir el 'rol' perpetuo del nodo, independientemente del texto que reciba por el conector de entrada.",
+        "Para generar el Negative Prompt de las imágenes.",
+        "Para escribir los datos que luego serán transformados en listas.",
+        "Para seleccionar la versión de ChatGPT o Claude que procesará el texto."
+      ],
+      a: 0
+    }
+  ];
+</script>
 </body>
-
 </html>

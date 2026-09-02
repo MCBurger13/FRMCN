@@ -1,0 +1,25 @@
+/* [m].seny — type tokens + the brand's core type classes (.display, .eyebrow, .brackets). */
+:root{
+  --font-display:'Bricolage Grotesque Variable',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Instrument Sans Variable',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'Chivo Mono Variable',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --text-base-size:1.0625rem;   /* 17px body */
+  --text-base-leading:1.6;
+  --display-weight:640;         /* variable-font weight for display headlines */
+  --display-leading:0.98;       /* 1-2 line desktop headlines; 1.06 on mobile */
+  --display-tracking:-0.025em;
+  --eyebrow-size:0.8125rem;     /* 13px */
+  --eyebrow-tracking:0.1em;
+}
+body{font-family:var(--font-body);font-size:var(--text-base-size);line-height:var(--text-base-leading);color:var(--text-body);background:var(--surface-page);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+/* Display headlines: Bricolage, weight 640, tight leading, balanced wrap */
+.display{font-family:var(--font-display);font-weight:var(--display-weight);line-height:var(--display-leading);letter-spacing:var(--display-tracking);text-wrap:balance;}
+@media (max-width:640px){.display{line-height:1.06;letter-spacing:-0.015em;text-wrap:pretty;}}
+/* Eyebrow: Chivo Mono, uppercase, regular weight (never semibold — mono caps already carry weight) */
+.eyebrow{font-family:var(--font-mono);font-size:var(--eyebrow-size);font-weight:400;letter-spacing:var(--eyebrow-tracking);text-transform:uppercase;}
+/* Brand motif: the [m] brackets, repeated on every section label.
+   .brackets = lime brackets (on ink) · .brackets-ink = teal brackets (on paper). Content shared; only color changes. */
+.brackets::before,.brackets-ink::before{content:'[';margin-right:0.06em;}
+.brackets::after,.brackets-ink::after{content:']';margin-left:0.06em;}
+.brackets::before,.brackets::after{color:var(--color-accent);}
+.brackets-ink::before,.brackets-ink::after{color:var(--color-accent-deep);}

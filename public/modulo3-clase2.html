@@ -1,1105 +1,308 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Módulo 3 Clase 2: Composición e Iteración - [m].seny [labs]">
-    <title>Módulo 3: Estudio Creativo (Clase 2) - [m].seny [labs]</title>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap"
-        rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Merriweather', 'serif'],
-                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
-                    },
-                    colors: {
-                        brand: {
-                            dark: '#0F172A',
-                            primary: '#4F46E5',
-                            accent: '#F59E0B',
-                            light: '#F8FAFC'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body {
-            background-color: #F8FAFC;
-            color: #334155;
-            scroll-behavior: smooth;
-        }
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6,
-        button,
-        .nav-link {
-            font-family: 'Inter', sans-serif;
-        }
-
-        p,
-        li,
-        .prose-text {
-            font-family: 'Merriweather', serif;
-            line-height: 1.6;
-            font-size: 1.125rem;
-            text-align: justify;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .text-left {
-            text-align: left;
-        }
-
-        /* Callout Boxes */
-        .callout-analogy {
-            background-color: #FEF3C7;
-            /* Amber 50 */
-            border-left: 4px solid #F59E0B;
-            /* Amber 500 */
-        }
-
-        .callout-phrase {
-            background-color: #EEF2FF;
-            /* Indigo 50 */
-            border-left: 4px solid #4F46E5;
-            /* Indigo 600 */
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-
-        /* Animations */
-        .fade-in-on-scroll {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease-out;
-        }
-
-        .fade-in-on-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.1);
-        }
-
-        /* Progress Bar */
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #4F46E5, #F59E0B);
-            z-index: 1000;
-            transition: width 0.2s ease;
-        }
-
-        /* Quiz Styles */
-        .quiz-option {
-            padding: 1rem;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.75rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            background-color: rgba(255, 255, 255, 0.05);
-            color: #e2e8f0;
-        }
-
-        .quiz-option:hover {
-            border-color: #4F46E5;
-            background-color: rgba(79, 70, 229, 0.1);
-        }
-
-        .quiz-option.selected {
-            border-color: #F59E0B;
-            background-color: rgba(245, 158, 11, 0.1);
-        }
-
-        .quiz-option.correct {
-            border-color: #10b981;
-            background-color: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-        }
-
-        .quiz-option.incorrect {
-            border-color: #ef4444;
-            background-color: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M3 · Clase 2 — Composición y tiempo real · [m].seny /academy</title>
+<meta name="description" content="El ecosistema de producción ágil. Generación modular, iteración y prototipado visual instantáneo.">
+<link rel="stylesheet" href="/theme.css">
+<link rel="stylesheet" href="/curso.css">
 </head>
+<body data-class="m3c2">
+<main>
 
-<body class="antialiased">
+  <header class="hero">
+    <h1 class="display">Estudio creativo IA: composición y tiempo real.</h1>
+    <p class="sub">El ecosistema de producción ágil. Generación modular, iteración y prototipado visual instantáneo.</p>
+  </header>
 
-    <div class="progress-bar" id="progressBar"></div>
-
-    <!-- Navigation Header -->
-    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
-        <!-- Consistent max-w-5xl container for unified margins -->
-        <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center">
-                <a href="index.html" class="no-underline group">
-                    <h1 class="text-xl font-bold tracking-tight text-brand-dark group-hover:text-brand-primary transition-colors cursor-pointer">
-                        <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
-                    </h1>
-                </a>
-            </div>
-            <!-- Fixed: Using hidden md:flex to match index.html; and corrected 3rd navigation endpoint to #terminologia -->
-            <nav class="hidden md:flex space-x-5 text-xs font-bold text-gray-500 uppercase tracking-wider">
-                <a href="#intro" class="hover:text-brand-primary transition-colors">1. Ecosistema</a>
-                <a href="#herramientas" class="hover:text-brand-primary transition-colors">2. Plataformas</a>
-                <a href="#terminologia" class="hover:text-brand-primary transition-colors">3. Terminología</a>
-                <a href="#practica" class="hover:text-brand-primary transition-colors text-brand-accent">4. Práctica & PFC</a>
-            </nav>
-            <!-- Consistent hidden md:flex layout for "Salir" button -->
-            <a href="/login.html" onclick="document.cookie='sb-ndtoqnpomhtubcygkwlh-auth-token=;path=/;max-age=0';localStorage.clear()"
-                class="hidden md:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors ml-4"
-                title="Cerrar sesión">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                    <polyline points="16 17 21 12 16 7" />
-                    <line x1="21" y1="12" x2="9" y2="12" />
-                </svg>
-                Salir
-            </a>
-        </div>
-    </header>
-
-    <!-- Presentation Title (Hero) -->
-    <section class="bg-brand-dark text-white py-32 border-b-8 border-brand-primary relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute top-10 right-10 w-96 h-96 bg-brand-primary rounded-full blur-3xl"></div>
-            <div class="absolute bottom-10 left-20 w-[30rem] h-[30rem] bg-brand-accent rounded-full blur-3xl"></div>
-        </div>
-        <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
-            <span
-                class="inline-block py-1 px-3 bg-brand-primary/20 text-brand-primary font-mono text-sm font-bold uppercase tracking-widest mb-6 rounded">
-                Módulo 3 • Clase 2
-            </span>
-            <h1 class="text-5xl lg:text-7xl font-extrabold mb-6 leading-tight">
-                Estudio Creativo IA:<br>
-                <span class="text-brand-accent text-4xl lg:text-5xl">Composición y Tiempo Real</span>
-            </h1>
-            <p class="text-xl text-gray-300 font-serif max-w-2xl mx-auto italic text-center">
-                El ecosistema de producción ágil. Generación modular, iteración y prototipado visual instantáneo.
-            </p>
-            <div class="mt-10 flex items-center justify-center space-x-4 text-sm text-gray-400 font-mono">
-                <span><i class="fa-regular fa-clock mr-2"></i> 1 Hora</span>
-                <span>•</span>
-                <span><i class="fa-solid fa-layer-group mr-2"></i> Flujo de Trabajo Avanzado</span>
-            </div>
-        </div>
-    </section>
+  <div class="content">
 
     <!-- 1. Introducción -->
-    <section id="intro" class="py-20 bg-white">
-        <div class="max-w-5xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll">
-                <span
-                    class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">1</span>
-                Más allá de los grandes modelos: el ecosistema especializado
-            </h2>
+    <section class="sec" id="intro" data-label="Ecosistema">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Más allá de los grandes modelos: el ecosistema especializado.</h2></div>
+      <p>En la Clase 1 exploramos las capacidades de generación de imagen de los grandes modelos generalistas (Gemini, ChatGPT…). Son herramientas potentes, pero cuando hablamos de <strong>edición avanzada, control creativo y flujos profesionales de imagen</strong>, las empresas que mejor funcionan son las de <em>terceras empresas especializadas</em>.</p>
 
-            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">
-                En la Clase 1 exploramos las capacidades de generación de imagen de los grandes modelos generalistas
-                (Gemini, ChatGPT...). Son herramientas potentes, pero cuando hablamos de <strong>edición avanzada,
-                control creativo y flujos profesionales de imagen</strong>, las empresas que mejor funcionan son
-                las de <em>terceras empresas especializadas</em>.
-            </p>
+      <div class="callout nota">
+        <span class="k">[ ¿Por qué plataformas de terceros? ]</span>
+        <p>Plataformas como <strong>Higgsfield, Krea AI, Genspark o Magnific (Freepik)</strong> no son simples chatbots con imagen. Son <strong>workspaces completos</strong> diseñados específicamente para la creación y edición visual: ofrecen herramientas de composición modular, edición en tiempo real, upscaling de alta resolución, control de cámara, y flujos que ningún modelo generalista puede igualar.</p>
+      </div>
 
-            <div class="bg-indigo-50 border border-brand-primary/30 p-8 rounded-2xl mb-10 fade-in-on-scroll shadow-sm">
-                <h3 class="text-xl font-bold text-brand-dark mb-4 flex items-center">
-                    <i class="fa-solid fa-lightbulb text-brand-primary mr-3"></i> ¿Por qué plataformas de terceros?
-                </h3>
-                <p class="font-serif text-gray-700 mb-0">
-                    Plataformas como <strong>Higgsfield, Krea AI, Genspark o Magnific (Freepik)</strong> no son simples
-                    chatbots con imagen. Son <strong>workspaces completos</strong> diseñados específicamente para la
-                    creación y edición visual: ofrecen herramientas de composición modular, edición en tiempo real,
-                    upscaling de alta resolución, control de cámara, y flujos que ningún modelo generalista puede igualar.
-                </p>
-            </div>
+      <div class="grid-cards">
+        <div class="card"><span class="k">[ 01 ]</span><h4>Control total</h4><p>Herramientas específicas para cada fase: generación, edición, composición y acabado final.</p></div>
+        <div class="card"><span class="k">[ 02 ]</span><h4>Workspaces adaptados</h4><p>Interfaces pensadas para flujos creativos, no para conversaciones de texto.</p></div>
+        <div class="card"><span class="k">[ 03 ]</span><h4>Iteración profesional</h4><p>Permite ajustar, remezclar y refinar cada elemento visual de forma independiente.</p></div>
+      </div>
 
-            <div class="grid md:grid-cols-3 gap-6 mb-10 fade-in-on-scroll">
-                <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm text-center">
-                    <div class="w-12 h-12 bg-purple-50 text-purple-500 rounded-xl flex items-center justify-center text-2xl mx-auto mb-3">
-                        <i class="fa-solid fa-sliders"></i>
-                    </div>
-                    <h4 class="font-bold text-brand-dark mb-2">Control total</h4>
-                    <p class="font-serif text-gray-500 text-sm">Herramientas específicas para cada fase: generación, edición, composición y acabado final.</p>
-                </div>
-                <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm text-center">
-                    <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-xl flex items-center justify-center text-2xl mx-auto mb-3">
-                        <i class="fa-solid fa-bolt"></i>
-                    </div>
-                    <h4 class="font-bold text-brand-dark mb-2">Workspaces adaptados</h4>
-                    <p class="font-serif text-gray-500 text-sm">Interfaces pensadas para flujos creativos, no para conversaciones de texto.</p>
-                </div>
-                <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm text-center">
-                    <div class="w-12 h-12 bg-emerald-50 text-emerald-500 rounded-xl flex items-center justify-center text-2xl mx-auto mb-3">
-                        <i class="fa-solid fa-arrows-rotate"></i>
-                    </div>
-                    <h4 class="font-bold text-brand-dark mb-2">Iteración profesional</h4>
-                    <p class="font-serif text-gray-500 text-sm">Permite ajustar, remezclar y refinar cada elemento visual de forma independiente.</p>
-                </div>
-            </div>
-
-            <div class="callout-phrase p-6 rounded-xl fade-in-on-scroll shadow-sm">
-                <p class="font-serif text-indigo-900 text-lg m-0 text-center">
-                    <i class="fa-solid fa-quote-left mr-2 text-brand-primary"></i>
-                    <strong>Clave de esta clase:</strong> No se trata de qué modelo es "el mejor", sino de saber <em>qué herramienta usar en cada momento</em> del flujo creativo.
-                </p>
-            </div>
-        </div>
+      <div class="callout clave"><span class="k">[ Clave de esta clase ]</span><p>No se trata de qué modelo es «el mejor», sino de saber <em>qué herramienta usar en cada momento</em> del flujo creativo.</p></div>
     </section>
 
-    <!-- 2. Herramientas: El Laboratorio Creativo -->
-    <section id="herramientas" class="py-20 bg-brand-light border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6">
-            <div class="text-center mb-16 fade-in-on-scroll">
-                <h3 class="text-3xl font-extrabold text-brand-dark flex items-center justify-center mb-3">
-                    <span
-                        class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">2</span>
-                    Las Plataformas de Referencia
-                </h3>
-                <p class="text-gray-500 font-serif">Tres workspaces especializados que están definiendo el nuevo estándar de la edición de imagen con IA.
-                </p>
-            </div>
+    <!-- 2. Herramientas: las plataformas de referencia -->
+    <section class="sec" id="herramientas" data-label="Plataformas">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Las plataformas de referencia.</h2></div>
+      <p class="sec-intro">Cuatro workspaces especializados que están definiendo el nuevo estándar de la edición de imagen con IA.</p>
+      <div class="tools">
 
-            <div class="flex flex-col space-y-10 fade-in-on-scroll">
-
-                <!-- 1. Krea AI -->
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all card-hover">
-                    <div class="border-l-8 border-[#8B5CF6] p-8 lg:p-10">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-                            <div class="flex items-center">
-                                <div class="w-16 h-16 bg-purple-50 text-[#8B5CF6] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
-                                    <i class="fa-solid fa-bolt"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Krea AI</h4>
-                                    <p class="text-[#8B5CF6] font-bold text-xs uppercase tracking-widest">Generación en Tiempo Real y Upscaling</p>
-                                </div>
-                            </div>
-                            <a href="https://www.krea.ai/" target="_blank" rel="noopener"
-                                class="inline-flex items-center justify-center bg-gray-100 hover:bg-[#8B5CF6] hover:text-white text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors text-sm shadow-sm shrink-0">
-                                Abrir Krea AI <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
-                            </a>
-                        </div>
-                        <p class="text-gray-600 font-serif text-lg mb-6 leading-relaxed">
-                            Uno de los workspaces más completos del mercado. Su característica estrella es la
-                            <strong>generación en tiempo real</strong>: la imagen se va formando mientras escribes o
-                            dibujas, sin necesidad de pulsar ningún botón. Ofrece también un potente <strong>Upscaler
-                            de IA</strong> que reconstruye imágenes de baja calidad añadiendo detalle hasta resoluciones
-                            de impresión profesional, y un canvas completo para edición con capas y máscaras.
-                        </p>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-                            <div class="bg-purple-50 rounded-lg p-3 text-center">
-                                <i class="fa-solid fa-wand-magic-sparkles text-[#8B5CF6] text-xl mb-2 block"></i>
-                                <span class="font-bold text-xs text-brand-dark uppercase tracking-wide">Real-Time</span>
-                                <p class="text-xs text-gray-500 font-serif mt-1">Renderiza mientras escribes</p>
-                            </div>
-                            <div class="bg-purple-50 rounded-lg p-3 text-center">
-                                <i class="fa-solid fa-magnifying-glass-plus text-[#8B5CF6] text-xl mb-2 block"></i>
-                                <span class="font-bold text-xs text-brand-dark uppercase tracking-wide">Upscaling</span>
-                                <p class="text-xs text-gray-500 font-serif mt-1">Alta resolución para impresión</p>
-                            </div>
-                            <div class="bg-purple-50 rounded-lg p-3 text-center">
-                                <i class="fa-solid fa-paintbrush text-[#8B5CF6] text-xl mb-2 block"></i>
-                                <span class="font-bold text-xs text-brand-dark uppercase tracking-wide">Canvas</span>
-                                <p class="text-xs text-gray-500 font-serif mt-1">Edición con brocha y máscaras</p>
-                            </div>
-                        </div>
-                        <p class="text-sm text-gray-500"><strong class="text-gray-700">Mejor para:</strong> Bocetado creativo en vivo, presentaciones a clientes y preparación de artes finales a resolución 4K.</p>
-                    </div>
-                </div>
-
-                <!-- 2. Pomelli -->
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all card-hover">
-                    <div class="border-l-8 border-[#0EA5E9] p-8 lg:p-10">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-                            <div class="flex items-center">
-                                <div class="w-16 h-16 bg-sky-50 text-[#0EA5E9] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
-                                    <i class="fa-solid fa-layer-group"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Pomelli</h4>
-                                    <p class="text-[#0EA5E9] font-bold text-xs uppercase tracking-widest">Edición Avanzada por Capas e IA</p>
-                                </div>
-                            </div>
-                            <a href="https://labs.google.com/pomelli/about/" target="_blank" rel="noopener"
-                                class="inline-flex items-center justify-center bg-gray-100 hover:bg-[#0EA5E9] hover:text-white text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors text-sm shadow-sm shrink-0">
-                                Abrir Pomelli <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
-                            </a>
-                        </div>
-                        <p class="text-gray-600 font-serif text-lg mb-6 leading-relaxed">
-                            Pomelli es una plataforma de edición de imagen no destructiva que combina el trabajo por
-                            <strong>capas al estilo Photoshop</strong> con modelos generativos de última generación.
-                            Permite reemplazar fondos, aplicar estilos de iluminación, generar texturas y refinar
-                            cualquier elemento de la composición de forma <strong>precisa y controlada</strong>, sin
-                            perder la calidad del original en ningún paso del proceso.
-                        </p>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-                            <div class="bg-sky-50 rounded-lg p-3 text-center">
-                                <i class="fa-solid fa-layer-group text-[#0EA5E9] text-xl mb-2 block"></i>
-                                <span class="font-bold text-xs text-brand-dark uppercase tracking-wide">Capas IA</span>
-                                <p class="text-xs text-gray-500 font-serif mt-1">Edición no destructiva</p>
-                            </div>
-                            <div class="bg-sky-50 rounded-lg p-3 text-center">
-                                <i class="fa-solid fa-fill-drip text-[#0EA5E9] text-xl mb-2 block"></i>
-                                <span class="font-bold text-xs text-brand-dark uppercase tracking-wide">Fondos y Luz</span>
-                                <p class="text-xs text-gray-500 font-serif mt-1">Reemplazo inteligente</p>
-                            </div>
-                            <div class="bg-sky-50 rounded-lg p-3 text-center">
-                                <i class="fa-solid fa-sliders text-[#0EA5E9] text-xl mb-2 block"></i>
-                                <span class="font-bold text-xs text-brand-dark uppercase tracking-wide">Control Total</span>
-                                <p class="text-xs text-gray-500 font-serif mt-1">Precisión en cada ajuste</p>
-                            </div>
-                        </div>
-                        <p class="text-sm text-gray-500"><strong class="text-gray-700">Mejor para:</strong> Postproducción de producto, composiciones de alta calidad para campañas print y digital, y retoque profesional con asistencia generativa.</p>
-                    </div>
-                </div>
-
-                <!-- 3. Genspark -->
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all card-hover">
-                    <div class="border-l-8 border-[#F59E0B] p-8 lg:p-10">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-                            <div class="flex items-center">
-                                <div class="w-16 h-16 bg-amber-50 text-[#F59E0B] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
-                                    <i class="fa-solid fa-sparkles"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Genspark</h4>
-                                    <p class="text-[#F59E0B] font-bold text-xs uppercase tracking-widest">El Agente Visual Multimodal</p>
-                                </div>
-                            </div>
-                            <a href="https://www.genspark.ai/" target="_blank" rel="noopener"
-                                class="inline-flex items-center justify-center bg-gray-100 hover:bg-[#F59E0B] hover:text-white text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors text-sm shadow-sm shrink-0">
-                                Abrir Genspark <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
-                            </a>
-                        </div>
-                        <p class="text-gray-600 font-serif text-lg mb-6 leading-relaxed">
-                            Genspark actúa como un <strong>agente IA multimodal</strong> que integra búsqueda web,
-                            generación de imagen, vídeo y presentaciones en un mismo espacio de trabajo. Su enfoque en
-                            <strong>flujos de trabajo automáticos</strong> lo convierte en un copiloto creativo completo
-                            para equipos de marketing y comunicación que necesitan ir del briefing al entregable en el
-                            menor tiempo posible.
-                        </p>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-                            <div class="bg-amber-50 rounded-lg p-3 text-center">
-                                <i class="fa-solid fa-robot text-[#F59E0B] text-xl mb-2 block"></i>
-                                <span class="font-bold text-xs text-brand-dark uppercase tracking-wide">Agente IA</span>
-                                <p class="text-xs text-gray-500 font-serif mt-1">Toma decisiones creativas solo</p>
-                            </div>
-                            <div class="bg-amber-50 rounded-lg p-3 text-center">
-                                <i class="fa-solid fa-images text-[#F59E0B] text-xl mb-2 block"></i>
-                                <span class="font-bold text-xs text-brand-dark uppercase tracking-wide">Multimodal</span>
-                                <p class="text-xs text-gray-500 font-serif mt-1">Imagen, vídeo y texto integrados</p>
-                            </div>
-                            <div class="bg-amber-50 rounded-lg p-3 text-center">
-                                <i class="fa-solid fa-diagram-project text-[#F59E0B] text-xl mb-2 block"></i>
-                                <span class="font-bold text-xs text-brand-dark uppercase tracking-wide">Flujos</span>
-                                <p class="text-xs text-gray-500 font-serif mt-1">Automatización de tareas creativas</p>
-                            </div>
-                        </div>
-                        <p class="text-sm text-gray-500"><strong class="text-gray-700">Mejor para:</strong> Equipos que necesitan producir contenido visual y textual de forma rápida y encadenada, desde el briefing hasta el entregable final.</p>
-                    </div>
-                </div>
-
-                <!-- 3. Higgsfield -->
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all card-hover">
-                    <div class="border-l-8 border-[#EC4899] p-8 lg:p-10">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-                            <div class="flex items-center">
-                                <div class="w-16 h-16 bg-pink-50 text-[#EC4899] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
-                                    <i class="fa-solid fa-film"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Higgsfield</h4>
-                                    <p class="text-[#EC4899] font-bold text-xs uppercase tracking-widest">Edición Cinematográfica con IA</p>
-                                </div>
-                            </div>
-                            <a href="https://higgsfield.ai/" target="_blank" rel="noopener"
-                                class="inline-flex items-center justify-center bg-gray-100 hover:bg-[#EC4899] hover:text-white text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors text-sm shadow-sm shrink-0">
-                                Abrir Higgsfield <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
-                            </a>
-                        </div>
-                        <p class="text-gray-600 font-serif text-lg mb-6 leading-relaxed">
-                            Especializado en la <strong>edición y animación de imagen con control de cámara</strong>,
-                            Higgsfield permite aplicar movimientos cinematográficos (zoom, travelling, rotación orbital)
-                            sobre imágenes estáticas o generadas por IA. Su motor comprende conceptos fotográficos como
-                            la <strong>profundidad de campo, la apertura y el movimiento de cámara</strong>,
-                            convirtiéndose en la herramienta de referencia para contenido audiovisual de marca.
-                        </p>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-                            <div class="bg-pink-50 rounded-lg p-3 text-center">
-                                <i class="fa-solid fa-video text-[#EC4899] text-xl mb-2 block"></i>
-                                <span class="font-bold text-xs text-brand-dark uppercase tracking-wide">Img → Vídeo</span>
-                                <p class="text-xs text-gray-500 font-serif mt-1">Anima imágenes estáticas</p>
-                            </div>
-                            <div class="bg-pink-50 rounded-lg p-3 text-center">
-                                <i class="fa-solid fa-camera text-[#EC4899] text-xl mb-2 block"></i>
-                                <span class="font-bold text-xs text-brand-dark uppercase tracking-wide">Control Cámara</span>
-                                <p class="text-xs text-gray-500 font-serif mt-1">Zoom, travelling, órbita</p>
-                            </div>
-                            <div class="bg-pink-50 rounded-lg p-3 text-center">
-                                <i class="fa-solid fa-clapperboard text-[#EC4899] text-xl mb-2 block"></i>
-                                <span class="font-bold text-xs text-brand-dark uppercase tracking-wide">Cinematic</span>
-                                <p class="text-xs text-gray-500 font-serif mt-1">Calidad de producción visual</p>
-                            </div>
-                        </div>
-                        <p class="text-sm text-gray-500"><strong class="text-gray-700">Mejor para:</strong> Contenido de vídeo para redes sociales, campañas de marca y presentaciones de producto con movimientos de cámara de nivel cinematográfico.</p>
-                    </div>
-                </div>
-
+        <div class="tool card-live">
+          <p class="k">Generación en tiempo real y upscaling</p>
+          <h3 class="display">Krea AI</h3>
+          <p>Uno de los workspaces más completos del mercado. Su característica estrella es la <strong>generación en tiempo real</strong>: la imagen se va formando mientras escribes o dibujas, sin necesidad de pulsar ningún botón. Ofrece también un potente <strong>Upscaler de IA</strong> que reconstruye imágenes de baja calidad añadiendo detalle hasta resoluciones de impresión profesional, y un canvas completo para edición con capas y máscaras.</p>
+          <p class="use"><strong>Mejor para:</strong> Bocetado creativo en vivo, presentaciones a clientes y preparación de artes finales a resolución 4K.</p>
+          <div class="feats">
+            <div><b>Real-Time</b>Renderiza mientras escribes</div>
+            <div><b>Upscaling</b>Alta resolución para impresión</div>
+            <div><b>Canvas</b>Edición con brocha y máscaras</div>
+          </div>
+          <div class="links"><a class="btn-ghost" href="https://www.krea.ai/" target="_blank" rel="noopener">Abrir Krea AI →</a></div>
         </div>
+
+        <div class="tool card-live">
+          <p class="k">Edición avanzada por capas e IA</p>
+          <h3 class="display">Pomelli</h3>
+          <p>Pomelli es una plataforma de edición de imagen no destructiva que combina el trabajo por <strong>capas al estilo Photoshop</strong> con modelos generativos de última generación. Permite reemplazar fondos, aplicar estilos de iluminación, generar texturas y refinar cualquier elemento de la composición de forma <strong>precisa y controlada</strong>, sin perder la calidad del original en ningún paso del proceso.</p>
+          <p class="use"><strong>Mejor para:</strong> Postproducción de producto, composiciones de alta calidad para campañas print y digital, y retoque profesional con asistencia generativa.</p>
+          <div class="feats">
+            <div><b>Capas IA</b>Edición no destructiva</div>
+            <div><b>Fondos y Luz</b>Reemplazo inteligente</div>
+            <div><b>Control Total</b>Precisión en cada ajuste</div>
+          </div>
+          <div class="links"><a class="btn-ghost" href="https://labs.google.com/pomelli/about/" target="_blank" rel="noopener">Abrir Pomelli →</a></div>
+        </div>
+
+        <div class="tool card-live">
+          <p class="k">El agente visual multimodal</p>
+          <h3 class="display">Genspark</h3>
+          <p>Genspark actúa como un <strong>agente IA multimodal</strong> que integra búsqueda web, generación de imagen, vídeo y presentaciones en un mismo espacio de trabajo. Su enfoque en <strong>flujos de trabajo automáticos</strong> lo convierte en un copiloto creativo completo para equipos de marketing y comunicación que necesitan ir del briefing al entregable en el menor tiempo posible.</p>
+          <p class="use"><strong>Mejor para:</strong> Equipos que necesitan producir contenido visual y textual de forma rápida y encadenada, desde el briefing hasta el entregable final.</p>
+          <div class="feats">
+            <div><b>Agente IA</b>Toma decisiones creativas solo</div>
+            <div><b>Multimodal</b>Imagen, vídeo y texto integrados</div>
+            <div><b>Flujos</b>Automatización de tareas creativas</div>
+          </div>
+          <div class="links"><a class="btn-ghost" href="https://www.genspark.ai/" target="_blank" rel="noopener">Abrir Genspark →</a></div>
+        </div>
+
+        <div class="tool card-live">
+          <p class="k">Edición cinematográfica con IA</p>
+          <h3 class="display">Higgsfield</h3>
+          <p>Especializado en la <strong>edición y animación de imagen con control de cámara</strong>, Higgsfield permite aplicar movimientos cinematográficos (zoom, travelling, rotación orbital) sobre imágenes estáticas o generadas por IA. Su motor comprende conceptos fotográficos como la <strong>profundidad de campo, la apertura y el movimiento de cámara</strong>, convirtiéndose en la herramienta de referencia para contenido audiovisual de marca.</p>
+          <p class="use"><strong>Mejor para:</strong> Contenido de vídeo para redes sociales, campañas de marca y presentaciones de producto con movimientos de cámara de nivel cinematográfico.</p>
+          <div class="feats">
+            <div><b>Img → Vídeo</b>Anima imágenes estáticas</div>
+            <div><b>Control Cámara</b>Zoom, travelling, órbita</div>
+            <div><b>Cinematic</b>Calidad de producción visual</div>
+          </div>
+          <div class="links"><a class="btn-ghost" href="https://higgsfield.ai/" target="_blank" rel="noopener">Abrir Higgsfield →</a></div>
+        </div>
+
+      </div>
     </section>
 
-    <!-- 3. Terminología y Conceptos Clave -->
-    <section id="terminologia" class="py-20 bg-white">
-        <div class="max-w-5xl mx-auto px-6">
-            <div class="text-center mb-16 fade-in-on-scroll">
-                <h2 class="text-3xl font-bold text-brand-dark mb-3 flex items-center justify-center">
-                    <span
-                        class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">3</span>
-                    Terminología Esencial de IA Visual
-                </h2>
-                <p class="text-gray-500 font-serif max-w-2xl mx-auto">Dominar el vocabulario es el primer paso para
-                    comunicarte con precisión con las plataformas. Aprende los conceptos que definen la creación de
-                    imágenes con inteligencia artificial.</p>
-            </div>
+    <!-- 3. Terminología y conceptos clave -->
+    <section class="sec" id="terminologia" data-label="Terminología">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Terminología esencial de IA visual.</h2></div>
+      <p class="sec-intro">Dominar el vocabulario es el primer paso para comunicarte con precisión con las plataformas. Aprende los conceptos que definen la creación de imágenes con inteligencia artificial.</p>
 
-            <!-- Bloque A: Modos de Generación -->
-            <div class="mb-14 fade-in-on-scroll">
-                <h3 class="text-lg font-extrabold text-brand-dark uppercase tracking-widest mb-6 flex items-center">
-                    <span class="w-2 h-6 bg-brand-primary rounded-full mr-3 inline-block"></span>
-                    Modos de Generación
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Bloque A: modos de generación -->
+      <h3>Modos de generación</h3>
+      <div class="glossary">
+        <div class="row"><h3 class="term">Text2Img<small>Texto → Imagen</small></h3><p class="def">La operación más básica: describes con palabras lo que quieres y la IA lo genera desde cero. Es el punto de partida de todo flujo creativo. La calidad del output depende directamente de la calidad del prompt.</p></div>
+        <div class="row"><h3 class="term">Img2Img<small>Imagen → Imagen</small></h3><p class="def">Partes de una imagen de referencia y la IA la transforma según tus instrucciones. Permite mantener la composición o el estilo base mientras cambias otros elementos. Es la base del <em>style transfer</em> y la edición semántica.</p></div>
+        <div class="row"><h3 class="term">Img2Text<small>Imagen → Texto</small></h3><p class="def">El proceso inverso: la IA analiza una imagen y la describe en palabras. Es extremadamente útil para <strong>reverse-engineering</strong> de un estilo: sube una foto que te guste y obtén el prompt que la generaría.</p></div>
+        <div class="row"><h3 class="term">Inpainting<small>Pintura interna</small></h3><p class="def">Técnica que permite seleccionar (enmascarar) una zona concreta de la imagen y regenerarla sin tocar el resto. Es el equivalente IA del retoque fotográfico quirúrgico: cambias solo la camisa, conservando el fondo y el rostro.</p></div>
+        <div class="row"><h3 class="term">Outpainting<small>Expansión de lienzo</small></h3><p class="def">Lo contrario al inpainting: extiendes el lienzo más allá de los bordes de la imagen original y la IA rellena el espacio nuevo de forma coherente. Ideal para cambiar el ratio de aspecto de una foto sin perder el contenido central.</p></div>
+        <div class="row"><h3 class="term">ControlNet<small>Control de pose/forma</small></h3><p class="def">Sistema que permite usar estructuras guía (esqueletos de pose, bordes de un dibujo, mapas de profundidad) para controlar con precisión cómo la IA genera la imagen. Garantiza coherencia entre generaciones de un mismo personaje o composición.</p></div>
+      </div>
 
-                    <div class="bg-brand-light rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-shadow card-hover">
-                        <div class="flex items-center mb-3">
-                            <span class="font-mono font-extrabold text-brand-primary text-lg mr-3">Text2Img</span>
-                            <span class="bg-brand-primary/10 text-brand-primary text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">Texto → Imagen</span>
-                        </div>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed">La operación más básica: describes con palabras lo que quieres y la IA lo genera desde cero. Es el punto de partida de todo flujo creativo. La calidad del output depende directamente de la calidad del prompt.</p>
-                    </div>
+      <!-- Bloque B: parámetros técnicos -->
+      <h3>Parámetros técnicos</h3>
+      <div class="glossary">
+        <div class="row"><h3 class="term">CFG Scale<small>Adherencia al prompt</small></h3><p class="def"><em>Classifier Free Guidance.</em> Controla cuánto obedece la IA tu prompt. Un valor bajo genera resultados más creativos y libres; un valor alto produce imágenes que siguen el texto al pie de la letra pero pueden volverse rígidas o saturadas.</p></div>
+        <div class="row"><h3 class="term">Seed<small>Número de reproducción</small></h3><p class="def">Es el número que inicializa el «ruido» del que parte la generación. Usando el mismo seed con el mismo prompt obtendrás resultados casi idénticos. Es esencial para la <strong>reproducibilidad</strong>: guardar el seed es guardar la «receta» de tu imagen.</p></div>
+        <div class="row"><h3 class="term">Steps<small>Pasos de difusión</small></h3><p class="def">Número de iteraciones de refinado que aplica el modelo. Más steps = más detalle y coherencia, pero más tiempo de cómputo. La mayoría de modelos modernos ofrecen resultados excelentes entre 20 y 50 steps.</p></div>
+        <div class="row"><h3 class="term">Negative Prompt<small>Lo que NO quieres</small></h3><p class="def">Lista de palabras o conceptos que le dices a la IA que evite. Es tan importante como el prompt positivo. Usarlo bien elimina artefactos comunes: <code>blurry, deformed hands, watermark, text, low quality.</code></p></div>
+      </div>
 
-                    <div class="bg-brand-light rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-shadow card-hover">
-                        <div class="flex items-center mb-3">
-                            <span class="font-mono font-extrabold text-[#8B5CF6] text-lg mr-3">Img2Img</span>
-                            <span class="bg-purple-100 text-purple-700 text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">Imagen → Imagen</span>
-                        </div>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed">Partes de una imagen de referencia y la IA la transforma según tus instrucciones. Permite mantener la composición o el estilo base mientras cambias otros elementos. Es la base del <em>style transfer</em> y la edición semántica.</p>
-                    </div>
-
-                    <div class="bg-brand-light rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-shadow card-hover">
-                        <div class="flex items-center mb-3">
-                            <span class="font-mono font-extrabold text-[#F59E0B] text-lg mr-3">Img2Text</span>
-                            <span class="bg-amber-100 text-amber-700 text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">Imagen → Texto</span>
-                        </div>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed">El proceso inverso: la IA analiza una imagen y la describe en palabras. Es extremadamente útil para <strong>reverse-engineering</strong> de un estilo: sube una foto que te guste y obtén el prompt que la generaría.</p>
-                    </div>
-
-                    <div class="bg-brand-light rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-shadow card-hover">
-                        <div class="flex items-center mb-3">
-                            <span class="font-mono font-extrabold text-[#EC4899] text-lg mr-3">Inpainting</span>
-                            <span class="bg-pink-100 text-pink-700 text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">Pintura Interna</span>
-                        </div>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed">Técnica que permite seleccionar (enmascarar) una zona concreta de la imagen y regenerarla sin tocar el resto. Es el equivalente IA del retoque fotográfico quirúrgico: cambias solo la camisa, conservando el fondo y el rostro.</p>
-                    </div>
-
-                    <div class="bg-brand-light rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-shadow card-hover">
-                        <div class="flex items-center mb-3">
-                            <span class="font-mono font-extrabold text-[#10B981] text-lg mr-3">Outpainting</span>
-                            <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">Expansión de Lienzo</span>
-                        </div>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed">Lo contrario al inpainting: extiendes el lienzo más allá de los bordes de la imagen original y la IA rellena el espacio nuevo de forma coherente. Ideal para cambiar el ratio de aspecto de una foto sin perder el contenido central.</p>
-                    </div>
-
-                    <div class="bg-brand-light rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-shadow card-hover">
-                        <div class="flex items-center mb-3">
-                            <span class="font-mono font-extrabold text-[#1A73E8] text-lg mr-3">ControlNet</span>
-                            <span class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">Control de Pose/Forma</span>
-                        </div>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed">Sistema que permite usar estructuras guía (esqueletos de pose, bordes de un dibujo, mapas de profundidad) para controlar con precisión cómo la IA genera la imagen. Garantiza coherencia entre generaciones de un mismo personaje o composición.</p>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Bloque B: Parámetros Técnicos -->
-            <div class="mb-14 fade-in-on-scroll">
-                <h3 class="text-lg font-extrabold text-brand-dark uppercase tracking-widest mb-6 flex items-center">
-                    <span class="w-2 h-6 bg-brand-accent rounded-full mr-3 inline-block"></span>
-                    Parámetros Técnicos
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                    <div class="bg-brand-light rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-shadow card-hover">
-                        <div class="flex items-center mb-3">
-                            <span class="font-mono font-extrabold text-brand-dark text-lg mr-3">CFG Scale</span>
-                            <span class="bg-gray-200 text-gray-700 text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">Adherencia al Prompt</span>
-                        </div>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed"><em>Classifier Free Guidance.</em> Controla cuánto obedece la IA tu prompt. Un valor bajo genera resultados más creativos y libres; un valor alto produce imágenes que siguen el texto al pie de la letra pero pueden volverse rígidas o saturadas.</p>
-                    </div>
-
-                    <div class="bg-brand-light rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-shadow card-hover">
-                        <div class="flex items-center mb-3">
-                            <span class="font-mono font-extrabold text-brand-dark text-lg mr-3">Seed</span>
-                            <span class="bg-gray-200 text-gray-700 text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">Número de Reproducción</span>
-                        </div>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed">Es el número que inicializa el "ruido" del que parte la generación. Usando el mismo seed con el mismo prompt obtendrás resultados casi idénticos. Es esencial para la <strong>reproducibilidad</strong>: guardar el seed es guardar la "receta" de tu imagen.</p>
-                    </div>
-
-                    <div class="bg-brand-light rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-shadow card-hover">
-                        <div class="flex items-center mb-3">
-                            <span class="font-mono font-extrabold text-brand-dark text-lg mr-3">Steps</span>
-                            <span class="bg-gray-200 text-gray-700 text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">Pasos de Difusión</span>
-                        </div>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed">Número de iteraciones de refinado que aplica el modelo. Más steps = más detalle y coherencia, pero más tiempo de cómputo. La mayoría de modelos modernos ofrecen resultados excelentes entre 20 y 50 steps.</p>
-                    </div>
-
-                    <div class="bg-brand-light rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-shadow card-hover">
-                        <div class="flex items-center mb-3">
-                            <span class="font-mono font-extrabold text-brand-dark text-lg mr-3">Negative Prompt</span>
-                            <span class="bg-gray-200 text-gray-700 text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">Lo que NO quieres</span>
-                        </div>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed">Lista de palabras o conceptos que le dices a la IA que evite. Es tan importante como el prompt positivo. Usarlo bien elimina artefactos comunes: <code class="bg-gray-200 px-1 rounded text-xs">blurry, deformed hands, watermark, text, low quality.</code></p>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Bloque C: Configuración de Cámara -->
-            <div class="fade-in-on-scroll">
-                <h3 class="text-lg font-extrabold text-brand-dark uppercase tracking-widest mb-2 flex items-center">
-                    <span class="w-2 h-6 bg-[#EC4899] rounded-full mr-3 inline-block"></span>
-                    Configuración de Cámara en el Prompt
-                </h3>
-                <p class="text-gray-500 font-serif text-sm mb-6 ml-5">Incluir términos fotográficos en tu prompt activa el conocimiento técnico del modelo y eleva drásticamente el realismo y la intención artística de tus imágenes.</p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                    <div class="bg-pink-50 rounded-2xl p-6 border border-pink-100 hover:shadow-md transition-shadow card-hover">
-                        <div class="flex items-start mb-3">
-                            <div class="w-10 h-10 bg-[#EC4899]/15 text-[#EC4899] rounded-xl flex items-center justify-center text-xl mr-4 shrink-0">
-                                <i class="fa-solid fa-circle-half-stroke"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-extrabold text-brand-dark text-base mb-0.5">Apertura (f-stop)</h4>
-                                <p class="text-xs text-[#EC4899] font-bold uppercase tracking-wide">Profundidad de Campo</p>
-                            </div>
-                        </div>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed mb-3">Controla qué parte de la imagen está enfocada. Una apertura abierta (<strong>f/1.4 – f/2.8</strong>) produce un fondo muy desenfocado (efecto <em>bokeh</em>), ideal para retratos de producto que aíslan el sujeto. Una apertura cerrada (<strong>f/11 – f/16</strong>) mantiene todo en foco, perfecta para paisajes o arquitectura.</p>
-                        <div class="bg-white rounded-lg p-2 border border-pink-100">
-                            <code class="text-xs text-gray-600">shot at f/1.8, shallow depth of field, creamy bokeh background</code>
-                        </div>
-                    </div>
-
-                    <div class="bg-pink-50 rounded-2xl p-6 border border-pink-100 hover:shadow-md transition-shadow card-hover">
-                        <div class="flex items-start mb-3">
-                            <div class="w-10 h-10 bg-[#EC4899]/15 text-[#EC4899] rounded-xl flex items-center justify-center text-xl mr-4 shrink-0">
-                                <i class="fa-solid fa-gauge-high"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-extrabold text-brand-dark text-base mb-0.5">Velocidad de Obturación</h4>
-                                <p class="text-xs text-[#EC4899] font-bold uppercase tracking-wide">Movimiento y Congelado</p>
-                            </div>
-                        </div>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed mb-3">Determina si el movimiento queda congelado o borroso. Una velocidad rápida (<strong>1/1000s</strong>) "congela" el agua o el salto de un atleta. Una velocidad lenta (<strong>1/4s – 2s</strong>) genera trazas de luz o seda en cascadas. En IA, estos términos activan el <em>motion blur</em> o el <em>freeze frame</em>.</p>
-                        <div class="bg-white rounded-lg p-2 border border-pink-100">
-                            <code class="text-xs text-gray-600">long exposure, 1 second shutter speed, silky water motion blur</code>
-                        </div>
-                    </div>
-
-                    <div class="bg-pink-50 rounded-2xl p-6 border border-pink-100 hover:shadow-md transition-shadow card-hover">
-                        <div class="flex items-start mb-3">
-                            <div class="w-10 h-10 bg-[#EC4899]/15 text-[#EC4899] rounded-xl flex items-center justify-center text-xl mr-4 shrink-0">
-                                <i class="fa-solid fa-sun"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-extrabold text-brand-dark text-base mb-0.5">ISO</h4>
-                                <p class="text-xs text-[#EC4899] font-bold uppercase tracking-wide">Sensibilidad y Grano</p>
-                            </div>
-                        </div>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed mb-3">Define la sensibilidad del sensor a la luz. Un ISO bajo (<strong>ISO 100-400</strong>) produce imágenes limpias y nítidas con mucho detalle. Un ISO alto (<strong>ISO 3200+</strong>) introduce <em>grano</em> y textura, que en IA traduce en esa estética de fotografía análoga nocturna o reportaje de calle.</p>
-                        <div class="bg-white rounded-lg p-2 border border-pink-100">
-                            <code class="text-xs text-gray-600">ISO 6400, high grain, film photography aesthetic, night street</code>
-                        </div>
-                    </div>
-
-                    <div class="bg-pink-50 rounded-2xl p-6 border border-pink-100 hover:shadow-md transition-shadow card-hover">
-                        <div class="flex items-start mb-3">
-                            <div class="w-10 h-10 bg-[#EC4899]/15 text-[#EC4899] rounded-xl flex items-center justify-center text-xl mr-4 shrink-0">
-                                <i class="fa-solid fa-camera-rotate"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-extrabold text-brand-dark text-base mb-0.5">Focal Length (mm)</h4>
-                                <p class="text-xs text-[#EC4899] font-bold uppercase tracking-wide">Perspectiva y Ángulo</p>
-                            </div>
-                        </div>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed mb-3">Determina el ángulo de visión y la compresión de perspectiva. Un <strong>gran angular (16-24mm)</strong> exagera la profundidad, ideal para arquitectura e interiores. Un <strong>teleobjetivo (85-200mm)</strong> comprime los planos y es el estándar del retrato de moda por cómo reduce la distorsión facial.</p>
-                        <div class="bg-white rounded-lg p-2 border border-pink-100">
-                            <code class="text-xs text-gray-600">85mm portrait lens, compressed background, fashion photography</code>
-                        </div>
-                    </div>
-
-                    <div class="bg-pink-50 rounded-2xl p-6 border border-pink-100 hover:shadow-md transition-shadow card-hover md:col-span-2">
-                        <div class="flex items-start mb-3">
-                            <div class="w-10 h-10 bg-[#EC4899]/15 text-[#EC4899] rounded-xl flex items-center justify-center text-xl mr-4 shrink-0">
-                                <i class="fa-solid fa-video"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-extrabold text-brand-dark text-base mb-0.5">Ángulo y Movimiento de Cámara</h4>
-                                <p class="text-xs text-[#EC4899] font-bold uppercase tracking-wide">Posición y Dinámica</p>
-                            </div>
-                        </div>
-                        <p class="font-serif text-gray-600 text-sm leading-relaxed mb-4">La posición de la cámara genera lecturas emocionales distintas. Estos términos son especialmente potentes al usarlos en plataformas como <strong>Higgsfield</strong> para controlar el movimiento en vídeo.</p>
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            <div class="bg-white rounded-lg p-3 text-center border border-pink-100">
-                                <span class="font-mono font-bold text-xs text-brand-dark block mb-1">Bird's Eye View</span>
-                                <p class="text-xs text-gray-500 font-serif">Cenital, desde arriba</p>
-                            </div>
-                            <div class="bg-white rounded-lg p-3 text-center border border-pink-100">
-                                <span class="font-mono font-bold text-xs text-brand-dark block mb-1">Low Angle Shot</span>
-                                <p class="text-xs text-gray-500 font-serif">Desde abajo, heroico</p>
-                            </div>
-                            <div class="bg-white rounded-lg p-3 text-center border border-pink-100">
-                                <span class="font-mono font-bold text-xs text-brand-dark block mb-1">Dolly Zoom</span>
-                                <p class="text-xs text-gray-500 font-serif">Zoom + movimiento inverso</p>
-                            </div>
-                            <div class="bg-white rounded-lg p-3 text-center border border-pink-100">
-                                <span class="font-mono font-bold text-xs text-brand-dark block mb-1">Orbital Shot</span>
-                                <p class="text-xs text-gray-500 font-serif">Rotación alrededor del sujeto</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+      <!-- Bloque C: configuración de cámara en el prompt -->
+      <h3>Configuración de cámara en el prompt</h3>
+      <p class="sec-intro">Incluir términos fotográficos en tu prompt activa el conocimiento técnico del modelo y eleva drásticamente el realismo y la intención artística de tus imágenes.</p>
+      <div class="grid-cards two">
+        <div class="card">
+          <span class="k">Profundidad de campo</span>
+          <h4>Apertura (f-stop)</h4>
+          <p>Controla qué parte de la imagen está enfocada. Una apertura abierta (<strong>f/1.4 – f/2.8</strong>) produce un fondo muy desenfocado (efecto <em>bokeh</em>), ideal para retratos de producto que aíslan el sujeto. Una apertura cerrada (<strong>f/11 – f/16</strong>) mantiene todo en foco, perfecta para paisajes o arquitectura.</p>
+          <p><code>shot at f/1.8, shallow depth of field, creamy bokeh background</code></p>
         </div>
+        <div class="card">
+          <span class="k">Movimiento y congelado</span>
+          <h4>Velocidad de obturación</h4>
+          <p>Determina si el movimiento queda congelado o borroso. Una velocidad rápida (<strong>1/1000s</strong>) «congela» el agua o el salto de un atleta. Una velocidad lenta (<strong>1/4s – 2s</strong>) genera trazas de luz o seda en cascadas. En IA, estos términos activan el <em>motion blur</em> o el <em>freeze frame</em>.</p>
+          <p><code>long exposure, 1 second shutter speed, silky water motion blur</code></p>
+        </div>
+        <div class="card">
+          <span class="k">Sensibilidad y grano</span>
+          <h4>ISO</h4>
+          <p>Define la sensibilidad del sensor a la luz. Un ISO bajo (<strong>ISO 100-400</strong>) produce imágenes limpias y nítidas con mucho detalle. Un ISO alto (<strong>ISO 3200+</strong>) introduce <em>grano</em> y textura, que en IA traduce en esa estética de fotografía análoga nocturna o reportaje de calle.</p>
+          <p><code>ISO 6400, high grain, film photography aesthetic, night street</code></p>
+        </div>
+        <div class="card">
+          <span class="k">Perspectiva y ángulo</span>
+          <h4>Focal Length (mm)</h4>
+          <p>Determina el ángulo de visión y la compresión de perspectiva. Un <strong>gran angular (16-24mm)</strong> exagera la profundidad, ideal para arquitectura e interiores. Un <strong>teleobjetivo (85-200mm)</strong> comprime los planos y es el estándar del retrato de moda por cómo reduce la distorsión facial.</p>
+          <p><code>85mm portrait lens, compressed background, fashion photography</code></p>
+        </div>
+      </div>
+      <div class="card">
+        <span class="k">Posición y dinámica</span>
+        <h4>Ángulo y movimiento de cámara</h4>
+        <p>La posición de la cámara genera lecturas emocionales distintas. Estos términos son especialmente potentes al usarlos en plataformas como <strong>Higgsfield</strong> para controlar el movimiento en vídeo.</p>
+        <ul class="list-mono">
+          <li><strong>Bird's Eye View</strong> — Cenital, desde arriba</li>
+          <li><strong>Low Angle Shot</strong> — Desde abajo, heroico</li>
+          <li><strong>Dolly Zoom</strong> — Zoom + movimiento inverso</li>
+          <li><strong>Orbital Shot</strong> — Rotación alrededor del sujeto</li>
+        </ul>
+      </div>
     </section>
 
-    <!-- 4. Práctica y PFC -->
-    <section id="practica" class="py-24 bg-brand-dark text-white border-t-8 border-brand-accent">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16 fade-in-on-scroll">
-                <span class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-3 block"><i
-                        class="fa-solid fa-desktop mr-2"></i> Parte Práctica</span>
-                <h2 class="text-4xl lg:text-5xl font-extrabold mb-6">El Flujo Modular</h2>
-                <p class="text-gray-400 font-serif text-xl text-center max-w-3xl mx-auto">Abre las herramientas y completa este
-                    flujo de trabajo secuencial.</p>
-            </div>
+    <!-- 4. Práctica, test y PFC (banda tinta) -->
+    <section class="sec sec-dark" id="practica" data-label="Práctica &amp; PFC">
+      <p class="sec-eyebrow">[ Parte práctica ]</p>
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">El flujo modular.</h2></div>
+      <p class="sec-intro">Abre las herramientas y completa este flujo de trabajo secuencial.</p>
 
-            <!-- Ejercicios -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-24 fade-in-on-scroll">
-                <div class="bg-white/5 border border-white/10 rounded-xl p-8 hover:bg-white/10 transition-colors">
-                    <div
-                        class="w-12 h-12 bg-blue-500/20 text-blue-400 rounded-xl flex items-center justify-center mb-6 text-xl">
-                        <i class="fa-solid fa-sliders"></i>
-                    </div>
-                    <h4 class="font-bold text-xl mb-3 text-white">Ej. 1: Crear en Krea AI</h4>
-                    <p class="font-serif text-gray-400 text-sm">Crea varias versiones de un sketch en resultado realista.</p>
-                </div>
-                <div class="bg-white/5 border border-white/10 rounded-xl p-8 hover:bg-white/10 transition-colors">
-                    <div
-                        class="w-12 h-12 bg-indigo-500/20 text-indigo-400 rounded-xl flex items-center justify-center mb-6 text-xl">
-                        <i class="fa-solid fa-cubes"></i>
-                    </div>
-                    <h4 class="font-bold text-xl mb-3 text-white">Ej. 2: Iterar conceptos</h4>
-                    <p class="font-serif text-gray-400 text-sm">Iterar sobre tus creaciones con herramientas como Higgsfield o Krea AI.</p>
-                </div>
-                <div class="bg-white/5 border border-white/10 rounded-xl p-8 hover:bg-white/10 transition-colors">
-                    <div
-                        class="w-12 h-12 bg-purple-500/20 text-purple-400 rounded-xl flex items-center justify-center mb-6 text-xl">
-                        <i class="fa-solid fa-bolt"></i>
-                    </div>
-                    <h4 class="font-bold text-xl mb-3 text-white">Ej. 3: Crea una campaña</h4>
-                    <p class="font-serif text-gray-400 text-sm">Utiliza Pomelli para crear una campaña sobre el producto e imaginarlo en diferentes escenarios.</p>
-                </div>
-            </div>
+      <ol class="exercises">
+        <li><h4>Crear en Krea AI</h4><p>Crea varias versiones de un sketch en resultado realista.</p></li>
+        <li><h4>Iterar conceptos</h4><p>Iterar sobre tus creaciones con herramientas como Higgsfield o Krea AI.</p></li>
+        <li><h4>Crea una campaña</h4><p>Utiliza Pomelli para crear una campaña sobre el producto e imaginarlo en diferentes escenarios.</p></li>
+      </ol>
 
-            <!-- Quiz Interactivo -->
-            <div class="border-t border-gray-700 pt-16 mb-24 fade-in-on-scroll">
-                <h3 class="text-3xl font-bold mb-8 text-white"><i
-                        class="fa-solid fa-clipboard-question text-brand-accent mr-3"></i> Autodiagnóstico de la Clase 2
-                </h3>
-                <div class="bg-gray-900 border border-gray-700 rounded-2xl p-8 lg:p-12 shadow-2xl">
-                    <div id="quizContainer">
-                        <!-- Quiz se renderiza vía JS aquí -->
-                    </div>
-                </div>
-            </div>
+      <div class="quiz" data-quiz="quizData" data-title="Autodiagnóstico de la Clase 2"></div>
 
-            <!-- Proyecto Fin de Curso (PFC) -->
-            <div
-                class="border-t-8 border-brand-primary bg-white rounded-3xl p-10 lg:p-16 shadow-2xl relative overflow-hidden fade-in-on-scroll text-gray-800">
-                <div class="absolute top-0 right-0 w-64 h-64 bg-brand-primary/5 rounded-bl-full -z-10"></div>
-                <div class="flex items-center mb-6">
-                    <div
-                        class="w-16 h-16 bg-brand-primary text-white rounded-2xl flex items-center justify-center text-3xl shadow-lg mr-6 shrink-0">
-                        <i class="fa-solid fa-rocket"></i>
-                    </div>
-                    <div>
-                        <span class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-1 block">Proyecto
-                            Fin de Curso</span>
-                        <h3 class="text-3xl lg:text-4xl font-extrabold text-brand-dark">La Campaña Visual Compuesta</h3>
-                    </div>
-                </div>
-
-                <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-8">
-                    <p class="font-serif text-gray-700 mb-8 text-lg">
-                        Aprovechando las herramientas vistas hoy, vas a crear una pieza de marketing compuesto para el
-                        producto/servicio que definiste en los módulos anteriores.
-                    </p>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div
-                            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                            <div
-                                class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold mb-4">
-                                1</div>
-                            <h5 class="font-bold text-gray-800 mb-2">Estructurar Prompts</h5>
-                            <p class="font-serif text-gray-500 text-sm">Crear GEM creador de Prompts con vuestra estructura.</p>
-                        </div>
-                        <div
-                            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                            <div
-                                class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold mb-4">
-                                2</div>
-                            <h5 class="font-bold text-gray-800 mb-2">Creación e Iteración</h5>
-                            <p class="font-serif text-gray-500 text-sm">Crear producto de 0 en Krea AI (Utilizando el prompt) e iterar varias versiones del producto.</p>
-                        </div>
-                        <div
-                            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                            <div
-                                class="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold mb-4">
-                                3</div>
-                            <h5 class="font-bold text-gray-800 mb-2">Retoque Cinematográfico</h5>
-                            <p class="font-serif text-gray-500 text-sm">Crear Resultados finales de alta calidad y con los retoques finales necesarios en Higgsfield.</p>
-                        </div>
-                        <div
-                            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                            <div
-                                class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold mb-4">
-                                4</div>
-                            <h5 class="font-bold text-gray-800 mb-2">La Campaña Visual</h5>
-                            <p class="font-serif text-gray-500 text-sm">Crear una campaña en Pomelli sobre tu producto.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+      <div class="pfc">
+        <span class="k">[ PFC — Transversal ]</span>
+        <h3>La Campaña Visual Compuesta</h3>
+        <p>Aprovechando las herramientas vistas hoy, vas a crear una pieza de marketing compuesto para el producto/servicio que definiste en los módulos anteriores.</p>
+        <div class="steps">
+          <div><span class="n">01</span><h4>Estructurar Prompts</h4><p>Crear GEM creador de Prompts con vuestra estructura.</p></div>
+          <div><span class="n">02</span><h4>Creación e Iteración</h4><p>Crear producto de 0 en Krea AI (Utilizando el prompt) e iterar varias versiones del producto.</p></div>
+          <div><span class="n">03</span><h4>Retoque Cinematográfico</h4><p>Crear Resultados finales de alta calidad y con los retoques finales necesarios en Higgsfield.</p></div>
+          <div><span class="n">04</span><h4>La Campaña Visual</h4><p>Crear una campaña en Pomelli sobre tu producto.</p></div>
         </div>
+      </div>
     </section>
 
-    <!-- Navegación entre Clases -->
-    <section class="py-12 bg-white border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <a href="modulo3-clase1.html"
-                class="flex items-center px-6 py-3 text-gray-600 border border-gray-300 rounded-xl font-bold hover:text-brand-primary hover:border-brand-primary transition-all bg-white shadow-sm w-full sm:w-auto justify-center">
-                <i class="fa-solid fa-arrow-left mr-2"></i> Anterior: Clase 1
-            </a>
-            <a href="index.html"
-                class="flex items-center px-6 py-3 text-gray-600 border border-gray-300 rounded-xl font-bold hover:text-brand-primary hover:border-brand-primary transition-all bg-white shadow-sm w-full sm:w-auto justify-center">
-                <i class="fa-solid fa-home mr-2"></i> Volver al Temario
-            </a>
-            <a href="modulo3-clase3.html"
-                class="flex items-center px-6 py-3 bg-brand-primary text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors shadow-lg w-full sm:w-auto justify-center">
-                Siguiente: Clase 3 <i class="fa-solid fa-arrow-right ml-2"></i>
-            </a>
-        </div>
-    </section>
+  </div><!-- /.content -->
+  <!-- nav inferior y pie: los genera curso.js -->
+</main>
 
-    <!-- Footer -->
-    <footer class="bg-brand-dark text-white py-16 border-t border-gray-800">
-        <div class="max-w-5xl mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold mb-4">
-                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
-            </h2>
-            <p class="text-gray-400 mb-10 max-w-lg mx-auto font-serif text-center">
-                Empoderando a la próxima generación de empresas con inteligencia artificial práctica y estratégica.
-            </p>
-            <div class="w-12 h-px bg-gray-800 mx-auto my-6"></div>
-            <p class="text-xs text-gray-500 font-sans text-center">
-                Material de Apoyo Formativo - Módulo 3 (Clase 2)<br>
-                © 2026 [m].seny [labs]. Todos los derechos reservados.
-            </p>
-        </div>
-    </footer>
-
-    <!-- Lógica de Interactividad -->
-    <script>
-        // Lógica Quiz Interactivo (10 Preguntas Módulo 3 Clase 2)
-        const quizData = [
-            {
-                question: "¿Qué técnica utilizarías para extender el paisaje de una foto vertical a un formato horizontal sin distorsionar la imagen original?",
-                options: [
-                    { text: "Inpainting", correct: false },
-                    { text: "Upscaling", correct: false },
-                    { text: "Outpainting", correct: true },
-                    { text: "Img2Img", correct: false }
-                ]
-            },
-            {
-                question: "Si quieres mantener la postura exacta de una modelo de una foto, pero cambiar su ropa y entorno, ¿qué herramienta es imprescindible?",
-                options: [
-                    { text: "ControlNet", correct: true },
-                    { text: "Text2Img", correct: false },
-                    { text: "CFG Scale alto", correct: false },
-                    { text: "Negative Prompt", correct: false }
-                ]
-            },
-            {
-                question: "¿Qué plataforma de este módulo es ideal para componer campañas visuales trabajando con capas y edición no destructiva?",
-                options: [
-                    { text: "Higgsfield", correct: false },
-                    { text: "Genspark", correct: false },
-                    { text: "Krea AI", correct: false },
-                    { text: "Pomelli", correct: true }
-                ]
-            },
-            {
-                question: "En la generación de imágenes, ¿qué función tiene el parámetro 'Seed'?",
-                options: [
-                    { text: "Determina la cantidad de ruido inicial. Usar el mismo número Seed genera exactamente la misma imagen si el prompt no cambia.", correct: true },
-                    { text: "Aumenta la resolución final de la imagen generada.", correct: false },
-                    { text: "Controla cuánto caso hace la IA a las instrucciones del usuario.", correct: false },
-                    { text: "Define el número de iteraciones o pasos que dará la IA.", correct: false }
-                ]
-            },
-            {
-                question: "Si ves que la IA está ignorando completamente tu prompt y creando algo aleatorio, ¿qué parámetro deberías revisar?",
-                options: [
-                    { text: "Steps", correct: false },
-                    { text: "Seed", correct: false },
-                    { text: "Negative Prompt", correct: false },
-                    { text: "CFG Scale (posiblemente esté demasiado bajo)", correct: true }
-                ]
-            },
-            {
-                question: "¿Para qué sirve el 'Negative Prompt'?",
-                options: [
-                    { text: "Para borrar partes de la imagen una vez generada.", correct: false },
-                    { text: "Para indicarle a la IA qué elementos, estilos o defectos NO queremos que aparezcan en el resultado final.", correct: true },
-                    { text: "Para reducir el brillo y el contraste de la imagen.", correct: false },
-                    { text: "Para indicarle a la IA que el prompt principal es menos importante.", correct: false }
-                ]
-            },
-            {
-                question: "Si quieres generar el retrato de un producto con un fondo muy desenfocado (bokeh) para resaltar el primer plano, ¿qué configuración de cámara añadirías al prompt?",
-                options: [
-                    { text: "Apertura f/1.8", correct: true },
-                    { text: "Apertura f/16", correct: false },
-                    { text: "Shutter speed 1/1000s", correct: false },
-                    { text: "ISO 3200", correct: false }
-                ]
-            },
-            {
-                question: "¿Qué plataforma recomendarías para buscar referencias visuales avanzadas y organizar ideas visuales a modo de Agente Visual Multimodal?",
-                options: [
-                    { text: "Pomelli", correct: false },
-                    { text: "Genspark", correct: true },
-                    { text: "Krea AI", correct: false },
-                    { text: "Higgsfield", correct: false }
-                ]
-            },
-            {
-                question: "Si quieres simular la captura de un coche deportivo de carreras congelado en pleno movimiento, sin desenfoque (motion blur), ¿qué pedirías en el prompt?",
-                options: [
-                    { text: "Slow shutter speed, 1/10s", correct: false },
-                    { text: "High ISO, 6400", correct: false },
-                    { text: "Fast shutter speed, 1/2000s", correct: true },
-                    { text: "Wide angle, 14mm", correct: false }
-                ]
-            },
-            {
-                question: "¿Qué técnica describe el proceso de tomar un boceto (sketch) a lápiz y pedirle a la IA que lo transforme en un render 3D hiperrealista?",
-                options: [
-                    { text: "Inpainting", correct: false },
-                    { text: "Img2Img", correct: true },
-                    { text: "Text2Img", correct: false },
-                    { text: "Outpainting", correct: false }
-                ]
-            }
-        ];
-
-        function renderQuiz() {
-            const container = document.getElementById('quizContainer');
-            container.innerHTML = '';
-
-            quizData.forEach((q, idx) => {
-                const qDiv = document.createElement('div');
-                qDiv.className = 'mb-8';
-                qDiv.innerHTML = `
-                    <h4 class="text-xl font-bold text-white mb-4"><span class="text-brand-accent">${idx + 1}.</span> ${q.question}</h4>
-                    <div class="space-y-3">
-                        ${q.options.map((opt, optIdx) => `
-                            <div class="quiz-option group flex items-center" onclick="selectAnswer(event, ${idx}, ${optIdx})">
-                                <input type="radio" name="q${idx}" value="${optIdx}" class="hidden">
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-500 mr-4 flex-shrink-0 group-hover:border-brand-primary radio-custom transition-colors"></div>
-                                <span class="font-serif text-sm md:text-base">${opt.text}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-                container.appendChild(qDiv);
-            });
-
-            const btnDiv = document.createElement('div');
-            btnDiv.className = "mt-10 pt-8 border-t border-gray-700 text-center";
-            btnDiv.innerHTML = `
-                <button onclick="submitQuiz()" class="px-10 py-4 bg-brand-primary text-white font-bold rounded-xl hover:bg-indigo-500 transition-colors shadow-lg text-lg uppercase tracking-wider">
-                    Validar Respuestas
-                </button>
-            `;
-            container.appendChild(btnDiv);
-        }
-
-        function selectAnswer(e, qIdx, optIdx) {
-            const optionContainer = e.currentTarget;
-            const parentDiv = optionContainer.closest('.space-y-3');
-
-            const allOptions = parentDiv.querySelectorAll('.quiz-option');
-            allOptions.forEach(opt => {
-                opt.classList.remove('selected');
-                opt.querySelector('.radio-custom').classList.remove('bg-brand-accent', 'border-brand-accent');
-                opt.querySelector('.radio-custom').classList.add('border-gray-500');
-            });
-
-            optionContainer.classList.add('selected');
-            const radioCustom = optionContainer.querySelector('.radio-custom');
-            radioCustom.classList.remove('border-gray-500');
-            radioCustom.classList.add('bg-brand-accent', 'border-brand-accent');
-
-            const input = optionContainer.querySelector('input');
-            input.checked = true;
-        }
-
-        function submitQuiz() {
-            let correctCount = 0;
-            let answeredCount = 0;
-
-            quizData.forEach((q, idx) => {
-                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
-                if (selected) {
-                    answeredCount++;
-                    const optIdx = selected.value;
-                    const isCorrect = q.options[optIdx].correct;
-                    const optionDiv = selected.closest('.quiz-option');
-                    const parentDiv = optionDiv.parentElement;
-
-                    parentDiv.style.pointerEvents = "none";
-
-                    if (isCorrect) {
-                        correctCount++;
-                        optionDiv.classList.remove('selected');
-                        optionDiv.classList.add('correct');
-                        optionDiv.querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-emerald-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-check";
-                    } else {
-                        optionDiv.classList.remove('selected');
-                        optionDiv.classList.add('incorrect');
-                        optionDiv.querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-red-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-xmark";
-
-                        const allOptions = parentDiv.querySelectorAll('.quiz-option');
-                        q.options.forEach((opt, oIdx) => {
-                            if (opt.correct) {
-                                allOptions[oIdx].classList.remove('selected');
-                                allOptions[oIdx].classList.add('correct');
-                                allOptions[oIdx].querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-emerald-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-check";
-                            }
-                        });
-                    }
-                }
-            });
-
-            if (answeredCount < quizData.length) {
-                alert("Por favor, responde a todas las preguntas antes de validar.");
-                return;
-            }
-
-            const percentage = Math.round((correctCount / quizData.length) * 100);
-            let message = "";
-            if (percentage === 100) message = "🏆 ¡Excelente! Dominas a la perfección el flujo modular.";
-            else if (percentage >= 80) message = "👍 ¡Muy bien! Tienes clara la función de cada herramienta.";
-            else if (percentage >= 60) message = "✅ ¡Aprobado! Repasa los conceptos de Whisk y Krea AI.";
-            else message = "📚 Te recomendamos releer la clase antes de pasar a la práctica.";
-
-            alert(`Puntuación Final: ${correctCount}/${quizData.length} (${percentage}%)\n\n${message}`);
-        }
-
-        // Initialize features
-        document.addEventListener('DOMContentLoaded', () => {
-            renderQuiz();
-
-            // Scroll Observer for Fade-ins
-            const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.fade-in-on-scroll').forEach(el => observer.observe(el));
-
-            // Progress Bar
-            window.addEventListener('scroll', () => {
-                const scrollTop = window.scrollY;
-                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-                const scrolled = (scrollTop / docHeight) * 100;
-                document.getElementById('progressBar').style.width = scrolled + '%';
-            });
-        });
-    </script>
+<script src="/curso-data.js"></script>
+<script src="/curso.js"></script>
+<script>
+  // Preguntas del test: verbatim de la página original. a = índice de la opción correcta.
+  // `var` (no `const`): curso.js lee el array como window[data-quiz] y un `const` global no crea esa propiedad.
+  var quizData = [
+    {
+      q: "¿Qué técnica utilizarías para extender el paisaje de una foto vertical a un formato horizontal sin distorsionar la imagen original?",
+      opts: [
+        "Inpainting",
+        "Upscaling",
+        "Outpainting",
+        "Img2Img"
+      ],
+      a: 2
+    },
+    {
+      q: "Si quieres mantener la postura exacta de una modelo de una foto, pero cambiar su ropa y entorno, ¿qué herramienta es imprescindible?",
+      opts: [
+        "ControlNet",
+        "Text2Img",
+        "CFG Scale alto",
+        "Negative Prompt"
+      ],
+      a: 0
+    },
+    {
+      q: "¿Qué plataforma de este módulo es ideal para componer campañas visuales trabajando con capas y edición no destructiva?",
+      opts: [
+        "Higgsfield",
+        "Genspark",
+        "Krea AI",
+        "Pomelli"
+      ],
+      a: 3
+    },
+    {
+      q: "En la generación de imágenes, ¿qué función tiene el parámetro 'Seed'?",
+      opts: [
+        "Determina la cantidad de ruido inicial. Usar el mismo número Seed genera exactamente la misma imagen si el prompt no cambia.",
+        "Aumenta la resolución final de la imagen generada.",
+        "Controla cuánto caso hace la IA a las instrucciones del usuario.",
+        "Define el número de iteraciones o pasos que dará la IA."
+      ],
+      a: 0
+    },
+    {
+      q: "Si ves que la IA está ignorando completamente tu prompt y creando algo aleatorio, ¿qué parámetro deberías revisar?",
+      opts: [
+        "Steps",
+        "Seed",
+        "Negative Prompt",
+        "CFG Scale (posiblemente esté demasiado bajo)"
+      ],
+      a: 3
+    },
+    {
+      q: "¿Para qué sirve el 'Negative Prompt'?",
+      opts: [
+        "Para borrar partes de la imagen una vez generada.",
+        "Para indicarle a la IA qué elementos, estilos o defectos NO queremos que aparezcan en el resultado final.",
+        "Para reducir el brillo y el contraste de la imagen.",
+        "Para indicarle a la IA que el prompt principal es menos importante."
+      ],
+      a: 1
+    },
+    {
+      q: "Si quieres generar el retrato de un producto con un fondo muy desenfocado (bokeh) para resaltar el primer plano, ¿qué configuración de cámara añadirías al prompt?",
+      opts: [
+        "Apertura f/1.8",
+        "Apertura f/16",
+        "Shutter speed 1/1000s",
+        "ISO 3200"
+      ],
+      a: 0
+    },
+    {
+      q: "¿Qué plataforma recomendarías para buscar referencias visuales avanzadas y organizar ideas visuales a modo de Agente Visual Multimodal?",
+      opts: [
+        "Pomelli",
+        "Genspark",
+        "Krea AI",
+        "Higgsfield"
+      ],
+      a: 1
+    },
+    {
+      q: "Si quieres simular la captura de un coche deportivo de carreras congelado en pleno movimiento, sin desenfoque (motion blur), ¿qué pedirías en el prompt?",
+      opts: [
+        "Slow shutter speed, 1/10s",
+        "High ISO, 6400",
+        "Fast shutter speed, 1/2000s",
+        "Wide angle, 14mm"
+      ],
+      a: 2
+    },
+    {
+      q: "¿Qué técnica describe el proceso de tomar un boceto (sketch) a lápiz y pedirle a la IA que lo transforme en un render 3D hiperrealista?",
+      opts: [
+        "Inpainting",
+        "Img2Img",
+        "Text2Img",
+        "Outpainting"
+      ],
+      a: 1
+    }
+  ];
+</script>
 </body>
-
 </html>

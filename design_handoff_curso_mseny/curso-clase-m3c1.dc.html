@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>M3 · Clase 1 — Los titanes del píxel</title>
+<link rel="stylesheet" href="_ds/m-seny-design-system-050f7914-7423-40a2-b384-c2758e6f1fa4/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/m-seny-design-system-050f7914-7423-40a2-b384-c2758e6f1fa4/tokens/colors.css">
+<link rel="stylesheet" href="_ds/m-seny-design-system-050f7914-7423-40a2-b384-c2758e6f1fa4/tokens/typography.css">
+<link rel="stylesheet" href="_ds/m-seny-design-system-050f7914-7423-40a2-b384-c2758e6f1fa4/tokens/motion.css">
+<link rel="stylesheet" href="_ds/m-seny-design-system-050f7914-7423-40a2-b384-c2758e6f1fa4/tokens/utilities.css">
+<link rel="stylesheet" href="_ds/m-seny-design-system-050f7914-7423-40a2-b384-c2758e6f1fa4/styles.css">
+<script src="_ds/m-seny-design-system-050f7914-7423-40a2-b384-c2758e6f1fa4/_ds_bundle.js"></script>
+<style>
+body{margin:0;background:var(--color-paper)}
+a{color:inherit;text-decoration:none}
+@media (max-width:760px){
+  #toc-bar{justify-content:flex-start !important}
+  #hero{padding:36px 20px 28px !important}
+  #content{padding:32px 16px 48px !important}
+}
+</style>
+</helmet>
+<div data-screen-label="Clase M3·C1">
+  <div style="background:var(--color-ink);display:flex;align-items:center;justify-content:space-between;padding:14px 28px;gap:16px;flex-wrap:wrap">
+    <span style="display:flex;align-items:center;gap:16px">
+      <a href="curso-home.dc.html" style="font-family:var(--font-display);font-weight:700;letter-spacing:-0.025em;font-size:1.05rem;line-height:1;color:var(--color-paper)"><span style="color:var(--color-accent)">[m]</span>.seny</a>
+      <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;color:var(--color-mist)">M3 · CLASE 1</span>
+    </span>
+    <span style="display:flex;gap:22px;font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-mist)">
+      <a href="curso-home.dc.html">Temario</a><a href="curso-login.dc.html">Salir</a>
+    </span>
+  </div>
+  <div id="toc-bar" style="position:sticky;top:0;z-index:50;background:var(--color-paper);border-bottom:1px solid var(--color-line);padding:10px 16px;display:flex;justify-content:center;align-items:center;gap:6px;overflow-x:auto">
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:color-mix(in srgb,var(--color-ink) 8%,transparent)"><div style="{{ progressStyle }}"></div></div>
+    <sc-for list="{{ tocItems }}" as="t" hint-placeholder-count="6">
+      <button onClick="{{ t.go }}" style="{{ t.style }}">{{ t.label }}</button>
+    </sc-for>
+  </div>
+  <div id="hero" style="padding:56px 32px 40px;border-bottom:1px solid var(--color-line);text-align:center">
+    <p class="eyebrow brackets-ink" style="color:var(--color-accent-deep);margin:0 0 16px"> MÓDULO 3 · CLASE 1 </p>
+    <h1 class="display" style="margin:0 auto 16px;font-size:clamp(2rem,5vw,3.4rem);color:var(--color-ink);max-width:22ch">Estudio creativo IA: los titanes del píxel.</h1>
+    <p style="margin:0 auto 18px;font-size:17px;color:var(--color-muted);max-width:52ch">Generación de imagen estática y dirección de arte corporativa.</p>
+    <div style="display:flex;justify-content:center;gap:18px;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-muted)">
+      <span>1 hora</span><span>·</span><span>Fotografía y mockups</span>
+    </div>
+  </div>
+  <div id="content" style="max-width:780px;margin:0 auto;padding:48px 24px 64px;display:flex;flex-direction:column;gap:52px">
+
+    <div id="s1" style="scroll-margin-top:70px">
+      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:14px">
+        <span style="font-family:var(--font-mono);font-size:14px;color:var(--color-accent-deep)">01</span>
+        <h2 class="display" style="margin:0;font-size:29px;color:var(--color-ink)">El fin del «stock».</h2>
+      </div>
+      <p style="margin:0 0 20px;font-size:16px;line-height:1.7;color:var(--color-ink)">En el entorno empresarial de 2026, la dependencia de bancos de imágenes estáticos y agencias externas para contenido de consumo rápido (redes, newsletters, presentaciones) es un lastre financiero y operativo. La IA visual no reemplaza al director de arte: le dota de un estudio de producción infinito.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:16px">
+        <div style="background:var(--color-paper-dim);border-radius:16px;padding:20px">
+          <p style="margin:0 0 8px;font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-muted)">Antes — stock &amp; agencias</p>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:var(--color-muted)">Buscar la imagen «perfecta» en catálogos limitados y conformarse con resultados genéricos que tu competencia también puede utilizar.</p>
+        </div>
+        <div style="background:var(--color-ink);border-radius:16px;padding:20px">
+          <p style="margin:0 0 8px;font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent)">Ahora — IA generativa</p>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:var(--color-paper)"><strong>Dirigir</strong> la creación de la imagen exacta en segundos, con un nivel de personalización y exclusividad total.</p>
+        </div>
+      </div>
+      <div style="border:1px solid var(--color-line);border-radius:16px;padding:20px 22px;background:rgba(255,255,255,.5)">
+        <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-deep)">[ Frase clave ]</span>
+        <p style="margin:8px 0 0;font-size:17px;font-weight:500;line-height:1.55;color:var(--color-ink)">«En la era visual, el texto informa, pero la imagen convierte. La IA te permite testear 10 campañas visuales en el tiempo en que antes producías solo un boceto.»</p>
+      </div>
+    </div>
+
+    <div id="s2" style="scroll-margin-top:70px">
+      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:8px">
+        <span style="font-family:var(--font-mono);font-size:14px;color:var(--color-accent-deep)">02</span>
+        <h2 class="display" style="margin:0;font-size:29px;color:var(--color-ink)">Glosario ejecutivo.</h2>
+      </div>
+      <p style="margin:0 0 8px;font-size:15px;line-height:1.65;color:var(--color-muted)">Al igual que un director de cine conoce sus lentes, tú debes conocer esta terminología para dominar la dirección de arte con IA.</p>
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 24px;padding:16px 0;border-bottom:1px solid var(--color-line)">
+        <h3 style="margin:0;width:180px;flex:none;font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.02em;color:var(--color-ink)">Prompt Visual</h3>
+        <p style="margin:0;flex:1;min-width:240px;font-size:14px;color:var(--color-muted)">Instrucción de texto (sujeto, iluminación, estilo). A diferencia del prompt lógico, aquí debe ser puramente estética y descriptiva.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 24px;padding:16px 0;border-bottom:1px solid var(--color-line)">
+        <h3 style="margin:0;width:180px;flex:none;font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.02em;color:var(--color-ink)">Seed (semilla)</h3>
+        <p style="margin:0;flex:1;min-width:240px;font-size:14px;color:var(--color-muted)">El «ADN matemático» de una imagen. Guardarlo permite generar variaciones consistentes de un mismo personaje en el futuro.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 24px;padding:16px 0;border-bottom:1px solid var(--color-line)">
+        <h3 style="margin:0;width:180px;flex:none;font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.02em;color:var(--color-ink)">In-painting</h3>
+        <p style="margin:0;flex:1;min-width:240px;font-size:14px;color:var(--color-muted)">Seleccionar una zona específica (ej. una taza) y modificar solo esa área mediante un prompt, dejando el entorno intacto.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 24px;padding:16px 0;border-bottom:1px solid var(--color-line)">
+        <h3 style="margin:0;width:180px;flex:none;font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.02em;color:var(--color-ink)">Out-painting</h3>
+        <p style="margin:0;flex:1;min-width:240px;font-size:14px;color:var(--color-muted)">Expansión: la IA «imagina» y genera contexto fuera de los bordes originales para ampliar la foto (ej. pasar a panorámico).</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 24px;padding:16px 0;border-bottom:1px solid var(--color-line)">
+        <h3 style="margin:0;width:180px;flex:none;font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.02em;color:var(--color-ink)">Upscaling</h3>
+        <p style="margin:0;flex:1;min-width:240px;font-size:14px;color:var(--color-muted)">Aumentar artificialmente la resolución y añadir detalles microscópicos para impresión profesional.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 24px;padding:16px 0;border-bottom:1px solid var(--color-line)">
+        <h3 style="margin:0;width:180px;flex:none;font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.02em;color:var(--color-ink)">Aspect Ratio</h3>
+        <p style="margin:0;flex:1;min-width:240px;font-size:14px;color:var(--color-muted)">Proporción de imagen: 16:9 (pantallas), 9:16 (Reels/TikTok), 1:1 (Instagram cuadrado).</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 24px;padding:16px 0;border-bottom:1px solid var(--color-line)">
+        <h3 style="margin:0;width:180px;flex:none;font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.02em;color:var(--color-ink)">ControlNet</h3>
+        <p style="margin:0;flex:1;min-width:240px;font-size:14px;color:var(--color-muted)">Obliga a la IA a respetar milimétricamente la estructura, pose o silueta de una imagen base, cambiando solo el estilo visual.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 24px;padding:16px 0;border-bottom:1px solid var(--color-line)">
+        <h3 style="margin:0;width:180px;flex:none;font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.02em;color:var(--color-ink)">Style Reference</h3>
+        <p style="margin:0;flex:1;min-width:240px;font-size:14px;color:var(--color-muted)">La IA copia exclusivamente la paleta de colores y el estilo artístico de una imagen base para un nuevo sujeto.</p>
+      </div>
+    </div>
+
+    <div id="s3" style="scroll-margin-top:70px">
+      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:8px">
+        <span style="font-family:var(--font-mono);font-size:14px;color:var(--color-accent-deep)">03</span>
+        <h2 class="display" style="margin:0;font-size:29px;color:var(--color-ink)">Flujo de trabajo.</h2>
+      </div>
+      <p style="margin:0 0 20px;font-size:15px;line-height:1.65;color:var(--color-muted)">Crear una imagen profesional rara vez es fruto de un solo «clic». Un flujo maduro implica iteración y control riguroso:</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px">
+        <div style="background:var(--color-paper-dim);border-radius:16px;padding:16px">
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--color-accent-deep)">01</span>
+          <h3 style="margin:6px 0 4px;font-family:var(--font-display);font-weight:600;font-size:16px;letter-spacing:-0.02em;color:var(--color-ink)">Ideación</h3>
+          <p style="margin:0;font-size:12.5px;line-height:1.5;color:var(--color-muted)">Prompt inicial para explorar opciones.</p>
+        </div>
+        <div style="background:var(--color-paper-dim);border-radius:16px;padding:16px">
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--color-accent-deep)">02</span>
+          <h3 style="margin:6px 0 4px;font-family:var(--font-display);font-weight:600;font-size:16px;letter-spacing:-0.02em;color:var(--color-ink)">Fijar base</h3>
+          <p style="margin:0;font-size:12.5px;line-height:1.5;color:var(--color-muted)">Guardar el Seed al llegar al 80%.</p>
+        </div>
+        <div style="background:var(--color-paper-dim);border-radius:16px;padding:16px">
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--color-accent-deep)">03</span>
+          <h3 style="margin:6px 0 4px;font-family:var(--font-display);font-weight:600;font-size:16px;letter-spacing:-0.02em;color:var(--color-ink)">Iteración</h3>
+          <p style="margin:0;font-size:12.5px;line-height:1.5;color:var(--color-muted)">Cambios sutiles usando el mismo Seed.</p>
+        </div>
+        <div style="background:var(--color-paper-dim);border-radius:16px;padding:16px">
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--color-accent-deep)">04</span>
+          <h3 style="margin:6px 0 4px;font-family:var(--font-display);font-weight:600;font-size:16px;letter-spacing:-0.02em;color:var(--color-ink)">Refinamiento</h3>
+          <p style="margin:0;font-size:12.5px;line-height:1.5;color:var(--color-muted)">Uso de In-painting local.</p>
+        </div>
+        <div style="background:var(--color-ink);border-radius:16px;padding:16px">
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--color-accent)">[✓]</span>
+          <h3 style="margin:6px 0 4px;font-family:var(--font-display);font-weight:600;font-size:16px;letter-spacing:-0.02em;color:var(--color-accent)">Acabado final</h3>
+          <p style="margin:0;font-size:12.5px;line-height:1.5;color:var(--color-mist)">Aplicación de Upscaling.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="s4" style="scroll-margin-top:70px">
+      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:8px">
+        <span style="font-family:var(--font-mono);font-size:14px;color:var(--color-accent-deep)">04</span>
+        <h2 class="display" style="margin:0;font-size:29px;color:var(--color-ink)">El arte del prompt visual.</h2>
+      </div>
+      <p style="margin:0 0 20px;font-size:15px;line-height:1.65;color:var(--color-muted)">Escribir para generar imágenes no es igual que para texto: el generador busca estética, no lógica narrativa. Domina estas 4 estructuras de grado profesional.</p>
+      <div style="display:flex;flex-direction:column;gap:20px">
+
+        <div style="background:var(--color-ink);border-radius:24px;padding:26px">
+          <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:18px;flex-wrap:wrap">
+            <span class="eyebrow brackets" style="color:color-mix(in srgb,var(--color-accent) 90%,transparent);font-size:13px"> S.C.I.E. </span>
+            <span style="font-size:13px;color:var(--color-mist)">Fotografía realista</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px">
+            <div style="flex:1 1 150px;background:var(--color-ink-soft);border-radius:16px;padding:14px">
+              <span class="display" style="display:block;font-size:24px;color:var(--color-accent)">S</span>
+              <span style="display:block;margin:6px 0 4px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-paper)">Sujeto</span>
+              <span style="font-size:12px;color:var(--color-mist)">«Mujer ejecutiva de 40 años…»</span>
+            </div>
+            <div style="flex:1 1 150px;background:var(--color-ink-soft);border-radius:16px;padding:14px">
+              <span class="display" style="display:block;font-size:24px;color:var(--color-accent)">C</span>
+              <span style="display:block;margin:6px 0 4px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-paper)">Contexto</span>
+              <span style="font-size:12px;color:var(--color-mist)">«Sala de juntas de cristal, lloviendo…»</span>
+            </div>
+            <div style="flex:1 1 150px;background:var(--color-ink-soft);border-radius:16px;padding:14px">
+              <span class="display" style="display:block;font-size:24px;color:var(--color-accent)">I</span>
+              <span style="display:block;margin:6px 0 4px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-paper)">Iluminación</span>
+              <span style="font-size:12px;color:var(--color-mist)">«Luz cinemática suave, neones…»</span>
+            </div>
+            <div style="flex:1 1 150px;background:var(--color-ink-soft);border-radius:16px;padding:14px">
+              <span class="display" style="display:block;font-size:24px;color:var(--color-accent)">E</span>
+              <span style="display:block;margin:6px 0 4px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-paper)">Estilo / cámara</span>
+              <span style="font-size:12px;color:var(--color-mist)">«Fotografía documental, lente 85 mm.»</span>
+            </div>
+          </div>
+          <div style="margin-top:14px;background:rgba(0,0,0,.35);border:1px solid var(--color-line-dark);border-radius:16px;padding:18px 110px 18px 18px;position:relative">
+            <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent)">Ejemplo práctico</span>
+            <p style="margin:8px 0 0;font-size:13.5px;line-height:1.7;color:var(--color-mist)">«Un par de zapatos casuales Oxford de hombre en ante gris-taupe claro con un panel de empeine con textura de cuadrícula trenzada y suelas gruesas de goma texturizada crema, posados sobre una superficie de estudio limpia de color blanco roto frente a un fondo crema liso. Fotografía realista de primer plano medio con iluminación de estudio suave, enfocada nítidamente en los zapatos con profundidad de campo baja.»</p>
+            <button class="btn-ghost" onClick="{{ copyPrompt }}" style="position:absolute;top:14px;right:14px;color:var(--color-paper);padding:6px 14px;font-size:12.5px">Copiar</button>
+          </div>
+        </div>
+
+        <div style="background:var(--color-ink);border-radius:24px;padding:26px">
+          <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:18px;flex-wrap:wrap">
+            <span class="eyebrow brackets" style="color:color-mix(in srgb,var(--color-accent) 90%,transparent);font-size:13px"> P.E.P.A. </span>
+            <span style="font-size:13px;color:var(--color-mist)">E-commerce y mockups</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px">
+            <div style="flex:1 1 150px;background:var(--color-ink-soft);border-radius:16px;padding:14px">
+              <span class="display" style="display:block;font-size:24px;color:var(--color-accent)">P</span>
+              <span style="display:block;margin:6px 0 4px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-paper)">Producto</span>
+              <span style="font-size:12px;color:var(--color-mist)">«Bote de perfume de cristal…»</span>
+            </div>
+            <div style="flex:1 1 150px;background:var(--color-ink-soft);border-radius:16px;padding:14px">
+              <span class="display" style="display:block;font-size:24px;color:var(--color-accent)">E</span>
+              <span style="display:block;margin:6px 0 4px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-paper)">Entorno</span>
+              <span style="font-size:12px;color:var(--color-mist)">«Sobre bloque de pizarra húmeda…»</span>
+            </div>
+            <div style="flex:1 1 150px;background:var(--color-ink-soft);border-radius:16px;padding:14px">
+              <span class="display" style="display:block;font-size:24px;color:var(--color-accent)">P</span>
+              <span style="display:block;margin:6px 0 4px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-paper)">Props</span>
+              <span style="font-size:12px;color:var(--color-mist)">«Rodeado de hojas desenfocadas…»</span>
+            </div>
+            <div style="flex:1 1 150px;background:var(--color-ink-soft);border-radius:16px;padding:14px">
+              <span class="display" style="display:block;font-size:24px;color:var(--color-accent)">A</span>
+              <span style="display:block;margin:6px 0 4px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-paper)">Ángulo / setup</span>
+              <span style="font-size:12px;color:var(--color-mist)">«Plano macro, iluminación estudio.»</span>
+            </div>
+          </div>
+          <div style="margin-top:14px;background:rgba(0,0,0,.35);border:1px solid var(--color-line-dark);border-radius:16px;padding:18px 110px 18px 18px;position:relative">
+            <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent)">Ejemplo práctico</span>
+            <p style="margin:8px 0 0;font-size:13.5px;line-height:1.7;color:var(--color-mist)">«Zapatos Derby de ante gris-púrpura pálido con detalle de trenza de panel de empeine, costuras de contraste y suela intermedia de crepé crema texturizada, sobre una superficie de exhibición minimalista de color blanco cremoso. Toma de tres cuartos a nivel de los ojos con iluminación de caja de luz suave y uniforme.»</p>
+            <button class="btn-ghost" onClick="{{ copyPrompt }}" style="position:absolute;top:14px;right:14px;color:var(--color-paper);padding:6px 14px;font-size:12.5px">Copiar</button>
+          </div>
+        </div>
+
+        <div style="background:var(--color-ink);border-radius:24px;padding:26px">
+          <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:18px;flex-wrap:wrap">
+            <span class="eyebrow brackets" style="color:color-mix(in srgb,var(--color-accent) 90%,transparent);font-size:13px"> M.E.T.A. </span>
+            <span style="font-size:13px;color:var(--color-mist)">Branding y abstractos</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px">
+            <div style="flex:1 1 150px;background:var(--color-ink-soft);border-radius:16px;padding:14px">
+              <span class="display" style="display:block;font-size:24px;color:var(--color-accent)">M</span>
+              <span style="display:block;margin:6px 0 4px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-paper)">Medio artístico</span>
+              <span style="font-size:12px;color:var(--color-mist)">«Render 3D isométrico…»</span>
+            </div>
+            <div style="flex:1 1 150px;background:var(--color-ink-soft);border-radius:16px;padding:14px">
+              <span class="display" style="display:block;font-size:24px;color:var(--color-accent)">E</span>
+              <span style="display:block;margin:6px 0 4px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-paper)">Emoción</span>
+              <span style="font-size:12px;color:var(--color-mist)">«Optimismo, urgencia comercial…»</span>
+            </div>
+            <div style="flex:1 1 150px;background:var(--color-ink-soft);border-radius:16px;padding:14px">
+              <span class="display" style="display:block;font-size:24px;color:var(--color-accent)">T</span>
+              <span style="display:block;margin:6px 0 4px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-paper)">Tema</span>
+              <span style="font-size:12px;color:var(--color-mist)">«Ciberseguridad en la nube…»</span>
+            </div>
+            <div style="flex:1 1 150px;background:var(--color-ink-soft);border-radius:16px;padding:14px">
+              <span class="display" style="display:block;font-size:24px;color:var(--color-accent)">A</span>
+              <span style="display:block;margin:6px 0 4px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-paper)">Abstracción</span>
+              <span style="font-size:12px;color:var(--color-mist)">«Paleta corporativa azul/naranja.»</span>
+            </div>
+          </div>
+          <div style="margin-top:14px;background:rgba(0,0,0,.35);border:1px solid var(--color-line-dark);border-radius:16px;padding:18px 110px 18px 18px;position:relative">
+            <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent)">Ejemplo práctico</span>
+            <p style="margin:8px 0 0;font-size:13.5px;line-height:1.7;color:var(--color-mist)">«Renderizado 3D de alta definición, fotorrealista. Transmite una elegancia artesanal serena. El tema es la artesanía minimalista del calzado. El par de zapatos de ante taupe frío con panel de empeine trenzado está perfectamente centrado en una superficie y fondo uniformes de color crema suave, con una paleta de colores cohesiva.»</p>
+            <button class="btn-ghost" onClick="{{ copyPrompt }}" style="position:absolute;top:14px;right:14px;color:var(--color-paper);padding:6px 14px;font-size:12.5px">Copiar</button>
+          </div>
+        </div>
+
+        <div style="background:var(--color-ink);border-radius:24px;padding:26px">
+          <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:18px;flex-wrap:wrap">
+            <span class="eyebrow brackets" style="color:color-mix(in srgb,var(--color-accent) 90%,transparent);font-size:13px"> C.A.P.A. </span>
+            <span style="font-size:13px;color:var(--color-mist)">Narrativa / storyboard</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px">
+            <div style="flex:1 1 150px;background:var(--color-ink-soft);border-radius:16px;padding:14px">
+              <span class="display" style="display:block;font-size:24px;color:var(--color-accent)">C</span>
+              <span style="display:block;margin:6px 0 4px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-paper)">Cámara</span>
+              <span style="font-size:12px;color:var(--color-mist)">«Plano contrapicado dramático…»</span>
+            </div>
+            <div style="flex:1 1 150px;background:var(--color-ink-soft);border-radius:16px;padding:14px">
+              <span class="display" style="display:block;font-size:24px;color:var(--color-accent)">A</span>
+              <span style="display:block;margin:6px 0 4px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-paper)">Acción</span>
+              <span style="font-size:12px;color:var(--color-mist)">«Corriendo mirando hacia atrás…»</span>
+            </div>
+            <div style="flex:1 1 150px;background:var(--color-ink-soft);border-radius:16px;padding:14px">
+              <span class="display" style="display:block;font-size:24px;color:var(--color-accent)">P</span>
+              <span style="display:block;margin:6px 0 4px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-paper)">Personaje</span>
+              <span style="font-size:12px;color:var(--color-mist)">«Atleta de 25 años con ropa sucia…»</span>
+            </div>
+            <div style="flex:1 1 150px;background:var(--color-ink-soft);border-radius:16px;padding:14px">
+              <span class="display" style="display:block;font-size:24px;color:var(--color-accent)">A</span>
+              <span style="display:block;margin:6px 0 4px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-paper)">Atmósfera</span>
+              <span style="font-size:12px;color:var(--color-mist)">«Niebla densa, tono de thriller.»</span>
+            </div>
+          </div>
+          <div style="margin-top:14px;background:rgba(0,0,0,.35);border:1px solid var(--color-line-dark);border-radius:16px;padding:18px 110px 18px 18px;position:relative">
+            <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent)">Ejemplo práctico</span>
+            <p style="margin:8px 0 0;font-size:13.5px;line-height:1.7;color:var(--color-mist)">«Toma de primer plano a nivel de los zapatos. Par de zapatos de ante gris claro con textura trenzada, enfocados de forma estática sobre una superficie de estudio limpia. La atmósfera es de estudio silencioso y pulcro, con un tono neutro y sofisticado.»</p>
+            <button class="btn-ghost" onClick="{{ copyPrompt }}" style="position:absolute;top:14px;right:14px;color:var(--color-paper);padding:6px 14px;font-size:12.5px">Copiar</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="s5" style="scroll-margin-top:70px">
+      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:8px">
+        <span style="font-family:var(--font-mono);font-size:14px;color:var(--color-accent-deep)">05</span>
+        <h2 class="display" style="margin:0;font-size:29px;color:var(--color-ink)">Primer contacto.</h2>
+      </div>
+      <p style="margin:0 0 20px;font-size:15px;line-height:1.65;color:var(--color-muted)">Conoce las herramientas líderes de fotorrealismo y arte generado por IA.</p>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="card-live" style="border:1px solid var(--color-line);border-radius:24px;padding:24px;background:rgba(255,255,255,.5)">
+          <p style="margin:0 0 4px;font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-deep)">El velocista del ecosistema</p>
+          <h3 class="display" style="margin:0 0 10px;font-size:22px;color:var(--color-ink)">Gemini Nano Banana 2</h3>
+          <p style="margin:0 0 10px;font-size:14.5px;line-height:1.6;color:var(--color-ink)">Integrado en el ecosistema Google. Destaca por una velocidad de generación casi en tiempo real y una comprensión del lenguaje natural excepcional: no necesitas prompts excesivamente técnicos para un buen resultado base.</p>
+          <p style="margin:0 0 14px;font-size:13px;color:var(--color-muted)"><strong style="color:var(--color-ink)">Mejor uso:</strong> brainstorming en vivo, esquemas visuales rápidos y contenido ágil para redes.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <a href="https://gemini.google.com" target="_blank" rel="noopener" class="btn-ghost" style="color:var(--color-ink);padding:7px 16px;font-size:13px">Chat →</a>
+            <a href="https://gemini.google.com" target="_blank" rel="noopener" class="btn-ghost" style="color:var(--color-ink);padding:7px 16px;font-size:13px">Gem →</a>
+            <a href="https://one.google.com/ai" target="_blank" rel="noopener" class="btn-ghost" style="color:var(--color-ink);padding:7px 16px;font-size:13px">Google One IA →</a>
+          </div>
+        </div>
+        <div class="card-live" style="border:1px solid var(--color-line);border-radius:24px;padding:24px;background:rgba(255,255,255,.5)">
+          <p style="margin:0 0 4px;font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-deep)">El creador fotorrealista avanzado</p>
+          <h3 class="display" style="margin:0 0 10px;font-size:22px;color:var(--color-ink)">ChatGPT Images 2.0</h3>
+          <p style="margin:0 0 10px;font-size:14.5px;line-height:1.6;color:var(--color-ink)">El modelo nativo de ChatGPT da un salto masivo en calidad visual: imágenes fotorrealistas con detalles precisos, entendimiento semántico excepcional y texto integrado casi perfecto.</p>
+          <p style="margin:0 0 14px;font-size:13px;color:var(--color-muted)"><strong style="color:var(--color-ink)">Mejor uso:</strong> ilustraciones de alta calidad, hiperrealismo, infografías y carteles con texto integrado.</p>
+          <a href="https://chatgpt.com" target="_blank" rel="noopener" class="btn-ghost" style="color:var(--color-ink);padding:7px 16px;font-size:13px;align-self:flex-start">Acceder →</a>
+        </div>
+        <div class="card-live" style="border:1px solid var(--color-line);border-radius:24px;padding:24px;background:rgba(255,255,255,.5)">
+          <p style="margin:0 0 4px;font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-deep)">Composición modular</p>
+          <h3 class="display" style="margin:0 0 10px;font-size:22px;color:var(--color-ink)">Mixboard</h3>
+          <p style="margin:0;font-size:14.5px;line-height:1.6;color:var(--color-muted)">Tercera herramienta de la clase — la vemos en directo, en la práctica.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="s6" style="scroll-margin-top:70px">
+      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:14px">
+        <span style="font-family:var(--font-mono);font-size:14px;color:var(--color-accent-deep)">06</span>
+        <h2 class="display" style="margin:0;font-size:29px;color:var(--color-ink)">Práctica &amp; PFC.</h2>
+      </div>
+      <div style="border:1px solid var(--color-line);border-radius:24px;padding:24px;background:rgba(255,255,255,.5);margin-bottom:16px">
+        <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-deep)">[ Check rápido ]</span>
+        <p style="margin:10px 0 16px;font-size:17px;font-weight:600;color:var(--color-ink)">¿Para qué sirve guardar el «Seed» de una imagen?</p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ quizOpts }}" as="q" hint-placeholder-count="3">
+            <button onClick="{{ q.pick }}" style="{{ q.style }}"><span style="font-family:var(--font-mono);font-size:13px;flex:none">{{ q.prefix }}</span> {{ q.text }}</button>
+          </sc-for>
+        </div>
+        <p style="margin:12px 0 0;font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;color:var(--color-accent-deep)">{{ quizMsg }}</p>
+      </div>
+      <div style="background:var(--color-accent);border-radius:24px;padding:24px;color:var(--color-accent-ink)">
+        <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase">[ PFC — Marca de zapatos ]</span>
+        <p style="margin:10px 0 0;font-size:15.5px;font-weight:500;line-height:1.6">Genera 3 propuestas de producto para tu marca con S.C.I.E. (foto de estudio) y P.E.P.A. (e-commerce). Guarda los Seeds de las 2 mejores.</p>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;border-top:1px solid var(--color-line);padding-top:24px">
+      <a href="curso-home.dc.html" class="btn-ghost" style="color:var(--color-ink);font-size:14px;padding:10px 20px">← Volver al temario</a>
+      <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;color:var(--color-muted)">CLASE 1 DE 5</span>
+      <a href="#" class="btn-accent" style="font-size:15px;padding:12px 22px">Siguiente clase <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { active: 0, progress: 0, quiz: null };
+  componentDidMount() {
+    this._onScroll = () => {
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - window.innerHeight;
+      const progress = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+      let active = 0;
+      for (let i = 1; i <= 6; i++) {
+        const el = document.getElementById('s' + i);
+        if (el && el.getBoundingClientRect().top < 140) active = i - 1;
+      }
+      if (Math.abs(progress - this.state.progress) > 0.005 || active !== this.state.active) this.setState({ progress, active });
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    this._onScroll();
+  }
+  componentWillUnmount() { window.removeEventListener('scroll', this._onScroll); }
+  renderVals() {
+    const labels = ['01 EL FIN DEL «STOCK»', '02 GLOSARIO', '03 FLUJO', '04 FÓRMULAS', '05 HERRAMIENTAS', '06 PRÁCTICA & PFC'];
+    const base = { fontFamily: 'var(--font-mono)', fontSize: '10.5px', letterSpacing: '.08em', border: 0, background: 'transparent', color: 'var(--color-muted)', padding: '7px 10px', borderRadius: 999, cursor: 'pointer', whiteSpace: 'nowrap', flex: 'none' };
+    const tocItems = labels.map((label, i) => ({
+      label,
+      style: i === this.state.active ? { ...base, background: 'var(--color-accent)', color: 'var(--color-accent-ink)', padding: '7px 14px' } : base,
+      go: () => { const el = document.getElementById('s' + (i + 1)); if (el) window.scrollTo({ top: el.offsetTop - 60, behavior: 'smooth' }); }
+    }));
+    const opts = [
+      'Es el ADN matemático: permite variaciones consistentes del mismo sujeto.',
+      'Aumenta la resolución final para impresión.',
+      'Fija la proporción 16:9 del encuadre.'
+    ];
+    const answered = this.state.quiz !== null;
+    const optBase = { display: 'flex', gap: '10px', alignItems: 'baseline', textAlign: 'left', borderRadius: '16px', border: '1px solid var(--color-line)', background: 'transparent', padding: '14px 16px', fontFamily: 'var(--font-body)', fontSize: '15px', color: 'var(--color-muted)', cursor: 'pointer', width: '100%', boxSizing: 'border-box' };
+    const quizOpts = opts.map((text, i) => {
+      let style = optBase, prefix = '[ ]';
+      if (answered && i === 0) { style = { ...optBase, background: 'var(--color-accent)', border: '1px solid var(--color-accent)', color: 'var(--color-accent-ink)' }; prefix = '[✓]'; }
+      else if (answered && i === this.state.quiz) { style = { ...optBase, border: '1px solid var(--color-ink)', color: 'var(--color-ink)' }; prefix = '[×]'; }
+      return { text, prefix, style, pick: () => { if (!answered) this.setState({ quiz: i }); } };
+    });
+    const quizMsg = !answered ? '' : (this.state.quiz === 0 ? '[Correcto.] El Seed es la base de la consistencia.' : 'Casi — el Seed guarda el ADN de la imagen, no su resolución ni su formato.');
+    return {
+      tocItems, quizOpts, quizMsg,
+      progressStyle: { height: '100%', width: (this.state.progress * 100) + '%', background: 'var(--color-accent)', transition: 'width .15s linear' },
+      copyPrompt: async (e) => {
+        const btn = e.currentTarget;
+        const p = btn.parentElement.querySelector('p');
+        try { await navigator.clipboard.writeText(p.innerText); } catch (err) {}
+        const old = btn.textContent;
+        btn.textContent = '[✓] Copiado';
+        setTimeout(() => { btn.textContent = old; }, 2000);
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

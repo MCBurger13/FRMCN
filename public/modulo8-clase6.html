@@ -1,947 +1,473 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Módulo 8 Clase 6: El cerebro que se busca y se teje solo — Vault, Vectorizador y El Tejedor - [m].seny [labs]">
-    <title>Módulo 8: El cerebro que se busca y se teje solo (Clase 6) - [m].seny [labs]</title>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap"
-        rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Merriweather', 'serif'],
-                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
-                    },
-                    colors: {
-                        brand: {
-                            dark: '#0F172A',
-                            primary: '#4F46E5',
-                            accent: '#F59E0B',
-                            light: '#F8FAFC'
-                        },
-                        claude: {
-                            DEFAULT: '#D97757',
-                            light: '#FDF3F0',
-                            dark: '#B05D40'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body {
-            background-color: #F8FAFC;
-            color: #334155;
-            scroll-behavior: smooth;
-        }
-
-        h1, h2, h3, h4, h5, h6, button, .nav-link {
-            font-family: 'Inter', sans-serif;
-        }
-
-        p, li, .prose-text {
-            font-family: 'Merriweather', serif;
-            line-height: 1.6;
-            font-size: 1.125rem;
-            text-align: justify;
-        }
-
-        .text-center { text-align: center; }
-        .text-left { text-align: left; }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
-        /* Animations */
-        .fade-in-on-scroll {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease-out;
-        }
-
-        .fade-in-on-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.1);
-        }
-
-        /* Progress Bar */
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #4F46E5, #D97757);
-            z-index: 1000;
-            transition: width 0.2s ease;
-        }
-
-        /* Quiz Styles */
-        .quiz-option {
-            padding: 1rem;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.75rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            background-color: rgba(255, 255, 255, 0.05);
-            color: #e2e8f0;
-        }
-
-        .quiz-option:hover {
-            border-color: #D97757;
-            background-color: rgba(217, 119, 87, 0.1);
-        }
-
-        .quiz-option.selected {
-            border-color: #F59E0B;
-            background-color: rgba(245, 158, 11, 0.1);
-        }
-
-        /* Semantic map widget */
-        .sem-note {
-            cursor: pointer;
-            transition: opacity 0.35s ease, r 0.35s ease;
-        }
-
-        .sem-chip {
-            transition: all 0.2s ease;
-        }
-
-        .sem-chip.active {
-            background-color: #D97757;
-            border-color: #D97757;
-            color: #fff;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M8 · Clase 6 — El cerebro que se busca y se teje solo · [m].seny /academy</title>
+<meta name="description" content="Ya tienes un cerebro de notas. Ahora miramos debajo del capó: las tres piezas que convierten un montón de apuntes en un grafo vivo que se busca por significado y se enlaza solo. Y lo mejor: con tus propios scripts en local, sin plugins de pago.">
+<link rel="stylesheet" href="/theme.css">
+<link rel="stylesheet" href="/curso.css">
+<style>
+  /* Widget propio: mapa del significado (solo tokens del DS) */
+  .sem .sem-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;margin:0 0 14px;}
+  .sem .sem-head .k{margin:0;}
+  .sem .sem-head .k.dim{color:var(--color-muted);}
+  .sem .sem-label{margin:0 0 8px;font-family:var(--font-mono);font-size:var(--mono-xs);letter-spacing:.12em;text-transform:uppercase;color:var(--color-muted);}
+  .sem .chips{margin:0 0 18px;}
+  .sem-chip{cursor:pointer;background:transparent;color:var(--color-ink);min-height:36px;transition:background-color .3s ease,border-color .3s ease,color .3s ease;}
+  .sem-chip:hover{border-color:var(--color-accent-deep);}
+  .sem-chip.active{background:var(--color-accent);border-color:var(--color-accent);color:var(--color-accent-ink);}
+  .sem-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px;align-items:start;}
+  @media (max-width:640px){.sem-grid{grid-template-columns:1fr;}}
+  .sem-fig{margin:0 0 10px;}
+  .sem-fig svg{display:block;width:100%;height:auto;max-height:340px;}
+  .sem-note{cursor:pointer;transition:opacity .35s ease;}
+  .sem-results{display:flex;flex-direction:column;gap:8px;}
+  .sem-results .empty{margin:0;font-size:13.5px;line-height:1.5;color:var(--color-muted);}
+  .sem-results .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;border:1px solid var(--color-line);border-radius:12px;padding:8px 12px;font-size:13.5px;line-height:1.4;color:var(--color-ink);}
+  .sem-results .row .n{font-family:var(--font-mono);font-size:var(--mono-l);color:var(--color-accent-deep);margin-right:6px;}
+  .sem-results .row .area{display:block;margin-top:2px;font-family:var(--font-mono);font-size:var(--mono-xs);letter-spacing:.1em;text-transform:uppercase;color:var(--color-muted);}
+  .sem-results .row .pct{flex:none;font-family:var(--font-mono);font-size:var(--mono-l);color:var(--color-accent-deep);}
+</style>
 </head>
+<body data-class="m8c6">
+<main>
 
-<body class="antialiased">
+  <header class="hero">
+    <h1 class="display">El cerebro que se busca y se teje solo.</h1>
+    <p class="sub">Ya tienes un cerebro de notas. Ahora miramos debajo del capó: las tres piezas que convierten un montón de apuntes en un grafo vivo que se busca por significado y se enlaza solo. Y lo mejor: con tus propios scripts en local, sin plugins de pago.</p>
+    <div class="chips">
+      <span class="chip">Vault</span>
+      <span class="chip">Vectorizador (búsqueda por significado)</span>
+      <span class="chip">El Tejedor (auto-enlaces)</span>
+      <span class="chip">100% local</span>
+      <span class="chip">Sin plugins de pago</span>
+    </div>
+  </header>
 
-    <div class="progress-bar" id="progressBar"></div>
+  <div class="content">
 
-    <!-- Navigation Header -->
-    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
-        <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center">
-                <a href="index.html" class="no-underline group">
-                    <h1 class="text-xl font-bold tracking-tight text-brand-dark group-hover:text-brand-primary transition-colors cursor-pointer">
-                        <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
-                    </h1>
-                </a>
-            </div>
-            <nav class="hidden md:flex items-center space-x-4 text-xs font-bold text-gray-500 uppercase tracking-wider">
-                <a href="#resumen" class="hover:text-claude transition-colors">1. RESUMEN</a>
-                <a href="#vault" class="hover:text-claude transition-colors">2. VAULT</a>
-                <a href="#vectorizador" class="hover:text-claude transition-colors">3. VECTORIZADOR</a>
-                <a href="#tejedor" class="hover:text-claude transition-colors">4. EL TEJEDOR</a>
-                <a href="#practica" class="hover:text-claude transition-colors text-claude">5. PRÁCTICA</a>
-            </nav>
-            <a href="/login.html" onclick="document.cookie='sb-ndtoqnpomhtubcygkwlh-auth-token=;path=/;max-age=0';localStorage.clear()"
-                class="hidden md:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors ml-4"
-                title="Cerrar sesión">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                    <polyline points="16 17 21 12 16 7" />
-                    <line x1="21" y1="12" x2="9" y2="12" />
-                </svg>
-                Salir
-            </a>
-        </div>
-    </header>
+    <!-- 1. Resumen -->
+    <section class="sec" id="resumen" data-label="Resumen">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Qué vamos a ver y cómo encaja todo.</h2></div>
 
-    <!-- Presentation Title (Hero) -->
-    <section class="bg-[#0f172a] text-white py-32 border-b-8 border-claude relative overflow-hidden">
-        <div class="absolute inset-0 opacity-20">
-            <div class="absolute top-0 right-0 w-[40rem] h-[40rem] bg-claude rounded-full blur-[150px]"></div>
-            <div class="absolute bottom-0 left-0 w-[30rem] h-[30rem] bg-blue-600 rounded-full blur-[150px]"></div>
-        </div>
-        <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
-            <span class="inline-block py-1 px-3 bg-white/10 text-white border border-white/20 font-mono text-sm font-bold uppercase tracking-widest mb-6 rounded">
-                Módulo 8 • Clase 6
-            </span>
-            <h1 class="text-5xl lg:text-7xl font-extrabold mb-6 leading-tight">
-                El cerebro que<br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-claude to-orange-300">se busca y se teje solo</span>
-            </h1>
-            <p class="text-xl text-gray-300 font-serif max-w-2xl mx-auto italic text-center">
-                Ya tienes un cerebro de notas. Ahora miramos debajo del capó: las tres piezas que convierten un montón de apuntes en un grafo vivo que se busca por significado y se enlaza solo. Y lo mejor: con tus propios scripts en local, sin plugins de pago.
-            </p>
-            <div class="mt-8 flex flex-wrap items-center justify-center gap-2 text-xs font-mono font-bold">
-                <span class="px-3 py-1 bg-slate-500/20 text-slate-300 border border-slate-500/30 rounded-full">Vault</span>
-                <span class="px-3 py-1 bg-orange-500/20 text-orange-300 border border-orange-500/30 rounded-full">Vectorizador (búsqueda por significado)</span>
-                <span class="px-3 py-1 bg-blue-500/20 text-blue-300 border border-blue-500/30 rounded-full">El Tejedor (auto-enlaces)</span>
-                <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full">100% local</span>
-                <span class="px-3 py-1 bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-full">Sin plugins de pago</span>
-            </div>
-        </div>
+      <p>En la clase anterior montamos el <strong>cerebro de empresa</strong>: notas ordenadas por proyectos y áreas, un equipo de agentes y un grafo sano. Hoy abrimos la caja y vemos <strong>cómo funciona por dentro</strong> lo que hace que ese cerebro sea de verdad útil. Hay herramientas comerciales (plugins de pago como <em>Smart Connections</em>, <em>Graphify</em> y compañía) que hacen esta magia. Nosotros vamos a entender qué hacen y luego a <strong>construir nuestra propia versión en local</strong>, gratis y bajo nuestro control, simplemente pidiéndoselo a Claude Code.</p>
+
+      <p>Son <strong>tres piezas</strong> que trabajan en cadena, cada una apoyada en la anterior. No compiten: se pasan el testigo. Este es el mapa de toda la clase de un vistazo:</p>
+
+      <div class="flow">
+        <div class="node"><span class="k">01</span><h4>El Vault</h4><p>Guarda tus notas como <strong>archivos de texto</strong> y las enlazas a mano. Es la <em>memoria</em> en bruto: fiable y tuya, pero busca por <strong>palabra exacta</strong> y solo conecta lo que enlazas tú.</p></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="node"><span class="k">02</span><h4>El Vectorizador</h4><p>Traduce cada nota a <strong>significado</strong> (números que capturan de qué habla). Con eso puedes buscar por <strong>idea</strong>, no por la palabra literal. Es el <em>oído fino</em> del cerebro.</p></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="node"><span class="k">03</span><h4>El Tejedor</h4><p>Usa ese significado para <strong>enlazar solo</strong> las notas que hablan de lo mismo y <strong>rescatar huérfanas</strong>. Teje el grafo por ti. Es lo que haría un plugin tipo <em>Graphify</em>, pero en casa.</p></div>
+      </div>
+
+      <div class="callout analogia"><span class="k">[ Analogía — una biblioteca ]</span><p>El <strong>Vault</strong> son las <em>estanterías</em> con todos los libros guardados. El <strong>Vectorizador</strong> es el <em>bibliotecario que se ha leído todo</em> y, cuando le describes una idea con tus palabras, sabe exactamente qué libros tratan de eso (aunque no uses el título). Y <strong>El Tejedor</strong> es quien va poniendo <em>hilos entre los libros que se parecen</em>, para que nunca quede ninguno perdido en un rincón sin conexión con el resto.</p></div>
+
+      <h3>El hilo conductor: del texto al grafo vivo</h3>
+
+      <p>La idea que conviene llevarse de toda la clase es esta cadena: <strong>el Vault guarda</strong> → <strong>el Vectorizador entiende</strong> → <strong>el Tejedor conecta</strong>. Cada pieza recibe lo que dejó la anterior. El Vectorizador no sirve de nada sin notas que leer (Vault), y el Tejedor no puede enlazar por significado sin los vectores que produce el Vectorizador. Por eso las vemos <em>en este orden</em>.</p>
+
+      <div class="callout nota"><span class="k">[ Nota ]</span><p><strong>Cómo leer esta clase:</strong> del Vault solo haremos un <em>repaso rápido</em> (lo montaste en la clase anterior, así que aquí no lleva prompt). En el <strong>Vectorizador</strong> y en <strong>El Tejedor</strong>, además de explicarlos, te dejamos una <strong>caja para copiar y pegar</strong> un prompt en tu Claude Code que <em>lo construye por ti</em>. Y como siempre: todo <strong>en local</strong>, nada sale de tu equipo.</p></div>
     </section>
 
-    <!-- 1. RESUMEN -->
-    <section id="resumen" class="py-20 bg-white border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6">
+    <!-- 2. Vault -->
+    <section class="sec" id="vault" data-label="Vault">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Qué hace el Vault de Obsidian (repaso).</h2></div>
 
-            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll"><span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">1</span> Qué vamos a ver y cómo encaja todo</h2>
+      <p>El <strong>Vault</strong> (la «bóveda») es la base de todo: es simplemente la <strong>carpeta donde viven tus notas</strong>. Y aquí está su gran virtud, que ya vimos: cada nota es un <strong>archivo de texto plano</strong> (<code>.md</code>) en tu disco. No hay una base de datos secreta ni un formato propietario; son ficheros que puedes abrir con cualquier programa, hacer copia de seguridad o versionar. <strong>Es tuyo y no depende de nadie.</strong> Eso ya lo montaste en la clase anterior, así que aquí solo lo repasamos para ver <em>dónde se queda corto</em> y qué recogen las otras dos piezas.</p>
 
-            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">En la clase anterior montamos el <strong>cerebro de empresa</strong>: notas ordenadas por proyectos y áreas, un equipo de agentes y un grafo sano. Hoy abrimos la caja y vemos <strong>cómo funciona por dentro</strong> lo que hace que ese cerebro sea de verdad útil. Hay herramientas comerciales (plugins de pago como <em>Smart Connections</em>, <em>Graphify</em> y compañía) que hacen esta magia. Nosotros vamos a entender qué hacen y luego a <strong>construir nuestra propia versión en local</strong>, gratis y bajo nuestro control, simplemente pidiéndoselo a Claude Code.</p>
+      <div class="grid-cards three">
+        <div class="card"><span class="k">[ 01 ]</span><h4>Guarda en texto plano</h4><p>Cada nota es un <code>.md</code> con una fichita arriba (el <em>frontmatter</em>: título, tipo, etiquetas) y el texto debajo. Legible por ti y por cualquier programa.</p></div>
+        <div class="card"><span class="k">[ 02 ]</span><h4>Enlaza a mano</h4><p>Tú escribes <code>[[otra nota]]</code> para conectar dos ideas, y el grafo dibuja esa línea. Potente, pero el trabajo de conectar lo pones <strong>tú, nota a nota</strong>.</p></div>
+        <div class="card"><span class="k">[ 03 ]</span><h4>Busca por palabra exacta</h4><p>El buscador de Obsidian encuentra las notas que contienen <em>literalmente</em> lo que escribes. Si buscas «cobrar» no te trae la nota que dice «facturación».</p></div>
+      </div>
 
-            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">Son <strong>tres piezas</strong> que trabajan en cadena, cada una apoyada en la anterior. No compiten: se pasan el testigo. Este es el mapa de toda la clase de un vistazo:</p>
+      <h3>Los dos límites que dejan trabajo pendiente</h3>
 
-            <!-- Pipeline de 3 piezas -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch mb-6 fade-in-on-scroll">
-                <div class="bg-slate-50 border border-slate-200 p-8 rounded-2xl shadow-sm relative">
-                    <div class="w-12 h-12 bg-slate-700 text-white rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-vault"></i></div>
-                    <h4 class="font-bold text-brand-dark text-lg mb-2">1 · El Vault</h4>
-                    <p class="font-serif text-gray-600 text-sm leading-relaxed">Guarda tus notas como <strong>archivos de texto</strong> y las enlazas a mano. Es la <em>memoria</em> en bruto: fiable y tuya, pero busca por <strong>palabra exacta</strong> y solo conecta lo que enlazas tú.</p>
-                    <span class="hidden md:block absolute top-1/2 -right-5 text-2xl text-claude z-10"><i class="fa-solid fa-arrow-right-long"></i></span>
-                </div>
-                <div class="bg-orange-50 border border-orange-200 p-8 rounded-2xl shadow-sm relative">
-                    <div class="w-12 h-12 bg-claude text-white rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-compass-drafting"></i></div>
-                    <h4 class="font-bold text-brand-dark text-lg mb-2">2 · El Vectorizador</h4>
-                    <p class="font-serif text-gray-600 text-sm leading-relaxed">Traduce cada nota a <strong>significado</strong> (números que capturan de qué habla). Con eso puedes buscar por <strong>idea</strong>, no por la palabra literal. Es el <em>oído fino</em> del cerebro.</p>
-                    <span class="hidden md:block absolute top-1/2 -right-5 text-2xl text-claude z-10"><i class="fa-solid fa-arrow-right-long"></i></span>
-                </div>
-                <div class="bg-blue-50 border border-blue-200 p-8 rounded-2xl shadow-sm">
-                    <div class="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-diagram-project"></i></div>
-                    <h4 class="font-bold text-brand-dark text-lg mb-2">3 · El Tejedor</h4>
-                    <p class="font-serif text-gray-600 text-sm leading-relaxed">Usa ese significado para <strong>enlazar solo</strong> las notas que hablan de lo mismo y <strong>rescatar huérfanas</strong>. Teje el grafo por ti. Es lo que haría un plugin tipo <em>Graphify</em>, pero en casa.</p>
-                </div>
-            </div>
+      <p>El Vault de fábrica es excelente <em>guardando</em>, pero tiene dos techos claros. Y no es un defecto: es justo el hueco que rellenan las otras dos piezas de esta clase.</p>
 
-            <div class="bg-amber-50 p-6 rounded-r-xl border-l-4 border-brand-accent shadow-sm my-8 fade-in-on-scroll">
-                <p class="font-serif text-amber-900 text-sm m-0 leading-relaxed"><i class="fa-solid fa-lightbulb text-brand-accent mr-2"></i> <strong>Analogía — una biblioteca:</strong> el <strong>Vault</strong> son las <em>estanterías</em> con todos los libros guardados. El <strong>Vectorizador</strong> es el <em>bibliotecario que se ha leído todo</em> y, cuando le describes una idea con tus palabras, sabe exactamente qué libros tratan de eso (aunque no uses el título). Y <strong>El Tejedor</strong> es quien va poniendo <em>hilos entre los libros que se parecen</em>, para que nunca quede ninguno perdido en un rincón sin conexión con el resto.</p>
-            </div>
+      <div class="grid-cards two">
+        <div class="card dim"><span class="k">Límite 1</span><h4>Busca letras, no significado</h4><p>La búsqueda nativa es <strong>literal</strong>: casa las mismas letras. No sabe que «pasarela de pago», «cobros» y «Stripe» hablan de lo mismo. Si no recuerdas la palabra exacta que usaste, la nota buena se te escapa. <strong>→ Lo arregla el Vectorizador.</strong></p></div>
+        <div class="card dim"><span class="k">Límite 2</span><h4>Los enlaces los pones tú</h4><p>Conectar es manual. Con cuatro notas es fácil; con cuatrocientas, aparecen las <strong>huérfanas</strong>: notas correctas que nadie enlazó y quedan sueltas, invisibles en el grafo. <strong>→ Lo arregla El Tejedor.</strong></p></div>
+      </div>
 
-            <h3 class="text-xl font-bold text-brand-dark mb-4 fade-in-on-scroll"><i class="fa-solid fa-link text-brand-primary mr-2"></i> El hilo conductor: del texto al grafo vivo</h3>
-
-            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">La idea que conviene llevarse de toda la clase es esta cadena: <strong>el Vault guarda</strong> → <strong>el Vectorizador entiende</strong> → <strong>el Tejedor conecta</strong>. Cada pieza recibe lo que dejó la anterior. El Vectorizador no sirve de nada sin notas que leer (Vault), y el Tejedor no puede enlazar por significado sin los vectores que produce el Vectorizador. Por eso las vemos <em>en este orden</em>.</p>
-
-            <div class="bg-white p-6 rounded-r-xl border-l-4 border-claude shadow-sm my-6 fade-in-on-scroll">
-                <p class="font-serif text-gray-700 text-sm m-0 leading-relaxed"><i class="fa-solid fa-circle-info text-claude mr-2"></i> <strong>Cómo leer esta clase:</strong> del Vault solo haremos un <em>repaso rápido</em> (lo montaste en la clase anterior, así que aquí no lleva prompt). En el <strong>Vectorizador</strong> y en <strong>El Tejedor</strong>, además de explicarlos, te dejamos una <strong>caja para copiar y pegar</strong> un prompt en tu Claude Code que <em>lo construye por ti</em>. Y como siempre: todo <strong>en local</strong>, nada sale de tu equipo.</p>
-            </div>
-
-        </div>
+      <div class="callout ok"><span class="k">[✓] Lo que no cambia</span><p>Las otras dos piezas <em>no sustituyen</em> al Vault; se apoyan en él. Tus notas siguen siendo <strong>archivos de texto en tu disco</strong>, tuyos y locales. El Vectorizador y el Tejedor solo <em>leen</em> esas notas para entenderlas y conectarlas mejor; el original de cada nota nunca deja de estar bajo tu control.</p></div>
     </section>
 
-    <!-- 2. VAULT -->
-    <section id="vault" class="py-20 bg-brand-light border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6">
+    <!-- 3. Vectorizador -->
+    <section class="sec" id="vectorizador" data-label="Vectorizador">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Qué hace el Vectorizador.</h2></div>
 
-            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll"><span class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">2</span> Qué hace el Vault de Obsidian (repaso)</h2>
+      <p>El <strong>Vectorizador</strong> resuelve el primer límite del Vault: hace que puedas buscar tu cerebro <strong>por significado</strong> y no por la palabra exacta. ¿Cómo? Le pasa cada nota a un pequeño modelo de IA que la lee y la convierte en un <strong>vector</strong>: una lista de números que resume <em>de qué trata</em>. La clave es que <strong>dos notas que hablan de cosas parecidas obtienen números parecidos</strong>, aunque no compartan ni una sola palabra. A ese número-resumen del significado se le llama <em>embedding</em>.</p>
 
-            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">El <strong>Vault</strong> (la "bóveda") es la base de todo: es simplemente la <strong>carpeta donde viven tus notas</strong>. Y aquí está su gran virtud, que ya vimos: cada nota es un <strong>archivo de texto plano</strong> (<code>.md</code>) en tu disco. No hay una base de datos secreta ni un formato propietario; son ficheros que puedes abrir con cualquier programa, hacer copia de seguridad o versionar. <strong>Es tuyo y no depende de nadie.</strong> Eso ya lo montaste en la clase anterior, así que aquí solo lo repasamos para ver <em>dónde se queda corto</em> y qué recogen las otras dos piezas.</p>
+      <div class="callout analogia"><span class="k">[ Analogía — coordenadas de un mapa ]</span><p>Imagina un mapa gigante donde cada idea tiene su <strong>coordenada</strong>. «Cobros», «facturación» y «Stripe» caen en el <em>mismo barrio</em> porque significan algo parecido; «color de marca» cae lejísimos, en otra punta. El Vectorizador le pone a cada nota su coordenada en ese mapa. Buscar por significado es tan simple como preguntar: <em>«¿qué notas hay cerca de esta idea?»</em>.</p></div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 fade-in-on-scroll">
-                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm card-hover">
-                    <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-file-lines"></i></div>
-                    <h5 class="font-bold text-brand-dark text-base mb-2">Guarda en texto plano</h5>
-                    <p class="font-serif text-gray-600 text-sm leading-relaxed">Cada nota es un <code>.md</code> con una fichita arriba (el <em>frontmatter</em>: título, tipo, etiquetas) y el texto debajo. Legible por ti y por cualquier programa.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm card-hover">
-                    <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-hand-pointer"></i></div>
-                    <h5 class="font-bold text-brand-dark text-base mb-2">Enlaza a mano</h5>
-                    <p class="font-serif text-gray-600 text-sm leading-relaxed">Tú escribes <code>[[otra nota]]</code> para conectar dos ideas, y el grafo dibuja esa línea. Potente, pero el trabajo de conectar lo pones <strong>tú, nota a nota</strong>.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm card-hover">
-                    <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-magnifying-glass"></i></div>
-                    <h5 class="font-bold text-brand-dark text-base mb-2">Busca por palabra exacta</h5>
-                    <p class="font-serif text-gray-600 text-sm leading-relaxed">El buscador de Obsidian encuentra las notas que contienen <em>literalmente</em> lo que escribes. Si buscas "cobrar" no te trae la nota que dice "facturación".</p>
-                </div>
+      <!-- Widget: mapa del significado -->
+      <h3>Pruébalo: el mapa del significado</h3>
+      <p>Cada punto es una nota del cerebro, colocada por su <strong>significado</strong> (las parecidas quedan juntas). Pulsa una pregunta escrita <em>con tus palabras</em> y verás cómo el Vectorizador ilumina las notas más cercanas en significado — <strong>aunque tu pregunta no comparta ni una palabra con ellas</strong>. Eso es buscar por idea, no por letra.</p>
+
+      <div class="card sem" id="semWidget">
+        <div class="sem-head"><span class="k">[ Mapa del significado · demo ]</span><span class="k dim">Demostración didáctica</span></div>
+
+        <p class="sem-label">Pregunta con tus palabras:</p>
+        <div id="semChips" class="chips"></div>
+
+        <div class="sem-grid">
+          <div>
+            <figure class="figure sem-fig">
+              <svg id="semMap" viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mapa del significado: cada punto es una nota, colocada cerca de las notas de significado parecido">
+                <g id="semLinks"></g>
+                <g id="semNodes"></g>
+                <g id="semQuery"></g>
+              </svg>
+              <figcaption>Cada punto = una nota · cerca = significado parecido</figcaption>
+            </figure>
+          </div>
+
+          <div>
+            <p class="sem-label">Notas más cercanas:</p>
+            <div id="semResults" class="sem-results" aria-live="polite">
+              <p class="empty">Pulsa una pregunta de arriba para ver qué notas encuentra por significado.</p>
             </div>
-
-            <h3 class="text-xl font-bold text-brand-dark mb-4 fade-in-on-scroll"><i class="fa-solid fa-triangle-exclamation text-brand-accent mr-2"></i> Los dos límites que dejan trabajo pendiente</h3>
-
-            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">El Vault de fábrica es excelente <em>guardando</em>, pero tiene dos techos claros. Y no es un defecto: es justo el hueco que rellenan las otras dos piezas de esta clase.</p>
-
-            <div class="grid md:grid-cols-2 gap-8 mb-10 fade-in-on-scroll">
-                <div class="bg-white border border-gray-200 p-8 rounded-2xl shadow-sm">
-                    <h4 class="font-bold text-gray-400 uppercase text-xs mb-3 tracking-widest"><i class="fa-solid fa-ear-listen mr-2"></i> Límite 1 · Busca letras, no significado</h4>
-                    <p class="font-serif text-gray-600 text-sm leading-relaxed">La búsqueda nativa es <strong>literal</strong>: casa las mismas letras. No sabe que "pasarela de pago", "cobros" y "Stripe" hablan de lo mismo. Si no recuerdas la palabra exacta que usaste, la nota buena se te escapa. <span class="text-claude font-bold">→ Lo arregla el Vectorizador.</span></p>
-                </div>
-                <div class="bg-white border border-gray-200 p-8 rounded-2xl shadow-sm">
-                    <h4 class="font-bold text-gray-400 uppercase text-xs mb-3 tracking-widest"><i class="fa-solid fa-ghost mr-2"></i> Límite 2 · Los enlaces los pones tú</h4>
-                    <p class="font-serif text-gray-600 text-sm leading-relaxed">Conectar es manual. Con cuatro notas es fácil; con cuatrocientas, aparecen las <strong>huérfanas</strong>: notas correctas que nadie enlazó y quedan sueltas, invisibles en el grafo. <span class="text-blue-600 font-bold">→ Lo arregla El Tejedor.</span></p>
-                </div>
-            </div>
-
-            <div class="bg-emerald-50 p-6 rounded-r-xl border-l-4 border-emerald-500 shadow-sm my-6 fade-in-on-scroll">
-                <p class="font-serif text-emerald-900 text-sm m-0 leading-relaxed"><i class="fa-solid fa-circle-check text-emerald-500 mr-2"></i> <strong>Lo que no cambia:</strong> las otras dos piezas <em>no sustituyen</em> al Vault; se apoyan en él. Tus notas siguen siendo <strong>archivos de texto en tu disco</strong>, tuyos y locales. El Vectorizador y el Tejedor solo <em>leen</em> esas notas para entenderlas y conectarlas mejor; el original de cada nota nunca deja de estar bajo tu control.</p>
-            </div>
-
+          </div>
         </div>
-    </section>
+      </div>
 
-    <!-- 3. VECTORIZADOR -->
-    <section id="vectorizador" class="py-20 bg-white border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6">
+      <div class="callout nota"><span class="k">[ Nota ]</span><p><strong>Fíjate en el detalle clave:</strong> preguntas <em>«¿cómo cobramos a los clientes?»</em> y te encuentra la nota <strong>«Pagos con Stripe»</strong>, que no contiene la palabra «cobrar» por ningún lado. El buscador normal de Obsidian no la habría traído. Eso es lo que aporta el Vectorizador: <strong>encuentra por lo que significan las notas, no por las letras que usaste.</strong></p></div>
 
-            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll"><span class="w-10 h-10 bg-claude text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">3</span> Qué hace el Vectorizador</h2>
+      <h3>Las cuatro cosas que hace, por dentro</h3>
+      <p>Por debajo, un vectorizador siempre hace la misma secuencia. Conviene conocerla porque es <em>exactamente</em> lo que le vas a pedir a Claude Code en el prompt de abajo:</p>
 
-            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">El <strong>Vectorizador</strong> resuelve el primer límite del Vault: hace que puedas buscar tu cerebro <strong>por significado</strong> y no por la palabra exacta. ¿Cómo? Le pasa cada nota a un pequeño modelo de IA que la lee y la convierte en un <strong>vector</strong>: una lista de números que resume <em>de qué trata</em>. La clave es que <strong>dos notas que hablan de cosas parecidas obtienen números parecidos</strong>, aunque no compartan ni una sola palabra. A ese número-resumen del significado se le llama <em>embedding</em>.</p>
+      <div class="grid-cards two">
+        <div class="card"><span class="k">[ 01 ]</span><h4>Lee las notas</h4><p>Recorre todos los <code>.md</code> del vault (saltándose el archivo y ficheros internos), separando el frontmatter del texto.</p></div>
+        <div class="card"><span class="k">[ 02 ]</span><h4>Las convierte en vectores</h4><p>Un modelo de <em>embeddings</em> local y multilingüe (nosotros usamos <code>bge-m3</code>) traduce cada nota a su lista de números-significado.</p></div>
+        <div class="card"><span class="k">[ 03 ]</span><h4>Los guarda en un índice</h4><p>Los vectores van a una pequeña <strong>base de datos vectorial</strong> local (nosotros usamos <code>LanceDB</code>), pensada para encontrar «vecinos cercanos» a toda velocidad.</p></div>
+        <div class="card"><span class="k">[ 04 ]</span><h4>Ofrece la búsqueda</h4><p>Lo expone como una herramienta (un <em>MCP</em>, como vimos) para que Claude Code consulte el cerebro por significado cuando lo necesite.</p></div>
+      </div>
 
-            <div class="bg-amber-50 p-6 rounded-r-xl border-l-4 border-brand-accent shadow-sm my-8 fade-in-on-scroll">
-                <p class="font-serif text-amber-900 text-sm m-0 leading-relaxed"><i class="fa-solid fa-lightbulb text-brand-accent mr-2"></i> <strong>Analogía — coordenadas de un mapa:</strong> imagina un mapa gigante donde cada idea tiene su <strong>coordenada</strong>. "Cobros", "facturación" y "Stripe" caen en el <em>mismo barrio</em> porque significan algo parecido; "color de marca" cae lejísimos, en otra punta. El Vectorizador le pone a cada nota su coordenada en ese mapa. Buscar por significado es tan simple como preguntar: <em>"¿qué notas hay cerca de esta idea?"</em>.</p>
-            </div>
+      <div class="callout ok"><span class="k">[✓] Privacidad, lo primero</span><p>El modelo que convierte tus notas en vectores corre <strong>en tu propio ordenador</strong>. Tus notas <em>no viajan a ninguna nube</em> para ser analizadas — a diferencia de muchos plugins que mandan tu texto a un servicio externo. Nada sale del equipo. Y recuerda la regla de siempre: los datos personales sensibles (PII) no viven en el vault.</p></div>
 
-            <!-- WIDGET: mapa del significado -->
-            <h3 class="text-xl font-bold text-brand-dark mb-4 fade-in-on-scroll"><i class="fa-solid fa-map-location-dot text-claude mr-2"></i> Pruébalo: el mapa del significado</h3>
-            <p class="prose-text mb-6 text-gray-600 fade-in-on-scroll">Cada punto es una nota del cerebro, colocada por su <strong>significado</strong> (las parecidas quedan juntas; el color es su área). Pulsa una pregunta escrita <em>con tus palabras</em> y verás cómo el Vectorizador ilumina las notas más cercanas en significado — <strong>aunque tu pregunta no comparta ni una palabra con ellas</strong>. Eso es buscar por idea, no por letra.</p>
+      <!-- Prompt Vectorizador -->
+      <h3>Prompt para construirlo (copiar y pegar en Claude Code)</h3>
+      <p>No tienes que programar nada. Abre Claude Code <strong>en la carpeta de tu vault</strong>, pega este prompt y déjalo trabajar. Describe exactamente las cuatro cosas de arriba:</p>
 
-            <div class="fade-in-on-scroll mb-8">
-                <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-xl overflow-hidden">
-                    <div class="bg-slate-950 px-6 py-4 border-b border-slate-800 flex items-center justify-between">
-                        <span class="text-sm font-mono text-claude font-bold uppercase tracking-wider"><i class="fa-solid fa-compass-drafting mr-2"></i> Mapa del significado · demo</span>
-                        <span class="text-[11px] font-mono text-slate-500">demostración didáctica</span>
-                    </div>
-
-                    <div class="p-6">
-                        <!-- Chips de pregunta -->
-                        <p class="text-slate-300 text-xs font-sans font-bold uppercase tracking-widest mb-3">Pregunta con tus palabras:</p>
-                        <div id="semChips" class="flex flex-wrap gap-2 mb-6"></div>
-
-                        <div class="grid lg:grid-cols-3 gap-6 items-start">
-                            <!-- Mapa SVG -->
-                            <div class="lg:col-span-2">
-                                <div class="bg-slate-950/60 rounded-xl border border-slate-800 p-2">
-                                    <svg id="semMap" viewBox="0 0 100 72" class="w-full h-auto" style="max-height:340px" xmlns="http://www.w3.org/2000/svg">
-                                        <g id="semLinks"></g>
-                                        <g id="semNodes"></g>
-                                        <g id="semQuery"></g>
-                                    </svg>
-                                </div>
-                                <p class="text-slate-500 text-[11px] font-mono mt-2 text-center">Cada punto = una nota · cerca = significado parecido · color = área</p>
-                            </div>
-
-                            <!-- Resultados -->
-                            <div class="lg:col-span-1">
-                                <p class="text-slate-300 text-xs font-sans font-bold uppercase tracking-widest mb-3">Notas más cercanas:</p>
-                                <div id="semResults" class="space-y-2 font-mono text-xs text-slate-400">
-                                    <p class="text-slate-500 italic font-serif">Pulsa una pregunta de arriba para ver qué notas encuentra por significado.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-r-xl border-l-4 border-claude shadow-sm my-8 fade-in-on-scroll">
-                <p class="font-serif text-gray-700 text-sm m-0 leading-relaxed"><i class="fa-solid fa-circle-info text-claude mr-2"></i> <strong>Fíjate en el detalle clave:</strong> preguntas <em>"¿cómo cobramos a los clientes?"</em> y te encuentra la nota <strong>"Pagos con Stripe"</strong>, que no contiene la palabra "cobrar" por ningún lado. El buscador normal de Obsidian no la habría traído. Eso es lo que aporta el Vectorizador: <strong>encuentra por lo que significan las notas, no por las letras que usaste.</strong></p>
-            </div>
-
-            <h3 class="text-xl font-bold text-brand-dark mb-4 fade-in-on-scroll"><i class="fa-solid fa-gears text-claude mr-2"></i> Las cuatro cosas que hace, por dentro</h3>
-            <p class="prose-text mb-6 text-gray-600 fade-in-on-scroll">Por debajo, un vectorizador siempre hace la misma secuencia. Conviene conocerla porque es <em>exactamente</em> lo que le vas a pedir a Claude Code en el prompt de abajo:</p>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 fade-in-on-scroll">
-                <div class="bg-orange-50/50 p-6 rounded-xl border border-orange-100">
-                    <h5 class="font-bold text-brand-dark text-sm mb-1"><span class="text-claude font-mono mr-2">1.</span> Lee las notas</h5>
-                    <p class="font-serif text-gray-600 text-sm leading-relaxed">Recorre todos los <code>.md</code> del vault (saltándose el archivo y ficheros internos), separando el frontmatter del texto.</p>
-                </div>
-                <div class="bg-orange-50/50 p-6 rounded-xl border border-orange-100">
-                    <h5 class="font-bold text-brand-dark text-sm mb-1"><span class="text-claude font-mono mr-2">2.</span> Las convierte en vectores</h5>
-                    <p class="font-serif text-gray-600 text-sm leading-relaxed">Un modelo de <em>embeddings</em> local y multilingüe (nosotros usamos <code>bge-m3</code>) traduce cada nota a su lista de números-significado.</p>
-                </div>
-                <div class="bg-orange-50/50 p-6 rounded-xl border border-orange-100">
-                    <h5 class="font-bold text-brand-dark text-sm mb-1"><span class="text-claude font-mono mr-2">3.</span> Los guarda en un índice</h5>
-                    <p class="font-serif text-gray-600 text-sm leading-relaxed">Los vectores van a una pequeña <strong>base de datos vectorial</strong> local (nosotros usamos <code>LanceDB</code>), pensada para encontrar "vecinos cercanos" a toda velocidad.</p>
-                </div>
-                <div class="bg-orange-50/50 p-6 rounded-xl border border-orange-100">
-                    <h5 class="font-bold text-brand-dark text-sm mb-1"><span class="text-claude font-mono mr-2">4.</span> Ofrece la búsqueda</h5>
-                    <p class="font-serif text-gray-600 text-sm leading-relaxed">Lo expone como una herramienta (un <em>MCP</em>, como vimos) para que Claude Code consulte el cerebro por significado cuando lo necesite.</p>
-                </div>
-            </div>
-
-            <div class="bg-emerald-50 p-6 rounded-r-xl border-l-4 border-emerald-500 shadow-sm my-8 fade-in-on-scroll">
-                <p class="font-serif text-emerald-900 text-sm m-0 leading-relaxed"><i class="fa-solid fa-shield-halved text-emerald-500 mr-2"></i> <strong>Privacidad, lo primero:</strong> el modelo que convierte tus notas en vectores corre <strong>en tu propio ordenador</strong>. Tus notas <em>no viajan a ninguna nube</em> para ser analizadas — a diferencia de muchos plugins que mandan tu texto a un servicio externo. Nada sale del equipo. Y recuerda la regla de siempre: los datos personales sensibles (PII) no viven en el vault.</p>
-            </div>
-
-            <!-- PROMPT VECTORIZADOR -->
-            <h3 class="text-xl font-bold text-brand-dark mb-4 fade-in-on-scroll"><i class="fa-solid fa-wand-magic-sparkles text-claude mr-2"></i> Prompt para construirlo (copiar y pegar en Claude Code)</h3>
-            <p class="prose-text mb-6 text-gray-600 fade-in-on-scroll">No tienes que programar nada. Abre Claude Code <strong>en la carpeta de tu vault</strong>, pega este prompt y déjalo trabajar. Describe exactamente las cuatro cosas de arriba:</p>
-
-            <div class="fade-in-on-scroll mb-8">
-                <div class="bg-slate-900 text-white rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
-                    <div class="bg-slate-950 px-6 py-4 border-b border-slate-800 flex justify-between items-center">
-                        <span class="text-sm font-mono text-brand-accent font-bold uppercase tracking-wider"><i class="fa-solid fa-terminal mr-2"></i> Prompt · construir el Vectorizador</span>
-                        <button onclick="copyToClipboard('cb-vec-1', this)" class="text-xs font-bold text-slate-400 hover:text-white transition-colors border border-slate-700 hover:border-slate-500 px-4 py-2 rounded-lg bg-slate-900 flex items-center"><i class="fa-regular fa-copy mr-2"></i> Copiar</button>
-                    </div>
-                    <div id="cb-vec-1" class="p-6 font-mono text-gray-200 text-xs md:text-sm leading-relaxed whitespace-pre-wrap">Quiero montar una búsqueda por significado sobre mi vault de Obsidian, 100% en local y sin que ninguna nota salga de mi ordenador (nada de nube). Construye un script en Python que:
+      <div class="code prompt"><div class="ch"><span class="k">[ Prompt · construir el Vectorizador ]</span><button type="button" class="btn-ghost" data-copy>Copiar</button></div><pre>Quiero montar una búsqueda por significado sobre mi vault de Obsidian, 100% en local y sin que ninguna nota salga de mi ordenador (nada de nube). Construye un script en Python que:
 
 1. Recorra todas las notas .md de mi vault, saltándose las carpetas de archivo y la carpeta .obsidian, y separe el frontmatter (los metadatos de arriba) del texto de cada nota.
 2. Convierta cada nota en un vector usando un modelo de embeddings local y multilingüe (usa BAAI/bge-m3, que funciona bien en español).
 3. Guarde esos vectores en una base de datos vectorial local (usa LanceDB, en una carpeta del propio proyecto).
 4. Exponga una herramienta MCP llamada "buscar_en_cerebro(consulta, k)" para que, desde Claude Code, yo pueda preguntarte por significado y me devuelvas las notas más parecidas con su título, su ruta y un extracto.
 
-Prepáralo todo en un entorno virtual, déjame un README con el comando para reindexar cuando cambien mis notas, y explícame paso a paso qué instalar. Todo en local; los datos personales sensibles no entran aquí.</div>
-                </div>
-            </div>
+Prepáralo todo en un entorno virtual, déjame un README con el comando para reindexar cuando cambien mis notas, y explícame paso a paso qué instalar. Todo en local; los datos personales sensibles no entran aquí.</pre></div>
 
-            <div class="bg-white p-6 rounded-r-xl border-l-4 border-claude shadow-sm my-6 fade-in-on-scroll">
-                <p class="font-serif text-gray-700 text-sm m-0 leading-relaxed"><i class="fa-solid fa-circle-info text-claude mr-2"></i> <strong>Qué esperar:</strong> la primera vez, el modelo se descarga (pesa un par de gigas) y tarda un poco; luego va rápido. Cuando añadas o cambies notas, basta con <strong>reindexar</strong> (volver a lanzar el script) para que la búsqueda esté al día. Y para que Claude Code vea la herramienta nueva, reinicia la sesión y aprueba el servidor <code>cerebro</code>.</p>
-            </div>
-
-        </div>
+      <div class="callout nota"><span class="k">[ Nota ]</span><p><strong>Qué esperar:</strong> la primera vez, el modelo se descarga (pesa un par de gigas) y tarda un poco; luego va rápido. Cuando añadas o cambies notas, basta con <strong>reindexar</strong> (volver a lanzar el script) para que la búsqueda esté al día. Y para que Claude Code vea la herramienta nueva, reinicia la sesión y aprueba el servidor <code>cerebro</code>.</p></div>
     </section>
 
-    <!-- 4. EL TEJEDOR -->
-    <section id="tejedor" class="py-20 bg-brand-light border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6">
+    <!-- 4. El Tejedor -->
+    <section class="sec" id="tejedor" data-label="El Tejedor">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Qué hace El Tejedor.</h2></div>
 
-            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll"><span class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">4</span> Qué hace <span class="text-blue-600 ml-2">El Tejedor</span></h2>
+      <div class="callout nota"><span class="k">[ El nombre ]</span><p>Lo llamamos <strong>El Tejedor</strong> porque <em>teje</em> el grafo. Es nuestra versión en local de lo que hacen plugins comerciales tipo <strong>Graphify</strong> o <em>Smart Connections</em>: descubrir conexiones entre notas y dibujarlas por ti. Le damos nombre propio porque a partir de aquí es <em>tuyo</em>, no un plugin de terceros.</p></div>
 
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-5 rounded-r-xl mb-8 fade-in-on-scroll">
-                <p class="font-serif text-blue-900 text-sm m-0 leading-relaxed"><i class="fa-solid fa-tag text-blue-500 mr-2"></i> <strong>El nombre:</strong> lo llamamos <strong>El Tejedor</strong> porque <em>teje</em> el grafo. Es nuestra versión en local de lo que hacen plugins comerciales tipo <strong>Graphify</strong> o <em>Smart Connections</em>: descubrir conexiones entre notas y dibujarlas por ti. Le damos nombre propio porque a partir de aquí es <em>tuyo</em>, no un plugin de terceros.</p>
-            </div>
+      <p>El Tejedor ataca el <strong>segundo límite del Vault</strong>: que los enlaces los pones a mano. Su trabajo es <strong>tejer las conexiones que faltan</strong>. Y para eso se apoya justo en la pieza anterior: reutiliza los <strong>vectores que ya generó el Vectorizador</strong>. Si dos notas tienen vectores muy cercanos (significan casi lo mismo) pero <em>nadie las ha enlazado</em>, ahí hay una conexión perdida. El Tejedor las encuentra y propone el enlace <code>[[...]]</code>. Su obsesión: que <strong>no quede ninguna nota huérfana</strong>.</p>
 
-            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">El Tejedor ataca el <strong>segundo límite del Vault</strong>: que los enlaces los pones a mano. Su trabajo es <strong>tejer las conexiones que faltan</strong>. Y para eso se apoya justo en la pieza anterior: reutiliza los <strong>vectores que ya generó el Vectorizador</strong>. Si dos notas tienen vectores muy cercanos (significan casi lo mismo) pero <em>nadie las ha enlazado</em>, ahí hay una conexión perdida. El Tejedor las encuentra y propone el enlace <code>[[...]]</code>. Su obsesión: que <strong>no quede ninguna nota huérfana</strong>.</p>
+      <div class="callout nota"><span class="k">[ Nota ]</span><p><strong>¿No hacía esto ya el Enlazador de la clase anterior?</strong> Se parecen, pero no compiten. El <strong>Enlazador</strong> es un <em>agente</em> que conecta cada nota <strong>nueva</strong>, una a una y con criterio, en el momento de escribirla o ingerirla. <strong>El Tejedor</strong> es un <em>script</em> que hace una <strong>pasada masiva por significado sobre todo el vault</strong> —reutilizando los vectores del Vectorizador— y rescata las notas que <strong>ya</strong> quedaron sueltas de antes. Uno cose al vuelo; el otro repasa el conjunto entero.</p></div>
 
-            <div class="bg-white p-6 rounded-r-xl border-l-4 border-claude shadow-sm my-8 fade-in-on-scroll">
-                <p class="font-serif text-gray-700 text-sm m-0 leading-relaxed"><i class="fa-solid fa-circle-info text-claude mr-2"></i> <strong>¿No hacía esto ya el Enlazador de la clase anterior?</strong> Se parecen, pero no compiten. El <strong>Enlazador</strong> es un <em>agente</em> que conecta cada nota <strong>nueva</strong>, una a una y con criterio, en el momento de escribirla o ingerirla. <strong>El Tejedor</strong> es un <em>script</em> que hace una <strong>pasada masiva por significado sobre todo el vault</strong> —reutilizando los vectores del Vectorizador— y rescata las notas que <strong>ya</strong> quedaron sueltas de antes. Uno cose al vuelo; el otro repasa el conjunto entero.</p>
-            </div>
+      <div class="callout analogia"><span class="k">[ Analogía — un casamentero ]</span><p>Imagina a alguien que conoce a todo el mundo de una fiesta y va presentando a las personas que tienen cosas en común pero aún no se han cruzado: <em>«vosotros dos deberíais hablar, os interesa lo mismo»</em>. El Tejedor hace eso con tus notas: detecta las que «tienen mucho de qué hablar» (significado cercano) y todavía no se conocen (no están enlazadas), y las presenta.</p></div>
 
-            <div class="bg-amber-50 p-6 rounded-r-xl border-l-4 border-brand-accent shadow-sm my-8 fade-in-on-scroll">
-                <p class="font-serif text-amber-900 text-sm m-0 leading-relaxed"><i class="fa-solid fa-lightbulb text-brand-accent mr-2"></i> <strong>Analogía — un casamentero:</strong> imagina a alguien que conoce a todo el mundo de una fiesta y va presentando a las personas que tienen cosas en común pero aún no se han cruzado: <em>"vosotros dos deberíais hablar, os interesa lo mismo"</em>. El Tejedor hace eso con tus notas: detecta las que "tienen mucho de qué hablar" (significado cercano) y todavía no se conocen (no están enlazadas), y las presenta.</p>
-            </div>
+      <h3>Cómo teje, paso a paso</h3>
 
-            <h3 class="text-xl font-bold text-brand-dark mb-4 fade-in-on-scroll"><i class="fa-solid fa-list-ol text-blue-600 mr-2"></i> Cómo teje, paso a paso</h3>
+      <div class="grid-cards two">
+        <div class="card"><span class="k">[ 01 ]</span><h4>Mide parecidos</h4><p>Para cada nota, mira cuáles son las <strong>más cercanas en significado</strong> usando los vectores del Vectorizador (la «distancia» entre vectores).</p></div>
+        <div class="card"><span class="k">[ 02 ]</span><h4>Detecta enlaces que faltan</h4><p>De esas parejas muy parecidas, se queda con las que <strong>todavía no están enlazadas</strong> entre sí. Ahí está la conexión perdida.</p></div>
+        <div class="card"><span class="k">[ 03 ]</span><h4>Rescata huérfanas</h4><p>Da prioridad a las notas <strong>sin ningún enlace</strong> (ni de entrada ni de salida): son las que más urge conectar para que no queden invisibles.</p></div>
+        <div class="card"><span class="k">[ 04 ]</span><h4>Propone y espera tu OK</h4><p>Te enseña la lista de enlaces sugeridos (nota A ↔ nota B, con su parecido) y <strong>no escribe nada hasta que apruebas</strong>. Tú tienes la última palabra.</p></div>
+      </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 fade-in-on-scroll">
-                <div class="bg-white p-6 rounded-xl border border-blue-100 shadow-sm">
-                    <h5 class="font-bold text-brand-dark text-sm mb-1"><span class="text-blue-600 font-mono mr-2">1.</span> Mide parecidos</h5>
-                    <p class="font-serif text-gray-600 text-sm leading-relaxed">Para cada nota, mira cuáles son las <strong>más cercanas en significado</strong> usando los vectores del Vectorizador (la "distancia" entre vectores).</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border border-blue-100 shadow-sm">
-                    <h5 class="font-bold text-brand-dark text-sm mb-1"><span class="text-blue-600 font-mono mr-2">2.</span> Detecta enlaces que faltan</h5>
-                    <p class="font-serif text-gray-600 text-sm leading-relaxed">De esas parejas muy parecidas, se queda con las que <strong>todavía no están enlazadas</strong> entre sí. Ahí está la conexión perdida.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border border-blue-100 shadow-sm">
-                    <h5 class="font-bold text-brand-dark text-sm mb-1"><span class="text-blue-600 font-mono mr-2">3.</span> Rescata huérfanas</h5>
-                    <p class="font-serif text-gray-600 text-sm leading-relaxed">Da prioridad a las notas <strong>sin ningún enlace</strong> (ni de entrada ni de salida): son las que más urge conectar para que no queden invisibles.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border border-blue-100 shadow-sm">
-                    <h5 class="font-bold text-brand-dark text-sm mb-1"><span class="text-blue-600 font-mono mr-2">4.</span> Propone y espera tu OK</h5>
-                    <p class="font-serif text-gray-600 text-sm leading-relaxed">Te enseña la lista de enlaces sugeridos (nota A ↔ nota B, con su parecido) y <strong>no escribe nada hasta que apruebas</strong>. Tú tienes la última palabra.</p>
-                </div>
-            </div>
+      <div class="callout regla"><span class="k">[ Regla de edición segura ]</span><p><strong>De la clase anterior:</strong> el Tejedor toca tus notas, así que sigue la misma norma que cualquier agente que edita el vault: <strong>propone antes de escribir</strong>, edita de forma <em>quirúrgica</em> (solo añade el enlace, sin tocar nada más), no crea duplicados y te deja revisar. Un auto-enlazador a ciegas puede llenar el grafo de conexiones absurdas; con revisión previa, teje bien.</p></div>
 
-            <div class="bg-emerald-50 p-6 rounded-r-xl border-l-4 border-emerald-500 shadow-sm my-8 fade-in-on-scroll">
-                <p class="font-serif text-emerald-900 text-sm m-0 leading-relaxed"><i class="fa-solid fa-circle-check text-emerald-500 mr-2"></i> <strong>Regla de edición segura (de la clase anterior):</strong> el Tejedor toca tus notas, así que sigue la misma norma que cualquier agente que edita el vault: <strong>propone antes de escribir</strong>, edita de forma <em>quirúrgica</em> (solo añade el enlace, sin tocar nada más), no crea duplicados y te deja revisar. Un auto-enlazador a ciegas puede llenar el grafo de conexiones absurdas; con revisión previa, teje bien.</p>
-            </div>
+      <!-- Prompt Tejedor -->
+      <h3>Prompt para construirlo (copiar y pegar en Claude Code)</h3>
+      <p>Requiere tener ya montado el Vectorizador (reutiliza sus vectores). Abre Claude Code <strong>en la carpeta de tu vault</strong> y pega esto:</p>
 
-            <!-- PROMPT TEJEDOR -->
-            <h3 class="text-xl font-bold text-brand-dark mb-4 fade-in-on-scroll"><i class="fa-solid fa-wand-magic-sparkles text-blue-600 mr-2"></i> Prompt para construirlo (copiar y pegar en Claude Code)</h3>
-            <p class="prose-text mb-6 text-gray-600 fade-in-on-scroll">Requiere tener ya montado el Vectorizador (reutiliza sus vectores). Abre Claude Code <strong>en la carpeta de tu vault</strong> y pega esto:</p>
-
-            <div class="fade-in-on-scroll mb-8">
-                <div class="bg-slate-900 text-white rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
-                    <div class="bg-slate-950 px-6 py-4 border-b border-slate-800 flex justify-between items-center">
-                        <span class="text-sm font-mono text-brand-accent font-bold uppercase tracking-wider"><i class="fa-solid fa-terminal mr-2"></i> Prompt · construir El Tejedor</span>
-                        <button onclick="copyToClipboard('cb-tej-1', this)" class="text-xs font-bold text-slate-400 hover:text-white transition-colors border border-slate-700 hover:border-slate-500 px-4 py-2 rounded-lg bg-slate-900 flex items-center"><i class="fa-regular fa-copy mr-2"></i> Copiar</button>
-                    </div>
-                    <div id="cb-tej-1" class="p-6 font-mono text-gray-200 text-xs md:text-sm leading-relaxed whitespace-pre-wrap">Quiero un script que teja los enlaces de mi vault de Obsidian automáticamente, como haría un plugin tipo Graphify, pero en local y bajo mi control. Reutiliza los vectores que ya generé con mi vectorizador (embeddings locales bge-m3 guardados en LanceDB). El script debe:
+      <div class="code prompt"><div class="ch"><span class="k">[ Prompt · construir El Tejedor ]</span><button type="button" class="btn-ghost" data-copy>Copiar</button></div><pre>Quiero un script que teja los enlaces de mi vault de Obsidian automáticamente, como haría un plugin tipo Graphify, pero en local y bajo mi control. Reutiliza los vectores que ya generé con mi vectorizador (embeddings locales bge-m3 guardados en LanceDB). El script debe:
 
 1. Para cada nota, encontrar las otras notas más parecidas en significado (por similitud de coseno entre sus vectores).
 2. Proponer enlaces [[wikilink]] entre notas muy relacionadas que TODAVÍA no estén enlazadas entre sí.
 3. Dar prioridad a rescatar las notas huérfanas (las que no tienen ningún enlace de entrada ni de salida).
 4. MUY IMPORTANTE: no escribas nada todavía. Primero enséñame la lista de enlaces propuestos —nota A ↔ nota B, con su porcentaje de parecido— para que yo la revise y apruebe.
 
-Solo cuando dé el OK, añade los enlaces aprobados editando de forma quirúrgica (solo añades el enlace, sin tocar el resto de la nota), respetando el formato de cada nota y sin crear duplicados. Ponme un umbral de parecido configurable para no llenar el grafo de conexiones débiles. Todo en local.</div>
-                </div>
-            </div>
+Solo cuando dé el OK, añade los enlaces aprobados editando de forma quirúrgica (solo añades el enlace, sin tocar el resto de la nota), respetando el formato de cada nota y sin crear duplicados. Ponme un umbral de parecido configurable para no llenar el grafo de conexiones débiles. Todo en local.</pre></div>
 
-            <div class="bg-indigo-50/60 p-6 rounded-2xl border border-indigo-100 my-8 fade-in-on-scroll">
-                <h4 class="font-bold text-brand-dark text-sm uppercase mb-3"><i class="fa-solid fa-lightbulb mr-2 text-indigo-600"></i> En una frase</h4>
-                <p class="font-serif text-gray-700 text-sm leading-relaxed mb-0">El <strong>Vault</strong> guarda, el <strong>Vectorizador</strong> entiende y <strong>El Tejedor</strong> conecta. Las tres piezas que los plugins de pago venden por separado las tienes <strong>en local, gratis y bajo tu control</strong>, sin más que describírselas a Claude Code. Y la seguridad manda siempre: nada sale de tu equipo y tú apruebas cada cambio antes de que toque una nota.</p>
-            </div>
-
-        </div>
+      <div class="callout clave"><span class="k">[ En una frase ]</span><p>El <strong>Vault</strong> guarda, el <strong>Vectorizador</strong> entiende y <strong>El Tejedor</strong> conecta. Las tres piezas que los plugins de pago venden por separado las tienes <strong>en local, gratis y bajo tu control</strong>, sin más que describírselas a Claude Code. Y la seguridad manda siempre: nada sale de tu equipo y tú apruebas cada cambio antes de que toque una nota.</p></div>
     </section>
 
-    <!-- 5. Práctica y Quiz (Dark Section) -->
-    <section id="practica" class="py-24 bg-brand-dark text-white border-t-8 border-claude">
-        <div class="max-w-6xl mx-auto px-6">
+    <!-- 5. Práctica: reto y test (banda tinta) -->
+    <section class="sec sec-dark" id="practica" data-label="Práctica">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Práctica.</h2></div>
 
-            <!-- Reto de la clase -->
-            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-10 lg:p-16 shadow-2xl relative overflow-hidden fade-in-on-scroll mb-20">
-                <div class="absolute top-0 right-0 w-80 h-80 bg-claude/20 rounded-bl-full -z-0 blur-2xl"></div>
-                <div class="flex items-center mb-8 relative z-10">
-                    <div class="w-16 h-16 bg-claude text-white rounded-2xl flex items-center justify-center text-3xl shadow-lg mr-6 shrink-0">
-                        <i class="fa-solid fa-diagram-project"></i>
-                    </div>
-                    <div>
-                        <span class="text-claude font-bold tracking-widest text-xs uppercase mb-1 block">Reto de la Clase</span>
-                        <h3 class="text-3xl lg:text-4xl font-extrabold text-white">Construye tu buscador y tu tejedor</h3>
-                    </div>
-                </div>
-
-                <div class="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-8 relative z-10">
-                    <p class="font-serif text-gray-300 mb-8 text-lg">
-                        Toma el cerebro de la clase anterior y dale las dos piezas que le faltan, usando tus propios scripts en local. Tres movimientos:
-                    </p>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-slate-900/90 p-6 rounded-xl shadow-sm border border-slate-800 hover:border-claude transition-colors">
-                            <div class="w-12 h-12 bg-slate-500/20 text-slate-300 rounded-xl flex items-center justify-center mb-5 text-xl font-bold">
-                                <i class="fa-solid fa-vault"></i>
-                            </div>
-                            <h5 class="font-bold text-white mb-2">1. Repasa el Vault</h5>
-                            <p class="text-sm font-serif text-slate-400">Confirma que tus notas están en <code>.md</code>, con su frontmatter, y localiza sus dos límites: la búsqueda literal y los enlaces manuales.</p>
-                        </div>
-                        <div class="bg-slate-900/90 p-6 rounded-xl shadow-sm border border-slate-800 hover:border-claude transition-colors">
-                            <div class="w-12 h-12 bg-orange-500/20 text-orange-300 rounded-xl flex items-center justify-center mb-5 text-xl font-bold">
-                                <i class="fa-solid fa-compass-drafting"></i>
-                            </div>
-                            <h5 class="font-bold text-white mb-2">2. Monta el Vectorizador</h5>
-                            <p class="text-sm font-serif text-slate-400">Pega el prompt de la sección 3 en Claude Code. Comprueba que puedes <strong>buscar por significado</strong> una nota sin usar su palabra exacta.</p>
-                        </div>
-                        <div class="bg-slate-900/90 p-6 rounded-xl shadow-sm border border-slate-800 hover:border-claude transition-colors">
-                            <div class="w-12 h-12 bg-blue-500/20 text-blue-300 rounded-xl flex items-center justify-center mb-5 text-xl font-bold">
-                                <i class="fa-solid fa-diagram-project"></i>
-                            </div>
-                            <h5 class="font-bold text-white mb-2">3. Teje con El Tejedor</h5>
-                            <p class="text-sm font-serif text-slate-400">Pega el prompt de la sección 4. Revisa los enlaces que propone <strong>antes</strong> de aprobarlos y mira cómo se rescatan tus notas huérfanas.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quiz Interactivo -->
-            <div class="border-t border-slate-800 pt-16 mb-12 fade-in-on-scroll">
-                <h3 class="text-3xl font-bold mb-8 text-white text-center">
-                    <i class="fa-solid fa-clipboard-check text-claude mr-3"></i> Cuestionario de Evaluación (Clase 6)
-                </h3>
-                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 lg:p-12 shadow-2xl text-white">
-                    <div id="quizContainer"></div>
-                    <div class="text-center mt-10 pt-8 border-t border-slate-800">
-                        <button id="validateBtn" onclick="submitQuiz()" class="px-10 py-4 bg-claude hover:bg-claude-dark text-white font-bold rounded-xl transition-all shadow-lg uppercase tracking-wider text-sm">
-                            Validar Respuestas
-                        </button>
-                        <div id="quiz-result" class="hidden mt-6 p-5 rounded-xl font-bold font-sans text-center transition-all"></div>
-                    </div>
-                </div>
-            </div>
+      <div class="pfc">
+        <span class="k">[ Reto de la clase ]</span>
+        <h3>Construye tu buscador y tu tejedor</h3>
+        <p>Toma el cerebro de la clase anterior y dale las dos piezas que le faltan, usando tus propios scripts en local. Tres movimientos:</p>
+        <div class="steps">
+          <div><span class="n">01</span><h4>Repasa el Vault</h4><p>Confirma que tus notas están en <code>.md</code>, con su frontmatter, y localiza sus dos límites: la búsqueda literal y los enlaces manuales.</p></div>
+          <div><span class="n">02</span><h4>Monta el Vectorizador</h4><p>Pega el prompt de la sección 3 en Claude Code. Comprueba que puedes <strong>buscar por significado</strong> una nota sin usar su palabra exacta.</p></div>
+          <div><span class="n">03</span><h4>Teje con El Tejedor</h4><p>Pega el prompt de la sección 4. Revisa los enlaces que propone <strong>antes</strong> de aprobarlos y mira cómo se rescatan tus notas huérfanas.</p></div>
         </div>
+      </div>
+
+      <div class="quiz" data-quiz="quizData" data-title="Cuestionario de evaluación (Clase 6)"></div>
     </section>
 
-    <!-- Navegación entre Clases -->
-    <section class="py-12 bg-white border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <a href="modulo8-clase5.html"
-                class="flex items-center px-6 py-3 text-gray-600 border border-gray-300 rounded-xl font-bold hover:text-brand-primary hover:border-brand-primary transition-all bg-white shadow-sm w-full sm:w-auto justify-center">
-                <i class="fa-solid fa-arrow-left mr-2"></i> Anterior: Clase 5
-            </a>
-            <a href="index.html"
-                class="flex items-center px-6 py-3 text-gray-600 border border-gray-300 rounded-xl font-bold hover:text-brand-primary hover:border-brand-primary transition-all bg-white shadow-sm w-full sm:w-auto justify-center">
-                <i class="fa-solid fa-home mr-2"></i> Volver al Temario
-            </a>
-            <a href="modulo8-clase7.html"
-                class="flex items-center px-6 py-3 bg-brand-primary text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors shadow-lg w-full sm:w-auto justify-center">
-                Siguiente: Clase 7 <i class="fa-solid fa-arrow-right ml-2"></i>
-            </a>
-        </div>
-    </section>
+  </div><!-- /.content -->
+  <!-- nav inferior y pie: los genera curso.js -->
+</main>
 
-    <!-- Footer -->
-    <footer class="bg-brand-dark text-white py-16 border-t border-gray-800">
-        <div class="max-w-5xl mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold mb-4">
-                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
-            </h2>
-            <p class="text-gray-400 mb-10 max-w-lg mx-auto font-serif text-center">
-                Empoderando a la próxima generación de empresas con inteligencia artificial práctica y estratégica.
-            </p>
-            <div class="w-12 h-px bg-gray-800 mx-auto my-6"></div>
-            <p class="text-xs text-gray-500 font-sans text-center">
-                Material de Apoyo Formativo - Módulo 8 (Clase 6)<br>
-                © 2026 [m].seny [labs]. Todos los derechos reservados.
-            </p>
-        </div>
-    </footer>
+<script src="/curso-data.js"></script>
+<script src="/curso.js"></script>
+<script>
+  // Preguntas del test: verbatim de la página original. a = índice de la opción correcta.
+  // `var` (no `const`): curso.js lee el array como window[data-quiz].
+  var quizData = [
+    {
+      q: "¿En qué orden encajan las tres piezas de esta clase?",
+      opts: [
+        "El Vault guarda las notas, el Vectorizador las convierte en significado buscable y El Tejedor las enlaza entre sí",
+        "El Tejedor guarda las notas, el Vault las traduce a números y el Vectorizador las conecta",
+        "Las tres hacen exactamente lo mismo, son nombres distintos de la misma herramienta",
+        "Primero se enlaza a mano, luego se borra el Vault y al final se paga un plugin"
+      ],
+      a: 0
+    },
+    {
+      q: "¿Cuál es un límite del Vault de Obsidian que resuelven las otras piezas?",
+      opts: [
+        "No puede guardar más de diez notas a la vez",
+        "Su búsqueda es literal (por palabra exacta) y los enlaces los pones tú a mano",
+        "Obliga a subir todas las notas a la nube para poder abrirlas",
+        "Borra las notas antiguas automáticamente cada semana"
+      ],
+      a: 1
+    },
+    {
+      q: "¿Qué es un 'embedding' o vector de una nota?",
+      opts: [
+        "Una contraseña que cifra la nota para que nadie la lea",
+        "Una copia de seguridad de la nota en otro disco",
+        "Una lista de números que resume el significado de la nota, de modo que notas parecidas tienen números parecidos",
+        "El número de veces que has abierto esa nota"
+      ],
+      a: 2
+    },
+    {
+      q: "En el mapa del significado, preguntas '¿cómo cobramos?' y aparece la nota 'Pagos con Stripe', que no contiene la palabra 'cobrar'. ¿Por qué?",
+      opts: [
+        "Porque la búsqueda por significado encuentra por lo que trata la nota, no por las letras exactas",
+        "Porque Obsidian añade la palabra 'cobrar' a todas las notas en secreto",
+        "Por casualidad; la próxima vez saldría otra nota distinta",
+        "Porque el Tejedor ya había enlazado esa nota antes"
+      ],
+      a: 0
+    },
+    {
+      q: "¿Dónde se ejecuta el modelo que convierte tus notas en vectores?",
+      opts: [
+        "En un servidor de pago en la nube, subiendo todas tus notas",
+        "En tu propio ordenador, en local: ninguna nota sale del equipo",
+        "En el móvil del administrador de Obsidian",
+        "No se ejecuta en ningún sitio, es solo teoría"
+      ],
+      a: 1
+    },
+    {
+      q: "El Tejedor es nuestra versión local de plugins tipo Graphify. ¿Qué hace exactamente?",
+      opts: [
+        "Traduce las notas a otros idiomas",
+        "Encuentra notas parecidas en significado que aún no están enlazadas, propone conectarlas y prioriza rescatar las huérfanas",
+        "Elimina las notas que se parecen demasiado entre sí",
+        "Sube el grafo a una red social para compartirlo"
+      ],
+      a: 1
+    },
+    {
+      q: "¿Por qué El Tejedor propone los enlaces antes de escribirlos?",
+      opts: [
+        "Para tardar más y parecer que trabaja mucho",
+        "Por la regla de edición segura: revisas y apruebas antes de que toque una nota, evitando conexiones absurdas y ediciones a ciegas",
+        "Porque no tiene permiso para leer el vault",
+        "Porque siempre se equivoca y hay que corregirlo entero"
+      ],
+      a: 1
+    },
+    {
+      q: "¿Qué relación hay entre el Vectorizador y El Tejedor?",
+      opts: [
+        "Compiten: solo puedes usar uno de los dos",
+        "El Tejedor reutiliza los vectores que generó el Vectorizador para medir qué notas se parecen",
+        "El Vectorizador necesita que El Tejedor enlace primero las notas",
+        "No tienen ninguna relación, son de clases distintas"
+      ],
+      a: 1
+    }
+  ];
 
-    <!-- Lógica de Interactividad -->
-    <script>
-        // 1. Copiado al portapapeles (fallback execCommand para iframes restringidos)
-        function copyToClipboard(elementId, btn) {
-            const el = document.getElementById(elementId);
-            let text = el.innerText || el.textContent;
+  // Widget «mapa del significado»
+  // Notas con su coordenada en el «mapa de significado» (x,y en 0-100 / 0-72) y su área (se muestra en el ranking de resultados).
+  const semNotes = [
+    { id: 'pagos',   label: 'Pagos con Stripe',           area: 'técnico',     x: 20, y: 20 },
+    { id: 'comision',label: 'Comisión y flujo de dinero', area: 'negocio',     x: 30, y: 27 },
+    { id: 'marca',   label: 'Marca: color esmeralda',     area: 'diseño',      x: 80, y: 18 },
+    { id: 'logo',    label: 'Logo e identidad visual',    area: 'diseño',      x: 86, y: 27 },
+    { id: 'verif',   label: 'Agente verificador',         area: 'calidad',     x: 22, y: 58 },
+    { id: 'edicion', label: 'Regla de edición segura',    area: 'calidad',     x: 31, y: 52 },
+    { id: 'huerfano',label: 'Grafo sin huérfanos',        area: 'técnico',     x: 74, y: 56 },
+    { id: 'sync',    label: 'Sincronizar el vault',       area: 'operaciones', x: 60, y: 44 },
+  ];
 
-            const tempTextArea = document.createElement("textarea");
-            tempTextArea.value = text;
-            tempTextArea.style.position = "fixed";
-            tempTextArea.style.left = "-9999px";
-            document.body.appendChild(tempTextArea);
-            tempTextArea.focus();
-            tempTextArea.select();
+  // Preguntas escritas «con otras palabras»: ninguna comparte término literal con su nota destino.
+  const semQueries = [
+    { text: '¿cómo cobramos a los clientes?', x: 25, y: 24 },
+    { text: '¿cómo nos reconocen de un vistazo?', x: 83, y: 23 },
+    { text: '¿quién revisa que todo esté bien?', x: 26, y: 55 },
+    { text: 'no quiero notas sueltas',        x: 70, y: 52 },
+  ];
 
-            try {
-                document.execCommand('copy');
-                const originalHTML = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i> Copiado';
-                btn.classList.add('text-emerald-400');
-                btn.classList.remove('text-slate-400');
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  // Colores solo por tokens del DS
+  const SEM_INK = 'var(--color-ink)';
+  const SEM_ACCENT = 'var(--color-accent-deep)';
+  // Colocación de la etiqueta de cada nota (solo maquetación, no contenido): lado y
+  // desplazamiento respecto al punto, para que ninguna se salga del mapa ni pise a otra.
+  const SEM_LABEL_DEFAULT = { anchor: 'start', dx: 3, dy: 1.2 };  // a la derecha del punto
+  const SEM_LABEL_POS = {
+    marca:    { anchor: 'end',   dx: 3,  dy: -3 },   // encima, hacia la izquierda
+    logo:     { anchor: 'end',   dx: 3,  dy: 5 },    // debajo, hacia la izquierda (no pisa «Comisión…»)
+    huerfano: { anchor: 'end',   dx: -3, dy: 1.2 },  // a la izquierda del punto
+    verif:    { anchor: 'start', dx: -2, dy: 5.4 },  // debajo del punto (no pisa «Grafo sin huérfanos»)
+  };
 
-                setTimeout(() => {
-                    btn.innerHTML = originalHTML;
-                    btn.classList.remove('text-emerald-400');
-                    btn.classList.add('text-slate-400');
-                }, 2000);
-            } catch (err) {
-                console.error('No se pudo copiar', err);
-            }
-            document.body.removeChild(tempTextArea);
-        }
+  function drawSemMap() {
+    const nodesG = document.getElementById('semNodes');
+    if (!nodesG) return;
+    nodesG.innerHTML = '';
+    semNotes.forEach(n => {
+      const c = document.createElementNS(SVGNS, 'circle');
+      c.setAttribute('cx', n.x);
+      c.setAttribute('cy', n.y);
+      c.setAttribute('r', 2.1);
+      c.style.fill = SEM_INK;
+      c.setAttribute('class', 'sem-note');
+      c.setAttribute('data-id', n.id);
+      const title = document.createElementNS(SVGNS, 'title');
+      title.textContent = n.label + ' · ' + n.area;
+      c.appendChild(title);
+      nodesG.appendChild(c);
 
-        // 2. Widget "mapa del significado"
-        // Notas con su coordenada en el "mapa de significado" (x,y en 0-100 / 0-72) y color por área.
-        const semNotes = [
-            { id: 'pagos',   label: 'Pagos con Stripe',        area: 'técnico',      color: '#3b82f6', x: 20, y: 20 },
-            { id: 'comision',label: 'Comisión y flujo de dinero', area: 'negocio',   color: '#f59e0b', x: 30, y: 27 },
-            { id: 'marca',   label: 'Marca: color esmeralda',  area: 'diseño',       color: '#10b981', x: 80, y: 18 },
-            { id: 'logo',    label: 'Logo e identidad visual', area: 'diseño',       color: '#10b981', x: 86, y: 27 },
-            { id: 'verif',   label: 'Agente verificador',      area: 'calidad',      color: '#a855f7', x: 22, y: 58 },
-            { id: 'edicion', label: 'Regla de edición segura', area: 'calidad',      color: '#a855f7', x: 31, y: 52 },
-            { id: 'huerfano',label: 'Grafo sin huérfanos',     area: 'técnico',      color: '#3b82f6', x: 74, y: 56 },
-            { id: 'sync',    label: 'Sincronizar el vault',    area: 'operaciones',  color: '#f43f5e', x: 60, y: 44 },
-        ];
+      const t = document.createElementNS(SVGNS, 'text');
+      const pos = SEM_LABEL_POS[n.id] || SEM_LABEL_DEFAULT;
+      t.setAttribute('x', n.x + pos.dx);
+      t.setAttribute('y', n.y + pos.dy);
+      t.setAttribute('text-anchor', pos.anchor);
+      t.style.fill = SEM_INK;
+      t.style.fontFamily = 'var(--font-mono)';
+      t.setAttribute('font-size', '2.6');
+      t.setAttribute('class', 'sem-note');
+      t.setAttribute('data-id', n.id);
+      t.textContent = n.label;
+      nodesG.appendChild(t);
+    });
+  }
 
-        // Preguntas escritas "con otras palabras": ninguna comparte término literal con su nota destino.
-        const semQueries = [
-            { text: '¿cómo cobramos a los clientes?', x: 25, y: 24 },
-            { text: '¿cómo nos reconocen de un vistazo?', x: 83, y: 23 },
-            { text: '¿quién revisa que todo esté bien?', x: 26, y: 55 },
-            { text: 'no quiero notas sueltas',        x: 70, y: 52 },
-        ];
+  function renderChips() {
+    const wrap = document.getElementById('semChips');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    semQueries.forEach((q, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip sem-chip';
+      b.textContent = q.text;
+      b.onclick = () => runSemQuery(i, b);
+      wrap.appendChild(b);
+    });
+  }
 
-        const SVGNS = 'http://www.w3.org/2000/svg';
+  function runSemQuery(qi, btn) {
+    document.querySelectorAll('#semChips .sem-chip').forEach(c => c.classList.remove('active'));
+    if (btn) btn.classList.add('active');
 
-        function drawSemMap() {
-            const nodesG = document.getElementById('semNodes');
-            if (!nodesG) return;
-            nodesG.innerHTML = '';
-            semNotes.forEach(n => {
-                const c = document.createElementNS(SVGNS, 'circle');
-                c.setAttribute('cx', n.x);
-                c.setAttribute('cy', n.y);
-                c.setAttribute('r', 2.1);
-                c.setAttribute('fill', n.color);
-                c.setAttribute('class', 'sem-note');
-                c.setAttribute('data-id', n.id);
-                nodesG.appendChild(c);
+    const q = semQueries[qi];
+    const maxD = 90; // referencia para convertir distancia en «parecido %»
+    // Distancia euclídea a cada nota → «parecido %» → nos quedamos solo con las de verdad cercanas.
+    const ranked = semNotes
+      .map(n => {
+        const d = Math.hypot(n.x - q.x, n.y - q.y);
+        return { n, d, pct: Math.round(100 - (d / maxD) * 100) };
+      })
+      .sort((a, b) => a.d - b.d);
+    // Muestra hasta 3, pero solo las claramente relacionadas (>=72%); siempre al menos la más cercana.
+    let top = ranked.filter(r => r.pct >= 72).slice(0, 3);
+    if (top.length === 0) top = ranked.slice(0, 1);
+    const topIds = top.map(r => r.n.id);
 
-                const t = document.createElementNS(SVGNS, 'text');
-                t.setAttribute('x', n.x + 3);
-                t.setAttribute('y', n.y + 1.2);
-                t.setAttribute('fill', '#cbd5e1');
-                t.setAttribute('font-size', '2.6');
-                t.setAttribute('font-family', 'ui-monospace, monospace');
-                t.setAttribute('class', 'sem-note');
-                t.setAttribute('data-id', n.id);
-                t.textContent = n.label;
-                nodesG.appendChild(t);
-            });
-        }
+    // Atenúa las no elegidas
+    document.querySelectorAll('#semNodes .sem-note').forEach(el => {
+      const id = el.getAttribute('data-id');
+      const on = topIds.includes(id);
+      el.style.opacity = on ? '1' : '0.2';
+      if (el.tagName === 'circle') {
+        el.setAttribute('r', on ? 3 : 2.1);
+        el.style.fill = on ? SEM_ACCENT : SEM_INK;
+      }
+    });
 
-        function renderChips() {
-            const wrap = document.getElementById('semChips');
-            if (!wrap) return;
-            wrap.innerHTML = '';
-            semQueries.forEach((q, i) => {
-                const b = document.createElement('button');
-                b.className = 'sem-chip text-xs font-mono font-bold px-3 py-2 rounded-lg border border-slate-600 text-slate-300 bg-slate-800/60 hover:border-claude';
-                b.textContent = q.text;
-                b.onclick = () => runSemQuery(i, b);
-                wrap.appendChild(b);
-            });
-        }
+    // Punto de la pregunta
+    const qg = document.getElementById('semQuery');
+    qg.innerHTML = '';
+    const linksG = document.getElementById('semLinks');
+    linksG.innerHTML = '';
+    top.forEach(r => {
+      const ln = document.createElementNS(SVGNS, 'line');
+      ln.setAttribute('x1', q.x); ln.setAttribute('y1', q.y);
+      ln.setAttribute('x2', r.n.x); ln.setAttribute('y2', r.n.y);
+      ln.style.stroke = SEM_ACCENT;
+      ln.setAttribute('stroke-width', '0.5');
+      ln.setAttribute('stroke-dasharray', '1.5 1');
+      ln.setAttribute('opacity', '0.7');
+      linksG.appendChild(ln);
+    });
+    const star = document.createElementNS(SVGNS, 'circle');
+    star.setAttribute('cx', q.x); star.setAttribute('cy', q.y);
+    star.setAttribute('r', 2.6);
+    star.setAttribute('fill', 'none');
+    star.style.stroke = SEM_ACCENT;
+    star.setAttribute('stroke-width', '0.8');
+    qg.appendChild(star);
+    const starIn = document.createElementNS(SVGNS, 'circle');
+    starIn.setAttribute('cx', q.x); starIn.setAttribute('cy', q.y);
+    starIn.setAttribute('r', 1.1);
+    starIn.style.fill = SEM_ACCENT;
+    qg.appendChild(starIn);
 
-        function runSemQuery(qi, btn) {
-            document.querySelectorAll('#semChips .sem-chip').forEach(c => c.classList.remove('active'));
-            if (btn) btn.classList.add('active');
+    // Lista de resultados
+    const res = document.getElementById('semResults');
+    res.innerHTML = `<p class="empty">Tu pregunta: “${q.text}”</p>`;
+    top.forEach((r, idx) => {
+      const pct = r.pct;
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.innerHTML = `
+        <span><span class="n">0${idx + 1}</span>${r.n.label}<span class="area">[ ${r.n.area} ]</span></span>
+        <span class="pct">${pct}%</span>`;
+      res.appendChild(row);
+    });
+  }
 
-            const q = semQueries[qi];
-            const maxD = 90; // referencia para convertir distancia en "parecido %"
-            // Distancia euclídea a cada nota → "parecido %" → nos quedamos solo con las de verdad cercanas.
-            const ranked = semNotes
-                .map(n => {
-                    const d = Math.hypot(n.x - q.x, n.y - q.y);
-                    return { n, d, pct: Math.round(100 - (d / maxD) * 100) };
-                })
-                .sort((a, b) => a.d - b.d);
-            // Muestra hasta 3, pero solo las claramente relacionadas (>=72%); siempre al menos la más cercana.
-            let top = ranked.filter(r => r.pct >= 72).slice(0, 3);
-            if (top.length === 0) top = ranked.slice(0, 1);
-            const topIds = top.map(r => r.n.id);
-
-            // Atenúa las no elegidas
-            document.querySelectorAll('#semNodes .sem-note').forEach(el => {
-                const id = el.getAttribute('data-id');
-                el.style.opacity = topIds.includes(id) ? '1' : '0.2';
-                if (el.tagName === 'circle') {
-                    el.setAttribute('r', topIds.includes(id) ? 3 : 2.1);
-                }
-            });
-
-            // Punto de la pregunta
-            const qg = document.getElementById('semQuery');
-            qg.innerHTML = '';
-            const linksG = document.getElementById('semLinks');
-            linksG.innerHTML = '';
-            top.forEach(r => {
-                const ln = document.createElementNS(SVGNS, 'line');
-                ln.setAttribute('x1', q.x); ln.setAttribute('y1', q.y);
-                ln.setAttribute('x2', r.n.x); ln.setAttribute('y2', r.n.y);
-                ln.setAttribute('stroke', '#D97757');
-                ln.setAttribute('stroke-width', '0.5');
-                ln.setAttribute('stroke-dasharray', '1.5 1');
-                ln.setAttribute('opacity', '0.7');
-                linksG.appendChild(ln);
-            });
-            const star = document.createElementNS(SVGNS, 'circle');
-            star.setAttribute('cx', q.x); star.setAttribute('cy', q.y);
-            star.setAttribute('r', 2.6);
-            star.setAttribute('fill', 'none');
-            star.setAttribute('stroke', '#D97757');
-            star.setAttribute('stroke-width', '0.8');
-            qg.appendChild(star);
-            const starIn = document.createElementNS(SVGNS, 'circle');
-            starIn.setAttribute('cx', q.x); starIn.setAttribute('cy', q.y);
-            starIn.setAttribute('r', 1.1);
-            starIn.setAttribute('fill', '#D97757');
-            qg.appendChild(starIn);
-
-            // Lista de resultados
-            const res = document.getElementById('semResults');
-            res.innerHTML = `<p class="text-slate-400 font-serif italic mb-3">Tu pregunta: “${q.text}”</p>`;
-            top.forEach((r, idx) => {
-                const pct = r.pct;
-                const row = document.createElement('div');
-                row.className = 'flex items-center justify-between gap-2 bg-slate-800/60 border border-slate-700 rounded-lg px-3 py-2';
-                row.innerHTML = `
-                    <span class="flex items-center gap-2 min-w-0">
-                        <span class="inline-block w-2.5 h-2.5 rounded-full shrink-0" style="background:${r.n.color}"></span>
-                        <span class="truncate text-slate-200">${idx + 1}. ${r.n.label}</span>
-                    </span>
-                    <span class="text-claude font-bold shrink-0">${pct}%</span>`;
-                res.appendChild(row);
-            });
-        }
-
-        // 3. Lógica del Quiz (Clase 6)
-        const quizData = [
-            { question: "¿En qué orden encajan las tres piezas de esta clase?", options: [
-                { text: "El Vault guarda las notas, el Vectorizador las convierte en significado buscable y El Tejedor las enlaza entre sí", correct: true },
-                { text: "El Tejedor guarda las notas, el Vault las traduce a números y el Vectorizador las conecta", correct: false },
-                { text: "Las tres hacen exactamente lo mismo, son nombres distintos de la misma herramienta", correct: false },
-                { text: "Primero se enlaza a mano, luego se borra el Vault y al final se paga un plugin", correct: false } ] },
-            { question: "¿Cuál es un límite del Vault de Obsidian que resuelven las otras piezas?", options: [
-                { text: "No puede guardar más de diez notas a la vez", correct: false },
-                { text: "Su búsqueda es literal (por palabra exacta) y los enlaces los pones tú a mano", correct: true },
-                { text: "Obliga a subir todas las notas a la nube para poder abrirlas", correct: false },
-                { text: "Borra las notas antiguas automáticamente cada semana", correct: false } ] },
-            { question: "¿Qué es un 'embedding' o vector de una nota?", options: [
-                { text: "Una contraseña que cifra la nota para que nadie la lea", correct: false },
-                { text: "Una copia de seguridad de la nota en otro disco", correct: false },
-                { text: "Una lista de números que resume el significado de la nota, de modo que notas parecidas tienen números parecidos", correct: true },
-                { text: "El número de veces que has abierto esa nota", correct: false } ] },
-            { question: "En el mapa del significado, preguntas '¿cómo cobramos?' y aparece la nota 'Pagos con Stripe', que no contiene la palabra 'cobrar'. ¿Por qué?", options: [
-                { text: "Porque la búsqueda por significado encuentra por lo que trata la nota, no por las letras exactas", correct: true },
-                { text: "Porque Obsidian añade la palabra 'cobrar' a todas las notas en secreto", correct: false },
-                { text: "Por casualidad; la próxima vez saldría otra nota distinta", correct: false },
-                { text: "Porque el Tejedor ya había enlazado esa nota antes", correct: false } ] },
-            { question: "¿Dónde se ejecuta el modelo que convierte tus notas en vectores?", options: [
-                { text: "En un servidor de pago en la nube, subiendo todas tus notas", correct: false },
-                { text: "En tu propio ordenador, en local: ninguna nota sale del equipo", correct: true },
-                { text: "En el móvil del administrador de Obsidian", correct: false },
-                { text: "No se ejecuta en ningún sitio, es solo teoría", correct: false } ] },
-            { question: "El Tejedor es nuestra versión local de plugins tipo Graphify. ¿Qué hace exactamente?", options: [
-                { text: "Traduce las notas a otros idiomas", correct: false },
-                { text: "Encuentra notas parecidas en significado que aún no están enlazadas, propone conectarlas y prioriza rescatar las huérfanas", correct: true },
-                { text: "Elimina las notas que se parecen demasiado entre sí", correct: false },
-                { text: "Sube el grafo a una red social para compartirlo", correct: false } ] },
-            { question: "¿Por qué El Tejedor propone los enlaces antes de escribirlos?", options: [
-                { text: "Para tardar más y parecer que trabaja mucho", correct: false },
-                { text: "Por la regla de edición segura: revisas y apruebas antes de que toque una nota, evitando conexiones absurdas y ediciones a ciegas", correct: true },
-                { text: "Porque no tiene permiso para leer el vault", correct: false },
-                { text: "Porque siempre se equivoca y hay que corregirlo entero", correct: false } ] },
-            { question: "¿Qué relación hay entre el Vectorizador y El Tejedor?", options: [
-                { text: "Compiten: solo puedes usar uno de los dos", correct: false },
-                { text: "El Tejedor reutiliza los vectores que generó el Vectorizador para medir qué notas se parecen", correct: true },
-                { text: "El Vectorizador necesita que El Tejedor enlace primero las notas", correct: false },
-                { text: "No tienen ninguna relación, son de clases distintas", correct: false } ] }
-        ];
-
-        function renderQuiz() {
-            const container = document.getElementById('quizContainer');
-            container.innerHTML = '';
-
-            quizData.forEach((q, idx) => {
-                const qDiv = document.createElement('div');
-                qDiv.className = 'mb-8';
-                qDiv.innerHTML = `
-                    <h4 class="text-xl font-bold text-white mb-4">
-                        <span class="text-claude">${idx + 1}.</span> ${q.question}
-                    </h4>
-                    <div class="space-y-3">
-                        ${q.options.map((opt, optIdx) => `
-                            <div class="quiz-option flex items-center p-4 rounded-xl border border-slate-800 bg-slate-900/40 cursor-pointer transition-colors" onclick="selectAnswer(event, ${idx}, ${optIdx})">
-                                <input type="radio" name="q${idx}" value="${optIdx}" class="hidden">
-                                <div class="w-5 h-5 rounded-full border-2 border-slate-500 mr-4 radio-custom flex-shrink-0 transition-colors"></div>
-                                <span class="font-serif text-sm">${opt.text}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-                container.appendChild(qDiv);
-            });
-        }
-
-        function selectAnswer(e, qIdx, optIdx) {
-            const optionContainer = e.currentTarget;
-            const parentDiv = optionContainer.closest('.space-y-3');
-
-            parentDiv.querySelectorAll('.quiz-option').forEach(opt => {
-                opt.classList.remove('border-claude', 'bg-claude/10');
-                opt.classList.add('border-slate-800', 'bg-slate-900/40');
-                const radio = opt.querySelector('.radio-custom');
-                radio.className = "w-5 h-5 rounded-full border-2 border-slate-500 mr-4 radio-custom flex-shrink-0 transition-colors";
-            });
-
-            optionContainer.classList.remove('border-slate-800', 'bg-slate-900/40');
-            optionContainer.classList.add('border-claude', 'bg-claude/10');
-
-            const radio = optionContainer.querySelector('.radio-custom');
-            radio.className = "w-5 h-5 rounded-full border-2 border-claude bg-claude mr-4 radio-custom flex-shrink-0 transition-colors";
-
-            const input = optionContainer.querySelector('input');
-            input.checked = true;
-        }
-
-        function submitQuiz() {
-            let correctCount = 0;
-            let answered = true;
-
-            quizData.forEach((q, idx) => {
-                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
-                if (!selected) answered = false;
-            });
-
-            const resultDiv = document.getElementById('quiz-result');
-
-            if (!answered) {
-                resultDiv.className = "mt-6 p-4 rounded-xl font-bold font-sans text-center bg-red-900/30 text-red-400 border border-red-500/50 block";
-                resultDiv.innerHTML = "<i class='fa-solid fa-triangle-exclamation mr-2'></i> Por favor, responde a todas las preguntas antes de validar.";
-                return;
-            }
-
-            const btn = document.getElementById('validateBtn');
-            btn.disabled = true;
-            btn.classList.add('opacity-50', 'cursor-not-allowed');
-
-            quizData.forEach((q, idx) => {
-                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
-                const optIdx = parseInt(selected.value);
-                const isCorrect = q.options[optIdx].correct;
-
-                const optionDiv = selected.closest('.quiz-option');
-                const parentDiv = optionDiv.parentElement;
-
-                parentDiv.style.pointerEvents = "none";
-
-                if (isCorrect) {
-                    correctCount++;
-                    optionDiv.classList.remove('border-claude', 'bg-claude/10');
-                    optionDiv.classList.add('border-emerald-500', 'bg-emerald-500/20', 'text-emerald-300');
-                    optionDiv.querySelector('.radio-custom').className = "w-5 h-5 rounded-full bg-emerald-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-[10px] fa-solid fa-check border-emerald-500";
-                } else {
-                    optionDiv.classList.remove('border-claude', 'bg-claude/10');
-                    optionDiv.classList.add('border-red-500', 'bg-red-500/20', 'text-red-300');
-                    optionDiv.querySelector('.radio-custom').className = "w-5 h-5 rounded-full bg-red-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-[10px] fa-solid fa-xmark border-red-500";
-
-                    const allOptions = parentDiv.querySelectorAll('.quiz-option');
-                    q.options.forEach((opt, oIdx) => {
-                        if (opt.correct) {
-                            const correctDiv = allOptions[oIdx];
-                            correctDiv.classList.remove('border-slate-800', 'bg-slate-900/40');
-                            correctDiv.classList.add('border-emerald-500', 'bg-emerald-500/20', 'text-emerald-300');
-                        }
-                    });
-                }
-            });
-
-            const percentage = Math.round((correctCount / quizData.length) * 100);
-            let feedback = "";
-            let palette;
-            if (percentage >= 70) {
-                palette = { box: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50", txt: "text-emerald-100/80" };
-                feedback = percentage === 100
-                    ? "¡Perfecto! Dominas la cadena Vault → Vectorizador → Tejedor y sabes construir cada pieza en local."
-                    : "¡Muy bien! Has entendido cómo se busca por significado y cómo se teje el grafo solo.";
-            } else if (percentage >= 40) {
-                palette = { box: "bg-amber-500/20 text-amber-400 border-amber-500/50", txt: "text-amber-100/80" };
-                feedback = "Vas por buen camino. Repasa las secciones 3 y 4: qué es un vector (significado) y cómo El Tejedor propone enlaces antes de escribirlos.";
-            } else {
-                palette = { box: "bg-red-500/20 text-red-400 border-red-500/50", txt: "text-red-100/80" };
-                feedback = "Conviene releer la clase con calma, sobre todo las secciones 3 (Vectorizador) y 4 (El Tejedor).";
-            }
-
-            resultDiv.className = `mt-8 p-6 rounded-2xl font-sans text-center border ${palette.box} block`;
-            resultDiv.innerHTML = `
-                <div class="text-3xl mb-3 font-bold"><i class="fa-solid fa-ranking-star mr-2"></i> Puntuación: ${correctCount} / ${quizData.length}</div>
-                <div class="text-base font-serif ${palette.txt}">${feedback}</div>
-            `;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            drawSemMap();
-            renderChips();
-            renderQuiz();
-
-            const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.fade-in-on-scroll').forEach(el => observer.observe(el));
-
-            window.addEventListener('scroll', () => {
-                const scrollTop = window.scrollY;
-                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-                const scrolled = (scrollTop / docHeight) * 100;
-                document.getElementById('progressBar').style.width = scrolled + '%';
-            });
-        });
-    </script>
+  document.addEventListener('DOMContentLoaded', () => {
+    drawSemMap();
+    renderChips();
+  });
+</script>
 </body>
-
 </html>

@@ -1,1108 +1,282 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Módulo 3 Clase 1: Generación de Imagen - [m].seny [labs]">
-    <title>Módulo 3: Estudio Creativo (Clase 1) - [m].seny [labs]</title>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap"
-        rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Merriweather', 'serif'],
-                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
-                    },
-                    colors: {
-                        brand: {
-                            dark: '#0F172A',
-                            primary: '#4F46E5',
-                            accent: '#F59E0B',
-                            light: '#F8FAFC'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body {
-            background-color: #F8FAFC;
-            color: #334155;
-            scroll-behavior: smooth;
-        }
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6,
-        button,
-        .nav-link {
-            font-family: 'Inter', sans-serif;
-        }
-
-        p,
-        li,
-        .prose-text {
-            font-family: 'Merriweather', serif;
-            line-height: 1.6;
-            font-size: 1.125rem;
-            text-align: justify;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .text-left {
-            text-align: left;
-        }
-
-        /* Callout Boxes */
-        .callout-analogy {
-            background-color: #FEF3C7;
-            /* Amber 50 */
-            border-left: 4px solid #F59E0B;
-            /* Amber 500 */
-        }
-
-        .callout-phrase {
-            background-color: #EEF2FF;
-            /* Indigo 50 */
-            border-left: 4px solid #4F46E5;
-            /* Indigo 600 */
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-
-        .code-block {
-            background-color: #1E293B;
-            color: #E2E8F0;
-            font-family: monospace;
-            padding: 1.5rem;
-            overflow-x: auto;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        /* Animations */
-        .fade-in-on-scroll {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease-out;
-        }
-
-        .fade-in-on-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.1);
-        }
-
-        /* Progress Bar */
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #4F46E5, #F59E0B);
-            z-index: 1000;
-            transition: width 0.2s ease;
-        }
-
-        /* Quiz Styles */
-        .quiz-option {
-            padding: 1rem;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.75rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            background-color: rgba(255, 255, 255, 0.05);
-            color: #e2e8f0;
-        }
-
-        .quiz-option:hover {
-            border-color: #4F46E5;
-            background-color: rgba(79, 70, 229, 0.1);
-        }
-
-        .quiz-option.selected {
-            border-color: #F59E0B;
-            background-color: rgba(245, 158, 11, 0.1);
-        }
-
-        .quiz-option.correct {
-            border-color: #10b981;
-            background-color: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-        }
-
-        .quiz-option.incorrect {
-            border-color: #ef4444;
-            background-color: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M3 · Clase 1 — Los titanes del píxel · [m].seny /academy</title>
+<meta name="description" content="Generación de imagen estática y dirección de arte corporativa.">
+<link rel="stylesheet" href="/theme.css">
+<link rel="stylesheet" href="/curso.css">
 </head>
+<body data-class="m3c1">
+<main>
 
-<body class="antialiased">
+  <header class="hero">
+    <h1 class="display">Estudio creativo IA: los titanes del píxel.</h1>
+    <p class="sub">Generación de imagen estática y dirección de arte corporativa.</p>
+  </header>
 
-    <div class="progress-bar" id="progressBar"></div>
+  <div class="content">
 
-    <!-- Navigation Header -->
-    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center">
-                <a href="index.html" class="no-underline">
-                    <h1
-                        class="text-xl font-bold tracking-tight text-brand-dark hover:text-brand-primary transition-colors cursor-pointer">
-                        <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
-                    </h1>
-                </a>
-            </div>
-            <nav class="hidden lg:flex space-x-5 text-xs font-bold text-gray-500 uppercase tracking-wider">
-                <a href="#roi" class="hover:text-brand-primary transition-colors">1. ROI Visual</a>
-                <a href="#glosario" class="hover:text-brand-primary transition-colors">2. Glosario</a>
-                <a href="#flujo" class="hover:text-brand-primary transition-colors">3. Flujo de Trabajo</a>
-                <a href="#prompts" class="hover:text-brand-primary transition-colors">4. Fórmulas</a>
-                <a href="#titanes" class="hover:text-brand-primary transition-colors">5. Herramientas</a>
-                <a href="#practica" class="hover:text-brand-primary transition-colors text-brand-accent">6. Práctica &
-                    PFC</a>
-            </nav>
-            <a href="/login.html" onclick="document.cookie='sb-ndtoqnpomhtubcygkwlh-auth-token=;path=/;max-age=0';localStorage.clear()"
-                class="hidden lg:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors"
-                title="Cerrar sesión">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                    <polyline points="16 17 21 12 16 7" />
-                    <line x1="21" y1="12" x2="9" y2="12" />
-                </svg>
-                Salir
-            </a>
-        </div>
-    </header>
-
-    <!-- Presentation Title (Hero) -->
-    <section class="bg-brand-dark text-white py-32 border-b-8 border-brand-primary relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute top-10 left-10 w-96 h-96 bg-brand-primary rounded-full blur-3xl"></div>
-            <div class="absolute bottom-10 right-20 w-[30rem] h-[30rem] bg-brand-accent rounded-full blur-3xl"></div>
-        </div>
-        <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
-            <span
-                class="inline-block py-1 px-3 bg-brand-primary/20 text-brand-primary font-mono text-sm font-bold uppercase tracking-widest mb-6 rounded">
-                Módulo 3 • Clase 1
-            </span>
-            <h1 class="text-5xl lg:text-7xl font-extrabold mb-6 leading-tight">
-                Estudio Creativo IA:<br>
-                <span class="text-brand-accent text-4xl lg:text-5xl">Los Titanes del Píxel</span>
-            </h1>
-            <p class="text-xl text-gray-300 font-serif max-w-2xl mx-auto italic text-center">
-                Generación de Imagen estática y Dirección de Arte corporativa.
-            </p>
-            <div class="mt-10 flex items-center justify-center space-x-4 text-sm text-gray-400 font-mono">
-                <span><i class="fa-regular fa-clock mr-2"></i> 1 Hora</span>
-                <span>•</span>
-                <span><i class="fa-solid fa-image mr-2"></i> Fotografía y Mockups</span>
-            </div>
-        </div>
+    <!-- 1. El fin del stock -->
+    <section class="sec" id="roi" data-label="El fin del «stock»">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">El fin del «stock»: el ROI de la IA visual.</h2></div>
+      <p>En el entorno empresarial de 2026, la dependencia de bancos de imágenes estáticos (Stock) y agencias externas para contenido de consumo rápido (redes sociales, newsletters, presentaciones) es un lastre financiero y operativo. La IA visual no reemplaza al Director de Arte, sino que le dota de un estudio de producción infinito.</p>
+      <div class="ba">
+        <div class="before"><p class="k">Antes (Stock &amp; Agencias)</p><p>Buscar la imagen «perfecta» en catálogos limitados y conformarse con resultados genéricos que tu competencia también puede utilizar.</p></div>
+        <div class="after"><p class="k">Ahora (IA Generativa)</p><p><strong>Dirigir</strong> la creación de la imagen exacta en segundos, permitiendo un nivel de personalización y exclusividad total.</p></div>
+      </div>
+      <div class="callout clave"><span class="k">[ Frase clave ]</span><p>«En la era visual, el texto informa, pero la imagen convierte. La IA te permite testear 10 campañas visuales en el tiempo en que antes producías solo un boceto.»</p></div>
     </section>
 
-    <!-- 1. El Fin del Stock -->
-    <section id="roi" class="py-20 bg-white">
-        <div class="max-w-5xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll">
-                <span
-                    class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">1</span>
-                El Fin del "Stock": El ROI de la IA Visual
-            </h2>
-
-            <p class="prose-text mb-8 text-gray-600 fade-in-on-scroll">
-                En el entorno empresarial de 2026, la dependencia de bancos de imágenes estáticos (Stock) y agencias
-                externas para contenido de consumo rápido (redes sociales, newsletters, presentaciones) es un lastre
-                financiero y operativo. La IA visual no reemplaza al Director de Arte, sino que le dota de un estudio de
-                producción infinito.
-            </p>
-
-            <div class="grid md:grid-cols-2 gap-8 mb-12 fade-in-on-scroll">
-                <div class="bg-gray-50 border border-gray-200 p-6 rounded-xl">
-                    <h4 class="font-bold text-gray-400 uppercase text-xs mb-2 tracking-widest">Antes (Stock & Agencias)
-                    </h4>
-                    <p class="font-serif text-gray-600 text-sm">Buscar la imagen "perfecta" en catálogos limitados y
-                        conformarse con resultados genéricos que tu competencia también puede utilizar.</p>
-                </div>
-                <div class="bg-indigo-50 border border-brand-primary/30 p-6 rounded-xl">
-                    <h4 class="font-bold text-brand-primary uppercase text-xs mb-2 tracking-widest">Ahora (IA
-                        Generativa)</h4>
-                    <p class="font-serif text-gray-800 text-sm"><strong>Dirigir</strong> la creación de la imagen exacta
-                        en segundos, permitiendo un nivel de personalización y exclusividad total.</p>
-                </div>
-            </div>
-
-            <div class="callout-phrase p-6 rounded-xl mb-16 shadow-sm fade-in-on-scroll text-center">
-                <p class="font-serif text-indigo-900 text-lg m-0">
-                    <i class="fa-solid fa-lightbulb mr-2 text-brand-primary"></i> <strong>Frase Clave:</strong> "En la
-                    era visual, el texto informa, pero la imagen convierte. La IA te permite testear 10 campañas
-                    visuales en el tiempo en que antes producías solo un boceto."
-                </p>
-            </div>
-        </div>
+    <!-- 2. Glosario -->
+    <section class="sec" id="glosario" data-label="Glosario">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Glosario ejecutivo: conceptos de generación visual.</h2></div>
+      <p class="sec-intro">Al igual que un director de cine conoce sus lentes, tú debes conocer esta terminología técnica para dominar la dirección de arte con IA.</p>
+      <div class="glossary">
+        <div class="row"><h3 class="term">Prompt Visual</h3><p class="def">Instrucción de texto (sujeto, iluminación, estilo). A diferencia del prompt lógico, aquí debe ser puramente estético y descriptivo.</p></div>
+        <div class="row"><h3 class="term">Seed (semilla)</h3><p class="def">El «ADN matemático» de una imagen. Guardarlo permite generar variaciones consistentes de un mismo personaje en el futuro.</p></div>
+        <div class="row"><h3 class="term">In-painting</h3><p class="def">Seleccionar una zona específica (ej. una taza) y modificar <em>solo</em> esa área mediante un prompt, dejando el entorno intacto.</p></div>
+        <div class="row"><h3 class="term">Out-painting</h3><p class="def">Expansión. La IA «imagina» y genera contexto fuera de los bordes originales para ampliar la foto (ej. pasar a formato panorámico).</p></div>
+        <div class="row"><h3 class="term">Upscaling</h3><p class="def">Aumentar artificialmente la resolución y añadir detalles microscópicos a imágenes de baja calidad para impresión profesional.</p></div>
+        <div class="row"><h3 class="term">Aspect Ratio</h3><p class="def">Proporción de imagen. Ej: 16:9 (pantallas), 9:16 (Reels/TikTok), 1:1 (Instagram cuadrado).</p></div>
+        <div class="row"><h3 class="term">ControlNet</h3><p class="def">Obliga a la IA a respetar milimétricamente la estructura, pose o silueta de una imagen base, cambiando solo el estilo visual.</p></div>
+        <div class="row"><h3 class="term">Style Reference</h3><p class="def">Parámetro para que la IA copie exclusivamente la paleta de colores y el estilo artístico de una imagen base para un nuevo sujeto.</p></div>
+      </div>
     </section>
 
-    <!-- 2. Glosario Visual -->
-    <section id="glosario" class="py-20 bg-brand-light border-t border-gray-200">
-        <div class="max-w-6xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-brand-dark mb-4 flex items-center fade-in-on-scroll">
-                <span
-                    class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">2</span>
-                Glosario Ejecutivo: Conceptos de Generación Visual
-            </h2>
-            <p class="prose-text mb-12 text-gray-600 fade-in-on-scroll">Al igual que un director de cine conoce sus
-                lentes, tú debes conocer esta terminología técnica para dominar la dirección de arte con IA.</p>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 fade-in-on-scroll">
-                <!-- Prompt Visual -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 card-hover flex flex-col">
-                    <div
-                        class="w-10 h-10 bg-indigo-50 text-brand-primary rounded-lg flex items-center justify-center text-xl mb-4">
-                        <i class="fa-solid fa-terminal"></i></div>
-                    <h4 class="font-bold text-brand-dark mb-2">Prompt Visual</h4>
-                    <p class="font-serif text-gray-600 text-sm flex-grow">Instrucción de texto (sujeto, iluminación,
-                        estilo). A diferencia del prompt lógico, aquí debe ser puramente estético y descriptivo.</p>
-                </div>
-
-                <!-- Seed -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 card-hover flex flex-col">
-                    <div
-                        class="w-10 h-10 bg-amber-50 text-brand-accent rounded-lg flex items-center justify-center text-xl mb-4">
-                        <i class="fa-solid fa-dna"></i></div>
-                    <h4 class="font-bold text-brand-dark mb-2">Seed (Semilla)</h4>
-                    <p class="font-serif text-gray-600 text-sm flex-grow">El "ADN matemático" de una imagen. Guardarlo
-                        permite generar variaciones consistentes de un mismo personaje en el futuro.</p>
-                </div>
-
-                <!-- In-painting -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 card-hover flex flex-col">
-                    <div
-                        class="w-10 h-10 bg-pink-50 text-pink-500 rounded-lg flex items-center justify-center text-xl mb-4">
-                        <i class="fa-solid fa-paintbrush"></i></div>
-                    <h4 class="font-bold text-brand-dark mb-2">In-painting</h4>
-                    <p class="font-serif text-gray-600 text-sm flex-grow">Seleccionar una zona específica (ej. una taza)
-                        y modificar <em>solo</em> esa área mediante un prompt, dejando el entorno intacto.</p>
-                </div>
-
-                <!-- Out-painting -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 card-hover flex flex-col">
-                    <div
-                        class="w-10 h-10 bg-blue-50 text-blue-500 rounded-lg flex items-center justify-center text-xl mb-4">
-                        <i class="fa-solid fa-expand"></i></div>
-                    <h4 class="font-bold text-brand-dark mb-2">Out-painting</h4>
-                    <p class="font-serif text-gray-600 text-sm flex-grow">Expansión. La IA "imagina" y genera contexto
-                        fuera de los bordes originales para ampliar la foto (ej. pasar a formato panorámico).</p>
-                </div>
-
-                <!-- Upscaling -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 card-hover flex flex-col">
-                    <div
-                        class="w-10 h-10 bg-emerald-50 text-emerald-500 rounded-lg flex items-center justify-center text-xl mb-4">
-                        <i class="fa-solid fa-magnifying-glass-plus"></i></div>
-                    <h4 class="font-bold text-brand-dark mb-2">Upscaling</h4>
-                    <p class="font-serif text-gray-600 text-sm flex-grow">Aumentar artificialmente la resolución y
-                        añadir detalles microscópicos a imágenes de baja calidad para impresión profesional.</p>
-                </div>
-
-                <!-- Aspect Ratio -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 card-hover flex flex-col">
-                    <div
-                        class="w-10 h-10 bg-gray-100 text-gray-600 rounded-lg flex items-center justify-center text-xl mb-4">
-                        <i class="fa-solid fa-crop-simple"></i></div>
-                    <h4 class="font-bold text-brand-dark mb-2">Aspect Ratio</h4>
-                    <p class="font-serif text-gray-600 text-sm flex-grow">Proporción de imagen. Ej: 16:9 (pantallas),
-                        9:16 (Reels/TikTok), 1:1 (Instagram cuadrado).</p>
-                </div>
-
-                <!-- ControlNet -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 card-hover flex flex-col">
-                    <div
-                        class="w-10 h-10 bg-purple-50 text-purple-500 rounded-lg flex items-center justify-center text-xl mb-4">
-                        <i class="fa-solid fa-person-rays"></i></div>
-                    <h4 class="font-bold text-brand-dark mb-2">ControlNet</h4>
-                    <p class="font-serif text-gray-600 text-sm flex-grow">Obliga a la IA a respetar milimétricamente la
-                        estructura, pose o silueta de una imagen base, cambiando solo el estilo visual.</p>
-                </div>
-
-                <!-- Style Reference -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 card-hover flex flex-col">
-                    <div
-                        class="w-10 h-10 bg-rose-50 text-rose-500 rounded-lg flex items-center justify-center text-xl mb-4">
-                        <i class="fa-solid fa-palette"></i></div>
-                    <h4 class="font-bold text-brand-dark mb-2">Style Reference</h4>
-                    <p class="font-serif text-gray-600 text-sm flex-grow">Parámetro para que la IA copie exclusivamente
-                        la paleta de colores y el estilo artístico de una imagen base para un nuevo sujeto.</p>
-                </div>
-            </div>
-        </div>
+    <!-- 3. Flujo de trabajo -->
+    <section class="sec" id="flujo" data-label="Flujo">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Flujo de trabajo en IA generativa.</h2></div>
+      <p class="sec-intro">Crear una imagen profesional rara vez es fruto de un solo «clic». Un flujo de trabajo industrial maduro implica iteración y control riguroso:</p>
+      <div class="stepper">
+        <div class="step"><span class="n">01</span><h4>Ideación</h4><p>Prompt inicial para explorar opciones.</p></div>
+        <div class="step"><span class="n">02</span><h4>Fijar base</h4><p>Guardar el <em>Seed</em> al llegar al 80%.</p></div>
+        <div class="step"><span class="n">03</span><h4>Iteración</h4><p>Cambios sutiles usando el mismo Seed.</p></div>
+        <div class="step"><span class="n">04</span><h4>Refinamiento</h4><p>Uso de <em>In-painting</em> local.</p></div>
+        <div class="step final"><span class="n">[✓]</span><h4>Acabado final</h4><p>Aplicación de <em>Upscaling</em>.</p></div>
+      </div>
     </section>
 
-    <!-- 3. Flujo de Trabajo -->
-    <section id="flujo" class="py-20 bg-white">
-        <div class="max-w-5xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-brand-dark mb-8 flex items-center fade-in-on-scroll">
-                <span
-                    class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">3</span>
-                Flujo de Trabajo en IA Generativa
-            </h2>
-            <p class="prose-text mb-12 text-gray-600 fade-in-on-scroll">
-                Crear una imagen profesional rara vez es fruto de un solo "clic". Un flujo de trabajo industrial maduro
-                implica iteración y control riguroso:
-            </p>
+    <!-- 4. Fórmulas de prompt visual -->
+    <section class="sec" id="prompts" data-label="Fórmulas">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">El arte del prompt visual (técnicas de dirección).</h2></div>
+      <p class="sec-intro">Escribir para generar imágenes no es igual que para texto. El generador busca estética, no lógica narrativa. Domina estas 4 estructuras de grado profesional.</p>
 
-            <div class="flex flex-col md:flex-row justify-between items-stretch gap-4 fade-in-on-scroll relative">
-                <!-- Línea conectora de fondo -->
-                <div
-                    class="hidden md:block absolute top-1/2 left-10 right-10 h-1 bg-gray-200 -z-10 transform -translate-y-1/2">
-                </div>
-
-                <!-- Paso 1 -->
-                <div
-                    class="bg-white border-2 border-gray-200 rounded-xl p-5 text-center shadow-sm w-full md:w-1/5 relative card-hover">
-                    <div
-                        class="w-8 h-8 bg-gray-100 text-gray-500 font-bold rounded-full flex items-center justify-center mx-auto mb-3">
-                        1</div>
-                    <h4 class="font-bold text-brand-dark text-sm mb-2">Ideación</h4>
-                    <p class="text-xs font-serif text-gray-500">Prompt inicial para explorar opciones.</p>
-                </div>
-
-                <!-- Paso 2 -->
-                <div
-                    class="bg-white border-2 border-brand-primary/30 rounded-xl p-5 text-center shadow-sm w-full md:w-1/5 relative card-hover">
-                    <div
-                        class="w-8 h-8 bg-brand-primary/10 text-brand-primary font-bold rounded-full flex items-center justify-center mx-auto mb-3">
-                        2</div>
-                    <h4 class="font-bold text-brand-dark text-sm mb-2">Fijar Base</h4>
-                    <p class="text-xs font-serif text-gray-500">Guardar el <em>Seed</em> al llegar al 80%.</p>
-                </div>
-
-                <!-- Paso 3 -->
-                <div
-                    class="bg-white border-2 border-brand-primary/60 rounded-xl p-5 text-center shadow-sm w-full md:w-1/5 relative card-hover">
-                    <div
-                        class="w-8 h-8 bg-brand-primary/20 text-brand-primary font-bold rounded-full flex items-center justify-center mx-auto mb-3">
-                        3</div>
-                    <h4 class="font-bold text-brand-dark text-sm mb-2">Iteración</h4>
-                    <p class="text-xs font-serif text-gray-500">Cambios sutiles usando el mismo Seed.</p>
-                </div>
-
-                <!-- Paso 4 -->
-                <div
-                    class="bg-white border-2 border-brand-accent/60 rounded-xl p-5 text-center shadow-sm w-full md:w-1/5 relative card-hover">
-                    <div
-                        class="w-8 h-8 bg-brand-accent/20 text-brand-accent font-bold rounded-full flex items-center justify-center mx-auto mb-3">
-                        4</div>
-                    <h4 class="font-bold text-brand-dark text-sm mb-2">Refinamiento</h4>
-                    <p class="text-xs font-serif text-gray-500">Uso de <em>In-painting</em> local.</p>
-                </div>
-
-                <!-- Paso 5 -->
-                <div
-                    class="bg-brand-primary border-2 border-brand-primary rounded-xl p-5 text-center shadow-lg w-full md:w-1/5 relative card-hover text-white">
-                    <div
-                        class="w-8 h-8 bg-white text-brand-primary font-bold rounded-full flex items-center justify-center mx-auto mb-3">
-                        <i class="fa-solid fa-check"></i></div>
-                    <h4 class="font-bold text-sm mb-2">Acabado Final</h4>
-                    <p class="text-xs font-serif text-indigo-100">Aplicación de <em>Upscaling</em>.</p>
-                </div>
-            </div>
+      <div class="formula">
+        <div class="head"><span class="eyebrow brackets"> S.C.I.E. </span><span>Estructura 1 · Fotografía realista</span></div>
+        <div class="tiles">
+          <div class="tile"><span class="l">S</span><span class="t">Sujeto</span><span class="e">«Mujer ejecutiva de 40 años…»</span></div>
+          <div class="tile"><span class="l">C</span><span class="t">Contexto</span><span class="e">«Sala de juntas de cristal, lloviendo…»</span></div>
+          <div class="tile"><span class="l">I</span><span class="t">Iluminación</span><span class="e">«Luz cinemática suave, neones…»</span></div>
+          <div class="tile"><span class="l">E</span><span class="t">Estilo/Cámara</span><span class="e">«Fotografía documental, lente 85mm.»</span></div>
         </div>
+        <div class="code prompt example"><div class="ch"><span class="k">[ Ejemplo práctico ]</span><button type="button" class="btn-ghost" data-copy>Copiar</button></div><pre>«Un par de zapatos casuales Oxford de hombre en ante gris-taupe claro con un panel de empeine con textura de cuadrícula trenzada y suelas gruesas de goma texturizada crema, posados sobre una superficie de estudio limpia de color blanco roto frente a un fondo crema liso. Fotografía realista de primer plano medio con iluminación de estudio suave, enfocada nítidamente en los zapatos con profundidad de campo baja.»</pre></div>
+      </div>
+
+      <div class="formula">
+        <div class="head"><span class="eyebrow brackets"> P.E.P.A. </span><span>Estructura 2 · E-commerce y mockups</span></div>
+        <div class="tiles">
+          <div class="tile"><span class="l">P</span><span class="t">Producto</span><span class="e">«Bote de perfume de cristal…»</span></div>
+          <div class="tile"><span class="l">E</span><span class="t">Entorno</span><span class="e">«Sobre bloque de pizarra húmeda…»</span></div>
+          <div class="tile"><span class="l">P</span><span class="t">Props</span><span class="e">«Rodeado de hojas desenfocadas…»</span></div>
+          <div class="tile"><span class="l">A</span><span class="t">Ángulo/Setup</span><span class="e">«Plano macro, iluminación estudio.»</span></div>
+        </div>
+        <div class="code prompt example"><div class="ch"><span class="k">[ Ejemplo práctico ]</span><button type="button" class="btn-ghost" data-copy>Copiar</button></div><pre>«Zapatos Derby de ante gris-púrpura pálido con detalle de trenza de panel de empeine, costuras de contraste y suela intermedia de crepé crema texturizada, sobre una superficie de exhibición minimalista de color blanco cremoso. Toma de tres cuartos a nivel de los ojos con iluminación de caja de luz suave y uniforme.»</pre></div>
+      </div>
+
+      <div class="formula">
+        <div class="head"><span class="eyebrow brackets"> M.E.T.A. </span><span>Estructura 3 · Branding y abstractos</span></div>
+        <div class="tiles">
+          <div class="tile"><span class="l">M</span><span class="t">Medio Artís.</span><span class="e">«Render 3D Isométrico…»</span></div>
+          <div class="tile"><span class="l">E</span><span class="t">Emoción</span><span class="e">«Optimismo, urgencia comercial…»</span></div>
+          <div class="tile"><span class="l">T</span><span class="t">Tema</span><span class="e">«Ciberseguridad en la nube…»</span></div>
+          <div class="tile"><span class="l">A</span><span class="t">Abstracción</span><span class="e">«Paleta corporativa azul/naranja.»</span></div>
+        </div>
+        <div class="code prompt example"><div class="ch"><span class="k">[ Ejemplo práctico ]</span><button type="button" class="btn-ghost" data-copy>Copiar</button></div><pre>«Renderizado 3D de alta definición, fotorrealista. Transmite una elegancia artesanal serena. El tema es la artesanía minimalista del calzado. El par de zapatos de ante taupe frío con panel de empeine trenzado está perfectamente centrado en una superficie y fondo uniformes de color crema suave, con una paleta de colores cohesiva.»</pre></div>
+      </div>
+
+      <div class="formula">
+        <div class="head"><span class="eyebrow brackets"> C.A.P.A. </span><span>Estructura 4 · Narrativa / storyboard</span></div>
+        <div class="tiles">
+          <div class="tile"><span class="l">C</span><span class="t">Cámara</span><span class="e">«Plano contrapicado dramático…»</span></div>
+          <div class="tile"><span class="l">A</span><span class="t">Acción</span><span class="e">«Corriendo mirando hacia atrás…»</span></div>
+          <div class="tile"><span class="l">P</span><span class="t">Personaje</span><span class="e">«Atleta de 25 años con ropa sucia…»</span></div>
+          <div class="tile"><span class="l">A</span><span class="t">Atmósfera</span><span class="e">«Niebla densa, tono de thriller.»</span></div>
+        </div>
+        <div class="code prompt example"><div class="ch"><span class="k">[ Ejemplo práctico ]</span><button type="button" class="btn-ghost" data-copy>Copiar</button></div><pre>«Toma de primer plano a nivel de los zapatos. Par de zapatos de ante gris claro con textura trenzada, enfocados de forma estática sobre una superficie de estudio limpia. La atmósfera es de estudio silencioso y pulcro, con un tono neutro y sofisticado.»</pre></div>
+      </div>
     </section>
 
-    <!-- 4. El Arte del Prompt Visual (Fórmulas) -->
-    <section id="prompts" class="py-20 bg-brand-dark text-white border-t border-gray-800">
-        <div class="max-w-6xl mx-auto px-6">
-            <h2 class="text-3xl font-bold mb-4 flex items-center fade-in-on-scroll">
-                <span
-                    class="w-10 h-10 bg-brand-accent text-brand-dark rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">4</span>
-                El Arte del Prompt Visual (Técnicas de Dirección)
-            </h2>
-            <p class="prose-text mb-12 text-gray-300 fade-in-on-scroll">
-                Escribir para generar imágenes no es igual que para texto. El generador busca estética, no lógica
-                narrativa. Domina estas 4 estructuras de grado profesional.
-            </p>
+    <!-- 5. Herramientas -->
+    <section class="sec" id="titanes" data-label="Herramientas">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Primer contacto.</h2></div>
+      <p class="sec-intro">Conoce las herramientas líderes de fotorrealismo y arte generado por IA.</p>
+      <div class="tools">
 
-            <div class="space-y-12 fade-in-on-scroll">
-
-                <!-- S.C.I.E. -->
-                <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
-                    <h3 class="text-xl font-bold mb-4 text-blue-400 flex items-center"><i
-                            class="fa-solid fa-camera-retro mr-3"></i> 1. Estructura S.C.I.E. <span
-                            class="text-sm font-normal text-gray-400 ml-3">(Fotografía Realista)</span></h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                        <div class="bg-black/30 p-4 rounded-xl border-t-2 border-blue-400">
-                            <span class="block text-2xl font-black text-white/20 mb-1">S</span>
-                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-300 mb-2">Sujeto</h4>
-                            <p class="text-xs text-gray-400 font-serif italic">"Mujer ejecutiva de 40 años..."</p>
-                        </div>
-                        <div class="bg-black/30 p-4 rounded-xl border-t-2 border-blue-400">
-                            <span class="block text-2xl font-black text-white/20 mb-1">C</span>
-                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-300 mb-2">Contexto</h4>
-                            <p class="text-xs text-gray-400 font-serif italic">"Sala de juntas de cristal, lloviendo..."
-                            </p>
-                        </div>
-                        <div class="bg-black/30 p-4 rounded-xl border-t-2 border-blue-400">
-                            <span class="block text-2xl font-black text-white/20 mb-1">I</span>
-                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-300 mb-2">Iluminación</h4>
-                            <p class="text-xs text-gray-400 font-serif italic">"Luz cinemática suave, neones..."</p>
-                        </div>
-                        <div class="bg-black/30 p-4 rounded-xl border-t-2 border-blue-400">
-                            <span class="block text-2xl font-black text-white/20 mb-1">E</span>
-                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-300 mb-2">Estilo/Cámara</h4>
-                            <p class="text-xs text-gray-400 font-serif italic">"Fotografía documental, lente 85mm."</p>
-                        </div>
-                    </div>
-                    <div class="mt-6 bg-black/40 border border-white/10 rounded-xl p-5 relative group">
-                        <span class="absolute top-0 left-0 bg-blue-500/20 text-blue-400 text-[10px] uppercase font-bold px-3 py-1 rounded-br-lg rounded-tl-xl">Ejemplo Práctico</span>
-                        <p class="text-sm font-serif text-gray-300 pt-3 pr-8 select-all">
-                            "Un par de zapatos casuales Oxford de hombre en ante gris-taupe claro con un panel de empeine con textura de cuadrícula trenzada y suelas gruesas de goma texturizada crema, posados sobre una superficie de estudio limpia de color blanco roto frente a un fondo crema liso. Fotografía realista de primer plano medio con iluminación de estudio suave, enfocada nítidamente en los zapatos con profundidad de campo baja."
-                        </p>
-                        <button onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText); const i=this.querySelector('i'); i.className='fa-solid fa-check text-green-400'; setTimeout(()=>i.className='fa-regular fa-copy', 2000)" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-lg text-gray-300 hover:text-white transition-colors" title="Copiar prompt">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- P.E.P.A. -->
-                <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
-                    <h3 class="text-xl font-bold mb-4 text-emerald-400 flex items-center"><i
-                            class="fa-solid fa-box-open mr-3"></i> 2. Estructura P.E.P.A. <span
-                            class="text-sm font-normal text-gray-400 ml-3">(E-commerce y Mockups)</span></h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                        <div class="bg-black/30 p-4 rounded-xl border-t-2 border-emerald-400">
-                            <span class="block text-2xl font-black text-white/20 mb-1">P</span>
-                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-300 mb-2">Producto</h4>
-                            <p class="text-xs text-gray-400 font-serif italic">"Bote de perfume de cristal..."</p>
-                        </div>
-                        <div class="bg-black/30 p-4 rounded-xl border-t-2 border-emerald-400">
-                            <span class="block text-2xl font-black text-white/20 mb-1">E</span>
-                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-300 mb-2">Entorno</h4>
-                            <p class="text-xs text-gray-400 font-serif italic">"Sobre bloque de pizarra húmeda..."</p>
-                        </div>
-                        <div class="bg-black/30 p-4 rounded-xl border-t-2 border-emerald-400">
-                            <span class="block text-2xl font-black text-white/20 mb-1">P</span>
-                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-300 mb-2">Props</h4>
-                            <p class="text-xs text-gray-400 font-serif italic">"Rodeado de hojas desenfocadas..."</p>
-                        </div>
-                        <div class="bg-black/30 p-4 rounded-xl border-t-2 border-emerald-400">
-                            <span class="block text-2xl font-black text-white/20 mb-1">A</span>
-                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-300 mb-2">Ángulo/Setup</h4>
-                            <p class="text-xs text-gray-400 font-serif italic">"Plano macro, iluminación estudio."</p>
-                        </div>
-                    </div>
-                    <div class="mt-6 bg-black/40 border border-white/10 rounded-xl p-5 relative group">
-                        <span class="absolute top-0 left-0 bg-emerald-500/20 text-emerald-400 text-[10px] uppercase font-bold px-3 py-1 rounded-br-lg rounded-tl-xl">Ejemplo Práctico</span>
-                        <p class="text-sm font-serif text-gray-300 pt-3 pr-8 select-all">
-                            "Zapatos Derby de ante gris-púrpura pálido con detalle de trenza de panel de empeine, costuras de contraste y suela intermedia de crepé crema texturizada, sobre una superficie de exhibición minimalista de color blanco cremoso. Toma de tres cuartos a nivel de los ojos con iluminación de caja de luz suave y uniforme."
-                        </p>
-                        <button onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText); const i=this.querySelector('i'); i.className='fa-solid fa-check text-green-400'; setTimeout(()=>i.className='fa-regular fa-copy', 2000)" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-lg text-gray-300 hover:text-white transition-colors" title="Copiar prompt">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- M.E.T.A. -->
-                <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
-                    <h3 class="text-xl font-bold mb-4 text-purple-400 flex items-center"><i
-                            class="fa-solid fa-wand-magic-sparkles mr-3"></i> 3. Estructura M.E.T.A. <span
-                            class="text-sm font-normal text-gray-400 ml-3">(Branding y Abstractos)</span></h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                        <div class="bg-black/30 p-4 rounded-xl border-t-2 border-purple-400">
-                            <span class="block text-2xl font-black text-white/20 mb-1">M</span>
-                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-300 mb-2">Medio Artís.</h4>
-                            <p class="text-xs text-gray-400 font-serif italic">"Render 3D Isométrico..."</p>
-                        </div>
-                        <div class="bg-black/30 p-4 rounded-xl border-t-2 border-purple-400">
-                            <span class="block text-2xl font-black text-white/20 mb-1">E</span>
-                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-300 mb-2">Emoción</h4>
-                            <p class="text-xs text-gray-400 font-serif italic">"Optimismo, urgencia comercial..."</p>
-                        </div>
-                        <div class="bg-black/30 p-4 rounded-xl border-t-2 border-purple-400">
-                            <span class="block text-2xl font-black text-white/20 mb-1">T</span>
-                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-300 mb-2">Tema</h4>
-                            <p class="text-xs text-gray-400 font-serif italic">"Ciberseguridad en la nube..."</p>
-                        </div>
-                        <div class="bg-black/30 p-4 rounded-xl border-t-2 border-purple-400">
-                            <span class="block text-2xl font-black text-white/20 mb-1">A</span>
-                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-300 mb-2">Abstracción</h4>
-                            <p class="text-xs text-gray-400 font-serif italic">"Paleta corporativa azul/naranja."</p>
-                        </div>
-                    </div>
-                    <div class="mt-6 bg-black/40 border border-white/10 rounded-xl p-5 relative group">
-                        <span class="absolute top-0 left-0 bg-purple-500/20 text-purple-400 text-[10px] uppercase font-bold px-3 py-1 rounded-br-lg rounded-tl-xl">Ejemplo Práctico</span>
-                        <p class="text-sm font-serif text-gray-300 pt-3 pr-8 select-all">
-                            "Renderizado 3D de alta definición, fotorrealista. Transmite una elegancia artesanal serena. El tema es la artesanía minimalista del calzado. El par de zapatos de ante taupe frío con panel de empeine trenzado está perfectamente centrado en una superficie y fondo uniformes de color crema suave, con una paleta de colores cohesiva."
-                        </p>
-                        <button onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText); const i=this.querySelector('i'); i.className='fa-solid fa-check text-green-400'; setTimeout(()=>i.className='fa-regular fa-copy', 2000)" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-lg text-gray-300 hover:text-white transition-colors" title="Copiar prompt">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- C.A.P.A. -->
-                <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
-                    <h3 class="text-xl font-bold mb-4 text-rose-400 flex items-center"><i
-                            class="fa-solid fa-clapperboard mr-3"></i> 4. Estructura C.A.P.A. <span
-                            class="text-sm font-normal text-gray-400 ml-3">(Narrativa / Storyboard)</span></h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                        <div class="bg-black/30 p-4 rounded-xl border-t-2 border-rose-400">
-                            <span class="block text-2xl font-black text-white/20 mb-1">C</span>
-                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-300 mb-2">Cámara</h4>
-                            <p class="text-xs text-gray-400 font-serif italic">"Plano contrapicado dramático..."</p>
-                        </div>
-                        <div class="bg-black/30 p-4 rounded-xl border-t-2 border-rose-400">
-                            <span class="block text-2xl font-black text-white/20 mb-1">A</span>
-                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-300 mb-2">Acción</h4>
-                            <p class="text-xs text-gray-400 font-serif italic">"Corriendo mirando hacia atrás..."</p>
-                        </div>
-                        <div class="bg-black/30 p-4 rounded-xl border-t-2 border-rose-400">
-                            <span class="block text-2xl font-black text-white/20 mb-1">P</span>
-                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-300 mb-2">Personaje</h4>
-                            <p class="text-xs text-gray-400 font-serif italic">"Atleta de 25 años con ropa sucia..."</p>
-                        </div>
-                        <div class="bg-black/30 p-4 rounded-xl border-t-2 border-rose-400">
-                            <span class="block text-2xl font-black text-white/20 mb-1">A</span>
-                            <h4 class="font-bold text-xs uppercase tracking-wider text-gray-300 mb-2">Atmósfera</h4>
-                            <p class="text-xs text-gray-400 font-serif italic">"Niebla densa, tono de thriller."</p>
-                        </div>
-                    </div>
-                    <div class="mt-6 bg-black/40 border border-white/10 rounded-xl p-5 relative group">
-                        <span class="absolute top-0 left-0 bg-rose-500/20 text-rose-400 text-[10px] uppercase font-bold px-3 py-1 rounded-br-lg rounded-tl-xl">Ejemplo Práctico</span>
-                        <p class="text-sm font-serif text-gray-300 pt-3 pr-8 select-all">
-                            "Toma de primer plano a nivel de los zapatos. Par de zapatos de ante gris claro con textura trenzada, enfocados de forma estática sobre una superficie de estudio limpia. La atmósfera es de estudio silencioso y pulcro, con un tono neutro y sofisticado."
-                        </p>
-                        <button onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText); const i=this.querySelector('i'); i.className='fa-solid fa-check text-green-400'; setTimeout(()=>i.className='fa-regular fa-copy', 2000)" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-lg text-gray-300 hover:text-white transition-colors" title="Copiar prompt">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
-                    </div>
-                </div>
-
-
-            </div>
+        <div class="tool card-live">
+          <p class="k">El velocista del ecosistema</p>
+          <h3 class="display">Gemini Nano Banana 2</h3>
+          <p>Integrado profundamente en el ecosistema Google. Destaca por una <strong>velocidad de generación casi en tiempo real</strong> y una comprensión del lenguaje natural excepcional, lo que significa que no necesitas escribir <em>prompts</em> excesivamente técnicos para obtener un buen resultado base.</p>
+          <p class="use"><strong>Mejor uso:</strong> Brainstorming en vivo, esquemas visuales rápidos y contenido ágil para redes donde la inmediatez prima sobre el hiperrealismo extremo.</p>
+          <div class="links">
+            <a class="btn-ghost" href="https://gemini.google.com" target="_blank" rel="noopener">Chat →</a>
+            <a class="btn-ghost" href="https://gemini.google.com" target="_blank" rel="noopener">Gem →</a>
+            <a class="btn-ghost" href="https://gemini.google.com" target="_blank" rel="noopener">Gem+ →</a>
+            <a class="btn-ghost" href="https://one.google.com/ai?g1_last_touchpoint=59&amp;g1_landing_page=1&amp;utm_source=g1&amp;utm_medium=web&amp;utm_campaign=home_me" target="_blank" rel="noopener">Google One IA →</a>
+          </div>
         </div>
+
+        <div class="tool card-live">
+          <p class="k">El creador fotorrealista avanzado</p>
+          <h3 class="display">ChatGPT Images 2.0</h3>
+          <p>El nuevo modelo de generación de imágenes nativo de ChatGPT da un salto masivo en calidad visual. Destaca por su capacidad mejorada para generar imágenes fotorrealistas con detalles precisos y un <strong>entendimiento semántico</strong> excepcional, permitiendo generar texto integrado casi perfecto y mantener una coherencia impecable con la instrucción proporcionada.</p>
+          <p class="use"><strong>Mejor uso:</strong> Ilustraciones de alta calidad, imágenes hiperrealistas, infografías y carteles con texto perfectamente integrado.</p>
+          <div class="links">
+            <a class="btn-ghost" href="https://chatgpt.com" target="_blank" rel="noopener">Acceder a ChatGPT Images 2.0 →</a>
+          </div>
+        </div>
+
+        <div class="tool card-live">
+          <p class="k">El lienzo de inspiración</p>
+          <h3 class="display">Mixboard</h3>
+          <p>Una herramienta experimental de Google que actúa como un <strong>tablero infinito de referencias y moodboards</strong>. Ideal para creadores que necesitan agrupar imágenes, textos e ideas en un solo lugar, permitiendo visualizar conceptos complejos y guiar el proceso creativo de forma muy intuitiva.</p>
+          <p class="use"><strong>Mejor uso:</strong> Creación de moodboards, organización de referencias visuales, brainstorming gráfico y conceptualización de proyectos creativos.</p>
+          <div class="links">
+            <a class="btn-ghost" href="https://mixboard.google.com/" target="_blank" rel="noopener">Acceder a Mixboard →</a>
+          </div>
+        </div>
+
+      </div>
     </section>
 
-    <!-- 5. Herramientas Titanes -->
-    <section id="titanes" class="py-20 bg-brand-light border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6">
-            <div class="text-center mb-10 fade-in-on-scroll">
-                <h3 class="text-3xl font-extrabold text-brand-dark flex items-center justify-center mb-3">
-                    <span
-                        class="w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center mr-4 text-xl shadow-lg shrink-0">5</span>
-                    Primer contacto
-                </h3>
-                <p class="text-gray-500 font-serif text-center">Conoce las herramientas líderes de fotorrealismo y arte generado por IA.</p>
-            </div>
+    <!-- 6. Práctica, test y PFC (banda tinta) -->
+    <section class="sec sec-dark" id="practica" data-label="Práctica &amp; PFC">
+      <p class="sec-eyebrow">[ Ejercicios ]</p>
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Práctica Clase 1.</h2></div>
+      <ol class="exercises">
+        <li><h4>Crear prompt estructurado</h4><p>Define un caso de uso claro y construye un prompt sólido que siga una estructura probada, definiendo el rol, la tarea y el contexto necesarios.</p></li>
+        <li><h4>Modificar / variar el prompt</h4><p>Ajusta variables clave como el tono, formato, o restricciones. Observa cómo cambia la respuesta iterando sobre el mismo concepto.</p></li>
+        <li><h4>Crear Gem posicionador</h4><p>Configura un Gem en Gemini con instrucciones personalizadas para automatizar una tarea repetitiva, dándole una personalidad y directrices claras.</p></li>
+        <li><h4>Crear Gem+</h4><p>Utiliza Opal de Google Labs para desarrollar Gems avanzados que integren lógicas más complejas, conectando múltiples pasos en un solo flujo.</p></li>
+      </ol>
 
-            <div class="flex flex-col space-y-8 fade-in-on-scroll">
+      <div class="quiz" data-quiz="quizData" data-title="Cuestionario de evaluación (Clase 1)"></div>
 
-                <!-- 1. Nano Banana 2 -->
-                <div
-                    class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
-                    <div class="border-l-4 border-[#1A73E8] p-8 lg:p-10">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-                            <div class="flex items-center">
-                                <div
-                                    class="w-16 h-16 bg-[#E8F0FE] text-[#1A73E8] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
-                                    <i class="fa-solid fa-bolt"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Gemini Nano Banana 2</h4>
-                                    <p class="text-[#1A73E8] font-bold text-xs uppercase tracking-widest">El Velocista
-                                        del Ecosistema</p>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 font-serif text-lg mb-4 leading-relaxed">
-                            Integrado profundamente en el ecosistema Google. Destaca por una <strong>velocidad de
-                                generación casi en tiempo real</strong> y una comprensión del lenguaje natural
-                            excepcional, lo que significa que no necesitas escribir <em>prompts</em> excesivamente
-                            técnicos para obtener un buen resultado base.
-                        </p>
-                        <p class="text-sm text-gray-500 mb-6"><strong class="text-gray-700">Mejor Uso:</strong> Brainstorming
-                            en vivo, esquemas visuales rápidos y contenido ágil para redes donde la inmediatez prima
-                            sobre el hiperrealismo extremo.</p>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-                            <a href="https://gemini.google.com" target="_blank" rel="noopener" class="bg-gray-50 border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center hover:bg-[#1A73E8] hover:border-[#1A73E8] transition-colors group shadow-sm">
-                                <h5 class="font-bold text-gray-800 group-hover:text-white text-lg flex items-center gap-2">Chat <i class="fa-solid fa-arrow-up-right-from-square text-sm opacity-70"></i></h5>
-                            </a>
-                            <a href="https://gemini.google.com" target="_blank" rel="noopener" class="bg-gray-50 border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center hover:bg-[#1A73E8] hover:border-[#1A73E8] transition-colors group shadow-sm">
-                                <h5 class="font-bold text-gray-800 group-hover:text-white text-lg flex items-center gap-2">Gem <i class="fa-solid fa-arrow-up-right-from-square text-sm opacity-70"></i></h5>
-                            </a>
-                            <a href="https://gemini.google.com" target="_blank" rel="noopener" class="bg-gray-50 border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center hover:bg-[#1A73E8] hover:border-[#1A73E8] transition-colors group shadow-sm">
-                                <h5 class="font-bold text-gray-800 group-hover:text-white text-lg flex items-center gap-2">Gem+ <i class="fa-solid fa-arrow-up-right-from-square text-sm opacity-70"></i></h5>
-                            </a>
-                            <a href="https://one.google.com/ai?g1_last_touchpoint=59&g1_landing_page=1&utm_source=g1&utm_medium=web&utm_campaign=home_me" target="_blank" rel="noopener" class="bg-gray-50 border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center hover:bg-[#1A73E8] hover:border-[#1A73E8] transition-colors group shadow-sm">
-                                <h5 class="font-bold text-gray-800 group-hover:text-white text-lg flex items-center gap-2">Google One IA <i class="fa-solid fa-arrow-up-right-from-square text-sm opacity-70"></i></h5>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2. ChatGPT Images 2.0 -->
-                <div
-                    class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
-                    <div class="border-l-4 border-[#10A37F] p-8 lg:p-10">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-                            <div class="flex items-center">
-                                <div
-                                    class="w-16 h-16 bg-[#E6F6F2] text-[#10A37F] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
-                                    <i class="fa-solid fa-pen-ruler"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">ChatGPT Images 2.0</h4>
-                                    <p class="text-[#10A37F] font-bold text-xs uppercase tracking-widest">El Creador Fotorrealista Avanzado</p>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 font-serif text-lg mb-4 leading-relaxed">
-                            El nuevo modelo de generación de imágenes nativo de ChatGPT da un salto masivo en calidad visual. Destaca por su capacidad mejorada para generar imágenes fotorrealistas con detalles precisos y un <strong>entendimiento semántico</strong> excepcional, permitiendo generar texto integrado casi perfecto y mantener una coherencia impecable con la instrucción proporcionada.
-                        </p>
-                        <p class="text-sm text-gray-500 mb-6"><strong class="text-gray-700">Mejor Uso:</strong> Ilustraciones de alta calidad, imágenes hiperrealistas, infografías y carteles con texto perfectamente integrado.</p>
-
-                        <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mt-6">
-                            <a href="https://chatgpt.com" target="_blank" rel="noopener" class="bg-gray-50 border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center hover:bg-[#10A37F] hover:border-[#10A37F] transition-colors group shadow-sm">
-                                <h5 class="font-bold text-gray-800 group-hover:text-white text-lg flex items-center gap-2">Acceder a ChatGPT Images 2.0 <i class="fa-solid fa-arrow-up-right-from-square text-sm opacity-70"></i></h5>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3. Mixboard -->
-                <div
-                    class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
-                    <div class="border-l-4 border-[#A855F7] p-8 lg:p-10">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-                            <div class="flex items-center">
-                                <div
-                                    class="w-16 h-16 bg-[#F3E8FF] text-[#A855F7] rounded-xl flex items-center justify-center text-3xl mr-5 shrink-0">
-                                    <i class="fa-solid fa-layer-group"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-extrabold text-brand-dark text-2xl mb-1">Mixboard</h4>
-                                    <p class="text-[#A855F7] font-bold text-xs uppercase tracking-widest">El Lienzo de Inspiración</p>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 font-serif text-lg mb-4 leading-relaxed">
-                            Una herramienta experimental de Google que actúa como un <strong>tablero infinito de referencias y moodboards</strong>. Ideal para creadores que necesitan agrupar imágenes, textos e ideas en un solo lugar, permitiendo visualizar conceptos complejos y guiar el proceso creativo de forma muy intuitiva.
-                        </p>
-                        <p class="text-sm text-gray-500 mb-6"><strong class="text-gray-700">Mejor Uso:</strong> Creación de moodboards, organización de referencias visuales, brainstorming gráfico y conceptualización de proyectos creativos.</p>
-
-                        <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mt-6">
-                            <a href="https://mixboard.google.com/" target="_blank" rel="noopener" class="bg-gray-50 border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center hover:bg-[#A855F7] hover:border-[#A855F7] transition-colors group shadow-sm">
-                                <h5 class="font-bold text-gray-800 group-hover:text-white text-lg flex items-center gap-2">Acceder a Mixboard <i class="fa-solid fa-arrow-up-right-from-square text-sm opacity-70"></i></h5>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
+      <div class="pfc">
+        <span class="k">[ PFC — Transversal ]</span>
+        <h3>PFC: Automatización y Gems</h3>
+        <p><strong>Tarea: tu ecosistema de automatización</strong></p>
+        <p>Desarrolla y consolida tus propios flujos de trabajo personalizados utilizando las herramientas de la familia Gemini. Sigue estos 3 pasos fundamentales para automatizar y optimizar tus tareas:</p>
+        <div class="steps">
+          <div><span class="n">01</span><h4>Entrenar su fórmula</h4><p>Buscar la estructura que mejor te funciona para tus casos de uso, y probar a variarla tanto en prompt como en imágenes de input.</p></div>
+          <div><span class="n">02</span><h4>Crear tu Gem</h4><p>Crea tus gems para casos de uso específicos (Eliminar fondo, Aplicar variaciones de color, crear imágenes como las de referencia…)</p></div>
+          <div><span class="n">03</span><h4>Crear tu flujo en Gem+</h4><p>Crea tu flujo de trabajo con Opal de Google Labs, detallando paso a paso el funcionamiento y compártelo como aplicación.</p></div>
         </div>
+      </div>
     </section>
 
-    <!-- 6. Práctica y PFC -->
-    <section id="practica" class="py-24 bg-brand-dark text-white border-t-8 border-brand-accent">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16 fade-in-on-scroll">
-                <span class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-3 block"><i
-                        class="fa-solid fa-desktop mr-2"></i> Ejercicios</span>
-                <h2 class="text-4xl lg:text-5xl font-extrabold mb-6">Práctica Clase 1</h2>
-            </div>
+  </div><!-- /.content -->
+  <!-- nav inferior y pie: los genera curso.js -->
+</main>
 
-            <!-- Ejercicios -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24 fade-in-on-scroll">
-                <!-- Card 1 -->
-                <div class="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors">
-                    <div
-                        class="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center mb-4 text-xl">
-                        <i class="fa-solid fa-pen-nib"></i></div>
-                    <h4 class="font-bold text-lg mb-2 text-white">1. Crear prompt estructurado</h4>
-                    <p class="font-serif text-gray-300 text-sm">Define un caso de uso claro y construye un prompt sólido que siga una estructura probada, definiendo el rol, la tarea y el contexto necesarios.</p>
-                </div>
-                <!-- Card 2 -->
-                <div class="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors">
-                    <div
-                        class="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center mb-4 text-xl">
-                        <i class="fa-solid fa-sliders"></i></div>
-                    <h4 class="font-bold text-lg mb-2 text-white">2. Modificar / variar el prompt</h4>
-                    <p class="font-serif text-gray-300 text-sm">Ajusta variables clave como el tono, formato, o restricciones. Observa cómo cambia la respuesta iterando sobre el mismo concepto.</p>
-                </div>
-                <!-- Card 3 -->
-                <div class="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors">
-                    <div
-                        class="w-10 h-10 bg-purple-500 text-white rounded-full flex items-center justify-center mb-4 text-xl">
-                        <i class="fa-solid fa-robot"></i></div>
-                    <h4 class="font-bold text-lg mb-2 text-white">3. Crear Gem posicionador</h4>
-                    <p class="font-serif text-gray-300 text-sm">Configura un Gem en Gemini con instrucciones personalizadas para automatizar una tarea repetitiva, dándole una personalidad y directrices claras.</p>
-                </div>
-                <!-- Card 4 -->
-                <div class="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors">
-                    <div
-                        class="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center mb-4 text-xl">
-                        <i class="fa-solid fa-bolt"></i></div>
-                    <h4 class="font-bold text-lg mb-2 text-white">4. Crear Gem+</h4>
-                    <p class="font-serif text-gray-300 text-sm">Utiliza Opal de Google Labs para desarrollar Gems avanzados que integren lógicas más complejas, conectando múltiples pasos en un solo flujo.</p>
-                </div>
-            </div>
-
-            <!-- Quiz Interactivo -->
-            <div class="border-t border-gray-700 pt-16 mb-24 fade-in-on-scroll">
-                <h3 class="text-3xl font-bold mb-8 text-white"><i
-                        class="fa-solid fa-clipboard-question text-brand-accent mr-3"></i> Cuestionario de Evaluación
-                    (Clase 1)</h3>
-                <div class="bg-gray-900 border border-gray-700 rounded-2xl p-8 lg:p-12 shadow-2xl">
-                    <div id="quizContainer">
-                        <!-- Quiz se renderiza vía JS aquí -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Proyecto Fin de Curso (PFC) - Modulo 3 Clase 1 -->
-            <div
-                class="border-t-8 border-brand-primary bg-white rounded-3xl p-10 lg:p-16 shadow-2xl relative overflow-hidden fade-in-on-scroll text-gray-800">
-                <div class="absolute top-0 right-0 w-64 h-64 bg-brand-primary/5 rounded-bl-full -z-10"></div>
-                <div class="flex items-center mb-6">
-                    <div
-                        class="w-16 h-16 bg-brand-primary text-white rounded-2xl flex items-center justify-center text-3xl shadow-lg mr-6 shrink-0">
-                        <i class="fa-solid fa-rocket"></i>
-                    </div>
-                    <div>
-                        <span
-                            class="text-brand-accent font-bold tracking-widest text-xs uppercase mb-1 block">Transversal</span>
-                        <h3 class="text-3xl lg:text-4xl font-extrabold text-brand-dark">PFC: Automatización y Gems</h3>
-                    </div>
-                </div>
-
-                <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-8">
-                    <h4 class="font-bold text-brand-dark text-xl mb-4 flex items-center">
-                        <i class="fa-solid fa-bullseye text-brand-primary mr-3"></i> Tarea: Tu Ecosistema de Automatización
-                    </h4>
-                    <p class="font-serif text-gray-700 mb-6">
-                        Desarrolla y consolida tus propios flujos de trabajo personalizados utilizando las herramientas de la familia Gemini. Sigue estos 3 pasos fundamentales para automatizar y optimizar tus tareas:
-                    </p>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div
-                            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                            <div
-                                class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4 text-lg font-bold">
-                                <i class="fa-solid fa-vial-circle-check"></i></div>
-                            <h5 class="font-bold text-gray-800 mb-2">1. Entrenar su fórmula</h5>
-                            <p class="text-sm font-serif text-gray-500">Buscar la estructura que mejor te funciona para tus casos de uso, y probar a variarla tanto en prompt como en imágenes de input.</p>
-                        </div>
-                        <div
-                            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                            <div
-                                class="w-10 h-10 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center mb-4 text-lg font-bold">
-                                <i class="fa-solid fa-microchip"></i></div>
-                            <h5 class="font-bold text-gray-800 mb-2">2. Crear tu Gem</h5>
-                            <p class="text-sm font-serif text-gray-500">Crea tus gems para casos de uso específicos (Eliminar fondo, Aplicar variaciones de color, crear imágenes cómo las de referencia...)</p>
-                        </div>
-                        <div
-                            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                            <div
-                                class="w-10 h-10 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-4 text-lg font-bold">
-                                <i class="fa-solid fa-network-wired"></i></div>
-                            <h5 class="font-bold text-gray-800 mb-2">3. Crear tu Flujo en Gem+</h5>
-                            <p class="text-sm font-serif text-gray-500">Crea tu flujo de trabajo con Opal de Google Labs, detallando paso a paso el funcionamiento y compártelo como aplicación.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Navegación entre Clases -->
-    <section class="py-12 bg-white border-t border-gray-200">
-        <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <a href="index.html"
-                class="flex items-center px-6 py-3 text-gray-600 border border-gray-300 rounded-xl font-bold hover:text-brand-primary hover:border-brand-primary transition-all bg-white shadow-sm">
-                <i class="fa-solid fa-home mr-2"></i> Volver al Temario
-            </a>
-            <a href="modulo3-clase2.html"
-                class="flex items-center px-6 py-3 bg-brand-primary text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors shadow-lg">
-                Siguiente: Clase 2 <i class="fa-solid fa-arrow-right ml-2"></i>
-            </a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-[#050B14] text-white py-12 border-t border-gray-800">
-        <div class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
-            <h2 class="text-xl font-bold mb-4 md:mb-0">
-                <span class="text-brand-accent">[m]</span>.seny <span class="text-brand-accent">[labs]</span>
-            </h2>
-            <p class="text-sm text-gray-500 font-sans">Material de Apoyo Formativo - Módulo 3 (Clase 1) © 2026</p>
-        </div>
-    </footer>
-
-    <!-- Lógica de Interactividad (Quiz M3 C1) -->
-    <script>
-        // Lógica Quiz Interactivo (9 Preguntas Módulo 3 Clase 1)
-        const quizData = [
-            {
-                question: "¿Cuál es la principal ventaja operativa de la IA Visual frente a los bancos de imágenes tradicionales (Stock)?",
-                options: [
-                    { text: "Es siempre gratuita.", correct: false },
-                    { text: "Permite dirigir la creación de la imagen exacta en segundos y testear múltiples opciones rápidamente.", correct: true },
-                    { text: "Las imágenes de IA ocupan menos espacio en disco.", correct: false },
-                    { text: "Reemplaza por completo la necesidad de tener un Director de Arte.", correct: false }
-                ]
-            },
-            {
-                question: "En el contexto de la generación de imágenes, ¿qué es el 'Seed' (Semilla)?",
-                options: [
-                    { text: "El número de identificación o 'ADN' que permite generar variaciones consistentes de un personaje o estilo.", correct: true },
-                    { text: "Un filtro de color predeterminado.", correct: false },
-                    { text: "El texto exacto que introduces en la caja del prompt.", correct: false },
-                    { text: "La resolución final de la imagen descargada.", correct: false }
-                ]
-            },
-            {
-                question: "¿Para qué sirve exactamente la técnica de 'In-painting'?",
-                options: [
-                    { text: "Para pintar una imagen desde cero usando solo el ratón.", correct: false },
-                    { text: "Para seleccionar un área específica de una imagen generada y modificarla sin alterar el entorno.", correct: true },
-                    { text: "Para expandir los bordes de la imagen (hacerla panorámica).", correct: false },
-                    { text: "Para subir la resolución de una imagen pixelada.", correct: false }
-                ]
-            },
-            {
-                question: "Si necesitas ampliar una imagen cuadrada a un formato panorámico para una web, ¿qué técnica usarías?",
-                options: [
-                    { text: "Upscaling", correct: false },
-                    { text: "In-painting", correct: false },
-                    { text: "Out-painting (Expansión)", correct: true },
-                    { text: "ControlNet", correct: false }
-                ]
-            },
-            {
-                question: "Según el flujo de trabajo profesional, ¿qué deberías hacer inmediatamente después de encontrar una imagen que se acerca al 80% de lo que buscas?",
-                options: [
-                    { text: "Aplicar Upscaling inmediatamente.", correct: false },
-                    { text: "Fijar la base extrayendo y guardando su número de 'Seed'.", correct: true },
-                    { text: "Borrarla y empezar de nuevo.", correct: false },
-                    { text: "Aplicarle un Style Reference aleatorio.", correct: false }
-                ]
-            },
-            {
-                question: "En la fórmula S.C.I.E. (para fotografía realista), ¿qué significa la letra 'I'?",
-                options: [
-                    { text: "Inteligencia", correct: false },
-                    { text: "Iluminación (La clave del fotorrealismo)", correct: true },
-                    { text: "Iteración", correct: false },
-                    { text: "Impresión", correct: false }
-                ]
-            },
-            {
-                question: "Si necesitas crear el catálogo de un perfume aislado con fondo infinito y buena luz sin pagar un estudio, ¿qué estructura es la ideal?",
-                options: [
-                    { text: "C.A.P.A.", correct: false },
-                    { text: "S.C.I.E.", correct: false },
-                    { text: "P.E.P.A. (Producto, Entorno, Props, Ángulo)", correct: true },
-                    { text: "M.E.T.A.", correct: false }
-                ]
-            },
-            {
-                question: "Si buscas generar el logotipo o una ilustración puramente conceptual/abstracta de tu marca, ¿qué estructura utilizarías?",
-                options: [
-                    { text: "M.E.T.A. (Medio, Emoción, Tema, Abstracción)", correct: true },
-                    { text: "S.C.I.E.", correct: false },
-                    { text: "P.E.P.A.", correct: false },
-                    { text: "In-painting", correct: false }
-                ]
-            },
-
-            {
-                question: "¿Qué modelo destaca por ser el más obediente a nivel espacial e integrando texto legible (como carteles) dentro de la imagen?",
-                options: [
-                    { text: "ControlNet", correct: false },
-                    { text: "DALL-E 3", correct: true },
-                    { text: "Stable Diffusion", correct: false },
-                    { text: "Nano Banana 2", correct: false }
-                ]
-            }
-        ];
-
-        function renderQuiz() {
-            const container = document.getElementById('quizContainer');
-            container.innerHTML = '';
-
-            quizData.forEach((q, idx) => {
-                const qDiv = document.createElement('div');
-                qDiv.className = 'mb-8';
-                qDiv.innerHTML = `
-                    <h4 class="text-xl font-bold text-white mb-4"><span class="text-brand-accent">${idx + 1}.</span> ${q.question}</h4>
-                    <div class="space-y-3">
-                        ${q.options.map((opt, optIdx) => `
-                            <div class="quiz-option group flex items-center" onclick="selectAnswer(event, ${idx}, ${optIdx})">
-                                <input type="radio" name="q${idx}" value="${optIdx}" class="hidden">
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-500 mr-4 flex-shrink-0 group-hover:border-brand-primary radio-custom transition-colors"></div>
-                                <span class="font-serif text-sm md:text-base">${opt.text}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-                container.appendChild(qDiv);
-            });
-
-            const btnDiv = document.createElement('div');
-            btnDiv.className = "mt-10 pt-8 border-t border-gray-700 text-center";
-            btnDiv.innerHTML = `
-                <button onclick="submitQuiz()" class="px-10 py-4 bg-brand-primary text-white font-bold rounded-xl hover:bg-indigo-500 transition-colors shadow-lg text-lg uppercase tracking-wider">
-                    Validar Respuestas
-                </button>
-            `;
-            container.appendChild(btnDiv);
-        }
-
-        function selectAnswer(e, qIdx, optIdx) {
-            const optionContainer = e.currentTarget;
-            const parentDiv = optionContainer.closest('.space-y-3');
-
-            const allOptions = parentDiv.querySelectorAll('.quiz-option');
-            allOptions.forEach(opt => {
-                opt.classList.remove('selected');
-                opt.querySelector('.radio-custom').classList.remove('bg-brand-accent', 'border-brand-accent');
-                opt.querySelector('.radio-custom').classList.add('border-gray-500');
-            });
-
-            optionContainer.classList.add('selected');
-            const radioCustom = optionContainer.querySelector('.radio-custom');
-            radioCustom.classList.remove('border-gray-500');
-            radioCustom.classList.add('bg-brand-accent', 'border-brand-accent');
-
-            const input = optionContainer.querySelector('input');
-            input.checked = true;
-        }
-
-        function submitQuiz() {
-            let correctCount = 0;
-            let answeredCount = 0;
-
-            quizData.forEach((q, idx) => {
-                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
-                if (selected) {
-                    answeredCount++;
-                    const optIdx = selected.value;
-                    const isCorrect = q.options[optIdx].correct;
-                    const optionDiv = selected.closest('.quiz-option');
-                    const parentDiv = optionDiv.parentElement;
-
-                    parentDiv.style.pointerEvents = "none";
-
-                    if (isCorrect) {
-                        correctCount++;
-                        optionDiv.classList.remove('selected');
-                        optionDiv.classList.add('correct');
-                        optionDiv.querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-emerald-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-check";
-                    } else {
-                        optionDiv.classList.remove('selected');
-                        optionDiv.classList.add('incorrect');
-                        optionDiv.querySelector('.radio-custom').className = "w-6 h-6 rounded-full bg-red-500 mr-4 flex-shrink-0 flex items-center justify-center text-white text-xs fa-solid fa-xmark";
-
-                        const allOptions = parentDiv.querySelectorAll('.quiz-option');
-                        q.options.forEach((opt, oIdx) => {
-                            if (opt.correct) {
-                                allOptions[oIdx].classList.add('border-emerald-500', 'text-emerald-400');
-                            }
-                        });
-                    }
-                }
-            });
-
-            if (answeredCount < quizData.length) {
-                alert("Por favor, responde a todas las preguntas antes de validar.");
-                return;
-            }
-
-            const percentage = Math.round((correctCount / quizData.length) * 100);
-            let message = "";
-            if (percentage === 100) message = "🏆 ¡Excelente! Eres un Director de Arte certificado en IA.";
-            else if (percentage >= 80) message = "👍 ¡Muy bien! Dominas los conceptos clave de la generación visual.";
-            else if (percentage >= 60) message = "✅ ¡Aprobado! Revisa las diferencias entre In-painting y Out-painting.";
-            else message = "📚 Te recomendamos repasar las 4 fórmulas de prompting visual.";
-
-            alert(`Puntuación Final: ${correctCount}/${quizData.length} (${percentage}%)\n\n${message}`);
-        }
-
-        // Initialize features
-        document.addEventListener('DOMContentLoaded', () => {
-            renderQuiz();
-
-            // Scroll Observer for Fade-ins
-            const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.fade-in-on-scroll').forEach(el => observer.observe(el));
-
-            // Progress Bar
-            window.addEventListener('scroll', () => {
-                const scrollTop = window.scrollY;
-                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-                const scrolled = (scrollTop / docHeight) * 100;
-                document.getElementById('progressBar').style.width = scrolled + '%';
-            });
-        });
-    </script>
+<script src="/curso-data.js"></script>
+<script src="/curso.js"></script>
+<script>
+  // Preguntas del test: verbatim de la página original. a = índice de la opción correcta.
+  // `var` (no `const`): curso.js lee el array como window[data-quiz] y un `const` global no crea esa propiedad.
+  var quizData = [
+    {
+      q: "¿Cuál es la principal ventaja operativa de la IA Visual frente a los bancos de imágenes tradicionales (Stock)?",
+      opts: [
+        "Es siempre gratuita.",
+        "Permite dirigir la creación de la imagen exacta en segundos y testear múltiples opciones rápidamente.",
+        "Las imágenes de IA ocupan menos espacio en disco.",
+        "Reemplaza por completo la necesidad de tener un Director de Arte."
+      ],
+      a: 1
+    },
+    {
+      q: "En el contexto de la generación de imágenes, ¿qué es el 'Seed' (Semilla)?",
+      opts: [
+        "El número de identificación o 'ADN' que permite generar variaciones consistentes de un personaje o estilo.",
+        "Un filtro de color predeterminado.",
+        "El texto exacto que introduces en la caja del prompt.",
+        "La resolución final de la imagen descargada."
+      ],
+      a: 0
+    },
+    {
+      q: "¿Para qué sirve exactamente la técnica de 'In-painting'?",
+      opts: [
+        "Para pintar una imagen desde cero usando solo el ratón.",
+        "Para seleccionar un área específica de una imagen generada y modificarla sin alterar el entorno.",
+        "Para expandir los bordes de la imagen (hacerla panorámica).",
+        "Para subir la resolución de una imagen pixelada."
+      ],
+      a: 1
+    },
+    {
+      q: "Si necesitas ampliar una imagen cuadrada a un formato panorámico para una web, ¿qué técnica usarías?",
+      opts: [
+        "Upscaling",
+        "In-painting",
+        "Out-painting (Expansión)",
+        "ControlNet"
+      ],
+      a: 2
+    },
+    {
+      q: "Según el flujo de trabajo profesional, ¿qué deberías hacer inmediatamente después de encontrar una imagen que se acerca al 80% de lo que buscas?",
+      opts: [
+        "Aplicar Upscaling inmediatamente.",
+        "Fijar la base extrayendo y guardando su número de 'Seed'.",
+        "Borrarla y empezar de nuevo.",
+        "Aplicarle un Style Reference aleatorio."
+      ],
+      a: 1
+    },
+    {
+      q: "En la fórmula S.C.I.E. (para fotografía realista), ¿qué significa la letra 'I'?",
+      opts: [
+        "Inteligencia",
+        "Iluminación (La clave del fotorrealismo)",
+        "Iteración",
+        "Impresión"
+      ],
+      a: 1
+    },
+    {
+      q: "Si necesitas crear el catálogo de un perfume aislado con fondo infinito y buena luz sin pagar un estudio, ¿qué estructura es la ideal?",
+      opts: [
+        "C.A.P.A.",
+        "S.C.I.E.",
+        "P.E.P.A. (Producto, Entorno, Props, Ángulo)",
+        "M.E.T.A."
+      ],
+      a: 2
+    },
+    {
+      q: "Si buscas generar el logotipo o una ilustración puramente conceptual/abstracta de tu marca, ¿qué estructura utilizarías?",
+      opts: [
+        "M.E.T.A. (Medio, Emoción, Tema, Abstracción)",
+        "S.C.I.E.",
+        "P.E.P.A.",
+        "In-painting"
+      ],
+      a: 0
+    },
+    {
+      q: "¿Qué modelo destaca por ser el más obediente a nivel espacial e integrando texto legible (como carteles) dentro de la imagen?",
+      opts: [
+        "ControlNet",
+        "DALL-E 3",
+        "Stable Diffusion",
+        "Nano Banana 2"
+      ],
+      a: 1
+    }
+  ];
+</script>
 </body>
-
-</html> 
+</html>

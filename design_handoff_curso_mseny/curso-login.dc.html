@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Acceso al Curso — [m].seny /academy</title>
+<link rel="stylesheet" href="_ds/m-seny-design-system-050f7914-7423-40a2-b384-c2758e6f1fa4/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/m-seny-design-system-050f7914-7423-40a2-b384-c2758e6f1fa4/tokens/colors.css">
+<link rel="stylesheet" href="_ds/m-seny-design-system-050f7914-7423-40a2-b384-c2758e6f1fa4/tokens/typography.css">
+<link rel="stylesheet" href="_ds/m-seny-design-system-050f7914-7423-40a2-b384-c2758e6f1fa4/tokens/motion.css">
+<link rel="stylesheet" href="_ds/m-seny-design-system-050f7914-7423-40a2-b384-c2758e6f1fa4/tokens/utilities.css">
+<link rel="stylesheet" href="_ds/m-seny-design-system-050f7914-7423-40a2-b384-c2758e6f1fa4/styles.css">
+<script src="_ds/m-seny-design-system-050f7914-7423-40a2-b384-c2758e6f1fa4/_ds_bundle.js"></script>
+<style>
+body{margin:0;background:var(--color-ink)}
+a{color:inherit;text-decoration:none}
+a:hover{opacity:.92}
+input::placeholder{color:color-mix(in srgb,var(--color-paper) 30%,transparent)}
+</style>
+</helmet>
+<div data-screen-label="Login" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:48px 20px;box-sizing:border-box">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:14px">
+    <span style="font-family:var(--font-display);font-weight:700;letter-spacing:-0.025em;font-size:1.6rem;line-height:1;color:var(--color-paper);display:inline-flex;align-items:baseline;gap:0.28em"><span><span style="color:var(--color-accent)">[m]</span>.seny</span><span style="font-family:var(--font-mono);font-weight:400;color:var(--color-accent);font-size:0.8em">/academy</span></span>
+    <p class="eyebrow brackets" style="color:color-mix(in srgb,var(--color-accent) 90%,transparent);margin:0;font-size:12px"> ÁREA DE ALUMNOS </p>
+  </div>
+  <div style="width:100%;max-width:400px;background:var(--color-ink-soft);border:1px solid var(--color-line-dark);border-radius:24px;padding:36px 32px;box-sizing:border-box;display:flex;flex-direction:column;gap:18px">
+    <label style="display:block">
+      <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-mist)">Usuario</span>
+      <input type="text" placeholder="Tu nombre de usuario" autocomplete="username" style="margin-top:8px;width:100%;box-sizing:border-box;border-radius:14px;border:1px solid var(--color-line-dark);background:rgba(255,255,255,0.05);padding:12px 16px;font-family:var(--font-body);font-size:15px;color:var(--color-paper);outline:none" style-focus="border-color:var(--color-accent)">
+    </label>
+    <label style="display:block">
+      <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-mist)">Contraseña</span>
+      <input type="password" placeholder="••••••••" autocomplete="current-password" onKeyDown="{{ onKey }}" style="margin-top:8px;width:100%;box-sizing:border-box;border-radius:14px;border:1px solid var(--color-line-dark);background:rgba(255,255,255,0.05);padding:12px 16px;font-family:var(--font-body);font-size:15px;color:var(--color-paper);outline:none" style-focus="border-color:var(--color-accent)">
+    </label>
+    <button class="btn-accent" onClick="{{ entrar }}" style="justify-content:center;width:100%;margin-top:6px">Entrar al curso <span aria-hidden="true">→</span></button>
+  </div>
+  <p style="margin:0;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-mist)">Acceso exclusivo para alumnos matriculados.</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const go = () => { window.location.href = 'curso-home.dc.html'; };
+    return { entrar: go, onKey: (e) => { if (e.key === 'Enter') go(); } };
+  }
+}
+</script>
+</body>
+</html>

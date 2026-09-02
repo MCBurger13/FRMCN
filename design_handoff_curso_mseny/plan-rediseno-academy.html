@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan de rediseño /academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&family=Chivo+Mono:wght@300..600&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --ink:#0a0a0b;--ink-soft:#151517;--paper:#f7f6f2;--paper-dim:#edebe3;
+  --lime:#c8f542;--teal:#0f766e;--olive:#253a06;--muted:#5f5f66;--mist:#a5a5ab;--line:#e0ddd3;--line-dark:#26262a;
+  --display:'Bricolage Grotesque',ui-sans-serif,system-ui,sans-serif;
+  --body:'Instrument Sans',ui-sans-serif,system-ui,sans-serif;
+  --mono:'Chivo Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--lime);color:var(--olive)}
+:focus-visible{outline:2px solid currentColor;outline-offset:3px;border-radius:2px}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important;scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+
+.display{font-family:var(--display);font-weight:640;line-height:.98;letter-spacing:-.025em;text-wrap:balance}
+.eyebrow{font-family:var(--mono);font-size:12px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)}
+.eyebrow::before{content:'[';margin-right:.35em}.eyebrow::after{content:']';margin-left:.35em}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+
+/* top bar + chips (misma anatomía que la plantilla de clase) */
+#top{background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 28px;flex-wrap:wrap}
+#top .wm{font-family:var(--display);font-weight:700;letter-spacing:-.025em;font-size:1.05rem;display:inline-flex;align-items:baseline;gap:.28em}
+#top .wm b{font-weight:inherit;color:var(--lime)}
+#top .wm .sub{font-family:var(--mono);font-weight:400;color:var(--lime);font-size:.8em;letter-spacing:0}
+#top .meta{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mist)}
+#toc{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;justify-content:center;gap:6px;overflow-x:auto;scrollbar-width:none}
+#toc::-webkit-scrollbar{display:none}
+#toc a{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:7px 10px;border-radius:999px;white-space:nowrap;flex:none;transition:background-color .3s ease,color .3s ease}
+#toc a:hover{color:var(--ink)}
+#toc a.active{background:var(--lime);color:var(--olive);padding:7px 14px}
+@media (max-width:760px){#toc{justify-content:flex-start}}
+
+header.hero{padding:56px 24px 40px;border-bottom:1px solid var(--line);text-align:center}
+header.hero h1{margin:14px auto 16px;font-size:clamp(2rem,5vw,3.2rem);max-width:22ch}
+header.hero p{margin:0 auto;max-width:56ch;color:var(--muted);font-size:17px}
+header.hero .meta{margin:18px 0 0;font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:center;gap:18px;flex-wrap:wrap}
+
+main{max-width:860px;margin:0 auto;padding:48px 24px 80px;display:flex;flex-direction:column;gap:60px}
+section{scroll-margin-top:70px}
+section>h2{margin:0 0 14px;font-size:29px;display:flex;align-items:baseline;gap:14px}
+section>h2 .n{font-family:var(--mono);font-size:14px;color:var(--teal);letter-spacing:.06em;font-weight:400}
+section>p,section li{max-width:68ch}
+p{margin:0 0 14px}
+h3{font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:-.02em;margin:28px 0 10px}
+strong{font-weight:600}
+code{font-family:var(--mono);font-size:.85em;background:var(--paper-dim);padding:.1em .4em;border-radius:6px}
+pre{font-family:var(--mono);font-size:12.5px;line-height:1.6;background:var(--ink);color:var(--mist);border-radius:16px;padding:18px 20px;overflow-x:auto;margin:0 0 18px}
+pre .c{color:var(--lime)}
+ul,ol{margin:0 0 16px;padding-left:1.2em}
+li{margin:0 0 6px}
+ul.brk{list-style:none;padding:0}
+ul.brk li{padding-left:2.2em;position:relative}
+ul.brk li::before{content:'[·]';position:absolute;left:0;font-family:var(--mono);color:var(--teal);font-size:13px;top:.15em}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:0 0 18px}
+.card{background:var(--paper-dim);border-radius:16px;padding:18px 20px}
+.card.ink{background:var(--ink);color:var(--paper)}
+.card .k{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.card.ink .k{color:var(--lime)}
+.card p{margin:0;font-size:14px;line-height:1.55}
+.card.ink p{color:var(--mist)}
+.card .big{font-family:var(--display);font-weight:640;font-size:32px;letter-spacing:-.025em;line-height:1;margin:0 0 6px;font-variant-numeric:tabular-nums}
+.card.ink .big{color:var(--paper)}
+.callout{border:1px solid var(--line);border-radius:16px;padding:18px 22px;background:rgba(255,255,255,.5);margin:0 0 18px}
+.callout .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.callout p{margin:8px 0 0;font-size:16px;font-weight:500;line-height:1.55}
+.callout.lime{background:var(--lime);border-color:var(--lime);color:var(--olive)}
+.callout.lime .k{color:var(--olive)}
+.callout.warn .k::before{content:'[ ! ] '}
+.callout.warn .k{color:var(--ink)}
+
+/* tabla */
+.tbl{overflow-x:auto;margin:0 0 18px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.5)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:640px}
+th{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:400;text-align:left;padding:12px 14px;border-bottom:1px solid var(--line)}
+td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45}
+tr:last-child td{border-bottom:0}
+td.m{font-family:var(--mono);font-size:11px;letter-spacing:.04em;white-space:nowrap;color:var(--muted)}
+td .cx{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
+td .cx.alta{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+td .cx.media{background:var(--paper-dim)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+@media (max-width:640px){
+  .tbl table{min-width:0}
+  .tbl thead{display:none}
+  .tbl tr{display:block;padding:12px 0;border-bottom:1px solid var(--line)}
+  .tbl tr:last-child{border-bottom:0}
+  .tbl td{display:block;border:0;padding:3px 14px}
+  .tbl td:first-child{font-weight:600;padding-top:6px}
+  .tbl td.m{white-space:normal}
+}
+
+/* filas (glosario / decisiones) */
+.rows{border-top:1px solid var(--line);margin:0 0 18px}
+.row{display:grid;grid-template-columns:150px minmax(0,1fr);gap:8px 24px;padding:14px 0;border-bottom:1px solid var(--line)}
+.row h4{margin:0;font-family:var(--display);font-weight:600;font-size:16px;letter-spacing:-.02em}
+.row p{margin:0;font-size:14px;color:var(--muted)}
+.row p b{color:var(--ink);font-weight:600}
+@media (max-width:640px){.row{grid-template-columns:1fr}}
+
+/* decisiones */
+.dec{display:grid;grid-template-columns:36px minmax(0,1fr);gap:10px 14px;padding:16px 0;border-bottom:1px solid var(--line)}
+.dec .n{font-family:var(--mono);font-size:13px;color:var(--teal);padding-top:3px}
+.dec h4{margin:0 0 4px;font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:-.02em}
+.dec p{margin:0;font-size:14px;color:var(--muted)}
+.dec .rec{display:inline-block;margin-top:8px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--olive);background:var(--lime);padding:4px 10px;border-radius:999px}
+
+/* stepper vertical */
+.steps{display:flex;flex-direction:column;gap:12px;margin:0 0 18px}
+.step{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:start;background:var(--paper-dim);border-radius:16px;padding:16px 18px}
+.step .n{font-family:var(--mono);font-size:11px;color:var(--teal);padding-top:4px}
+.step h4{margin:0 0 4px;font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:-.02em}
+.step p{margin:0;font-size:14px;color:var(--muted)}
+.step .t{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap;padding-top:6px}
+.step.done{background:var(--ink);color:var(--paper)}
+.step.done .n{color:var(--lime)}.step.done h4{color:var(--lime)}.step.done p,.step.done .t{color:var(--mist)}
+@media (max-width:640px){.step{grid-template-columns:36px 1fr}.step .t{grid-column:2}}
+
+.btn{display:inline-flex;align-items:center;gap:.6rem;font-weight:600;border-radius:999px;padding:.8rem 1.5rem;border:1px solid currentColor;font-size:15px;transition:transform .3s var(--ease),background-color .3s ease}
+.btn:hover{transform:translateY(-2px);background:rgba(10,10,11,.06)}
+.btn.accent{background:var(--lime);color:var(--olive);border-color:var(--lime)}
+.btn.accent:hover{box-shadow:0 12px 32px -8px rgb(200 245 66/.55)}
+.fig{border:1px solid var(--line);border-radius:16px;padding:14px;background:rgba(255,255,255,.5);margin:0 0 18px}
+.fig .cap{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:10px 0 0}
+.fig pre{margin:0;background:var(--paper-dim);color:var(--ink);font-size:12px}
+.foot{border-top:1px solid var(--line);padding-top:24px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<div id="top">
+  <span style="display:flex;align-items:center;gap:16px"><span class="wm"><span><b>[m]</b>.seny</span><span class="sub">/academy</span></span><span class="meta">Rediseño · plan de trabajo</span></span>
+  <span class="meta">2 sep 2026 · repo mseny/FRMCN</span>
+</div>
+<nav id="toc" aria-label="Secciones">
+  <a href="#resumen">01 Resumen</a><a href="#estado">02 Estado real</a><a href="#handoff">03 Handoff</a><a href="#temario">04 Módulo → clases</a><a href="#componentes">05 Componentes</a><a href="#riesgos">06 Riesgos</a><a href="#decisiones">07 Decisiones</a><a href="#plan">08 Orden de trabajo</a>
+</nav>
+
+<header class="hero">
+  <p class="eyebrow">Curso IA Generativa · web del alumno</p>
+  <h1 class="display">Del handoff a la web: qué hay, qué falta y por dónde empezar.</h1>
+  <p>Análisis de la carpeta <code>design_handoff_curso_mseny/</code> contra las 15 páginas reales del repo, propuesta para el hueco que el handoff no cubre (cómo se despliegan las clases de cada módulo) y plan de migración por fases.</p>
+  <div class="meta"><span>15 páginas inventariadas</span><span>·</span><span>3 plantillas de diseño</span><span>·</span><span>5 módulos con contenido</span></div>
+</header>
+
+<main>
+
+<section id="resumen">
+  <h2 class="display"><span class="n">01</span>Resumen.</h2>
+  <div class="grid">
+    <div class="card ink"><span class="k">Contenido real</span><p class="big">15</p><p>páginas de clase en 5 módulos (M1 · M2 · M3 · M8 · M9). M4–M7 no existen: se ocultan con un flag.</p></div>
+    <div class="card ink"><span class="k">Texto a conservar</span><p class="big">~38k</p><p>palabras. El handoff exige contenido intacto: solo cambia piel y layout.</p></div>
+    <div class="card ink"><span class="k">Fuera del handoff</span><p class="big">12</p><p>páginas llevan un cuestionario de 8–10 preguntas. El prototipo solo dibuja un «check rápido» de una.</p></div>
+    <div class="card ink"><span class="k">Iconos a retirar</span><p class="big">~600</p><p>iconos Font Awesome repartidos por las 15 páginas. El DS los sustituye por el motivo [ ] y mono.</p></div>
+  </div>
+  <ul class="brk">
+    <li><strong>El handoff es sólido para login, home y la clase piloto (M3·C1):</strong> tokens listos para copiar a <code>theme.css</code>, anatomía clara y microcopy final. La clase piloto mapea 1:1 con el prototipo en 5 de sus 6 secciones.</li>
+    <li><strong>Lo que no cubre:</strong> el despliegue de clases por módulo en la home, y unos 15 patrones de contenido que las páginas reales usan a diario (código, prompts, tablas, callouts, cuestionarios largos, diagramas, 3 widgets únicos).</li>
+    <li><strong>Propuesta para el hueco:</strong> temario en filas desplegables (una por módulo) con las clases dentro, estados <code>[✓] → [ ]</code>, y una única fuente de datos <code>curso-data.js</code> que alimenta la home y la navegación de cada clase. El mockup «Temario /academy» (también en <code>design_handoff_curso_mseny/curso-home-clases.html</code>) lleva esa vista y la alternativa que prefirió el panel de diseño, conmutables, con el gating simulado.</li>
+    <li><strong>Orden:</strong> infraestructura → login → home → clase piloto → resto de clases en tandas paralelas con test de paridad de texto → limpieza y QA.</li>
+  </ul>
+</section>
+
+<section id="estado">
+  <h2 class="display"><span class="n">02</span>Estado real del repo.</h2>
+  <p>Next.js sirve HTML plano desde <code>public/</code>; el middleware protege por cookie de Supabase y <code>full_access</code> viene en el JWT. Todas las páginas cargan Tailwind por CDN, Font Awesome, Inter y Merriweather. La home actual es una landing con acordeón, un gráfico Chart.js y enlaces de clase escritos a mano (incluido un botón a <code>modulo4.html</code>, que no existe).</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Página</th><th>Módulo · clase</th><th>Título real (hero)</th><th>Palabras</th><th>Complejidad</th><th>Lo que no cubre el handoff</th></tr></thead>
+    <tbody>
+      <tr><td class="m">modulo1.html</td><td class="m">M1 · módulo entero</td><td>El Paisaje de los LLMs</td><td class="num">3 000</td><td><span class="cx alta">alta</span></td><td>5 imágenes externas hotlinked, 6 bloques de código, calculadora de tokens, 5 formula-cards, quiz de 10</td></tr>
+      <tr><td class="m">modulo2.html</td><td class="m">M2 · módulo entero</td><td>Glosario y Fundamentos</td><td class="num">1 640</td><td><span class="cx alta">alta</span></td><td>7 grids de cards, quiz de 10, 3 enlaces rotos (<code>href="#"</code>)</td></tr>
+      <tr><td class="m">modulo3-clase1.html</td><td class="m">M3 · C1</td><td>Los Titanes del Píxel</td><td class="num">2 400</td><td><span class="cx media">media</span></td><td>Piloto. Quiz de 9; los ejercicios hablan de prompting de texto (parecen copiados de otra clase)</td></tr>
+      <tr><td class="m">modulo3-clase2.html</td><td class="m">M3 · C2</td><td>Composición y Tiempo Real</td><td class="num">2 250</td><td><span class="cx alta">alta</span></td><td>Quiz de 10, glosario con chips, snippets de cámara; «tres workspaces» con cuatro cards</td></tr>
+      <tr><td class="m">modulo3-clase3.html</td><td class="m">M3 · C3</td><td>Magnific AI: El Ecosistema Total</td><td class="num">2 900</td><td><span class="cx alta">alta</span></td><td>7 prompts con «Copiar» que hoy fallan (la función no existe), diagrama de nodos, quiz de 10 con emoji</td></tr>
+      <tr><td class="m">modulo3-clase4.html</td><td class="m">M3 · C4</td><td>Freepik Spaces: La Anatomía de los Nodos</td><td class="num">1 650</td><td><span class="cx media">media</span></td><td>Única imagen local (nombre con espacios), quiz de 10</td></tr>
+      <tr><td class="m">modulo3-clase5.html</td><td class="m">M3 · C5</td><td>El Prompt como Objetivo</td><td class="num">2 900</td><td><span class="cx alta">alta</span></td><td>Despiece de prompt con 7 colores, tabla, 2 secciones oscuras, quiz de 8; cita una «Clase 6» que no existe</td></tr>
+      <tr><td class="m">modulo8-clase1.html</td><td class="m">M8 · C1</td><td>Claude: El Asistente de IA como Socio de Trabajo</td><td class="num">1 550</td><td><span class="cx media">media</span></td><td>El título y el hero dicen «Módulo Extra · Clase 2»; 2 bloques de código</td></tr>
+      <tr><td class="m">modulo8-clase2.html</td><td class="m">M8 · C2</td><td>Claude Cowork: Guía de Referencia</td><td class="num">2 700</td><td><span class="cx alta">alta</span></td><td>12 bloques de código, 4 tablas, 5 diagramas ASCII, 7 avisos; sin duración ni quiz</td></tr>
+      <tr><td class="m">modulo8-clase3.html</td><td class="m">M8 · C3</td><td>Orquestación Avanzada: Pipelines Multi-Agente</td><td class="num">1 650</td><td><span class="cx alta">alta</span></td><td>Tabs con 6 agentes YAML, diagrama de 900 px, quiz de 10; el botón final va al index en vez de a la C4</td></tr>
+      <tr><td class="m">modulo8-clase4.html</td><td class="m">M8 · C4</td><td>El Cerebro Local Autónomo</td><td class="num">2 950</td><td><span class="cx media">media</span></td><td>El <code>&lt;title&gt;</code> dice «Estudio Creativo»; sección sin enlace en la nav; checklist; quiz de 10</td></tr>
+      <tr><td class="m">modulo8-clase5.html</td><td class="m">M8 · C5</td><td>El Cerebro de Empresa</td><td class="num">4 700</td><td><span class="cx alta">alta</span></td><td>7 grids, tabla, 3 tipos de callout, quiz de 8; sin duración</td></tr>
+      <tr><td class="m">modulo8-clase6.html</td><td class="m">M8 · C6</td><td>El cerebro que se busca y se teje solo</td><td class="num">2 650</td><td><span class="cx alta">alta</span></td><td>Widget SVG «Mapa del significado», quiz de 8; sin duración</td></tr>
+      <tr><td class="m">modulo8-clase7.html</td><td class="m">M8 · C7</td><td>Tu software propio: el portal de mando</td><td class="num">4 950</td><td><span class="cx alta">alta</span></td><td>Maqueta clicable del portal, 2 diagramas, tabla, 13 callouts, quiz de 9; sin duración</td></tr>
+      <tr><td class="m">pfc-marketing.html</td><td class="m">M9 · C1 (full_access)</td><td>AI Decision Hub — Plan Técnico</td><td class="num">870</td><td><span class="cx media">media</span></td><td>Es un documento técnico, no una clase: sin módulo, sin duración, con botón «Exportar PDF»</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout warn"><span class="k">Bug transversal</span><p>En las 15 páginas la navegación de secciones y el enlace «Salir» llevan <code>hidden md:flex</code>: en móvil no hay forma de navegar ni de cerrar sesión. La top bar del handoff lo resuelve, siempre que «Salir» quede visible en todos los anchos.</p></div>
+</section>
+
+<section id="handoff">
+  <h2 class="display"><span class="n">03</span>Lo que trae el handoff.</h2>
+  <p>Tres prototipos navegables y los tokens del design system. Los tokens (<code>colors</code>, <code>typography</code>, <code>motion</code>, <code>utilities</code>, <code>fonts</code>) son código de producción: se concatenan tal cual en <code>public/theme.css</code>. Los prototipos son referencia visual, no código a copiar: usan un runtime propio (<code>support.js</code>) que no se migra.</p>
+  <div class="grid">
+    <div class="card"><span class="k">Login</span><p>Re-skin directo. Se conserva el flujo Supabase, la cookie <code>sb-…-auth-token</code>, el redirect y el error <code>[ ! ]</code>.</p></div>
+    <div class="card"><span class="k">Home · panel de alumno</span><p>Rail con progreso y nav de módulos, card «Continuar», grid de cards de módulo con 3 estados. Diseñada para 9 módulos y 30 clases del temario teórico.</p></div>
+    <div class="card"><span class="k">Clase · plantilla</span><p>Top bar → chips sticky con scroll-spy → hero centrado → secciones numeradas en 780 px → nav inferior. Define 10 patrones de sección.</p></div>
+  </div>
+  <h3>Dos desajustes con la realidad</h3>
+  <ul class="brk">
+    <li><strong>Los datos.</strong> La home del prototipo cuenta «9 /30 clases» y lista M4–M7. La web tiene 15 clases en 5 módulos, y M9 solo para <code>full_access</code>. El progreso y los contadores deben calcularse sobre lo visible para cada alumno (15 con acceso completo, 14 sin él).</li>
+    <li><strong>Los patrones.</strong> El prototipo de clase cubre prosa, antes/ahora, frase clave, glosario, stepper, formula-card, tool-card, check rápido, card PFC y nav inferior. Las páginas reales necesitan además los componentes de la sección 05.</li>
+  </ul>
+</section>
+
+<section id="temario">
+  <h2 class="display"><span class="n">04</span>Módulo → clases: la propuesta.</h2>
+  <p>El prototipo dice que «toda la card es link a la clase», pero no muestra cómo se ve la lista de clases de un módulo. Con 1, 1, 5, 7 y 1 clases por módulo, un grid de cards deja mucho aire y los títulos de clase son largos («El cerebro local autónomo: ingesta segura a Obsidian»). La propuesta convierte el grid en un <strong>temario de filas desplegables</strong>: la anatomía de la card se mantiene (número, título, meta, barra, tres estados), pero a lo ancho.</p>
+  <p style="margin:0 0 18px"><a class="btn accent" href="https://claude.ai/code/artifact/74028d9a-2116-43c1-bf7f-213a69173eee" target="_blank" rel="noopener">Abrir el mockup navegable →</a></p>
+  <h3>Anatomía</h3>
+  <ul class="brk">
+    <li><strong>Fila de módulo</strong> = <code>&lt;details&gt;</code> con radio 24. Cabecera: número mono (52 px) · título Bricolage 600 19 px + meta mono («EN CURSO · 5 CLASES · 2/5») · barra 2 px (140 px) · toggle <code>+</code> que rota a <code>×</code>. Sin JS ya funciona; el JS solo añade «abrir desde el rail» y el estado persistido.</li>
+    <li><strong>Estados de módulo:</strong> completado = tinta, título lima, barra lima llena · en curso = papel, borde teal, meta teal, abierto por defecto · pendiente = papel, hairline · sin clases publicadas = no se pinta (flag <code>visible:false</code>).</li>
+    <li><strong>Fila de clase</strong> (44–48 px, hairline superior): marca mono <code>[✓]</code> teal / <code>→</code> / <code>[ ]</code> · <code>C3</code> · título Instrument 15 px · meta mono («PRÁCTICA · 45–60 MIN») · flecha que se desplaza al hover. La clase en curso lleva una píldora lima «EN CURSO». En un módulo completado, las filas van sobre tinta con marcas lima.</li>
+    <li><strong>Rail:</strong> lista los módulos visibles con <code>[✓] → [ ]</code>; al pulsar uno, abre su fila y hace scroll. En ≤820 px el rail pierde la nav (como en el prototipo) y las filas siguen funcionando igual.</li>
+    <li><strong>Card «Continuar»:</strong> se calcula: primera clase no vista en orden de temario. Con todo visto, cambia a «Curso completado» y ofrece repasar desde M1.</li>
+  </ul>
+  <h3>Una sola fuente de verdad</h3>
+  <p>Hoy los enlaces de clase, los títulos y el gating están escritos a mano en <code>index.html</code>, y cada clase repite su nav inferior a mano (con errores: M8·C3 acaba en el index, M2 no tiene «Siguiente»). Propongo <code>public/curso-data.js</code>, cargado por la home y por todas las clases:</p>
+  <pre><span class="c">// public/curso-data.js — módulos y clases reales, en orden de temario</span>
+const CURSO = { modules: [
+  { id:'m3', num:3, title:'Estudio Creativo IA (Imagen)', short:'Imagen', visible:true, gated:false, classes:[
+    { id:'m3c1', file:'modulo3-clase1.html', num:1, title:'Los titanes del píxel', kind:'teórica', duration:'1 h',
+      sections:[{id:'roi',label:'El fin del «stock»'}, {id:'glosario',label:'Glosario'}, …] },
+    …
+  ]},
+  { id:'m4', num:4, title:'Estudio Creativo 2 (Vídeo)', short:'Vídeo', visible:false, classes:[] },  <span class="c">// oculto hasta tener contenido</span>
+  { id:'m9', num:9, title:'MVP Empresarial (PFC)', short:'PFC Final', visible:true, gated:true, classes:[ … ] },
+]};
+<span class="c">// De aquí se derivan: filas del temario, rail, «Continuar», prev/next de cada clase,</span>
+<span class="c">// «CLASE 3 DE 5», top bar «M3 · CLASE 3», chips de secciones y el progreso.</span></pre>
+  <h3>Progreso</h3>
+  <p>Una clase cuenta como vista cuando el alumno lleva al menos 30 segundos en la página y ha pasado del 90 % de scroll, o cuando pulsa «Siguiente clase»; en la nav inferior hay además un toggle <code>[✓] Clase vista</code> para marcar o desmarcar a mano. Se guarda en <code>localStorage</code> bajo una clave con el <code>sub</code> del JWT. Cuando quieras ver el avance de los alumnos, se sustituye por una tabla <code>progress</code> en Supabase con RLS (user_id, class_id, viewed_at) sin tocar la interfaz. El contador del rail dice «4 /15 clases publicadas», no «/30», para que el curso no parezca más corto que el temario comercial.</p>
+  <h3>Lo que dijo el panel de diseño</h3>
+  <p>Tres diseñadores trabajaron el hueco desde ángulos distintos y un juez los puntuó (claridad, fidelidad al DS, esfuerzo, móvil, escalabilidad). El mockup incluye las dos finalistas como vistas conmutables, <strong>A · filas desplegables</strong> y <strong>B · maestro-detalle</strong>, para que decidas viendo, no leyendo.</p>
+  <div class="rows">
+    <div class="row"><h4>A · Filas desplegables</h4><p>La que recomiendo. Un solo componente, funciona sin JS, la lista está donde haces clic, móvil idéntico a escritorio. <b>Coste:</b> sustituye el grid de cards del prototipo por filas y la card deja de ser «link a la clase» para ser desplegable.</p></div>
+    <div class="row"><h4>B · Maestro-detalle</h4><p>La ganadora del juez (21 puntos sobre 25). Conserva el grid del prototipo píxel a píxel, el rail pasa a ser navegador, hay una sola lista en pantalla y cada módulo tiene deep-link (<code>index.html#m8</code>). <b>Coste:</b> el módulo seleccionado aparece dos veces (panel y card), hay routing por hash, y al elegir una card de abajo el detalle cambia arriba y provoca scroll.</p></div>
+    <div class="row"><h4>Página por módulo</h4><p>Segunda del juez (19). Home intacta y una página índice por módulo con la misma plantilla de clase. <b>Descartada:</b> un clic más, no muestra clases en la home, y M1, M2 y M9 saltarían el índice por tener una sola clase.</p></div>
+    <div class="row"><h4>Grid de cards desplegables</h4><p>Última (14). Abrir cada card en el sitio dentro del grid. <b>Descartada por todos:</b> huecos en el grid, títulos largos partidos en tres líneas en 280 px, y hace falta JS de cálculo de columnas para que no se rompa.</p></div>
+  </div>
+  <p>Cosas que el panel aportó y valen para cualquiera de las dos vistas: clave de progreso por alumno (el <code>sub</code> del JWT, para que dos alumnos en el mismo navegador no se mezclen), marcar una clase como vista solo con 90 % de scroll <em>y</em> 30 segundos en la página, el estado bloqueado <code>[ – ]</code> distinto del pendiente <code>[ ]</code>, un parámetro <code>?preview=all</code> para ver los módulos ocultos sin publicarlos, y que «Volver al temario» y el «M3 · CLASE 1» de la top bar enlacen a <code>index.html#m3</code> para aterrizar con el módulo abierto.</p>
+</section>
+
+<section id="componentes">
+  <h2 class="display"><span class="n">05</span>Componentes que la plantilla de clase necesita.</h2>
+  <p>Además de los 10 patrones del prototipo, el inventario de las 15 páginas exige estos. Todos se dibujan con los mismos tokens: dos fondos (tinta ↔ papel), lima solo para acción, selección y completado, teal como acento sobre claro, etiquetas mono entre corchetes en lugar de iconos.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Componente</th><th>Dónde</th><th>Cómo se dibuja en el DS</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Cuestionario largo</strong></td><td class="m">12 págs · 8–10 preguntas</td><td>Misma card hairline que el «check rápido», una pregunta por bloque con número mono teal. Opciones <code>[ ]</code> → al validar <code>[✓]</code> lima / <code>[×]</code> tinta, la correcta se revela. Botón «Validar →», resultado en card tinta con «8 /10» en Bricolage y mensaje mono; botón ghost «Reintentar». Sin <code>alert()</code>, sin emoji. Un solo renderizador en <code>curso.js</code>; los datos (<code>quizData</code>) se migran literales.</td></tr>
+      <tr><td><strong>Bloque de código</strong></td><td class="m">9 págs · 35 bloques</td><td>Card tinta-soft radio 16, etiqueta mono <code>[ TERMINAL ]</code> / <code>[ YAML ]</code> / <code>[ MARKDOWN ]</code>, Chivo Mono 13 px, comentarios en mist y resto en papel (dos tonos, no siete). Botón ghost «Copiar» → <code>[✓] Copiado</code>. <code>overflow-x:auto</code>.</td></tr>
+      <tr><td><strong>Bloque de prompt</strong></td><td class="m">12 págs · 35 bloques</td><td>El «Ejemplo práctico» de la formula-card, exento: card tinta radio 16, etiqueta <code>[ PROMPT ]</code> lime, texto 13,5 px mist, Copiar. El despiece por capas de M3·C5 pasa de 7 colores a números mono <code>01–07</code> con subrayado teal.</td></tr>
+      <tr><td><strong>Callout</strong></td><td class="m">12 págs · 4 tipos, 81 usos</td><td>Un solo componente (como la frase clave) con etiqueta mono: <code>[ ANALOGÍA ]</code> teal · <code>[ ! ]</code> aviso con borde tinta · <code>[ i ]</code> nota muted · <code>[✓] BUENA PRÁCTICA</code> teal. Desaparecen los bordes izquierdos de color.</td></tr>
+      <tr><td><strong>Grid de cards y comparativas</strong></td><td class="m">15 págs · 67 grids</td><td>Auto-fit minmax(220 px), cards papel-dim radio 16 con eyebrow mono, título Bricolage 600 16 px y texto 13,5 px. Sin icono: número mono o <code>[·]</code>. Las comparativas usan listas <code>[✓]</code> / <code>[×]</code>.</td></tr>
+      <tr><td><strong>Tabla</strong></td><td class="m">5 págs · 8 tablas</td><td>Filas hairline sin bordes verticales, cabecera mono caps teal 10,5 px, celdas 14 px, contenedor con scroll horizontal. Variante sobre tinta para las de M8·C2.</td></tr>
+      <tr><td><strong>Diagrama</strong></td><td class="m">6 págs · 11</td><td>Árboles ASCII dentro del bloque de código; pipelines con cajas papel-dim y flechas <code>→</code> mono; ancho mínimo con scroll. Sin conectores CSS de color.</td></tr>
+      <tr><td><strong>Chips y código inline</strong></td><td class="m">14 págs · 63 chips</td><td>Chip mono 10 px caps, hairline, radio 999; un solo destacado (tinta). <code>&lt;code&gt;</code> inline mono 13 px sobre papel-dim.</td></tr>
+      <tr><td><strong>Ejercicios y checklists</strong></td><td class="m">11 págs</td><td>Lista numerada mono <code>01</code> teal + título 600 + texto. Los checkboxes del PFC (M3·C5) persisten en localStorage con <code>[ ]</code> / <code>[✓]</code>.</td></tr>
+      <tr><td><strong>Tabs</strong></td><td class="m">M8·C3</td><td>Los mismos chips de la nav de secciones; activo = píldora lima. El panel muestra el YAML del agente con Copiar.</td></tr>
+      <tr><td><strong>Cifras y roadmap</strong></td><td class="m">M1, M8·C7, M9</td><td>Cifra Bricolage 30 px + etiqueta mono; roadmap = stepper vertical con paso final en tinta.</td></tr>
+      <tr><td><strong>Imagen</strong></td><td class="m">M1 (5 externas), M3·C4 (1 local)</td><td>Radio 16, <code>.media-duotone</code>, pie mono. Las de M1 están hotlinked a Unsplash, Pinterest e iStock: descargar a <code>public/img/</code> o retirar (decisión 8).</td></tr>
+      <tr><td><strong>Widgets únicos</strong></td><td class="m">M1 · M8·C6 · M8·C7</td><td>Calculadora de tokens, mapa semántico SVG y maqueta clicable del portal: se re-tokenizan a mano (colores hoy escritos en el JS) conservando la lógica.</td></tr>
+      <tr><td><strong>Hero sin duración</strong></td><td class="m">M8·C2, C4–C7, M9</td><td>El meta mono del hero necesita un valor (decisión 12) o se deja solo el tipo de clase.</td></tr>
+      <tr><td><strong>Banda «Práctica» en tinta</strong></td><td class="m">11 págs</td><td>Hoy la última sección se invierte a fondo oscuro. El DS admite dos fondos por página: o una sola banda tinta a sangre para «Práctica &amp; PFC» (num lima, cards tinta-soft), o todo en papel como el prototipo (decisión 14).</td></tr>
+      <tr><td><strong>Copiar con modos</strong></td><td class="m">M1, M3·C5, M3·C4, M8·C2</td><td>No todo «Copiar» copia lo mismo: M1 convierte el CSV a tabuladores, M3·C5 copia una versión limpia del prompt despiezado, otras copian el texto con sus cabeceras. Un solo <code>copyText</code> con atributos <code>data-copy-mode</code> y casos de prueba por modo.</td></tr>
+      <tr><td><strong>Contenido que vive en JS</strong></td><td class="m">12 págs</td><td>Los cuestionarios (<code>quizData</code>), los 6 prompts de agente de M8·C3, el diccionario de piezas de M8·C7 y las notas del mapa de M8·C6 son arrays en el <code>&lt;script&gt;</code>. Se mueven intactos a un bloque propio por página y el test de paridad los cuenta.</td></tr>
+    </tbody>
+  </table></div>
+  <p>Todo esto vive en dos archivos: <code>public/theme.css</code> (tokens y utilidades del DS, sin tocar) y <code>public/curso.css</code> (componentes de clase y home). El comportamiento común, en <code>public/curso.js</code>: top bar y nav inferior generadas desde los datos, scroll-spy, barra de lectura, copiar con <code>navigator.clipboard</code> y fallback, cuestionario, progreso, logout.</p>
+</section>
+
+<section id="riesgos">
+  <h2 class="display"><span class="n">06</span>Riesgos y cómo se cubren.</h2>
+  <div class="rows">
+    <div class="row"><h4>Perder contenido</h4><p>38 000 palabras y 12 cuestionarios que viven en arrays JS. <b>Cobertura:</b> script de paridad que extrae el texto visible de cada página vieja y nueva (secciones, opciones de quiz, prompts) y muestra el diff; ninguna página se da por migrada sin diff vacío.</p></div>
+    <div class="row"><h4>JS que se rompe</h4><p>Copiar, quiz y tabs dependen hoy de clases Tailwind y Font Awesome inyectadas por JS. <b>Cobertura:</b> un solo <code>curso.js</code> probado en la piloto; el «Copiar» de M3·C3 (que hoy falla) queda arreglado de paso.</p></div>
+    <div class="row"><h4>Coherencia de nombres</h4><p>Títulos distintos en <code>&lt;title&gt;</code>, hero, index y nav inferior. <b>Cobertura:</b> <code>curso-data.js</code> es la única fuente; la top bar, el «CLASE X DE Y» y el prev/next se generan de ahí.</p></div>
+    <div class="row"><h4>Regresión de acceso</h4><p>Login, cookie, middleware y gating no cambian de lógica. <b>Cobertura:</b> checklist de QA: entrar, refrescar, entrar a M9 con y sin <code>full_access</code>, salir en móvil.</p></div>
+    <div class="row"><h4>M9 solo está oculto, no protegido</h4><p>La lista <code>FULL_ACCESS_ONLY</code> del middleware está vacía: quien conozca la URL de <code>pfc-marketing.html</code> entra aunque no tenga <code>full_access</code>. <b>Cobertura:</b> añadir la ruta a esa lista en la fase 03, junto con el gating visual.</p></div>
+    <div class="row"><h4>«Salir» borra el progreso</h4><p>El logout actual hace <code>localStorage.clear()</code>, que se llevaría por delante las clases vistas, y el nombre de la cookie está escrito a mano en 15 páginas. <b>Cobertura:</b> una sola función de logout en <code>curso.js</code> que borra la cookie y las claves <code>sb-*</code> de Supabase.</p></div>
+    <div class="row"><h4>Páginas que aparecen vacías</h4><p>Trece páginas ponen <code>opacity:0</code> a entre 15 y 68 bloques hasta que el script de fade-in los revela. Si se quita el script y queda la clase, la página sale en blanco. <b>Cobertura:</b> quitar clase y CSS a la vez; el test de paridad comprueba que ningún bloque queda con opacidad 0.</p></div>
+    <div class="row"><h4>Carpeta huérfana</h4><p><code>public/teoria/</code> tiene 15 páginas antiguas (<code>clase01…clase27_teoria.html</code>) fuera de git pero servidas tras el login, con la piel vieja. Nadie las enlaza. <b>Cobertura:</b> decisión 16: borrar, archivar fuera de <code>public/</code> o incluirlas.</p></div>
+    <div class="row"><h4>Fuentes desde un CDN</h4><p>Las tres fuentes variables llegan de jsDelivr; si cae, la web queda en tipografía del sistema. <b>Cobertura:</b> alojar los <code>.woff2</code> (licencia OFL) en <code>public/fonts/</code> con <code>font-display:swap</code>.</p></div>
+    <div class="row"><h4>Dependencias externas</h4><p>Se retiran Tailwind, Font Awesome, Chart.js y marked. Quedan Supabase (login) y las fuentes desde jsDelivr. <b>Cobertura:</b> copiar los <code>@font-face</code> a <code>theme.css</code> con fallback del sistema.</p></div>
+    <div class="row"><h4>Volumen</h4><p>14 páginas de complejidad media-alta tras la piloto. <b>Cobertura:</b> migrar en tandas paralelas por módulo con un agente por página y un verificador por tanda; la piloto fija el patrón que los demás copian.</p></div>
+  </div>
+</section>
+
+<section id="decisiones">
+  <h2 class="display"><span class="n">07</span>Decisiones que son tuyas.</h2>
+  <p>Marc cerró las dieciocho el 2 de septiembre y la migración se hizo con ellas: vista A, cuatro niveles de acceso (diseño, marketing, finanzas, completo), nombre desde el usuario del login, progreso en Supabase, cuestionarios largos conservados con reintento y nota, títulos del hero, M1 y M2 como clase única, dos fotos de Unsplash en M1 y las demás fuera, sin animaciones de entrada, pie de una línea, sin «Exportar PDF», duraciones aproximadas, M9 bloqueado para todos, banda tinta en Práctica, etiqueta PFC por página y <code>teoria/</code> fuera de <code>public/</code>. Se conservan abajo como registro.</p>
+  <div class="dec"><span class="n">00</span><div><h4>Vista del temario: A o B</h4><p>Filas desplegables (mi recomendación) o maestro-detalle (la del juez). Las dos están en el mockup, con el mismo dato y el mismo progreso.</p><span class="rec">Recomiendo A · filas</span></div></div>
+  <div class="dec"><span class="n">01</span><div><h4>M9 para quien no tiene acceso completo</h4><p>Ocultarlo del todo, o mostrarlo bloqueado con <code>[ – ]</code> y la banda «Este módulo se desbloquea con el acceso completo». El mockup enseña las dos opciones. En cualquier caso hay que proteger la ruta en el middleware.</p><span class="rec">Recomiendo ocultar</span></div></div>
+  <div class="dec"><span class="n">02</span><div><h4>El saludo «[ HOLA, MARTA ]»</h4><p>El login usa <code>usuario@cursoia.local</code>. Propongo <code>user_metadata.name</code> si existe y, si no, el usuario con mayúscula inicial.</p><span class="rec">Recomiendo name con fallback</span></div></div>
+  <div class="dec"><span class="n">03</span><div><h4>Dónde vive el progreso</h4><p>localStorage por dispositivo para arrancar; tabla <code>progress</code> en Supabase cuando quieras ver el avance de cada alumno.</p><span class="rec">Recomiendo localStorage ahora, Supabase en fase 2</span></div></div>
+  <div class="dec"><span class="n">04</span><div><h4>Cuestionarios de 8–10 preguntas</h4><p>Conservarlos con el nuevo componente, o reducirlos al «check rápido» de una pregunta del prototipo.</p><span class="rec">Recomiendo conservarlos</span></div></div>
+  <div class="dec"><span class="n">05</span><div><h4>Título canónico de cada clase</h4><p>El index usa etiquetas cortas («Conceptos base», «Automatización - Magnific AI»); los heros tienen títulos propios. El temario nuevo debería usar uno solo.</p><span class="rec">Recomiendo el título del hero, acortado</span></div></div>
+  <div class="dec"><span class="n">06</span><div><h4>Incoherencias de contenido</h4><p>M8·C1 se llama «Módulo Extra · Clase 2»; M8·C4 titula «Estudio Creativo»; M3·C5 cita una Clase 6 inexistente y habla de 6 y de 7 capas; M3·C2 dice «tres workspaces» con cuatro cards y menciona Whisk en el quiz; M3·C1 trae ejercicios de prompting de texto; M8·C7 pide «4 pantallas» habiendo 3; M2 tiene 3 enlaces a <code>#</code>; M3·C3 ofrece «Quen» por «Qwen». El handoff dice que el contenido no cambia: corrijo solo lo que autorices.</p><span class="rec">Recomiendo corregir títulos y enlaces; el resto, tú decides</span></div></div>
+  <div class="dec"><span class="n">07</span><div><h4>M1 y M2 como clase única</h4><p>Son una página por módulo (2 h 20 y 5 h). En el temario aparecerían como «1 clase · módulo completo».</p><span class="rec">Recomiendo dejarlas así</span></div></div>
+  <div class="dec"><span class="n">08</span><div><h4>Las cinco imágenes externas de M1</h4><p>Hotlinked a Unsplash, Pinterest, iStock y dos webs: pueden desaparecer y no son de marca. Descargarlas con duotono a <code>public/img/</code> o retirarlas.</p><span class="rec">Recomiendo retirarlas salvo las que expliquen algo</span></div></div>
+  <div class="dec"><span class="n">09</span><div><h4>Animaciones de entrada</h4><p>Hoy cada bloque hace fade-in al hacer scroll. El DS pide reveals sobrios y respeta reduced-motion.</p><span class="rec">Recomiendo quitarlas</span></div></div>
+  <div class="dec"><span class="n">10</span><div><h4>Footer</h4><p>14 páginas repiten un footer con wordmark y copyright que el prototipo no tiene: la nav inferior cierra la página.</p><span class="rec">Recomiendo eliminarlo</span></div></div>
+  <div class="dec"><span class="n">11</span><div><h4>«Exportar PDF» en M9</h4><p>Solo esa página lo tiene, con reglas de impresión propias.</p><span class="rec">Recomiendo mantenerlo con un @media print sencillo</span></div></div>
+  <div class="dec"><span class="n">12</span><div><h4>Duraciones que faltan</h4><p>M8·C2, C4, C5, C6, C7 y M9 no indican duración en el hero. Dame los valores o dejamos solo el tipo de clase.</p><span class="rec">Recomiendo que las fijes tú</span></div></div>
+  <div class="dec"><span class="n">13</span><div><h4>M9 como clase</h4><p><code>pfc-marketing.html</code> es un plan técnico de un «AI Decision Hub» con roadmap de 5 clases, no una clase del PFC de la marca de zapatos.</p><span class="rec">Recomiendo migrarla tal cual y renombrarla en el temario</span></div></div>
+  <div class="dec"><span class="n">14</span><div><h4>Banda tinta en «Práctica»</h4><p>Once páginas invierten la última sección a fondo oscuro. El prototipo va todo en papel; el DS permite una banda tinta por página.</p><span class="rec">Recomiendo una banda tinta para Práctica &amp; PFC</span></div></div>
+  <div class="dec"><span class="n">15</span><div><h4>Etiqueta del bloque PFC</h4><p>El prototipo dice «[ PFC — MARCA DE ZAPATOS ]», pero solo dos clases hablan de la marca; otras dicen «tu producto», «firma de calzado premium» o «Reto de la clase».</p><span class="rec">Recomiendo etiqueta por página: PFC — MARCA DE ZAPATOS · PFC — TRANSVERSAL · RETO DE LA CLASE</span></div></div>
+  <div class="dec"><span class="n">16</span><div><h4>La carpeta public/teoria/</h4><p>Quince páginas antiguas fuera de git pero servidas tras el login. ¿Borradores del temario de 30 clases?</p><span class="rec">Recomiendo sacarlas de public/</span></div></div>
+  <div class="dec"><span class="n">17</span><div><h4>Reintentar el test y guardar la nota</h4><p>Hoy ningún cuestionario se puede repetir sin recargar, y la nota no se guarda.</p><span class="rec">Recomiendo botón «Reintentar» y guardar la mejor nota junto al progreso</span></div></div>
+</section>
+
+<section id="plan">
+  <h2 class="display"><span class="n">08</span>Orden de trabajo.</h2>
+  <div class="steps">
+    <div class="step done"><span class="n">00</span><div><h4>Análisis y mockup del temario</h4><p>Inventario de las 15 páginas, propuesta módulo → clases y este plan.</p></div><span class="t">Hecho</span></div>
+    <div class="step done"><span class="n">01</span><div><h4>Infraestructura</h4><p><code>theme.css</code> con las fuentes alojadas en local, <code>curso.css</code>, <code>curso.js</code> (sesión con refresco de token, progreso en Supabase con caché local, top bar, chips, cuestionario, copiar con modos, tabs, checklist), <code>curso-data.js</code> con los cuatro niveles de acceso, <code>proxy.js</code> que aplica el nivel por módulo, y las herramientas <code>tools/parity.mjs</code> y <code>tools/qa.mjs</code>.</p></div><span class="t">Hecho</span></div>
+    <div class="step done"><span class="n">02</span><div><h4>Login</h4><p>Re-skin con el flujo Supabase intacto.</p></div><span class="t">Hecho</span></div>
+    <div class="step done"><span class="n">03</span><div><h4>Home · panel de alumno</h4><p>Vista A, alimentada por <code>curso-data.js</code> y el JWT: progreso sobre las clases publicadas del nivel, M9 bloqueado, herramientas reales por módulo.</p></div><span class="t">Hecho</span></div>
+    <div class="step done"><span class="n">04</span><div><h4>Clase piloto M3·C1</h4><p>Validada contra el prototipo en escritorio y móvil; fijó el patrón de las demás.</p></div><span class="t">Hecho</span></div>
+    <div class="step done"><span class="n">05</span><div><h4>Resto de clases</h4><p>Las 14 restantes migradas por un agente cada una y aceptadas por un verificador independiente (paridad de texto, restos de la piel vieja, estructura, tests con las mismas preguntas y respuestas, captura de pantalla). Dos necesitaron una ronda de corrección.</p></div><span class="t">Hecho</span></div>
+    <div class="step done"><span class="n">06</span><div><h4>Limpieza y QA</h4><p><code>tools/qa.mjs</code> sin errores en las 17 páginas: cero restos de Tailwind, Font Awesome o <code>[labs]</code>, enlaces e imágenes internas resueltos, un <code>h1</code> por página, tests con datos. <code>public/teoria/</code> archivada, imagen renombrada, <code>next build</code> en verde.</p></div><span class="t">Hecho</span></div>
+  </div>
+  <div class="callout lime"><span class="k">Lo que queda en tu mano</span><p>Ejecutar <code>supabase/migrations/20260902120000_academy_progress.sql</code> en el SQL Editor (hasta entonces el progreso vive solo en el navegador), confirmar qué módulos ve cada nivel en <code>levels</code> de <code>curso-data.js</code>, asignar <code>access_level</code> a los alumnos en Supabase, y hacer commit y deploy cuando lo hayas visto en local.</p></div>
+  <div class="foot"><span>[m].seny /academy · plan de rediseño</span><span>Fuentes: design_handoff_curso_mseny/README.md · inventario de public/*.html</span></div>
+</section>
+
+</main>
+
+<script>
+(() => {
+  const links = [...document.querySelectorAll('#toc a')];
+  const secs = links.map(a => document.querySelector(a.getAttribute('href')));
+  const onScroll = () => {
+    let active = 0;
+    secs.forEach((s, i) => { if (s && s.getBoundingClientRect().top < 140) active = i; });
+    links.forEach((a, i) => a.classList.toggle('active', i === active));
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+
+</body>
+</html>
