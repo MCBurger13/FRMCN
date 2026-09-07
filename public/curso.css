@@ -493,7 +493,8 @@ svg.dp-capa.on{opacity:1;}
 
 /* la columna que se lee */
 .dp-steps{list-style:none;margin:0;padding:0;}
-.dp-step{min-height:430px;display:flex;flex-direction:column;justify-content:center;padding:10px 0;opacity:.42;transition:opacity .45s ease;}
+.dp-step{min-height:430px;display:flex;flex-direction:column;justify-content:center;padding:10px 0;opacity:.62;transition:opacity .45s ease;}
+.dp-step:focus-within,.dp-step:hover{opacity:1;}
 .dp-step.on{opacity:1;}
 .dp-step .k{margin:0 0 9px;font-family:var(--font-mono);font-size:var(--mono-m);letter-spacing:.12em;text-transform:uppercase;color:var(--color-muted);}
 .dp-step.on .k{color:var(--color-accent-deep);}
@@ -687,4 +688,13 @@ body.login{background:var(--color-ink);color:var(--color-paper);min-height:100vh
   .sec-dark{background:#fff;color:#000;margin:0;padding:0;}
   .sec-dark *{color:#000!important;}
   .card,.tool,.quiz,.callout{break-inside:avoid;}
+  /* el despiece se aplana: sin scroll no hay pieza que se quede quieta */
+  .hero.escena{background:#fff;color:#000;display:block;}
+  .hero.escena h1,.hero.escena h1 em,.hero.escena .sub,.esc-cifras,.esc-cifras b{color:#000;}
+  .despiece{display:block;}
+  .dp-media{position:static;}
+  .dp-nav,.dp-tira{display:none;}
+  .dp-step{min-height:0;opacity:1;page-break-inside:avoid;}
+  .dp-capa{opacity:1!important;}
+  svg.dp-capa{display:none;}
 }

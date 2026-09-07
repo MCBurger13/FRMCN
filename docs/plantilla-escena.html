@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--
+  ============================================================================
+  CAPA «ESCENA» · PLANTILLA v2 DE LAS CLASES · [m].seny /academy
+  Este archivo NO se sirve (vive en docs/). Es la referencia de los bloques
+  nuevos que una clase se pone ENCIMA del vocabulario de siempre. La v1
+  (docs/plantilla-clase.html) sigue vigente para todo lo demás: .sec, .callout,
+  .code, .grid-cards, .quiz, la banda tinta final…
+
+  QUÉ ES
+  Sale del mockup «clase-scroll». Tres ideas, en orden de importancia:
+    1. DESPIECE — una pieza se queda quieta a la izquierda mientras el texto
+       de la derecha la va anotando. Es el corazón del modelo.
+    2. APERTURA — la clase abre en tinta, alineada a la izquierda, con cifras.
+    3. LECTURA — prosa con nota al margen y cita editorial.
+
+  REGLAS DURAS
+  A. El contenido no cambia. El despiece se construye SIEMPRE con textos que
+     ya estaban en la clase (una rejilla de cards, un stepper, un glosario…).
+     Nada de inventar pasos, ejemplos ni cifras. `node tools/parity.mjs` tiene
+     que seguir dando 0 % de pérdida.
+  B. Una clase lleva UN despiece, el de su sección más enumerativa. Dos
+     despieces en la misma página cansan y rompen el ritmo.
+  C. Máximo dos fondos por pantalla: papel + tinta. La apertura y la banda
+     final ya son tinta; la sección del despiece se queda en papel.
+  D. Sin librerías. El movimiento lo lleva wireDespiece() de curso.js.
+     Con prefers-reduced-motion el contenido sigue entero y quieto.
+  E. Sin emoji ni fuentes de iconos. Los únicos SVG son diagramas propios.
+  F. La sección del despiece lleva `sec-ancho` (se sale de los 780 px de
+     lectura). El resto de secciones, como siempre.
+  ============================================================================
+-->
+<title>Plantilla escena · [m].seny /academy</title>
+<link rel="stylesheet" href="/theme.css">
+<link rel="stylesheet" href="/curso.css">
+</head>
+<body data-class="m0c0">
+<main>
+
+  <!-- ══ 1. APERTURA ═══════════════════════════════════════════════════════
+       `.hero.escena`. El eyebrow y la meta los sigue poniendo curso.js.
+       La lámina (.esc-fig) es OPCIONAL: sin ella la apertura es de una sola
+       columna y sigue funcionando. Solo se pone si hay una imagen que es
+       CONTENIDO de la clase (la foto que la clase enseña a generar, una
+       captura real). Nunca una foto decorativa.
+       El <em> del h1 marca UNA palabra en lima. Una, no tres. -->
+  <header class="hero escena">
+    <h1 class="display">El prompt como <em>objetivo</em>: fotografía profesional con IA.</h1>
+    <p class="sub">Subtítulo de la clase, tal cual estaba en la v1.</p>
+    <ul class="esc-cifras">
+      <li><b>7</b> capas</li>
+      <li><b>1</b> fotografía</li>
+      <li><b>4</b> generaciones</li>
+    </ul>
+    <figure class="esc-fig">
+      <img src="/img/m4c2-derby-3.jpg" alt="Descripción real de lo que se ve." width="1000" height="1241">
+      <figcaption><b>Generada</b> · pie corto en mono</figcaption>
+    </figure>
+  </header>
+
+  <div class="content">
+
+    <!-- ══ 2. LECTURA CON NOTA AL MARGEN ═══════════════════════════════════
+         Para una sección de prosa larga. La nota al margen es un apunte que
+         ya estaba en la clase (una regla de oro, un aviso), no algo nuevo. -->
+    <section class="sec" id="intro" data-label="Intro">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Intro.</h2></div>
+      <div class="lectura">
+        <aside class="margen">
+          <span class="k">Al margen</span>
+          <p>Escribe siempre el prompt en <strong>inglés</strong>.</p>
+        </aside>
+        <div>
+          <p>Prosa normal de la clase.</p>
+          <!-- La frase clave deja de ser callout y pasa a cita editorial -->
+          <blockquote class="pull">
+            <p>«La cita literal de la clase.»</p>
+            <footer class="src">Frase clave · M4 · C2</footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 3. DESPIECE ═════════════════════════════════════════════════════
+         Estructura fija:
+           .despiece[data-despiece]
+             .dp-media            ← se queda pegada
+               ul.dp-nav          ← botones data-go="clave" (opcional)
+               .dp-stage.dp-foto | .dp-stage.dp-esquema | .dp-stage.dp-pantalla
+               .dp-tira           ← el texto que se escribe capa a capa (opcional)
+               p.dp-cap           ← pie; cada paso puede reescribirlo con data-cap
+             ol.dp-steps
+               li.dp-step[data-capa="clave"]
+
+         El pegamento es data-capa: el paso con data-capa="luz" enciende
+         .dp-capa[data-capa="luz"] dentro de .dp-media. Las claves son
+         palabras en minúscula sin acentos (sujeto, optica, luz…).
+    -->
+
+    <!-- ── 3a. VARIANTE FOTO ────────────────────────────────────────────────
+         Solo cuando hay una fotografía que es material de la clase. Los SVG
+         se dibujan sobre un viewBox con las MEDIDAS REALES de la imagen y
+         preserveAspectRatio="xMidYMid meet" (la foto se ve entera, así que
+         los trazos caen donde tienen que caer). Clases de trazo disponibles:
+         .st (lima 1,5 px), .st.dash, .st.thin, .st.pale (papel), .dot,
+         .wash (relleno lima muy bajo) y <text> / <text class="pale">.
+         El texto del SVG va a 38 px de viewBox: más pequeño no se lee. -->
+    <section class="sec sec-ancho" id="anatomia" data-label="Anatomía">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">La anatomía del prompt: las 7 capas.</h2></div>
+      <p>Párrafo de entrada, verbatim.</p>
+
+      <div class="despiece" data-despiece>
+        <div class="dp-media">
+          <ul class="dp-nav">
+            <li><button type="button" data-go="sujeto">01 <i>Sujeto</i></button></li>
+            <li><button type="button" data-go="optica">02 <i>Óptica</i></button></li>
+          </ul>
+          <div class="dp-stage dp-foto">
+            <img class="base" src="/img/m4c2-derby-1.jpg" alt="Descripción real." width="1000" height="1241" loading="lazy">
+            <svg class="dp-capa" data-capa="sujeto" viewBox="0 0 1000 1241" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+              <path class="st" d="M96 524 v-72 h72"/>
+              <circle class="dot" cx="648" cy="644" r="7"/>
+              <text x="780" y="374" text-anchor="end">Panel trenzado</text>
+            </svg>
+            <svg class="dp-capa" data-capa="optica" viewBox="0 0 1000 1241" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+              <line class="st dash" x1="40" y1="468" x2="960" y2="468"/>
+              <text x="40" y="438">Plano de fondo</text>
+            </svg>
+          </div>
+          <div class="dp-tira">
+            <div class="ch"><span>El prompt, escribiéndose</span><span><b data-dp-cuenta>1</b>/7 capas</span></div>
+            <p><span class="frag" data-capa="sujeto">Commercial product photograph of a derby shoe<sup>01</sup></span><span class="frag" data-capa="optica">, macro lens, f/8<sup>02</sup></span></p>
+          </div>
+          <p class="dp-cap">Una sola fotografía. Siete decisiones.</p>
+        </div>
+        <ol class="dp-steps">
+          <li class="dp-step" data-capa="sujeto" data-cap="Capa 01 · El sujeto y el fondo">
+            <p class="k">[ 01 ] Capa</p><h3>Sujeto</h3>
+            <p>Texto verbatim de la card que había aquí.</p>
+          </li>
+          <li class="dp-step" data-capa="optica" data-cap="Capa 02 · La lente y la apertura">
+            <p class="k">[ 02 ] Capa</p><h3>Óptica</h3>
+            <p>Texto verbatim.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ── 3b. VARIANTE ESQUEMA ─────────────────────────────────────────────
+         La opción por defecto cuando no hay fotografía: un diagrama propio,
+         geométrico y sobrio, con la geometría base SIEMPRE visible y cada
+         pieza dentro de un <g class="dp-capa" data-capa="…"> que se atenúa
+         al 20 % cuando no le toca. Clases: .bx (caja), .fill / .fill-ink
+         (relleno), .ti (título 16), .lb / .lb.b (etiqueta mono 13),
+         .ln / .ln.ac (conector). viewBox cómodo: 0 0 640 480. -->
+    <section class="sec sec-ancho" id="flujo" data-label="Flujo">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">El flujo, pieza a pieza.</h2></div>
+      <div class="despiece" data-despiece>
+        <div class="dp-media">
+          <div class="dp-stage dp-esquema">
+            <svg viewBox="0 0 640 480" role="img" aria-label="Diagrama del flujo de la clase.">
+              <line class="ln" x1="120" y1="90" x2="120" y2="400"/>
+              <g class="dp-capa" data-capa="entrada">
+                <rect class="bx fill" x="60" y="60" width="230" height="72" rx="12"/>
+                <text class="ti" x="80" y="94">Entra</text>
+                <text class="lb" x="80" y="116">El documento en bruto</text>
+              </g>
+              <g class="dp-capa" data-capa="proceso">
+                <rect class="bx fill" x="60" y="170" width="230" height="72" rx="12"/>
+                <text class="ti" x="80" y="204">Procesa</text>
+                <text class="lb" x="80" y="226">Lo que hace la herramienta</text>
+              </g>
+            </svg>
+          </div>
+          <p class="dp-cap">De lo que entra a lo que sale.</p>
+        </div>
+        <ol class="dp-steps">
+          <li class="dp-step" data-capa="entrada"><p class="k">[ 01 ] Paso</p><h3>Entra</h3><p>Verbatim.</p></li>
+          <li class="dp-step" data-capa="proceso"><p class="k">[ 02 ] Paso</p><h3>Procesa</h3><p>Verbatim.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ── 3c. VARIANTE PANTALLA ────────────────────────────────────────────
+         Para clases de archivo, terminal o configuración: se coge un bloque
+         .code que YA estaba en la clase y se parte en tramos .dp-capa. El
+         tramo activo se ilumina y le sale el filete lima. Ojo: cada .dp-capa
+         es un <span> de bloque; el contenido, verbatim. -->
+    <section class="sec sec-ancho" id="archivo" data-label="Archivo">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">El archivo, línea a línea.</h2></div>
+      <div class="despiece" data-despiece>
+        <div class="dp-media">
+          <div class="dp-stage dp-pantalla">
+            <div class="ch"><span>[ Archivo · CLAUDE.md ]</span></div>
+            <pre><span class="dp-capa" data-capa="cabecera"><span class="cm"># Proyecto</span>
+name: estudio</span><span class="dp-capa" data-capa="reglas">rules:
+  - tono de marca</span></pre>
+          </div>
+          <p class="dp-cap">Un archivo, dos bloques.</p>
+        </div>
+        <ol class="dp-steps">
+          <li class="dp-step" data-capa="cabecera"><p class="k">[ 01 ] Bloque</p><h3>Cabecera</h3><p>Verbatim.</p></li>
+          <li class="dp-step" data-capa="reglas"><p class="k">[ 02 ] Bloque</p><h3>Reglas</h3><p>Verbatim.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ══ 4. HOJA DE CONTACTOS (solo si hay imágenes reales) ═════════════ -->
+    <section class="sec" id="serie" data-label="Serie">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">La misma receta, cuatro veces.</h2></div>
+      <ul class="serie">
+        <li><img src="/img/m4c2-derby-1.jpg" alt="Primera generación." loading="lazy"><p class="k"><b>01</b> · seed libre</p></li>
+        <li><img src="/img/m4c2-derby-2.jpg" alt="Segunda generación." loading="lazy"><p class="k"><b>02</b> · seed libre</p></li>
+      </ul>
+    </section>
+
+    <!-- ══ 5. La última sección sigue siendo la banda tinta de siempre ════ -->
+    <section class="sec sec-dark" id="practica" data-label="Práctica &amp; PFC">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Práctica &amp; PFC.</h2></div>
+      <p>Igual que en la v1.</p>
+    </section>
+
+  </div>
+</main>
+<script src="/curso-data.js"></script>
+<script src="/curso.js"></script>
+</body>
+</html>
