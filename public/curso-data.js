@@ -18,6 +18,7 @@
   var modules = [
     {
       id: 'm1', num: 1, title: 'El Paisaje de los LLMs', short: 'LLMs',
+      quote: '«Ya no programamos las reglas; le damos al ordenador los datos y dejamos que él mismo aprenda las reglas.»', quoteSrc: 'M1 · El nuevo paradigma',
       desc: 'Una inmersión comparativa en los principales modelos de lenguaje. No se trata de usar todos, sino de saber cuál usar para cada tarea específica (codificación, análisis, creatividad).',
       classes: [
         { id: 'm1c1', file: 'modulo1.html', num: 1, kind: 'módulo completo', duration: '1,5–2 h', topic: 'Estrategia de modelos',
@@ -27,6 +28,7 @@
     },
     {
       id: 'm2', num: 2, title: 'Glosario y Fundamentos', short: 'Fundamentos',
+      quote: '«En 2026, el analfabetismo técnico en Inteligencia Artificial ya no es solo una barrera para la productividad; es una vulnerabilidad de ciberseguridad corporativa.»', quoteSrc: 'M2 · Desmitificando la caja negra',
       desc: 'Fundamentos esenciales para comunicarse con equipos técnicos y entender las limitaciones reales de la tecnología (alucinaciones, tokens, ventana de contexto).',
       classes: [
         { id: 'm2c1', file: 'modulo2.html', num: 1, kind: 'módulo completo', duration: '1,5 h', topic: 'Glosario ejecutivo',
@@ -36,6 +38,7 @@
     },
     {
       id: 'm3', num: 3, title: 'Estudio Creativo IA (Imagen)', short: 'Imagen',
+      quote: '«En la era visual, el texto informa, pero la imagen convierte.»', quoteSrc: 'M3 · C1 — Los titanes del píxel',
       desc: 'Creación de activos visuales profesionales para marketing, prototipado de productos y contenido social sin necesidad de un departamento de diseño externo.',
       classes: [
         { id: 'm3c1', file: 'modulo3-clase1.html', num: 1, kind: 'teórica', duration: '1 h', topic: 'Fotografía y mockups',
@@ -51,6 +54,7 @@
     },
     {
       id: 'm4', num: 4, title: 'Estudio Creativo IA (Automatización)', short: 'Automatización',
+      quote: '«La IA no falla por falta de talento, sino por falta de vocabulario.»', quoteSrc: 'M4 · C2 — El prompt como objetivo',
       desc: 'De generar una imagen a producir un catálogo: nodos encadenados que trabajan en lote y prompts de grado profesional que repiten el mismo resultado tantas veces como haga falta.',
       classes: [
         { id: 'm4c1', file: 'modulo4-clase1.html', num: 1, kind: 'práctica', duration: '45 min', topic: 'Procesamiento en lote',
@@ -67,6 +71,7 @@
 
     {
       id: 'm6', num: 6, title: 'Claude suite', short: 'Claude suite',
+      quote: '«La jerarquía de complejidad va desde una simple instrucción (Skill) hasta la conexión con aplicaciones externas (Connector).»', quoteSrc: 'M6 · C2 — Claude Cowork',
       desc: 'Claude como socio de trabajo: la app, Cowork y Claude Code. De la conversación suelta a un sistema con instrucciones, memoria y agentes que ejecutan.',
       classes: [
         { id: 'm6c1', file: 'modulo6-clase1.html', num: 1, kind: 'teórica', duration: 'Teoría 40 min · Práctica 50 min', topic: 'Claude como socio de trabajo',
@@ -82,6 +87,7 @@
     },
     {
       id: 'm7', num: 7, title: 'Cerebros de IA', short: 'Cerebros IA',
+      quote: '«El Vault guarda, el Vectorizador entiende y El Tejedor conecta.»', quoteSrc: 'M7 · C3 — El cerebro que se teje solo',
       desc: 'Tu conocimiento convertido en un cerebro consultable: ingesta local y privada a Obsidian, estructura para toda la empresa y búsqueda por significado que se enlaza sola.',
       classes: [
         { id: 'm7c1', file: 'modulo7-clase1.html', num: 1, kind: 'práctica', duration: '50 min', topic: 'Ingesta local a Obsidian',
@@ -97,6 +103,7 @@
     },
     {
       id: 'm8', num: 8, title: 'Desarrollo de software', short: 'Software',
+      quote: '«El portal es la puerta bonita del cerebro: el panel lo muestra, el kanban lo mueve y la ingesta lo alimenta.»', quoteSrc: 'M8 · C1 — El portal de mando',
       desc: 'La puerta de entrada al cerebro: una web interna con paneles, tablero e ingesta de documentos que le encargas a Claude con el vocabulario correcto.',
       classes: [
         { id: 'm8c1', file: 'modulo8-clase1.html', num: 1, kind: 'teórica', duration: '1 h 20 min', topic: 'Tu software sobre el cerebro',
@@ -106,6 +113,7 @@
     },
     {
       id: 'm9', num: 9, title: 'MVP Empresarial (PFC)', short: 'PFC Final', locked: true,
+      quote: '«No es un dashboard. Es un sistema de razonamiento automatizado sobre datos de negocio.»', quoteSrc: 'M9 · C1 — AI Decision Hub',
       desc: 'Aplicación transversal. Simulación de lanzamiento de una línea de negocio: desde el naming y logo hasta la estrategia de go-to-market.',
       classes: [
         { id: 'm9c1', file: 'pfc-marketing.html', num: 1, kind: 'práctica', duration: '20 min', topic: 'Plan técnico y curricular',

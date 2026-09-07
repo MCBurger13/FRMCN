@@ -426,7 +426,7 @@
           var o = {}; for (var k in c) o[k] = c[k]; o.st = st; return o;
         });
         var o = {}; for (var k in m) o[k] = m[k];
-        o.total = total; o.seen = seen; o.state = state; o.pct = total ? Math.round(seen / total * 100) : 0; o.rows = rows; o.tools = C.toolsOf(m);
+        o.quote = m.quote; o.quoteSrc = m.quoteSrc; o.total = total; o.seen = seen; o.state = state; o.pct = total ? Math.round(seen / total * 100) : 0; o.rows = rows; o.tools = C.toolsOf(m);
         return o;
       });
       return { mods: out, classes: classes, next: next, done: done, total: classes.length, pct: classes.length ? Math.round(done / classes.length * 100) : 0 };
@@ -447,11 +447,10 @@
       return '<li><a class="clase ' + c.st + '" href="' + c.file + '" aria-label="Clase ' + c.num + ': ' + esc(c.short) +
         (c.st === 'viewed' ? ' (vista)' : '') + '"' + (c.st === 'next' ? ' aria-current="true"' : '') + '>' + inner + '</a></li>';
     }
-    /* Filete que abre el índice de clases: [ Clases ] a la izquierda, avance a la derecha. */
-    function ruleHtml(m) {
-      var solo = m.total === 1 && m.rows[0] && m.rows[0].kind === 'módulo completo';
-      var count = m.state === 'locked' ? 'Bloqueado' : m.seen + ' de ' + m.total + ' ' + plural(m.total, 'vista', 'vistas');
-      return '<div class="mod-rule"><p class="rk">[ ' + (solo ? 'Módulo completo' : 'Clases') + ' ]</p><span class="rc">' + esc(count) + '</span></div>';
+    /* Frase clave del módulo: le da carácter sin sumar ruido. */
+    function quoteHtml(m) {
+      if (!m.quote) return '';
+      return '<blockquote class="mod-quote"><p>' + esc(m.quote) + '</p>' + (m.quoteSrc ? '<cite>' + esc(m.quoteSrc) + '</cite>' : '') + '</blockquote>';
     }
     /* Colofón: las herramientas del módulo como pills, con la caja original del
        nombre de producto («bge-m3», «claude.ai»). Nunca son clicables. */
@@ -499,16 +498,15 @@
       $$('details.mod[open]').forEach(function (d) { openIds[d.dataset.mod] = 1; });
       var first = !$('details.mod');
       var hashMod = (location.hash || '').slice(1);
-      /* Orden del panel: entradilla -> (banda) -> filete + índice -> herramientas.
-         Lo accionable arriba; el inventario, de cierre. */
+      /* Orden del panel: descripción -> frase clave -> (banda) -> clases -> herramientas.
+         Todos los módulos se abren igual, sea cual sea su estado o tu nivel de acceso. */
       $('#mods').innerHTML = M.mods.map(function (m) {
         var open = first ? (hashMod ? m.id === hashMod : m.state === 'current') : !!openIds[m.id];
         var body = m.total ? '<ol class="clases">' + m.rows.map(rowHtml).join('') + '</ol>' : '<p class="empty">Este módulo aún no tiene clases publicadas.</p>';
         var band = m.state === 'locked' ? '<p class="band">[ ! ] ' + (m.locked ? 'Este módulo se abre al final del curso, cuando el resto esté completado.' : 'Este módulo no está incluido en tu nivel de acceso.') + '</p>' : '';
-        var panel = '<div class="mod-panel">' + (m.desc ? '<p class="mod-desc">' + esc(m.desc) + '</p>' : '') + band +
-          (m.total ? ruleHtml(m) : '') + body + toolsHtml(m) + '</div>';
+        var panel = '<div class="mod-panel">' + (m.desc ? '<p class="mod-desc">' + esc(m.desc) + '</p>' : '') + quoteHtml(m) + band + body + toolsHtml(m) + '</div>';
         return '<details class="mod ' + m.state + '" id="' + m.id + '" data-mod="' + m.id + '"' + (open ? ' open' : '') + '>' +
-          '<summary class="mod-head"><span class="mod-num">M' + m.num + '</span>' +
+          '<summary class="mod-head"><span class="mod-num"><span class="g" aria-hidden="true">' + MARK[m.state] + '</span><span>M' + m.num + '</span></span>' +
           '<span class="mod-body"><h3 class="mod-title">' + esc(m.title) + '</h3><p class="mod-meta">' + esc(modMeta(m)) + '</p></span>' +
           '<span class="mod-bar" aria-hidden="true"><i style="width:' + m.pct + '%"></i></span>' +
           '<span class="mod-toggle" aria-hidden="true">+</span></summary>' + panel + '</details>';
