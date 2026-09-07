@@ -285,6 +285,60 @@
     });
   }
 
+  /* ── despiece ────────────────────────────────────────────────────────────
+     La pieza se queda quieta y el texto la va anotando. Cada .dp-step lleva
+     data-capa="n"; dentro de .dp-media se encienden los .dp-capa[data-capa]
+     que coinciden. Es scroll, no animación: con prefers-reduced-motion el
+     contenido sigue entero, solo desaparecen las transiciones. Un paso puede
+     traer data-cap="…" para reescribir el pie de la pieza. */
+  function wireDespiece(root) {
+    $$('[data-despiece]', root || document).forEach(function (dp) {
+      var steps = $$('.dp-step[data-capa]', dp);
+      if (!steps.length) return;
+      var media = $('.dp-media', dp) || dp;
+      var capas = $$('.dp-capa[data-capa]', media);
+      var btns = $$('.dp-nav button[data-go]', dp);
+      var cap = $('.dp-cap', media);
+      var capBase = cap ? cap.textContent : '';
+      var orden = {};
+      steps.forEach(function (s, i) { orden[s.getAttribute('data-capa')] = i; });
+      var frags = $$('.dp-tira .frag[data-capa]', dp);
+      var cuenta = $('[data-dp-cuenta]', dp);
+      var actual = null;
+      function activar(step) {
+        if (!step || step === actual) return;
+        actual = step;
+        var key = step.getAttribute('data-capa');
+        capas.forEach(function (c) { c.classList.toggle('on', c.getAttribute('data-capa') === key); });
+        steps.forEach(function (s) { s.classList.toggle('on', s === step); });
+        btns.forEach(function (b) { b.setAttribute('aria-current', String(b.getAttribute('data-go') === key)); });
+        var n = orden[key];
+        frags.forEach(function (f) { f.classList.toggle('on', orden[f.getAttribute('data-capa')] <= n); });
+        if (cuenta) cuenta.textContent = String(n + 1);
+        if (cap) cap.textContent = step.getAttribute('data-cap') || capBase;
+      }
+      btns.forEach(function (b) {
+        b.addEventListener('click', function () {
+          var t = steps.filter(function (s) { return s.getAttribute('data-capa') === b.getAttribute('data-go'); })[0];
+          if (!t) return;
+          window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.3, behavior: reduced ? 'auto' : 'smooth' });
+        });
+      });
+      activar(steps[0]);
+      if (!window.IntersectionObserver) return;
+      var vistos = [];
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          var i = steps.indexOf(e.target), at = vistos.indexOf(i);
+          if (e.isIntersecting && at < 0) vistos.push(i);
+          if (!e.isIntersecting && at >= 0) vistos.splice(at, 1);
+        });
+        if (vistos.length) activar(steps[Math.min.apply(Math, vistos)]);
+      }, { rootMargin: '-40% 0px -45% 0px' });
+      steps.forEach(function (s) { obs.observe(s); });
+    });
+  }
+
   /* ── checklist persistente ──────────────────────────────────────────────── */
   function wireChecklists(sub, classId) {
     $$('.checklist input[type=checkbox]').forEach(function (cb, i) {
@@ -393,6 +447,7 @@
     wireCopy(document);
     wireQuizzes(cls.id);
     wireTabs();
+    wireDespiece(document);
     wireChecklists(u.sub, cls.id);
     $$('[data-logout]').forEach(function (a) { a.addEventListener('click', logout); });
 
