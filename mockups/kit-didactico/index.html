@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="es" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kit didáctico · [m].seny /academy</title>
+<meta name="description" content="Seis componentes didácticos reutilizables para las clases del curso de IA generativa, montados con material real de la clase M4 · C2.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Chivo+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   Kit didáctico — mockup. Tokens copiados de /academy theme.css.
+   Fuentes servidas desde Google Fonts (en producción viven en /fonts).
+   ========================================================================== */
+:root{
+  color-scheme:light;
+  --color-ink:#0a0a0b;
+  --color-ink-soft:#151517;
+  --color-paper:#f7f6f2;
+  --color-paper-dim:#edebe3;
+  --color-accent:#c8f542;
+  --color-accent-deep:#0f766e;
+  --color-accent-ink:#253a06;
+  --color-muted:#5f5f66;
+  --color-mist:#a5a5ab;
+  --color-line:#e0ddd3;
+  --color-line-dark:#26262a;
+  --font-display:'Bricolage Grotesque',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Instrument Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'Chivo Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --ease-expo:cubic-bezier(0.16,1,0.3,1);
+  --rail:224px;
+  --gut:clamp(20px,4vw,56px);
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{background:var(--color-paper);-webkit-text-size-adjust:100%;}
+body{margin:0;font-family:var(--font-body);font-size:17px;line-height:1.6;color:var(--color-ink);background:var(--color-paper);-webkit-font-smoothing:antialiased;}
+img{max-width:100%;height:auto;display:block;}
+a{color:inherit;}
+button{font:inherit;color:inherit;}
+::selection{background:var(--color-accent);color:var(--color-accent-ink);}
+:focus-visible{outline:2px solid var(--color-accent-deep);outline-offset:3px;}
+.dark :focus-visible{outline-color:var(--color-accent);}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;}
+.skip{position:absolute;left:-9999px;top:0;background:var(--color-accent);color:var(--color-accent-ink);padding:12px 20px;z-index:99;font-family:var(--font-mono);font-size:12px;}
+.skip:focus{left:0;}
+
+/* ── Tipografía base ────────────────────────────────────────────────────── */
+.display{font-family:var(--font-display);font-weight:640;line-height:.99;letter-spacing:-.028em;text-wrap:balance;margin:0;}
+.mono{font-family:var(--font-mono);font-size:11px;letter-spacing:.11em;text-transform:uppercase;font-weight:400;}
+.lede{font-size:19px;line-height:1.55;color:var(--color-muted);}
+p{margin:0 0 1em;}
+p:last-child{margin-bottom:0;}
+code{font-family:var(--font-mono);font-size:.86em;letter-spacing:-.01em;}
+.dark{background:var(--color-ink);color:var(--color-paper);}
+.dark .lede{color:var(--color-mist);}
+
+/* ── Cabecera ───────────────────────────────────────────────────────────── */
+.masthead{background:var(--color-ink);color:var(--color-paper);position:relative;overflow:hidden;margin-left:var(--rail);}
+.masthead .inner{display:grid;grid-template-columns:minmax(0,1fr) 372px;gap:0;align-items:end;min-height:min(78vh,660px);}
+.masthead .words{padding:clamp(28px,5vw,64px) var(--gut) clamp(34px,5vw,58px);max-width:820px;}
+.wm{font-family:var(--font-display);font-weight:700;letter-spacing:-.03em;font-size:19px;line-height:1;display:inline-flex;align-items:baseline;gap:.3em;}
+.wm b{color:var(--color-accent);font-weight:inherit;}
+.wm span{font-family:var(--font-mono);font-size:.62em;letter-spacing:0;color:var(--color-accent);}
+.masthead h1{font-size:clamp(2.4rem,6.4vw,4.6rem);margin:clamp(34px,7vw,74px) 0 0;max-width:15ch;}
+.masthead h1 em{font-style:normal;color:var(--color-accent);}
+.masthead .lede{margin-top:22px;max-width:56ch;font-size:17.5px;}
+.masthead .meta{margin:30px 0 0;padding-top:14px;border-top:1px solid var(--color-line-dark);color:var(--color-mist);display:flex;flex-wrap:wrap;gap:6px 26px;}
+.masthead .strip{display:grid;grid-template-columns:1fr 1fr;align-self:stretch;border-left:1px solid var(--color-line-dark);}
+.masthead .strip figure{margin:0;position:relative;overflow:hidden;border-bottom:1px solid var(--color-line-dark);}
+.masthead .strip figure:nth-child(odd){border-right:1px solid var(--color-line-dark);}
+.masthead .strip img{width:100%;height:100%;object-fit:cover;aspect-ratio:1;opacity:.9;}
+.masthead .strip figcaption{position:absolute;left:9px;bottom:7px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.12em;color:var(--color-paper);text-shadow:0 1px 6px rgba(0,0,0,.65);}
+
+/* ── Rail lateral ───────────────────────────────────────────────────────── */
+.rail{position:fixed;top:0;left:0;width:var(--rail);height:100vh;padding:26px 20px 26px 28px;border-right:1px solid var(--color-line);background:var(--color-paper);display:flex;flex-direction:column;justify-content:center;gap:2px;z-index:20;}
+.rail p{margin:0 0 18px;color:var(--color-muted);}
+.rail a{display:flex;gap:10px;align-items:baseline;text-decoration:none;padding:7px 0 7px 10px;border-left:2px solid transparent;color:var(--color-muted);font-size:13.5px;line-height:1.25;transition:color .3s ease,border-color .3s ease;}
+.rail a i{font-family:var(--font-mono);font-size:10.5px;font-style:normal;letter-spacing:.06em;color:var(--color-mist);flex:none;}
+.rail a:hover{color:var(--color-ink);}
+.rail a.on{color:var(--color-ink);border-left-color:var(--color-accent-deep);}
+.rail a.on i{color:var(--color-accent-deep);}
+.railfoot{margin-top:auto;font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-mist);}
+.page{margin-left:var(--rail);}
+
+/* ── Estructura de componente ───────────────────────────────────────────── */
+.comp{padding:clamp(56px,7vw,104px) 0;border-top:1px solid var(--color-line);}
+.comp.dark{border-top-color:var(--color-line-dark);}
+.wrap{padding:0 var(--gut);}
+.chead{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:clamp(20px,4vw,60px);align-items:end;padding:0 var(--gut);margin-bottom:clamp(28px,4vw,48px);}
+.chead .kicker{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-deep);margin:0 0 10px;display:flex;align-items:center;gap:12px;}
+.dark .chead .kicker{color:var(--color-accent);}
+.chead .kicker s{flex:1;height:1px;background:currentColor;opacity:.35;text-decoration:none;max-width:120px;transform-origin:left;}
+.has-inview .chead .kicker s{transform:scaleX(0);transition:transform .75s var(--ease-expo);}
+.has-inview .chead .kicker s.seen{transform:none;}
+.chead h2{font-size:clamp(1.85rem,3.6vw,2.9rem);max-width:16ch;}
+.usewhen{font-size:14.5px;line-height:1.5;color:var(--color-muted);border-top:1px solid var(--color-line);padding-top:12px;margin:0;}
+.usewhen b{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink);display:block;margin-bottom:5px;font-weight:400;}
+.dark .usewhen{border-top-color:var(--color-line-dark);color:var(--color-mist);}
+.dark .usewhen b{color:var(--color-paper);}
+
+/* ── 01 · Comparador ────────────────────────────────────────────────────── */
+.cmp{display:grid;grid-template-columns:minmax(0,560px) minmax(0,1fr);gap:clamp(24px,4vw,54px);align-items:center;padding-right:var(--gut);}
+.ba{margin:0;position:relative;}
+.ba-stage{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--color-paper-dim);touch-action:pan-y;cursor:ew-resize;}
+.ba-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 55%;user-select:none;-webkit-user-drag:none;}
+.ba-top{position:absolute;inset:0;clip-path:inset(0 0 0 var(--x,50%));}
+.ba-tag{position:absolute;top:14px;font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:5px 9px;background:rgba(10,10,11,.72);color:var(--color-paper);}
+.ba-tag.l{left:14px;}
+.ba-tag.r{right:14px;background:var(--color-accent);color:var(--color-accent-ink);}
+.ba-bar{position:absolute;top:0;bottom:0;left:var(--x,50%);width:2px;background:var(--color-accent);transform:translateX(-1px);pointer-events:none;}
+.ba-knob{position:absolute;top:50%;left:var(--x,50%);width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;background:var(--color-accent);border:0;display:grid;place-items:center;cursor:grab;color:var(--color-accent-ink);box-shadow:0 6px 24px -8px rgba(10,10,11,.6);}
+.ba-knob:active{cursor:grabbing;}
+.ba-knob svg{width:26px;height:12px;}
+.no-js .ba-knob{cursor:default;}
+.ba figcaption{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-muted);margin-top:10px;}
+.cmp .side p{font-size:17px;}
+.ledger{margin:26px 0 0;border-top:1px solid var(--color-line);}
+.ledger div{display:grid;grid-template-columns:118px 1fr;gap:16px;padding:13px 0;border-bottom:1px solid var(--color-line);align-items:baseline;}
+.ledger dt{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-muted);margin:0;}
+.ledger div.hi dt{color:var(--color-accent-deep);}
+.ledger dd{margin:0;font-size:15px;line-height:1.45;}
+.pull{font-family:var(--font-display);font-weight:600;font-size:clamp(1.15rem,1.9vw,1.5rem);line-height:1.24;letter-spacing:-.02em;margin:28px 0 0;padding-left:18px;border-left:2px solid var(--color-accent);}
+.pull small{display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-muted);font-weight:400;margin-top:10px;}
+
+/* ── 02 · Anatomía ──────────────────────────────────────────────────────── */
+.anat{display:grid;grid-template-columns:minmax(0,466px) minmax(0,1fr);gap:clamp(24px,4vw,52px);align-items:start;}
+.anat-fig{margin:0;position:sticky;top:32px;}
+.anat-stage{position:relative;background:var(--color-paper-dim);}
+.anat-stage img{width:100%;aspect-ratio:4/5;object-fit:cover;}
+.ov{position:absolute;inset:0;width:100%;height:100%;}
+.ov g{display:none;}
+.ov g.on{display:block;}
+.no-js .ov{display:none;}
+.ov .ln{fill:none;stroke:#c8f542;stroke-width:3;stroke-dasharray:1;}
+.ov g.on>*{animation:ov-in .42s var(--ease-expo) both;}
+.ov g.on>.ln{animation:ov-draw .62s var(--ease-expo) both;}
+.ov g.on>.ln.d{animation:ov-in .5s var(--ease-expo) both;}
+.ov g.on>*:nth-child(n+3){animation-delay:.07s;}
+.ov g.on>*:nth-child(n+5){animation-delay:.14s;}
+.ov g.on>*:nth-child(n+7){animation-delay:.21s;}
+@keyframes ov-in{from{opacity:0}to{opacity:1}}
+@keyframes ov-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+.ov .ln.d{stroke-dasharray:14 11;}
+.ov .fill{fill:rgba(200,245,66,.10);stroke:none;}
+.ov .dim{fill:rgba(10,10,11,.42);stroke:none;}
+.ov text{font-family:'Chivo Mono',monospace;font-size:27px;letter-spacing:.07em;fill:#0a0a0b;}
+.ov text.lab{paint-order:stroke;stroke:#f7f6f2;stroke-width:7;stroke-linejoin:round;}
+.ov .plate{fill:#c8f542;}
+.ov text.inv{fill:#f7f6f2;}
+.anat-fig figcaption{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-muted);margin-top:10px;}
+.promptbox{background:var(--color-ink);color:var(--color-paper);padding:22px 24px 24px;}
+.promptbox .ph{display:flex;justify-content:space-between;align-items:center;gap:14px;font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-mist);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--color-line-dark);}
+.promptbox .ph b{color:var(--color-accent);font-weight:400;}
+.ptext{font-size:16.5px;line-height:1.95;margin:0;}
+.frag{color:var(--color-mist);cursor:pointer;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:.28em;text-decoration-color:rgba(165,165,171,.4);transition:color .25s ease,text-decoration-color .25s ease;}
+.frag::after{content:attr(data-n);font-family:var(--font-mono);font-size:.62em;letter-spacing:.05em;vertical-align:super;margin:0 .1em 0 .22em;color:var(--color-mist);}
+.frag:hover{color:var(--color-paper);}
+.frag.on{color:var(--color-paper);text-decoration-color:var(--color-accent);}
+.frag.on::after{color:var(--color-accent);}
+.js .frag.off{color:var(--color-mist);text-decoration-color:transparent;}
+.notes{margin-top:22px;}
+.note{display:none;border-top:1px solid var(--color-line);padding-top:16px;}
+.js .note.on{display:block;}
+.no-js .note{display:block;margin-top:14px;}
+.note h3{font-family:var(--font-display);font-weight:600;font-size:17px;letter-spacing:-.02em;margin:0 0 8px;}
+.note h3 i{font-family:var(--font-mono);font-style:normal;font-size:11px;letter-spacing:.1em;color:var(--color-accent-deep);margin-right:10px;}
+.note p{font-size:15.5px;line-height:1.55;color:var(--color-muted);}
+.note .kill{margin-top:10px;font-size:14.5px;color:var(--color-ink);}
+.note .kill b{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:400;color:var(--color-accent-deep);margin-right:8px;}
+.anat .hint{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-muted);margin:16px 0 0;}
+.no-js .anat .hint{display:none;}
+
+/* ── 03 · Contacto de seeds ─────────────────────────────────────────────── */
+.sheet{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:start;}
+.viewer{margin:0;position:relative;}
+.viewer .vstage{position:relative;aspect-ratio:4/5;background:var(--color-ink-soft);overflow:hidden;}
+.viewer .vstage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s ease;}
+.viewer .vstage.blink-on img{transition:none;}
+.viewer .vstage img.on{opacity:1;}
+.viewer .stamp{position:absolute;left:0;bottom:0;background:var(--color-accent);color:var(--color-accent-ink);font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;padding:6px 12px;}
+.strip4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:10px 0 0;}
+.thumb{position:relative;padding:0;border:0;background:none;cursor:pointer;display:block;}
+.thumb img{width:100%;aspect-ratio:1;object-fit:cover;opacity:.45;transition:opacity .3s ease;}
+.thumb:hover img{opacity:.8;}
+.thumb.on img{opacity:1;}
+.thumb span{display:block;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;color:var(--color-mist);margin-top:6px;text-align:left;}
+.thumb.on span{color:var(--color-accent);}
+.thumb.on::before,.thumb.on::after{content:'';position:absolute;width:9px;height:9px;border:2px solid var(--color-accent);}
+.thumb.on::before{top:-4px;left:-4px;border-right:0;border-bottom:0;}
+.thumb.on::after{right:-4px;bottom:26px;border-left:0;border-top:0;}
+.readout{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;color:var(--color-accent);margin:0 0 14px;}
+.seedtext{font-size:16.5px;line-height:1.6;color:var(--color-paper);min-height:3.2em;margin:0 0 22px;}
+.blink{display:inline-flex;align-items:center;gap:10px;background:none;border:1px solid var(--color-mist);color:var(--color-paper);padding:12px 20px;border-radius:999px;font-size:14px;cursor:pointer;transition:background-color .25s ease,border-color .25s ease;-webkit-user-select:none;user-select:none;touch-action:manipulation;}
+.blink:hover{border-color:var(--color-accent);}
+.blink.hot{background:var(--color-accent);color:var(--color-accent-ink);border-color:var(--color-accent);}
+.blink i{font-family:var(--font-mono);font-style:normal;font-size:13px;flex:none;}
+.no-js .blink{display:none;}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin:30px 0 0;padding-top:22px;border-top:1px solid var(--color-line-dark);}
+.twocol h3{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:400;color:var(--color-mist);margin:0 0 12px;}
+.twocol ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px;}
+.twocol li{font-size:14.5px;line-height:1.4;padding-left:32px;position:relative;color:var(--color-paper);}
+.twocol li::before{position:absolute;left:0;top:0;font-family:var(--font-mono);font-size:11px;}
+.twocol .keep li::before{content:'[✓]';color:var(--color-accent);}
+.twocol .drift li::before{content:'[→]';color:var(--color-mist);}
+
+/* ── 04 · Construcción por scroll ───────────────────────────────────────── */
+.build{background:var(--color-paper-dim);}
+.buildtrack{position:relative;}
+.buildstick{position:sticky;top:0;min-height:min(100vh,900px);display:grid;align-content:center;padding:40px 0;}
+.buildgrid{display:grid;grid-template-columns:minmax(0,1fr) 296px;gap:clamp(22px,4vw,52px);align-items:start;padding:0 var(--gut);}
+.buildcode{font-family:var(--font-mono);font-size:14px;line-height:1.75;background:var(--color-ink);color:var(--color-paper);padding:28px 30px;}
+.bline{display:block;padding:5px 0 5px 46px;position:relative;color:var(--color-paper);}
+.js .bline{opacity:.14;transition:opacity .5s var(--ease-expo);}
+.js .bline.lit{opacity:1;}
+.bline::before{content:attr(data-n);position:absolute;left:0;top:5px;color:var(--color-mist);font-size:11.5px;letter-spacing:.06em;}
+.js .bline.lit::before{color:var(--color-accent);}
+.bnotes{position:relative;}
+.bnote{border-left:2px solid var(--color-line);padding:2px 0 2px 18px;}
+.js .bnote{display:none;}
+.js .bnote.on{display:block;border-left-color:var(--color-accent-deep);animation:note-in .42s var(--ease-expo) both;}
+@keyframes note-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.no-js .bnote{margin-bottom:18px;}
+.bnote b{display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-deep);font-weight:400;margin-bottom:8px;}
+.bnote p{font-size:15.5px;line-height:1.55;color:var(--color-ink);}
+.bmeter{display:flex;gap:5px;margin:0 0 20px;}
+.bmeter i{display:block;height:3px;flex:1;background:var(--color-line);}
+.bmeter i.on{background:var(--color-accent-deep);}
+.no-js .bmeter{display:none;}
+.buildfoot{padding:0 var(--gut);margin-top:26px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-muted);}
+
+/* ── 05 · Dial de apertura ──────────────────────────────────────────────── */
+.dial{display:grid;grid-template-columns:minmax(0,404px) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:start;}
+.dof{margin:0;position:relative;}
+.dofstage{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--color-paper-dim);}
+.dofstage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.dofblur{position:absolute;inset:0;background:url('assets/zapato-1.jpg') center/cover no-repeat;filter:blur(var(--b,0px));transform:scale(1.04);
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 calc(var(--edge,30%) - 16%),transparent var(--edge,30%));
+  mask-image:linear-gradient(to bottom,#000 0%,#000 calc(var(--edge,30%) - 16%),transparent var(--edge,30%));}
+.dofstage .fstamp{position:absolute;right:0;top:0;background:var(--color-ink);color:var(--color-paper);font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;padding:7px 12px;}
+.dial .ctrl{margin:0;}
+.dial input[type=range]{width:100%;margin:0;height:44px;background:transparent;-webkit-appearance:none;appearance:none;cursor:pointer;}
+.dial input[type=range]::-webkit-slider-runnable-track{height:2px;background:var(--color-ink);}
+.dial input[type=range]::-moz-range-track{height:2px;background:var(--color-ink);}
+.dial input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--color-accent);border:2px solid var(--color-ink);margin-top:-12px;}
+.dial input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:var(--color-accent);border:2px solid var(--color-ink);}
+.stops{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;color:var(--color-muted);margin:0 0 2px;}
+.stops span.on{color:var(--color-ink);}
+.dofdiagram{width:100%;height:auto;margin:22px 0 0;display:block;}
+.dofdiagram text{font-family:'Chivo Mono',monospace;font-size:11px;letter-spacing:.08em;fill:#5f5f66;}
+.dofdiagram .axis{stroke:#e0ddd3;stroke-width:1;}
+.dofdiagram .band{fill:rgba(15,118,110,.16);stroke:#0f766e;stroke-width:1;transition:x .45s var(--ease-expo),width .45s var(--ease-expo);}
+.dofdiagram .obj{fill:#0a0a0b;}
+.dial .verdict{margin:22px 0 0;font-size:16px;line-height:1.55;border-top:1px solid var(--color-line);padding-top:16px;}
+.dial .verdict b{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;font-weight:400;color:var(--color-accent-deep);display:block;margin-bottom:6px;}
+
+/* ── 06 · La consulta ───────────────────────────────────────────────────── */
+.clinic{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:clamp(24px,4vw,56px);align-items:start;}
+.case{border-top:1px solid var(--color-line-dark);padding-top:26px;}
+.js .case{display:none;}
+.js .case.now{display:block;}
+.case .sym{font-family:var(--font-display);font-weight:600;font-size:clamp(1.4rem,2.7vw,2.05rem);line-height:1.13;letter-spacing:-.025em;margin:0 0 6px;max-width:22ch;}
+.case .sym::before{content:'«';color:var(--color-accent);}
+.case .sym::after{content:'»';color:var(--color-accent);}
+.case .ask{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-mist);margin:0 0 22px;}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px;padding:0;list-style:none;}
+.opt{background:none;border:1px solid var(--color-line-dark);color:var(--color-mist);font-family:var(--font-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;padding:11px 15px;cursor:pointer;transition:border-color .25s ease,color .25s ease,background-color .25s ease;}
+.opt:hover{border-color:var(--color-mist);color:var(--color-paper);}
+.opt.good{background:var(--color-accent);border-color:var(--color-accent);color:var(--color-accent-ink);}
+.opt.bad{border-color:#4b4b52;color:#6a6a72;text-decoration:line-through;animation:nudge .3s ease both;}
+@keyframes nudge{0%{transform:none}30%{transform:translateX(-4px)}65%{transform:translateX(4px)}100%{transform:none}}
+.opt[disabled]{cursor:default;}
+.opt::before{font-family:var(--font-mono);margin-right:8px;content:'[ ]';}
+.opt.good::before{content:'[✓]';}
+.opt.bad::before{content:'[ – ]';}
+.why{border-left:2px solid var(--color-accent);padding-left:18px;max-width:60ch;}
+.js .why{display:none;}
+.js .why.show{display:block;animation:note-in .45s var(--ease-expo) both;}
+.why p{font-size:16px;line-height:1.6;color:var(--color-paper);}
+.why code{color:var(--color-accent);}
+.clinic .nav{display:flex;gap:16px;align-items:center;margin-top:24px;}
+.no-js .clinic .nav{display:none;}
+.nextbtn{background:var(--color-accent);color:var(--color-accent-ink);border:0;border-radius:999px;padding:13px 24px;font-weight:600;font-size:15px;cursor:pointer;transition:transform .3s var(--ease-expo);}
+.nextbtn:hover{transform:translateX(3px);}
+.nextbtn[hidden]{display:none;}
+.dots{font-family:var(--font-mono);font-size:12px;letter-spacing:.16em;color:var(--color-mist);}
+.dots b{color:var(--color-accent);font-weight:400;}
+.clinic .sidenote{font-size:14.5px;line-height:1.5;color:var(--color-mist);border-top:1px solid var(--color-line-dark);padding-top:14px;}
+
+/* ── Pie ────────────────────────────────────────────────────────────────── */
+.foot{padding:clamp(48px,6vw,84px) var(--gut) 60px;border-top:1px solid var(--color-line);}
+.footgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(24px,4vw,60px);align-items:start;}
+.foot h2{font-size:clamp(1.5rem,2.6vw,2.1rem);max-width:14ch;}
+.foot ul{list-style:none;margin:0;padding:0;}
+.foot li{border-top:1px solid var(--color-line);padding:14px 0 14px 34px;position:relative;font-size:15px;line-height:1.5;color:var(--color-muted);}
+.foot li::before{content:'[·]';position:absolute;left:0;top:14px;font-family:var(--font-mono);font-size:11px;color:var(--color-accent-deep);}
+.foot li b{color:var(--color-ink);font-weight:600;}
+.foot .sign{margin-top:34px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--color-muted);}
+
+/* ── Adaptación ─────────────────────────────────────────────────────────── */
+@media (max-width:1180px){
+  .rail{position:static;width:auto;height:auto;flex-direction:row;flex-wrap:wrap;gap:0 4px;justify-content:flex-start;padding:14px var(--gut);border-right:0;border-bottom:1px solid var(--color-line);overflow-x:auto;}
+  .rail p,.railfoot{display:none;}
+  .rail a{border-left:0;border-bottom:2px solid transparent;padding:8px 12px 6px 0;white-space:nowrap;min-height:44px;align-items:center;}
+  .rail a.on{border-bottom-color:var(--color-accent-deep);}
+  .page,.masthead{margin-left:0;}
+  .masthead .inner{grid-template-columns:minmax(0,1fr) 300px;}
+}
+@media (max-width:900px){
+  .masthead .inner{grid-template-columns:1fr;min-height:0;}
+  .masthead .strip{grid-template-columns:repeat(4,1fr);border-left:0;border-top:1px solid var(--color-line-dark);}
+  .masthead .strip figure:nth-child(odd){border-right:1px solid var(--color-line-dark);}
+  .masthead .strip figure:nth-child(2),.masthead .strip figure:nth-child(3){border-right:1px solid var(--color-line-dark);}
+  .chead,.cmp,.anat,.sheet,.dial,.clinic,.buildgrid,.footgrid,.twocol{grid-template-columns:1fr;}
+  .chead{align-items:start;}
+  .cmp{padding-right:0;}
+  .anat-fig{position:static;}
+  .buildstick{position:static;min-height:0;padding:0;}
+  .buildtrack{height:auto!important;}
+  .js .bline{opacity:1;}
+  .js .bnote{display:block;margin-bottom:16px;}
+  .bmeter{display:none;}
+  .frag,.opt,.thumb,.blink{min-height:44px;}
+  .frag{display:inline;min-height:0;}
+@media (pointer:coarse){.frag{padding:.35em 0;}}
+  .ptext{line-height:2.2;}
+}
+@media (max-width:520px){
+  .masthead h1{font-size:2.35rem;}
+  .ba-knob{width:52px;height:52px;margin:-26px 0 0 -26px;}
+  .strip4{gap:6px;}
+  .opts{gap:6px;}
+  .opt{padding:12px 11px;font-size:11px;}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;}
+  .js .bline{opacity:1!important;}
+  .nextbtn:hover{transform:none;}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al kit</a>
+
+<header class="masthead">
+  <div class="inner">
+    <div class="words">
+      <span class="wm">[m]<b>.</b>seny<span>/academy</span></span>
+      <h1 class="display">Seis piezas que enseñan mejor que un <em>párrafo</em>.</h1>
+      <p class="lede">Un kit de componentes didácticos para las clases del curso. Cada pieza resuelve un momento concreto de la enseñanza —comparar, despiezar, iterar, dosificar, diagnosticar— y todas están montadas aquí con material real de la clase M4 · C2: su prompt de producto y cuatro generaciones del mismo derby.</p>
+      <p class="meta mono">
+        <span>Origen: M4 · C2 — El prompt como objetivo</span>
+        <span>Fondos: papel ↔ tinta</span>
+        <span>Motor: motion.dev 11.11</span>
+      </p>
+    </div>
+    <div class="strip" aria-hidden="true">
+      <figure><img src="assets/zapato-2-sq.jpg" alt=""><figcaption>SEED 1182</figcaption></figure>
+      <figure><img src="assets/zapato-1-sq.jpg" alt=""><figcaption>SEED 0417</figcaption></figure>
+      <figure><img src="assets/zapato-4-sq.jpg" alt=""><figcaption>SEED 3310</figcaption></figure>
+      <figure><img src="assets/zapato-3-sq.jpg" alt=""><figcaption>SEED 2049</figcaption></figure>
+    </div>
+  </div>
+</header>
+
+<nav class="rail" aria-label="Índice del kit">
+  <p class="mono">Kit · 6 piezas</p>
+  <a href="#c1"><i>01</i>Comparador dirigido</a>
+  <a href="#c2"><i>02</i>Anatomía sobre la foto</a>
+  <a href="#c3"><i>03</i>Contacto de seeds</a>
+  <a href="#c4"><i>04</i>Prompt que se construye</a>
+  <a href="#c5"><i>05</i>Dial de apertura</a>
+  <a href="#c6"><i>06</i>La consulta</a>
+  <span class="railfoot">Mockup · no producción</span>
+</nav>
+
+<div class="page">
+<main id="main">
+
+<!-- ══ 01 ══════════════════════════════════════════════════════════════════ -->
+<section class="comp" id="c1" style="border-top:0">
+  <div class="chead">
+    <div>
+      <p class="kicker">Componente 01 <s></s> comparador</p>
+      <h2 class="display">Arrastra y verás que ese zapato no es tu zapato.</h2>
+    </div>
+    <p class="usewhen"><b>Cuándo usarlo</b>Cuando la clase tiene que romper una creencia instalada («ya tenemos fotos de banco»). Un párrafo no la rompe; arrastrar, sí.</p>
+  </div>
+  <div class="wrap cmp">
+    <figure class="ba">
+      <div class="ba-stage" id="ba">
+        <img src="assets/stock-generico.jpg" alt="Foto de banco de imágenes: unas botas de ante beis sobre un suelo de madera, luz cálida y genérica.">
+        <div class="ba-top" id="baTop">
+          <img src="assets/zapato-1.jpg" alt="Foto generada con IA: el derby de ante gris-taupe con panel trenzado y suela de crepé sobre fondo de estudio.">
+        </div>
+        <span class="ba-tag l">Banco de imágenes</span>
+        <span class="ba-tag r">Dirigido · 7 capas</span>
+        <span class="ba-bar" id="baBar"></span>
+        <button class="ba-knob" id="baKnob" type="button" role="slider" aria-label="Cortina del comparador" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50 por ciento">
+          <svg viewBox="0 0 26 12" aria-hidden="true"><path d="M8 1 2 6l6 5M18 1l6 5-6 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+        </button>
+      </div>
+      <figcaption>Izquierda: stock. Derecha: generación propia. Arrastra el tirador o usa las flechas.</figcaption>
+    </figure>
+    <div class="side">
+      <p>Las dos fotos son de ante. Las dos están bien iluminadas. Pero solo una enseña <strong>el producto que la marca vende</strong>: la horma, el panel trenzado, el canto cosido, el crepé. El resto es un zapato de otro.</p>
+      <p>El comparador no argumenta: pone las dos imágenes en el mismo cuadro y deja que el alumno haga el descubrimiento. Es el arranque natural de cualquier clase sobre dirección de imagen.</p>
+      <dl class="ledger">
+        <div><dt>Banco</dt><dd>Otro modelo · otra luz · licencia compartida con quien la compre después.</dd></div>
+        <div class="hi"><dt>Dirigido</dt><dd>Tu horma · tu luz · tu encuadre · tu fondo · y el mismo prompt sirve para la próxima temporada.</dd></div>
+      </dl>
+      <p class="pull">«La IA no falla por falta de talento, sino por falta de vocabulario.»<small>Frase clave — M4 · C2</small></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 02 ══════════════════════════════════════════════════════════════════ -->
+<section class="comp" id="c2">
+  <div class="chead">
+    <div>
+      <p class="kicker">Componente 02 <s></s> despiece anotado</p>
+      <h2 class="display">Cada fragmento del prompt manda sobre un trozo de la foto.</h2>
+    </div>
+    <p class="usewhen"><b>Cuándo usarlo</b>En cualquier fórmula por capas. Convierte una lista de siete bullets en una sola imagen anotada que se lee de un vistazo.</p>
+  </div>
+  <div class="wrap anat">
+    <figure class="anat-fig">
+      <div class="anat-stage">
+        <img src="assets/zapato-2.jpg" alt="Derby de ante gris-taupe con panel trenzado sobre fondo de estudio claro, plano de producto centrado.">
+        <svg class="ov" id="ov" viewBox="0 0 1000 1250" aria-hidden="true">
+          <!-- 01 sujeto -->
+          <g data-layer="1">
+            <rect class="ln d" x="78" y="452" width="866" height="510" rx="12"/>
+            <rect class="plate" x="78" y="386" width="190" height="46"/>
+            <text x="94" y="419">01 SUJETO</text>
+            <path class="ln" d="M286 409h300" pathLength="1"/>
+            <text class="lab" x="600" y="419">no «un zapato»</text>
+          </g>
+          <!-- 02 optica -->
+          <g data-layer="2">
+            <rect class="dim" x="0" y="0" width="1000" height="430"/>
+            <rect class="dim" x="0" y="1030" width="1000" height="220"/>
+            <path class="ln d" d="M0 430h1000M0 1030h1000"/>
+            <rect class="plate" x="0" y="1030" width="600" height="46"/>
+            <text x="16" y="1063">02 f/8 · TODO EN FOCO</text>
+            <path class="ln" d="M170 690h-70M100 655v70" pathLength="1"/>
+            <text class="lab" x="184" y="700">talón</text>
+            <path class="ln" d="M830 812h70M900 777v70" pathLength="1"/>
+            <text class="lab" x="640" y="822">puntera</text>
+          </g>
+          <!-- 03 luz -->
+          <g data-layer="3">
+            <rect class="ln" x="34" y="40" width="230" height="150" pathLength="1"/>
+            <rect class="plate" x="34" y="196" width="275" height="46"/>
+            <text x="50" y="229">03 SOFTBOX 45°</text>
+            <path class="ln" d="M150 268l200 240M266 214l200 240M62 300l200 240" pathLength="1"/>
+            <path class="ln d" d="M958 540c-34 130-66 214-134 292"/>
+            <rect class="plate" x="640" y="452" width="325" height="46"/>
+            <text x="656" y="485">RIM · BEAUTY DISH</text>
+            <path class="ln" d="M560 1030l170 84m0 0-58 2m58-2-20-52" pathLength="1"/>
+            <text class="lab" x="330" y="1160">una sola dirección de sombra</text>
+          </g>
+          <!-- 04 color -->
+          <g data-layer="4">
+            <circle class="ln" cx="300" cy="700" r="30" pathLength="1"/>
+            <path class="ln" d="M330 700h330" pathLength="1"/>
+            <rect x="660" y="676" width="48" height="48" fill="#8b8279" stroke="#c8f542" stroke-width="3"/>
+            <text class="lab" x="720" y="712">ante</text>
+            <circle class="ln" cx="470" cy="900" r="30" pathLength="1"/>
+            <path class="ln" d="M500 900h160" pathLength="1"/>
+            <rect x="660" y="876" width="48" height="48" fill="#d9c49b" stroke="#c8f542" stroke-width="3"/>
+            <text class="lab" x="720" y="912">crepé</text>
+            <circle class="ln" cx="470" cy="230" r="30" pathLength="1"/>
+            <path class="ln" d="M500 230h160" pathLength="1"/>
+            <rect x="660" y="206" width="48" height="48" fill="#efeae1" stroke="#c8f542" stroke-width="3"/>
+            <text class="lab" x="720" y="242">fondo</text>
+            <rect class="plate" x="34" y="1040" width="415" height="46"/>
+            <text x="50" y="1073">04 COLOR REAL</text>
+          </g>
+          <!-- 05 composicion -->
+          <g data-layer="5">
+            <path class="ln d" d="M333 0v1250M667 0v1250M0 417h1000M0 833h1000"/>
+            <rect class="dim" x="0" y="0" width="1000" height="400"/>
+            <rect class="plate" x="0" y="400" width="330" height="46"/>
+            <text x="16" y="433">05 AIRE ARRIBA</text>
+            <text class="inv" x="60" y="190">aquí va el titular</text>
+            <text class="inv" x="60" y="250">de la campaña</text>
+          </g>
+          <!-- 06 realismo -->
+          <g data-layer="6">
+            <circle class="ln" cx="600" cy="700" r="150" pathLength="1"/>
+            <path class="ln" d="M706 806l120 120" pathLength="1"/>
+            <rect class="plate" x="640" y="940" width="240" height="46"/>
+            <text x="656" y="973">06 SIN POLVO</text>
+            <path class="ln d" d="M600 550v-90"/>
+            <text class="lab" x="300" y="440">costura y trenzado nítidos</text>
+          </g>
+          <!-- 07 estilo -->
+          <g data-layer="7">
+            <path class="ln" d="M40 130V40h90M960 130V40h-90M40 1120v90h90M960 1120v90h-90" pathLength="1"/>
+            <rect class="plate" x="120" y="150" width="520" height="26"/>
+            <rect class="plate" x="120" y="196" width="330" height="26"/>
+            <rect class="plate" x="120" y="1096" width="200" height="26"/>
+            <text class="lab" x="120" y="300">HIGH-END COMMERCIAL</text>
+            <text class="lab" x="120" y="345">PHOTOGRAPHY</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption>Generación con el prompt base de la clase · seed 1182</figcaption>
+    </figure>
+
+    <div>
+      <div class="promptbox">
+        <p class="ph"><span>Prompt base · producto de calzado</span><b>7 capas</b></p>
+        <p class="ptext" id="ptext"><span class="frag" role="button" tabindex="0" data-layer="1" data-n="01">Commercial product photograph of a grey suede derby with a woven panel and crepe sole on a seamless light-grey studio backdrop</span>, <span class="frag" role="button" tabindex="0" data-layer="2" data-n="02">macro lens, f/8 aperture for edge-to-edge sharpness</span>, <span class="frag" role="button" tabindex="0" data-layer="3" data-n="03">three-point softbox lighting with a beauty-dish rim</span>, <span class="frag" role="button" tabindex="0" data-layer="4" data-n="04">true color accurate, Ektar 100 vibrancy</span>, <span class="frag" role="button" tabindex="0" data-layer="5" data-n="05">centered symmetry with generous negative space</span>, <span class="frag" role="button" tabindex="0" data-layer="6" data-n="06">dust-free clean surface, sharp focus</span>, <span class="frag" role="button" tabindex="0" data-layer="7" data-n="07">high-end commercial photography</span>.</p>
+      </div>
+      <p class="hint" id="anatHint">Pulsa un fragmento — o recórrelos con ← →</p>
+      <div class="notes" id="notes">
+        <div class="note" data-layer="1"><h3><i>01</i>Sujeto</h3><p>Qué aparece y sobre qué. La base narrativa: la horma, el panel trenzado, el crepé y el fondo infinito, dichos con palabras de zapatero.</p><p class="kill"><b>Si lo borras</b>La IA elige el zapato por ti, y elegirá el más común de internet.</p></div>
+        <div class="note" data-layer="2"><h3><i>02</i>Óptica</h3><p>Detalle microscópico con nitidez de lado a lado. En calzado, el macro a f/8 mantiene talón y puntera dentro del mismo plano de foco.</p><p class="kill"><b>Si lo borras</b>La IA improvisa la lente: con gran angular, la puntera se hincha y la horma miente.</p></div>
+        <div class="note" data-layer="3"><h3><i>03</i>Luz</h3><p>Softbox difuso para que el ante respire, más un rim de beauty dish que separa el zapato del fondo y dibuja el canto.</p><p class="kill"><b>Si lo borras</b>Sombras duras y contradictorias: dos fuentes imposibles en la misma foto.</p></div>
+        <div class="note" data-layer="4"><h3><i>04</i>Película y color</h3><p>La capa secreta. <code>true color accurate</code> protege el gris-taupe del muestrario; Ektar 100 aporta vibración sin falsear el tono.</p><p class="kill"><b>Si lo borras</b>El color del producto deja de ser el color del producto — y la devolución llega en dos semanas.</p></div>
+        <div class="note" data-layer="5"><h3><i>05</i>Composición</h3><p>Simetría centrada y espacio negativo generoso: no es vacío, es el hueco donde irán el titular y el logo.</p><p class="kill"><b>Si lo borras</b>Encuadre azaroso y foto que no cabe en la maqueta.</p></div>
+        <div class="note" data-layer="6"><h3><i>06</i>Realismo</h3><p>En producto esta capa se invierte: con personas buscas imperfección humana; aquí, limpieza clínica. Ni polvo, ni pelusa, ni foco blando.</p><p class="kill"><b>Si lo borras</b>Aparecen motas y bordes blandos que el ojo lee como «render».</p></div>
+        <div class="note" data-layer="7"><h3><i>07</i>Estilo</h3><p>La etiqueta maestra. Una sola expresión invoca de golpe una tradición entera: luz, encuadre y color coherentes entre sí.</p><p class="kill"><b>Si lo borras</b>La imagen no sabe a qué campaña pertenece.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 03 ══════════════════════════════════════════════════════════════════ -->
+<section class="comp dark" id="c3">
+  <div class="chead">
+    <div>
+      <p class="kicker">Componente 03 <s></s> hoja de contactos</p>
+      <h2 class="display">Cuatro generaciones del mismo prompt.</h2>
+    </div>
+    <p class="usewhen"><b>Cuándo usarlo</b>Cuando hay que enseñar variación y control a la vez: qué se mantiene entre generaciones y qué se te escapa por el fondo.</p>
+  </div>
+  <div class="wrap sheet">
+    <figure class="viewer">
+      <div class="vstage">
+        <img class="on" src="assets/zapato-1.jpg" data-i="0" alt="Seed 0417: el derby en tres cuartos alto; en la esquina superior izquierda se cuela un panel oscuro del set.">
+        <img src="assets/zapato-2.jpg" data-i="1" alt="Seed 1182: el derby casi frontal, simétrico, con aire limpio en la parte superior del encuadre.">
+        <img src="assets/zapato-3.jpg" data-i="2" alt="Seed 2049: encuadre más cerrado y un objeto negro recortado por el borde izquierdo.">
+        <img src="assets/zapato-4.jpg" data-i="3" alt="Seed 3310: cámara más baja; la suela de crepé y el volumen del zapato ganan protagonismo.">
+        <span class="stamp" id="stamp">01 / 04 · SEED 0417</span>
+      </div>
+      <div class="strip4">
+        <button class="thumb on" type="button" data-i="0"><img src="assets/zapato-1-sq.jpg" alt="Miniatura de la generación 1"><span>01 · 0417</span></button>
+        <button class="thumb" type="button" data-i="1"><img src="assets/zapato-2-sq.jpg" alt="Miniatura de la generación 2"><span>02 · 1182</span></button>
+        <button class="thumb" type="button" data-i="2"><img src="assets/zapato-3-sq.jpg" alt="Miniatura de la generación 3"><span>03 · 2049</span></button>
+        <button class="thumb" type="button" data-i="3"><img src="assets/zapato-4-sq.jpg" alt="Miniatura de la generación 4"><span>04 · 3310</span></button>
+      </div>
+    </figure>
+    <div>
+      <p class="readout" id="readout">MISMO PROMPT · MISMAS 7 CAPAS · SEED LIBRE</p>
+      <p class="seedtext" id="seedtext">La lámpara del set entra por la esquina y el fondo infinito deja de ser infinito. La foto es buena; el fondo, no.</p>
+      <button class="blink" id="blinkBtn" type="button"><i>[ ⟷ ]</i> Mantén pulsado para comparar con la anterior</button>
+      <div class="twocol">
+        <div>
+          <h3>No se mueve</h3>
+          <ul class="keep">
+            <li>Producto: la misma horma y el mismo trenzado</li>
+            <li>Material: ante gris-taupe, canto cosido, crepé</li>
+            <li>Luz: softbox suave, una sola dirección</li>
+            <li>Paleta: fondo cálido, sin dominante de color</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Se mueve</h3>
+          <ul class="drift">
+            <li>Altura de cámara y ángulo</li>
+            <li>Aire alrededor del producto</li>
+            <li>Largo y dureza de la sombra</li>
+            <li>Lo que se cuela por los bordes</li>
+          </ul>
+        </div>
+      </div>
+      <p class="pull" style="border-left-color:var(--color-accent);margin-top:30px">«Congela 6 capas, mueve solo 1 — y fija la <em>seed</em> si tu herramienta lo permite.»<small style="color:var(--color-mist)">Laboratorio de prompts — M4 · C2</small></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 04 ══════════════════════════════════════════════════════════════════ -->
+<section class="comp build" id="c4">
+  <div class="chead">
+    <div>
+      <p class="kicker">Componente 04 <s></s> lectura dosificada</p>
+      <h2 class="display">El prompt se escribe mientras el alumno baja.</h2>
+    </div>
+    <p class="usewhen"><b>Cuándo usarlo</b>Cuando un bloque de prompt o de código hay que leerlo en orden y no de golpe. El scroll marca el ritmo; la nota explica la línea que acaba de aparecer.</p>
+  </div>
+  <div class="buildtrack" id="buildTrack">
+    <div class="buildstick">
+      <div class="buildgrid">
+        <div class="buildcode" id="buildCode">
+          <span class="bline" data-n="01" data-i="0">Commercial product photograph of a grey suede derby</span>
+          <span class="bline" data-n="  " data-i="0">with a woven panel and crepe sole, on a seamless</span>
+          <span class="bline" data-n="  " data-i="0">light-grey studio backdrop,</span>
+          <span class="bline" data-n="02" data-i="1">macro lens, f/8 aperture for edge-to-edge sharpness,</span>
+          <span class="bline" data-n="03" data-i="2">three-point softbox lighting with a beauty-dish rim,</span>
+          <span class="bline" data-n="04" data-i="3">true color accurate, Ektar 100 vibrancy,</span>
+          <span class="bline" data-n="05" data-i="4">centered symmetry with generous negative space,</span>
+          <span class="bline" data-n="06" data-i="5">dust-free clean surface, sharp focus,</span>
+          <span class="bline" data-n="07" data-i="6">high-end commercial photography.</span>
+        </div>
+        <div class="bnotes">
+          <div class="bmeter" id="bmeter"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="bnote on" data-i="0"><b>01 · Sujeto</b><p>Se escribe primero porque es lo único que la IA no puede deducir: qué producto es y sobre qué está apoyado.</p></div>
+          <div class="bnote" data-i="1"><b>02 · Óptica</b><p>Antes de tocar la luz se elige la cámara. El macro a f/8 fija la nitidez de lado a lado que exige un catálogo.</p></div>
+          <div class="bnote" data-i="2"><b>03 · Luz</b><p>Con la cámara puesta, se enciende el plató: difusión amplia para el ante y un rim que dibuje el canto.</p></div>
+          <div class="bnote" data-i="3"><b>04 · Película</b><p>El colorista entra al final del set: protege el gris-taupe real antes de que nadie lo «mejore».</p></div>
+          <div class="bnote" data-i="4"><b>05 · Composición</b><p>Ahora se decide dónde va el zapato dentro del cuadro y cuánto aire se le deja al titular.</p></div>
+          <div class="bnote" data-i="5"><b>06 · Realismo</b><p>La misma capa que en retrato pide poros, aquí pide limpieza. La capa no cambia: cambia la intención.</p></div>
+          <div class="bnote" data-i="6"><b>07 · Estilo</b><p>Se cierra con la etiqueta maestra, de lo concreto a lo abstracto. Ese orden es la regla de oro de la clase.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="buildfoot">Sin JavaScript el prompt aparece entero y las siete notas, en columna. La animación dosifica; no guarda información.</p>
+</section>
+
+<!-- ══ 05 ══════════════════════════════════════════════════════════════════ -->
+<section class="comp" id="c5">
+  <div class="chead">
+    <div>
+      <p class="kicker">Componente 05 <s></s> parámetro en vivo</p>
+      <h2 class="display">Un dial, y el parámetro deja de ser una palabra.</h2>
+    </div>
+    <p class="usewhen"><b>Cuándo usarlo</b>Para cualquier ajuste con rango: apertura, temperatura de color, peso de un estilo, fuerza de un LoRA. El alumno mueve y ve la consecuencia.</p>
+  </div>
+  <div class="wrap dial">
+    <figure class="dof">
+      <div class="dofstage" id="dofStage">
+        <img src="assets/zapato-1.jpg" alt="El mismo derby; el fondo se desenfoca o se mantiene nítido según la apertura elegida.">
+        <div class="dofblur" id="dofBlur"></div>
+        <span class="fstamp" id="fstamp">f/8</span>
+      </div>
+      <figcaption class="mono" style="color:var(--color-muted);margin-top:10px">Simulación didáctica de profundidad de campo</figcaption>
+    </figure>
+    <div class="ctrl">
+      <p class="stops" id="stops"><span>f/1.8</span><span>f/2.8</span><span>f/4</span><span>f/5.6</span><span class="on">f/8</span></p>
+      <label class="sr" for="ap">Apertura</label>
+      <input id="ap" type="range" min="0" max="4" step="1" value="4" aria-describedby="verdict">
+      <svg class="dofdiagram" viewBox="0 0 460 150" role="img" aria-label="Diagrama de la zona nítida: cuanto más se cierra el diafragma, más ancha es la franja enfocada alrededor del zapato.">
+        <path class="axis" d="M20 100h420"/>
+        <path class="axis" d="M20 40h420" stroke-dasharray="4 5"/>
+        <path d="M22 66v68l28-17V83z" fill="#0a0a0b"/>
+        <path class="axis" d="M50 100h30"/>
+        <text x="18" y="52">cámara</text>
+        <rect class="band" id="band" x="230" y="42" width="150" height="76" rx="2"/>
+        <g class="obj" transform="translate(268,100)">
+          <path d="M2 0c0-9 3-14 9-16 5-2 8-6 12-9 3-2 6-1 6 3 0 4 2 6 8 8l16 5c5 2 7 5 7 9z"/>
+          <rect x="-1" y="0" width="61" height="4" rx="2"/>
+        </g>
+        <text x="228" y="136" id="bandlab">zona nítida</text>
+        <text x="386" y="94">fondo</text>
+      </svg>
+      <p class="verdict" id="verdict"><b>f/8 — la apertura del catálogo</b>Nitidez de lado a lado: talón, empeine y puntera dentro del mismo plano. Es exactamente lo que pide el prompt base de la clase, y la razón de que ese fragmento diga <code>edge-to-edge sharpness</code>.</p>
+      <p style="margin-top:18px;font-size:15px;color:var(--color-muted)">Mueve el dial hacia f/1.8: el fondo se funde en bokeh, pero el talón sale del foco. Precioso para un retrato; inservible para una ficha de producto.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 06 ══════════════════════════════════════════════════════════════════ -->
+<section class="comp dark" id="c6">
+  <div class="chead">
+    <div>
+      <p class="kicker">Componente 06 <s></s> diagnóstico</p>
+      <h2 class="display">La consulta: un síntoma, una capa enferma.</h2>
+    </div>
+    <p class="usewhen"><b>Cuándo usarlo</b>Al cerrar la clase, en lugar del test con botón de validar. Aquí la respuesta llega en el mismo gesto de responder, con el porqué al lado.</p>
+  </div>
+  <div class="wrap clinic">
+    <div>
+      <ol class="cases" id="cases" style="list-style:none;margin:0;padding:0">
+        <li class="case now" data-good="4">
+          <p class="sym display">El render tiene la piel de plástico, como de muñeca.</p>
+          <p class="ask">¿Qué capa está enferma?</p>
+          <div class="opts" role="group" aria-label="Elige la capa">
+            <button class="opt" type="button" data-l="1">01 Sujeto</button>
+            <button class="opt" type="button" data-l="2">02 Óptica</button>
+            <button class="opt" type="button" data-l="3">03 Luz</button>
+            <button class="opt" type="button" data-l="4">04 Película</button>
+            <button class="opt" type="button" data-l="5">05 Composición</button>
+            <button class="opt" type="button" data-l="6">06 Realismo</button>
+            <button class="opt" type="button" data-l="7">07 Estilo</button>
+          </div>
+          <div class="why"><p><strong>04 · Película.</strong> Falta textura fotomecánica. Añade <code>visible skin texture</code>, <code>Kodak Portra 400</code> y <code>subsurface scattering</code> — y borra el cliché <code>8k, ultra detailed, masterpiece</code>, que empuja justamente hacia el look CGI.</p></div>
+        </li>
+        <li class="case" data-good="2">
+          <p class="sym display">El rostro sale deformado y alargado.</p>
+          <p class="ask">¿Qué capa está enferma?</p>
+          <div class="opts" role="group" aria-label="Elige la capa">
+            <button class="opt" type="button" data-l="1">01 Sujeto</button>
+            <button class="opt" type="button" data-l="2">02 Óptica</button>
+            <button class="opt" type="button" data-l="3">03 Luz</button>
+            <button class="opt" type="button" data-l="4">04 Película</button>
+            <button class="opt" type="button" data-l="5">05 Composición</button>
+            <button class="opt" type="button" data-l="6">06 Realismo</button>
+            <button class="opt" type="button" data-l="7">07 Estilo</button>
+          </div>
+          <div class="why"><p><strong>02 · Óptica.</strong> Estás en gran angular: los <code>14–24mm</code> alargan y deforman. Cambia a <code>85mm lens</code> y no alejes tanto la cámara que el rostro se quede sin píxeles.</p></div>
+        </li>
+        <li class="case" data-good="6">
+          <p class="sym display">Parece un render 3D, no una fotografía.</p>
+          <p class="ask">¿Qué capa está enferma?</p>
+          <div class="opts" role="group" aria-label="Elige la capa">
+            <button class="opt" type="button" data-l="1">01 Sujeto</button>
+            <button class="opt" type="button" data-l="2">02 Óptica</button>
+            <button class="opt" type="button" data-l="3">03 Luz</button>
+            <button class="opt" type="button" data-l="4">04 Película</button>
+            <button class="opt" type="button" data-l="5">05 Composición</button>
+            <button class="opt" type="button" data-l="6">06 Realismo</button>
+            <button class="opt" type="button" data-l="7">07 Estilo</button>
+          </div>
+          <div class="why"><p><strong>06 · Realismo.</strong> Falta imperfección: <code>raw photo</code>, <code>flyaway hairs</code>, <code>35mm film grain</code>. La perfección absoluta es el delator número uno.</p></div>
+        </li>
+        <li class="case" data-good="5">
+          <p class="sym display">Pediste un plano general y el zapato es una hormiga con las proporciones rotas.</p>
+          <p class="ask">¿Qué capa está enferma?</p>
+          <div class="opts" role="group" aria-label="Elige la capa">
+            <button class="opt" type="button" data-l="1">01 Sujeto</button>
+            <button class="opt" type="button" data-l="2">02 Óptica</button>
+            <button class="opt" type="button" data-l="3">03 Luz</button>
+            <button class="opt" type="button" data-l="4">04 Película</button>
+            <button class="opt" type="button" data-l="5">05 Composición</button>
+            <button class="opt" type="button" data-l="6">06 Realismo</button>
+            <button class="opt" type="button" data-l="7">07 Estilo</button>
+          </div>
+          <div class="why"><p><strong>05 · Composición.</strong> El <code>extreme wide shot</code> convierte al sujeto en una hormiga y el <code>bird's eye view</code> rompe las proporciones. Vuelve a un plano que llene el cuadro y deja el aire en el sitio, no alrededor de todo.</p></div>
+        </li>
+      </ol>
+      <div class="nav">
+        <button class="nextbtn" id="nextCase" type="button" hidden>Siguiente síntoma →</button>
+        <span class="dots" id="dots"><b>[·]</b> [·] [·] [·]</span>
+      </div>
+    </div>
+    <p class="sidenote">Sin botón de validar y sin marcador: el alumno responde, entiende y sigue. Los errores no se puntúan, se explican. Si se equivoca, la opción elegida se tacha y la correcta se enciende en el mismo instante.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="footgrid">
+    <div>
+      <h2 class="display">Cómo se lleva esto a producción.</h2>
+      <p class="sign">[m].seny · mockup de kit didáctico · no es producción</p>
+    </div>
+    <ul>
+      <li><b>Cada pieza es autónoma.</b> Markup + un bloque de CSS + una función de init. Se pegan en cualquier clase sin tocar <code>curso.css</code>; los tokens ya son los de <code>theme.css</code>.</li>
+      <li><b>Sin JavaScript siguen enseñando.</b> Si la librería no carga, el prompt aparece entero, las siete notas se apilan y los cuatro diagnósticos se leen con su respuesta. La información nunca vive dentro de la animación.</li>
+      <li><b>Las fotos son contenido.</b> 4:5 a 1000 px para visores, 520 px para la retícula. En producción: AVIF con <code>srcset</code>, <code>alt</code> descriptivo y peso por debajo de 120 kB.</li>
+      <li><b>El motivo [ ] solo donde marca estado.</b> Aquí aparece en tres sitios: la esquina de la seed activa, las respuestas del diagnóstico y esta lista. Si se pone encima de cada bloque, deja de significar.</li>
+      <li><b>Pendiente.</b> Versión táctil del comparador con dos dedos, y sustituir la simulación de profundidad de campo por dos generaciones reales a f/1.8 y f/8.</li>
+    </ul>
+  </div>
+</footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.js"></script>
+<script>
+(function(){
+  'use strict';
+  var M = window.Motion || null;
+  var RM = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function(s,c){return (c||document).querySelector(s);};
+  var $$ = function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s));};
+  var clamp = function(v,a,b){return v<a?a:(v>b?b:v);};
+
+  /* ── 01 · Comparador ─────────────────────────────────────────────────── */
+  function comparador(){
+    var stage=$('#ba'), top=$('#baTop'), bar=$('#baBar'), knob=$('#baKnob');
+    if(!stage) return;
+    var x=50, dragging=false;
+    function set(v){
+      x=clamp(v,2,98);
+      var p=x+'%';
+      top.style.clipPath='inset(0 0 0 '+p+')';
+      bar.style.left=p; knob.style.left=p;
+      knob.setAttribute('aria-valuenow',Math.round(x));
+      knob.setAttribute('aria-valuetext',Math.round(x)+' por ciento');
+    }
+    function fromEvent(e){
+      var r=stage.getBoundingClientRect();
+      set(((e.clientX-r.left)/r.width)*100);
+    }
+    stage.addEventListener('pointerdown',function(e){
+      dragging=true; stage.setPointerCapture(e.pointerId); fromEvent(e); e.preventDefault();
+    });
+    stage.addEventListener('pointermove',function(e){ if(dragging) fromEvent(e); });
+    stage.addEventListener('pointerup',function(){ dragging=false; });
+    stage.addEventListener('pointercancel',function(){ dragging=false; });
+    knob.addEventListener('keydown',function(e){
+      var step=e.shiftKey?10:4;
+      if(e.key==='ArrowLeft'){set(x-step);e.preventDefault();}
+      if(e.key==='ArrowRight'){set(x+step);e.preventDefault();}
+      if(e.key==='Home'){set(4);e.preventDefault();}
+      if(e.key==='End'){set(96);e.preventDefault();}
+    });
+    set(50);
+  }
+
+  /* ── 02 · Anatomía ───────────────────────────────────────────────────── */
+  function anatomia(){
+    var frags=$$('.frag'), notes=$$('.note'), ov=$('#ov');
+    if(!frags.length) return;
+    var groups=$$('g[data-layer]',ov);
+    function activate(n){
+      frags.forEach(function(f){
+        var mine=f.getAttribute('data-layer')===n;
+        f.classList.toggle('on',mine);
+        f.classList.toggle('off',!mine);
+        f.setAttribute('aria-pressed',mine?'true':'false');
+      });
+      notes.forEach(function(nt){ nt.classList.toggle('on',nt.getAttribute('data-layer')===n); });
+      groups.forEach(function(g){ g.classList.toggle('on',g.getAttribute('data-layer')===n); });
+      var hint=$('#anatHint');
+      if(hint) hint.textContent='Capa '+n+' de 7 — recórrelas con ← →';
+    }
+    frags.forEach(function(f,i){
+      f.setAttribute('aria-pressed','false');
+      f.addEventListener('click',function(){ activate(f.getAttribute('data-layer')); });
+      f.addEventListener('keydown',function(e){
+        if(e.key===' '||e.key==='Enter'){ e.preventDefault(); activate(f.getAttribute('data-layer')); }
+      });
+      f.addEventListener('keydown',function(e){
+        var d = e.key==='ArrowRight'?1:(e.key==='ArrowLeft'?-1:0);
+        if(!d) return;
+        e.preventDefault();
+        var t=frags[(i+d+frags.length)%frags.length];
+        t.focus(); activate(t.getAttribute('data-layer'));
+      });
+    });
+    activate('2');
+  }
+
+  /* ── 03 · Contacto de seeds ──────────────────────────────────────────── */
+  function contactos(){
+    var shots=$$('.vstage img'), thumbs=$$('.thumb'), stamp=$('#stamp'),
+        readout=$('#readout'), seedtext=$('#seedtext'), btn=$('#blinkBtn');
+    if(!shots.length) return;
+    var seeds=['0417','1182','2049','3310'];
+    var texts=[
+      'La lámpara del set entra por la esquina y el fondo infinito deja de ser infinito. La foto es buena; el fondo, no.',
+      'Simetría casi perfecta y aire limpio arriba. Es la que cumple el brief: hay sitio para el titular de la campaña.',
+      'El encuadre se cierra y un objeto negro se cuela por la izquierda. El zapato pierde el aire que necesitaba.',
+      'Cámara más baja: ganan la suela de crepé y el volumen. Sigue siendo la misma campaña, pero otra toma.'
+    ];
+    var cur=0, prev=1;
+    function show(i,quiet){
+      shots.forEach(function(im,k){ im.classList.toggle('on',k===i); });
+      if(!quiet){
+        thumbs.forEach(function(t,k){ t.classList.toggle('on',k===i); t.setAttribute('aria-pressed',k===i?'true':'false'); });
+        stamp.textContent='0'+(i+1)+' / 04 · SEED '+seeds[i];
+        readout.textContent='MISMO PROMPT · MISMAS 7 CAPAS · SEED '+seeds[i];
+        seedtext.textContent=texts[i];
+        btn.lastChild.nodeValue=' Mantén pulsado para comparar con la 0'+(prev+1);
+      }
+    }
+    thumbs.forEach(function(t,i){
+      t.setAttribute('aria-pressed',i===0?'true':'false');
+      t.addEventListener('click',function(){
+        if(i===cur) return;
+        prev=cur; cur=i; show(cur);
+      });
+    });
+    var held=false, stage=$('.vstage');
+    function on(){ if(held) return; held=true; btn.classList.add('hot'); stage.classList.add('blink-on'); show(prev,true); }
+    function off(){ if(!held) return; held=false; btn.classList.remove('hot'); show(cur,true); stage.classList.remove('blink-on'); }
+    btn.addEventListener('pointerdown',function(e){e.preventDefault();on();});
+    ['pointerup','pointerleave','pointercancel','blur'].forEach(function(ev){ btn.addEventListener(ev,off); });
+    btn.addEventListener('keydown',function(e){ if(e.key===' '||e.key==='Enter'){e.preventDefault();on();} });
+    btn.addEventListener('keyup',function(e){ if(e.key===' '||e.key==='Enter'){e.preventDefault();off();} });
+    show(0);
+  }
+
+  /* ── 04 · Construcción por scroll ────────────────────────────────────── */
+  function construccion(){
+    var track=$('#buildTrack'), lines=$$('.bline'), notes=$$('.bnote'), meter=$$('#bmeter i');
+    if(!track) return;
+    if(window.innerWidth<=900 || RM){
+      lines.forEach(function(l){l.classList.add('lit');});
+      notes.forEach(function(n){n.classList.add('on');});
+      return;
+    }
+    var unit=Math.min(window.innerHeight,980);
+    track.style.height=(unit*3)+'px';
+    var stick=track.firstElementChild; if(stick) stick.style.minHeight=unit+'px';
+    var last=-1;
+    function apply(p){
+      var idx=clamp(Math.floor(p*7.6),0,6);
+      if(idx===last) return;
+      last=idx;
+      lines.forEach(function(l){ l.classList.toggle('lit', parseInt(l.getAttribute('data-i'),10)<=idx); });
+      notes.forEach(function(n){ n.classList.toggle('on', parseInt(n.getAttribute('data-i'),10)===idx); });
+      meter.forEach(function(m,i){ m.classList.toggle('on', i<=idx); });
+    }
+    if(M && M.scroll){
+      M.scroll(function(p){ apply(p); }, {target:track, offset:['start start','end end']});
+    }else{
+      var tick=false;
+      window.addEventListener('scroll',function(){
+        if(tick) return; tick=true;
+        requestAnimationFrame(function(){
+          tick=false;
+          var r=track.getBoundingClientRect();
+          apply(clamp(-r.top/(r.height-window.innerHeight),0,1));
+        });
+      },{passive:true});
+    }
+    apply(0);
+  }
+
+  /* ── 05 · Dial de apertura ───────────────────────────────────────────── */
+  function dial(){
+    var input=$('#ap'), blur=$('#dofBlur'), stamp=$('#fstamp'), band=$('#band'),
+        verdict=$('#verdict'), stops=$$('#stops span'), lab=$('#bandlab');
+    if(!input) return;
+    var F=[
+      {f:'f/1.8',b:11,e:'62%',w:16,x:296,
+       t:'<b>f/1.8 — bokeh cremoso</b>El fondo se funde y el producto se aísla, pero la profundidad de campo es de milímetros: si enfocas la puntera, el talón ya está blando. Sirve para un retrato o un plano de detalle con intención, nunca para catálogo.'},
+      {f:'f/2.8',b:7.5,e:'55%',w:38,x:285,
+       t:'<b>f/2.8 — el punto dulce del retrato</b>Mantiene el rostro entero nítido y desenfoca el fondo con suavidad. En producto sigue dejando fuera de foco el extremo de la horma.'},
+      {f:'f/4',b:4.6,e:'47%',w:66,x:271,
+       t:'<b>f/4 — el término medio</b>Ya casi hay pieza entera, pero el fondo aún se ensucia. Buen valor para lifestyle: el zapato puesto, con contexto reconocible.'},
+      {f:'f/5.6',b:2.4,e:'39%',w:106,x:251,
+       t:'<b>f/5.6 — casi catálogo</b>La pieza entra completa. Es el mínimo aceptable si necesitas algo de separación del fondo.'},
+      {f:'f/8',b:0,e:'30%',w:150,x:230,
+       t:'<b>f/8 — la apertura del catálogo</b>Nitidez de lado a lado: talón, empeine y puntera dentro del mismo plano. Es exactamente lo que pide el prompt base de la clase, y la razón de que ese fragmento diga <code>edge-to-edge sharpness</code>.'}
+    ];
+    function set(i){
+      var s=F[i];
+      blur.style.setProperty('--b',s.b+'px');
+      blur.style.setProperty('--edge',s.e);
+      stamp.textContent=s.f;
+      verdict.innerHTML=s.t;
+      stops.forEach(function(sp,k){ sp.classList.toggle('on',k===i); });
+      input.setAttribute('aria-valuetext',s.f);
+      band.setAttribute('width',s.w); band.setAttribute('x',s.x);
+      lab.setAttribute('x',Math.max(20,s.x-2));
+    }
+    input.addEventListener('input',function(){ set(parseInt(input.value,10)); });
+    set(parseInt(input.value,10));
+  }
+
+  /* ── 06 · La consulta ────────────────────────────────────────────────── */
+  function consulta(){
+    var cases=$$('.case'), next=$('#nextCase'), dots=$('#dots');
+    if(!cases.length) return;
+    var i=0;
+    function paintDots(){
+      var out='';
+      for(var k=0;k<cases.length;k++) out += (k===i?'<b>[·]</b>':'[·]')+' ';
+      dots.innerHTML=out;
+    }
+    cases.forEach(function(c){
+      var good=c.getAttribute('data-good'), why=$('.why',c), opts=$$('.opt',c), done=false;
+      opts.forEach(function(o){
+        o.addEventListener('click',function(){
+          if(done) return; done=true;
+          var mine=o.getAttribute('data-l');
+          opts.forEach(function(x){
+            x.disabled=true;
+            if(x.getAttribute('data-l')===good) x.classList.add('good');
+            else if(x===o) x.classList.add('bad');
+          });
+          why.classList.add('show');
+          if(i<cases.length-1) next.hidden=false;
+        });
+      });
+    });
+    next.addEventListener('click',function(){
+      cases[i].classList.remove('now');
+      i=Math.min(i+1,cases.length-1);
+      cases[i].classList.add('now');
+      next.hidden=true;
+      paintDots();
+      var h=$('.sym',cases[i]); if(h) h.setAttribute('tabindex','-1'), h.focus();
+    });
+    paintDots();
+  }
+
+  /* ── Rail: sección activa ────────────────────────────────────────────── */
+  function rail(){
+    var links=$$('.rail a');
+    var map={};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+    if(!('IntersectionObserver' in window)) return;
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          links.forEach(function(a){a.classList.remove('on');});
+          var a=map[en.target.id]; if(a) a.classList.add('on');
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px'});
+    $$('.comp').forEach(function(s){ io.observe(s); });
+  }
+
+  /* ── Entrada: la regla del kicker se dibuja al entrar ────────────────── */
+  function kickers(){
+    if(!M || !M.inView || RM) return;
+    document.documentElement.classList.add('has-inview');
+    $$('.chead .kicker s').forEach(function(el){
+      M.inView(el,function(){ el.classList.add('seen'); },{amount:0.5});
+    });
+  }
+
+  try{
+    comparador(); anatomia(); contactos(); construccion(); dial(); consulta(); rail(); kickers();
+    document.documentElement.classList.remove('no-js');
+    document.documentElement.classList.add('js');
+  }catch(err){
+    document.documentElement.className='no-js';  // vuelta al estado completo sin JS
+    if(window.console) console.warn('Kit: init incompleto —', err);
+  }
+})();
+</script>
+</body>
+</html>

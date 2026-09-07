@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="es" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M4 · C2 — El prompt como objetivo · [m].seny /academy</title>
+<meta name="description" content="Despiece vivo de un prompt fotográfico: siete capas sobre una misma fotografía.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Chivo+Mono:wght@300..600&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════════════════
+   Tokens [m].seny  (copiados de assets/theme.css, fuentes vía Google)
+   ════════════════════════════════════════════════════════════════════ */
+:root{
+  color-scheme:light;
+  --ink:#0a0a0b; --ink-soft:#151517;
+  --paper:#f7f6f2; --paper-dim:#edebe3;
+  --accent:#c8f542; --accent-deep:#0f766e; --accent-ink:#253a06;
+  --muted:#5f5f66; --mist:#a5a5ab;
+  --line:#e0ddd3; --line-dark:#26262a;
+
+  --font-display:'Bricolage Grotesque',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Instrument Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'Chivo Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  --ease:cubic-bezier(0.16,1,0.3,1);
+  --gut:clamp(20px,4vw,64px);
+}
+::selection{background:var(--accent);color:var(--accent-ink);}
+*,*::before,*::after{box-sizing:border-box;}
+html{background:var(--paper);-webkit-text-size-adjust:100%;}
+body{margin:0;font-family:var(--font-body);font-size:1.0625rem;line-height:1.6;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;}
+img{max-width:100%;height:auto;display:block;}
+a{color:inherit;}
+h1,h2,h3,h4,p,ul,ol,figure,blockquote{margin:0;}
+button{font:inherit;color:inherit;}
+:focus-visible{outline:2px solid var(--accent-deep);outline-offset:3px;border-radius:2px;}
+.dark :focus-visible{outline-color:var(--accent);}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;}
+.no-js .rail,.no-js .ctl,.no-js .sw,.no-js .strip-h span:last-child{display:none;}
+
+/* Tipografía ───────────────────────────────────────────────────────── */
+.d{font-family:var(--font-display);font-weight:640;line-height:0.98;letter-spacing:-0.028em;text-wrap:balance;}
+.m{font-family:var(--font-mono);font-weight:400;letter-spacing:.1em;text-transform:uppercase;font-size:11px;}
+.lede{font-size:clamp(1.12rem,1.7vw,1.35rem);line-height:1.5;}
+
+/* Anchos ───────────────────────────────────────────────────────────── */
+.page{width:100%;max-width:1480px;margin:0 auto;padding-inline:var(--gut);}
+.read{max-width:62ch;}
+
+/* ════════ 0. Barra ════════════════════════════════════════════════ */
+.bar{background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px var(--gut);}
+.wm{font-family:var(--font-display);font-weight:700;letter-spacing:-.03em;font-size:1rem;display:inline-flex;align-items:baseline;gap:.3em;}
+.wm b{color:var(--accent);font-weight:inherit;}
+.wm span{font-family:var(--font-mono);font-size:.78em;letter-spacing:0;color:var(--accent);}
+.bar .m{color:var(--mist);}
+
+/* ════════ 1. Apertura ═════════════════════════════════════════════ */
+.open{background:var(--ink);color:var(--paper);position:relative;overflow:hidden;}
+.open-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:end;gap:0;}
+.open-txt{padding:clamp(48px,7vw,110px) clamp(28px,4vw,64px) clamp(44px,5vw,72px) var(--gut);}
+.open-kicker{color:var(--accent);display:flex;gap:14px;align-items:center;margin-bottom:clamp(24px,4vw,44px);}
+.open-kicker i{flex:1;height:1px;background:var(--line-dark);font-style:normal;}
+.open h1{font-size:clamp(2.6rem,7.2vw,6rem);margin-bottom:.35em;}
+.open h1 em{font-style:normal;color:var(--accent);}
+.open-txt p{color:var(--mist);max-width:44ch;}
+.open-meta{display:flex;flex-wrap:wrap;gap:6px 26px;margin-top:clamp(28px,4vw,52px);color:var(--mist);border-top:1px solid var(--line-dark);padding-top:16px;}
+.open-meta b{color:var(--paper);font-weight:400;}
+.open-fig{position:relative;align-self:stretch;min-height:340px;}
+.open-fig img{width:100%;height:100%;object-fit:cover;object-position:50% 46%;}
+.open-cap{position:absolute;left:0;bottom:0;max-width:100%;padding:11px clamp(14px,2vw,20px);background:var(--ink);color:var(--mist);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.open-cap b{color:var(--accent);font-weight:400;}
+
+/* ════════ 2. Lectura estrecha + nota al margen ════════════════════ */
+.intro{padding-block:clamp(64px,9vw,132px) clamp(48px,6vw,84px);}
+.intro-grid{display:grid;grid-template-columns:minmax(0,10rem) minmax(0,56ch);gap:clamp(24px,4vw,56px);}
+.side{color:var(--muted);border-top:2px solid var(--ink);padding-top:10px;align-self:start;}
+.side p{font-size:.9rem;line-height:1.45;margin-top:8px;text-transform:none;letter-spacing:0;font-family:var(--font-body);}
+.intro p+p{margin-top:1.1em;}
+.intro strong{font-weight:600;}
+.intro em{font-style:italic;color:var(--muted);}
+blockquote.pull{margin:clamp(40px,6vw,72px) 0 0;padding-left:clamp(18px,2vw,28px);border-left:3px solid var(--accent);}
+blockquote.pull p{font-family:var(--font-display);font-weight:600;letter-spacing:-.02em;line-height:1.1;font-size:clamp(1.5rem,3.4vw,2.5rem);text-wrap:balance;}
+blockquote.pull footer{margin-top:14px;color:var(--muted);font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;}
+
+/* ════════ 3. DESPIECE VIVO (sticky) ═══════════════════════════════ */
+.lab{background:var(--ink);color:var(--paper);position:relative;}
+.lab-head{padding:clamp(52px,7vw,96px) var(--gut) clamp(28px,3vw,44px);border-bottom:1px solid var(--line-dark);}
+.lab-head .m{color:var(--accent);}
+.lab-head h2{font-size:clamp(1.9rem,4.4vw,3.4rem);margin:.4em 0 .3em;max-width:20ch;}
+.lab-head p{color:var(--mist);max-width:56ch;}
+
+.lab-grid{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);}
+/* — columna media (pegada) — */
+.media-col{--fh:min(60vh,560px);--fw:calc(var(--fh) * 0.8);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;gap:12px;padding:20px 28px 20px var(--gut);border-right:1px solid var(--line-dark);}
+.frame{position:relative;aspect-ratio:4/5;height:var(--fh);width:auto;max-width:100%;margin-inline:auto;background:var(--ink-soft);overflow:hidden;flex:0 1 auto;}
+.frame>img.base{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+/* desenfoque de fondo controlado por la apertura */
+.blurlay{position:absolute;inset:0;opacity:0;transition:opacity .4s ease;}
+.blurlay img{width:100%;height:100%;object-fit:cover;filter:blur(var(--bokeh,0px));transform:scale(1.03);}
+.blurlay{-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 34%,transparent 52%);mask-image:linear-gradient(to bottom,#000 0%,#000 34%,transparent 52%);}
+.is-optica .blurlay{opacity:1;}
+/* grano */
+.grain{position:absolute;inset:0;opacity:0;mix-blend-mode:overlay;pointer-events:none;transition:opacity .45s ease;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");}
+.grain.on{opacity:.55;}
+/* lupa */
+.loupe{position:absolute;width:164px;height:164px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity .35s ease;
+  background-image:url('assets/zapato-1.jpg');background-size:440% 440%;
+  box-shadow:0 0 0 2px var(--accent),0 0 0 7px rgba(10,10,11,.55),0 22px 44px -14px rgba(0,0,0,.8);transform:translate(-50%,-50%);}
+.loupe::after{content:'×4';position:absolute;left:50%;bottom:-30px;transform:translateX(-50%);font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;color:var(--accent);background:var(--ink);padding:2px 6px;}
+.is-realismo .loupe{opacity:1;}
+/* titular de campaña sobre el espacio negativo */
+.mockhead{position:absolute;left:7%;top:6%;width:56%;opacity:0;transform:translateY(-8px);transition:opacity .5s var(--ease),transform .5s var(--ease);pointer-events:none;}
+.is-composicion .mockhead,.is-estilo .mockhead{opacity:1;transform:none;}
+.mockhead b{display:block;font-family:var(--font-display);font-weight:640;letter-spacing:-.03em;line-height:.94;font-size:clamp(19px,2.1vw,30px);color:var(--ink);}
+.mockhead span{display:block;margin-top:6px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#3d3d40;}
+/* capas SVG */
+.ov{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 1px 2px rgba(10,10,11,.6));opacity:0;visibility:hidden;transition:opacity .45s var(--ease),visibility .45s;}
+.ov.on{opacity:1;visibility:visible;}
+.ov text{font-family:var(--font-mono);font-size:19px;letter-spacing:1.6px;text-transform:uppercase;fill:var(--accent);paint-order:stroke;stroke:var(--ink);stroke-width:6;stroke-linejoin:round;}
+.ov text.w{fill:var(--paper);}
+.ov .st{fill:none;stroke:var(--accent);stroke-width:2.5;}
+.ov .st-w{fill:none;stroke:var(--paper);stroke-width:1.5;opacity:.75;}
+.ov .st-k{fill:none;stroke:var(--ink);stroke-width:1.8;opacity:.85;}
+.ov .dash{stroke-dasharray:9 9;}
+
+/* — tira del prompt — */
+.strip{width:min(100%,var(--fw));margin-inline:auto;border:1px solid var(--line-dark);background:var(--ink-soft);padding:11px 13px;flex:0 0 auto;}
+.strip-h{display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--mist);margin-bottom:9px;white-space:nowrap;}
+.strip-h .narrow{display:none;}
+.strip-h b{color:var(--accent);font-weight:400;}
+.strip-body{font-family:var(--font-mono);font-size:11.5px;line-height:1.8;max-height:9em;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 12px,#000 calc(100% - 12px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 12px,#000 calc(100% - 12px),transparent 100%);}
+.strip-body::-webkit-scrollbar{display:none;}
+.frag{color:var(--paper);background-image:linear-gradient(var(--accent),var(--accent));background-repeat:no-repeat;background-position:0 100%;background-size:0% 1.5px;transition:color .5s ease,opacity .5s ease,background-size .55s var(--ease);}
+.js .frag{opacity:.22;}
+.js .frag.in{opacity:1;}
+.js .frag.now{color:var(--accent);background-size:100% 1.5px;}
+.frag sup{font-size:.72em;color:var(--accent-deep);margin-left:.15em;}
+.js .frag.in sup{color:var(--accent);}
+
+/* — raíl de capas — */
+.rail{width:min(100%,var(--fw));margin-inline:auto;display:flex;gap:4px;align-items:stretch;flex:0 0 auto;}
+.rail button{flex:1 1 0;min-width:0;background:none;border:0;border-top:2px solid var(--line-dark);padding:8px 0 0;text-align:left;cursor:pointer;font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;color:#6a6a72;white-space:nowrap;overflow:hidden;transition:color .3s ease,border-color .3s ease,flex-grow .4s var(--ease);min-height:44px;}
+.rail button i{font-style:normal;display:none;}
+.rail button[aria-current="true"]{flex-grow:2.4;}
+.rail button[aria-current="true"] i{display:inline;}
+.rail button:hover{color:var(--paper);}
+.rail button[aria-current="true"]{border-top-color:var(--accent);color:var(--accent);}
+.rail button.done{border-top-color:#4b5c22;color:#8d8d95;}
+
+/* — columna de texto — */
+.steps{padding:0 var(--gut) 0 clamp(28px,4vw,64px);}
+.step{min-height:78vh;display:flex;flex-direction:column;justify-content:center;padding:6vh 0;max-width:46ch;}
+.step-n{display:flex;align-items:baseline;gap:14px;margin-bottom:18px;}
+.step-n b{font-family:var(--font-display);font-weight:300;font-size:clamp(3rem,6vw,5.2rem);line-height:.8;letter-spacing:-.05em;color:#3a3a40;transition:color .5s ease;}
+.step.active .step-n b{color:var(--accent);}
+.step-n .m{color:var(--mist);}
+.step h3{font-size:clamp(1.55rem,3vw,2.3rem);margin-bottom:.5em;}
+.step p{color:var(--mist);}
+.step p+p{margin-top:.9em;}
+.step p strong{color:var(--paper);font-weight:600;}
+.step code,.k{font-family:var(--font-mono);font-size:.86em;color:var(--accent);letter-spacing:.02em;}
+.step .warn{margin-top:1.2em;padding-left:16px;border-left:2px solid var(--accent-deep);color:#9a9aa2;font-size:.95rem;}
+.step .warn b{color:var(--paper);font-weight:600;}
+
+/* control de apertura */
+.ctl{margin-top:26px;border-top:1px solid var(--line-dark);padding-top:16px;}
+.ctl-h{display:flex;justify-content:space-between;align-items:baseline;gap:14px;color:var(--mist);}
+.ctl-h output{font-family:var(--font-mono);font-size:15px;color:var(--accent);letter-spacing:.04em;}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;background:transparent;margin:16px 0 6px;height:44px;cursor:ew-resize;}
+input[type=range]::-webkit-slider-runnable-track{height:2px;background:#3d3d44;}
+input[type=range]::-moz-range-track{height:2px;background:#3d3d44;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--accent);margin-top:-10px;border:0;}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--accent);border:0;}
+.ctl small{display:block;color:#7d7d85;font-size:.86rem;line-height:1.4;min-height:2.8em;}
+/* interruptor de grano */
+.sw{margin-top:22px;display:inline-flex;align-items:center;gap:12px;background:none;border:1px solid var(--line-dark);padding:11px 16px;cursor:pointer;font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mist);min-height:44px;transition:border-color .3s ease,color .3s ease;}
+.sw:hover{border-color:var(--mist);color:var(--paper);}
+.sw i{font-style:normal;color:var(--accent);}
+.sw[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);}
+
+/* ════════ 4. Prompt completo (banda) ══════════════════════════════ */
+.full{background:var(--ink);color:var(--paper);border-top:1px solid var(--line-dark);padding:clamp(56px,8vw,110px) 0 clamp(56px,8vw,104px);}
+.full-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:16px;color:var(--mist);border-bottom:1px solid var(--line-dark);padding-bottom:14px;margin-bottom:clamp(26px,3vw,40px);}
+.full-h b{color:var(--accent);font-weight:400;}
+.full pre{font-family:var(--font-mono);font-size:clamp(13px,1.55vw,20px);line-height:1.85;white-space:pre-wrap;word-break:break-word;margin:0;}
+.full pre span{border-bottom:1.5px solid var(--accent-deep);padding-bottom:2px;}
+.full pre sup{font-size:.66em;color:var(--accent);border:0;margin-left:.2em;}
+.copy{margin-top:clamp(26px,3vw,40px);display:inline-flex;align-items:center;gap:.7rem;background:var(--accent);color:var(--accent-ink);font-weight:600;border:0;border-radius:999px;padding:15px 30px;cursor:pointer;min-height:44px;transition:transform .35s var(--ease),box-shadow .35s var(--ease);}
+.copy:hover{transform:translateY(-2px);box-shadow:0 14px 34px -10px rgba(200,245,66,.5);}
+
+/* ════════ 5. Consistencia ═════════════════════════════════════════ */
+.serie{padding-block:clamp(64px,9vw,130px);}
+.serie-h{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,52ch);gap:clamp(20px,4vw,60px);align-items:end;margin-bottom:clamp(36px,5vw,64px);}
+.serie-h h2{font-size:clamp(1.9rem,4vw,3rem);}
+.serie-h p{color:var(--muted);}
+.shots{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(10px,1.6vw,22px);align-items:start;}
+.shot{margin:0;display:block;}
+.shot:nth-child(2){margin-top:clamp(18px,3.4vw,54px);}
+.shot:nth-child(3){margin-top:clamp(8px,1.6vw,26px);}
+.shot:nth-child(4){margin-top:clamp(30px,5vw,80px);}
+.shot img{width:100%;aspect-ratio:1;object-fit:cover;}
+.shot figcaption{margin-top:10px;}
+.shot .m{color:var(--muted);display:block;}
+.shot b{display:block;font-family:var(--font-body);font-weight:600;font-size:.98rem;margin-top:3px;}
+.shot .diff{display:block;font-family:var(--font-mono);font-size:11.5px;color:var(--accent-deep);margin-top:8px;line-height:1.5;letter-spacing:.01em;text-transform:none;
+  border-top:1px solid var(--line);padding-top:8px;}
+
+.serie-note{margin-top:clamp(30px,4vw,52px);display:grid;grid-template-columns:minmax(0,10rem) minmax(0,58ch);gap:clamp(20px,4vw,56px);}
+.serie-note p{color:var(--muted);}
+.serie-note strong{color:var(--ink);font-weight:600;}
+
+/* ════════ 6. Comparación final ════════════════════════════════════ */
+.vs{background:var(--paper-dim);padding:clamp(60px,8vw,120px) 0 clamp(64px,9vw,130px);border-top:1px solid var(--line);}
+.vs-grid{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1fr);gap:clamp(22px,4vw,64px);align-items:end;}
+.vs figure{position:relative;}
+.vs .ph{position:relative;display:block;}
+.vs img{width:100%;object-fit:cover;}
+.vs .a img{aspect-ratio:3/4;filter:saturate(.9);}
+.vs .b img{aspect-ratio:4/5;}
+.vs figcaption{margin-top:12px;color:var(--muted);}
+.vs figcaption b{display:block;font-family:var(--font-body);font-size:1.02rem;font-weight:600;color:var(--ink);letter-spacing:0;text-transform:none;margin-top:4px;}
+.tag{position:absolute;left:0;bottom:0;padding:10px 14px;background:var(--ink);color:var(--paper);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;}
+.tag b{color:var(--accent);font-weight:400;}
+.notes{margin-top:clamp(30px,4vw,54px);display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.4vw,40px);border-top:1px solid var(--line);padding-top:22px;}
+.note h4{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-deep);font-weight:400;margin-bottom:8px;}
+.note p{color:var(--muted);font-size:.97rem;}
+.js .note{opacity:0;transform:translateY(14px);}
+.js .note.seen{opacity:1;transform:none;}
+.close-q{margin-top:clamp(52px,7vw,104px);max-width:min(100%,1000px);}
+.close-q p{font-family:var(--font-display);font-weight:640;letter-spacing:-.03em;line-height:1.02;font-size:clamp(1.9rem,5vw,4rem);text-wrap:balance;}
+.close-q p i{font-style:normal;color:var(--accent-deep);}
+.close-q footer{margin-top:18px;color:var(--muted);font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;}
+
+/* ════════ 7. Práctica + PFC ═══════════════════════════════════════ */
+.prac{padding-block:clamp(60px,8vw,120px);}
+.prac h2{font-size:clamp(1.8rem,3.6vw,2.8rem);max-width:16ch;margin-bottom:clamp(30px,4vw,56px);}
+.ex{list-style:none;padding:0;border-top:1px solid var(--line);}
+.ex li{display:grid;grid-template-columns:minmax(0,4.5rem) minmax(0,20ch) minmax(0,50ch);gap:clamp(14px,2.6vw,40px);align-items:baseline;padding:26px 0;border-bottom:1px solid var(--line);}
+.ex b{font-family:var(--font-display);font-weight:300;font-size:clamp(2.2rem,4vw,3.4rem);line-height:.8;letter-spacing:-.04em;color:var(--accent-deep);}
+.ex h4{font-size:1.18rem;font-family:var(--font-display);font-weight:640;letter-spacing:-.02em;}
+.ex p{color:var(--muted);}
+.pfc{margin-top:clamp(36px,5vw,72px);background:var(--accent);color:var(--accent-ink);padding:clamp(26px,4vw,52px);}
+.pfc .m{color:var(--accent-ink);opacity:.75;}
+.pfc h3{font-family:var(--font-display);font-weight:640;letter-spacing:-.025em;font-size:clamp(1.5rem,3vw,2.2rem);margin:.35em 0 .5em;}
+.pfc>p{max-width:56ch;}
+.pfc ul{list-style:none;padding:0;margin:22px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:2px clamp(26px,5vw,72px);}
+.pfc li{border-top:1px solid rgba(37,58,6,.3);}
+.pfc label{display:flex;gap:11px;align-items:flex-start;padding:13px 0;cursor:pointer;min-height:44px;}
+.pfc input{position:absolute;opacity:0;width:1px;height:1px;}
+.pfc label::before{content:'[ ]';font-family:var(--font-mono);font-size:12px;letter-spacing:-.04em;flex:0 0 auto;padding-top:3px;}
+.pfc input:checked+label::before{content:'[✓]';}
+.pfc input:checked+label span{text-decoration:line-through;opacity:.6;}
+.pfc input:focus-visible+label{outline:2px solid var(--accent-ink);outline-offset:3px;}
+.pfc .path{margin-top:24px;font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;opacity:.8;}
+.foot{background:var(--ink);color:var(--mist);padding:26px var(--gut);display:flex;flex-wrap:wrap;gap:10px 26px;justify-content:space-between;}
+
+/* ════════ Responsive ══════════════════════════════════════════════ */
+@media (max-width:1180px){
+  .ov text{font-size:26px;stroke-width:8;}
+}
+@media (max-width:1080px){
+  .open-grid{grid-template-columns:1fr;}
+  .open-fig{min-height:auto;aspect-ratio:16/10;order:-1;}
+  .open-txt{padding-inline:var(--gut);}
+  .intro-grid,.serie-note{grid-template-columns:1fr;}
+  .side{max-width:40ch;}
+  .serie-h{grid-template-columns:1fr;}
+  .ex li{grid-template-columns:minmax(0,3.4rem) minmax(0,1fr);}
+  .ex p{grid-column:2;}
+  .notes{grid-template-columns:1fr;gap:20px;}
+}
+@media (max-width:900px){
+  .lab-grid{display:block;}
+  /* La foto se pega arriba y el texto pasa por debajo */
+  .media-col{--fh:min(42vh,420px);position:sticky;top:0;height:auto;z-index:6;background:var(--ink);border-right:0;
+    border-bottom:1px solid var(--line-dark);padding:10px var(--gut) 10px;gap:8px;box-shadow:0 20px 26px -22px rgba(0,0,0,.95);}
+  .strip{padding:8px 11px;}
+  .strip-h{margin-bottom:6px;}
+  .strip-body{max-height:3.3em;font-size:11px;}
+  .rail button{min-height:44px;padding-top:6px;}
+  .strip-h .wide{display:none;}
+  .strip-h .narrow{display:inline;}
+  /* el despiece sobre la foto tiene que leerse también a 280px de ancho */
+  .ov text{font-size:46px;stroke-width:14;letter-spacing:2px;}
+  .ov .st{stroke-width:6;}
+  .ov .st-w{stroke-width:4;}
+  .ov .st-k{stroke-width:5;}
+  .ov .dash{stroke-dasharray:18 18;}
+  .steps{padding-inline:var(--gut);}
+  .step{min-height:auto;padding:40px 0 44px;max-width:none;}
+  .step:first-child{padding-top:30px;}
+  .loupe{width:104px;height:104px;box-shadow:0 0 0 2px var(--accent),0 0 0 5px rgba(10,10,11,.55);}
+  .loupe::after{bottom:-24px;}
+  .mockhead b{font-size:15px;}
+  .mockhead span{font-size:8px;}
+  .vs-grid{grid-template-columns:1fr;gap:34px;}
+  .vs .a{max-width:62%;}
+}
+@media (max-width:560px){
+  .shots{grid-template-columns:repeat(2,1fr);}
+  .shot:nth-child(3){margin-top:0;}
+  .shot:nth-child(4){margin-top:clamp(18px,3.4vw,54px);}
+  .frame{max-height:30vh;}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;}
+  .js .note{opacity:1;transform:none;}
+  .copy:hover{transform:none;}
+}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="wm" href="#"><b>[m]</b>.seny<span>/academy</span></a>
+  <p class="m">Módulo 4 · Clase 2</p>
+</header>
+
+<!-- ═══ 1. APERTURA ══════════════════════════════════════════════════ -->
+<section class="open dark">
+  <div class="open-grid">
+    <div class="open-txt">
+      <p class="m open-kicker">Fotografía con IA <i></i></p>
+      <h1 class="d">El prompt<br>como <em>objetivo</em>.</h1>
+      <p class="lede">Cualquiera sabe pedir «una foto de unos zapatos». Muy pocos saben pedir un plano de producto con <strong>lente macro a f/8, tres puntos de softbox y color calibrado</strong>. Esa distancia es todo lo que separa una imagen amateur de una campaña.</p>
+      <div class="open-meta m">
+        <p><b>7</b> capas</p>
+        <p><b>1</b> fotografía</p>
+        <p><b>22</b> min</p>
+        <p><b>PFC</b> · mini-catálogo</p>
+      </div>
+    </div>
+    <figure class="open-fig">
+      <img src="assets/zapato-3.jpg" alt="Derby de ante gris-taupe con panel trenzado y suela de crepé, fotografiado en estudio con un softbox visible en el borde izquierdo.">
+      <figcaption class="open-cap m"><b>Generada</b> · el prompt que despiezamos hoy</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ═══ 2. LECTURA ═══════════════════════════════════════════════════ -->
+<section class="intro page">
+  <div class="intro-grid">
+    <aside class="side m">
+      Al margen
+      <p>Escribe siempre el prompt en <strong>inglés</strong>: los modelos entienden mejor la jerga técnica. Y ordena de lo concreto (el sujeto) a lo abstracto (el estilo).</p>
+    </aside>
+    <div>
+      <p class="lede">En el módulo 3 aprendiste fórmulas visuales. Hoy subimos un peldaño: para <strong>fotorrealismo</strong> no basta con describir una escena, hay que <em>dirigir un set de rodaje</em>.</p>
+      <p style="margin-top:1.2em">El sujeto es tu modelo. La óptica es tu cámara. La luz es tu gaffer. La película es tu colorista. La composición es el director. El realismo es la continuidad. Y el estilo es el director de arte. Un prompt pobre despide a todo el equipo y deja a la IA improvisando sola.</p>
+      <p>Así que hoy no vamos a leer una lista de parámetros. Vamos a coger <strong>una sola fotografía</strong> —la de arriba, generada, no comprada— y a abrirla en canal, capa por capa, mientras el prompt que la produjo se escribe delante de ti.</p>
+      <blockquote class="pull">
+        <p>La IA no falla por falta de talento, sino por falta de vocabulario.</p>
+        <footer>Frase clave · M4 · C2</footer>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 3. DESPIECE VIVO ═════════════════════════════════════════════ -->
+<section class="lab dark" id="despiece">
+  <div class="lab-head">
+    <p class="m">Despiece en vivo</p>
+    <h2 class="d">Siete capas sobre la misma foto.</h2>
+    <p>La imagen se queda quieta. Lo que cambia es lo que sabes mirar en ella. A la derecha avanza la clase; abajo, el prompt se escribe solo, fragmento a fragmento.</p>
+  </div>
+
+  <div class="lab-grid">
+
+    <!-- ── columna pegada ── -->
+    <div class="media-col" id="mediaCol">
+      <div class="frame" id="frame">
+        <img class="base" src="assets/zapato-1.jpg" alt="Fotografía de estudio del derby de ante gris-taupe: el par en tres cuartos sobre fondo infinito crudo, con el borde del softbox visible arriba a la izquierda.">
+        <div class="blurlay" aria-hidden="true"><img src="assets/zapato-1.jpg" alt=""></div>
+        <div class="grain" id="grain" aria-hidden="true"></div>
+        <div class="loupe" id="loupe" aria-hidden="true" style="left:62%;top:52%"></div>
+        <div class="mockhead" aria-hidden="true"><b>El derby<br>de crepé.</b><span>Colección otoño · Lottusse</span></div>
+
+        <!-- 01 SUJETO -->
+        <svg class="ov" id="ov-sujeto" viewBox="0 0 1000 1250" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+          <path class="st" d="M96 528 v-72 h72"/>
+          <path class="st" d="M904 528 v-72 h-72"/>
+          <path class="st" d="M96 812 v72 h72"/>
+          <path class="st" d="M904 812 v72 h-72"/>
+          <line class="st dash" x1="648" y1="648" x2="780" y2="392"/>
+          <circle class="st" cx="648" cy="648" r="7" fill="#c8f542"/>
+          <text x="780" y="374" text-anchor="end">Panel trenzado</text>
+          <line class="st dash" x1="330" y1="826" x2="250" y2="962"/>
+          <circle class="st" cx="330" cy="826" r="7" fill="#c8f542"/>
+          <text x="60" y="1000">Suela de crepé</text>
+        </svg>
+
+        <!-- 02 ÓPTICA -->
+        <svg class="ov" id="ov-optica" viewBox="0 0 1000 1250" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+          <line class="st dash" x1="40" y1="470" x2="960" y2="470"/>
+          <text x="40" y="440">Plano de fondo</text>
+          <line class="st" x1="40" y1="700" x2="960" y2="700" opacity=".9"/>
+          <text x="40" y="672">Plano de enfoque</text>
+          <g transform="translate(560,1052)">
+            <path class="st" d="M0 -90 C 46 -46, 46 46, 0 90 C -46 46, -46 -46, 0 -90 Z"/>
+            <line class="st-k" x1="-150" y1="-58" x2="0" y2="-20"/>
+            <line class="st-k" x1="-150" y1="0" x2="0" y2="0"/>
+            <line class="st-k" x1="-150" y1="58" x2="0" y2="20"/>
+            <line class="st-k" x1="0" y1="-20" x2="150" y2="0"/>
+            <line class="st-k" x1="0" y1="20" x2="150" y2="0"/>
+            <circle class="st" cx="150" cy="0" r="5" fill="#c8f542"/>
+            <text x="-150" y="118">Lente macro</text>
+          </g>
+        </svg>
+
+        <!-- 03 LUZ -->
+        <svg class="ov" id="ov-luz" viewBox="0 0 1000 1250" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+          <rect class="st" x="-10" y="-10" width="200" height="420" fill="rgba(200,245,66,.13)"/>
+          <text x="18" y="452">Softbox</text>
+          <line class="st dash" x1="180" y1="330" x2="520" y2="600"/>
+          <line class="st dash" x1="180" y1="380" x2="700" y2="700" opacity=".55"/>
+          <path class="st" d="M520 600 l 34 -6 l -14 -20" fill="none"/>
+          <ellipse class="st" cx="560" cy="880" rx="300" ry="52" fill="rgba(200,245,66,.09)"/>
+          <text x="300" y="1000">Sombra corta y difusa</text>
+          <line class="st dash" x1="560" y1="930" x2="500" y2="968"/>
+        </svg>
+
+        <!-- 04 COLOR -->
+        <svg class="ov" id="ov-color" viewBox="0 0 1000 1250" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+          <g>
+            <rect x="60" y="1040" width="150" height="150" fill="#8b8175"/>
+            <rect x="230" y="1040" width="150" height="150" fill="#d9c9a3"/>
+            <rect x="400" y="1040" width="150" height="150" fill="#efeae0"/>
+            <rect x="570" y="1040" width="150" height="150" fill="#3a3128"/>
+            <rect class="st" x="60" y="1040" width="660" height="150" fill="none"/>
+            <text x="60" y="1022">Muestreado de la propia foto</text>
+          </g>
+          <line class="st dash" x1="470" y1="640" x2="150" y2="1030"/>
+          <circle class="st" cx="470" cy="640" r="7" fill="#c8f542"/>
+        </svg>
+
+        <!-- 05 COMPOSICIÓN -->
+        <svg class="ov" id="ov-composicion" viewBox="0 0 1000 1250" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+          <rect x="0" y="0" width="1000" height="416" fill="rgba(200,245,66,.10)"/>
+          <line class="st-w" x1="333" y1="0" x2="333" y2="1250"/>
+          <line class="st-w" x1="667" y1="0" x2="667" y2="1250"/>
+          <line class="st-w" x1="0" y1="416" x2="1000" y2="416"/>
+          <line class="st-w" x1="0" y1="833" x2="1000" y2="833"/>
+          <text x="944" y="372" text-anchor="end" class="w">Espacio negativo</text>
+          <rect class="st" x="120" y="430" width="760" height="450" fill="none"/>
+          <text x="120" y="930">Sujeto en los dos tercios bajos</text>
+        </svg>
+
+        <!-- 06 REALISMO -->
+        <svg class="ov" id="ov-realismo" viewBox="0 0 1000 1250" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+          <text x="60" y="132">Recorre la foto → lupa</text>
+        </svg>
+
+        <!-- 07 ESTILO -->
+        <svg class="ov" id="ov-estilo" viewBox="0 0 1000 1250" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+          <rect class="st" x="30" y="30" width="940" height="1190" fill="none"/>
+          <line class="st" x1="30" y1="1120" x2="970" y2="1120"/>
+          <text x="60" y="1180">Lookbook · ficha de producto</text>
+          <text x="700" y="1180" class="w">01 / 04</text>
+        </svg>
+      </div>
+
+      <!-- prompt en construcción -->
+      <div class="strip">
+        <div class="strip-h m"><span><span class="wide">El prompt, escribiéndose</span><span class="narrow">Prompt</span></span><span><b id="counter">0</b>/7 capas</span></div>
+        <p class="strip-body" id="promptLive">
+          <span class="frag" data-l="1">Commercial product photograph of a grey-taupe suede derby shoe with a woven vamp panel and a natural crepe sole, on a seamless off-white studio backdrop<sup>01</sup></span><span class="frag" data-l="2">, macro lens, f/8 aperture for edge-to-edge sharpness<sup>02</sup></span><span class="frag" data-l="3">, three-point softbox lighting with a beauty-dish rim from camera left<sup>03</sup></span><span class="frag" data-l="4">, true colour accurate, Ektar 100 vibrancy, fine 35mm film grain<sup>04</sup></span><span class="frag" data-l="5">, three-quarter view, generous negative space above the subject<sup>05</sup></span><span class="frag" data-l="6">, dust-free surface, visible suede nap and crepe fibre, sharp focus<sup>06</sup></span><span class="frag" data-l="7">, high-end commercial photography, lookbook style<sup>07</sup></span><span class="frag" data-l="7">.</span>
+        </p>
+      </div>
+
+      <!-- raíl -->
+      <nav class="rail" id="rail" aria-label="Capas del prompt">
+        <button type="button" data-go="1" data-n="01">01 <i>Sujeto</i></button>
+        <button type="button" data-go="2" data-n="02">02 <i>Óptica</i></button>
+        <button type="button" data-go="3" data-n="03">03 <i>Luz</i></button>
+        <button type="button" data-go="4" data-n="04">04 <i>Color</i></button>
+        <button type="button" data-go="5" data-n="05">05 <i>Composición</i></button>
+        <button type="button" data-go="6" data-n="06">06 <i>Realismo</i></button>
+        <button type="button" data-go="7" data-n="07">07 <i>Estilo</i></button>
+      </nav>
+    </div>
+
+    <!-- ── columna de texto ── -->
+    <div class="steps" id="steps">
+
+      <article class="step" id="step-1" data-l="1" data-key="sujeto">
+        <p class="step-n"><b>01</b> <span class="m">Sujeto</span></p>
+        <h3 class="d">Qué hay, dicho como lo diría un catálogo.</h3>
+        <p>La base narrativa: qué o quién aparece y qué hace. Aquí no hay poesía, hay <strong>ficha de producto</strong>. Cada sustantivo que omites lo inventa el modelo por su cuenta.</p>
+        <p>Fíjate en lo que hemos nombrado sobre la foto: el <strong>panel trenzado</strong> del empeine y la <strong>suela de crepé</strong>. Son los dos rasgos que hacen reconocible este zapato y no otro; si desaparecen del prompt, desaparecen del render.</p>
+        <p class="warn"><b>Ojo:</b> «unos zapatos bonitos» no es un sujeto. <code>grey-taupe suede derby with a woven vamp panel</code> sí lo es.</p>
+      </article>
+
+      <article class="step" id="step-2" data-l="2" data-key="optica">
+        <p class="step-n"><b>02</b> <span class="m">Óptica</span></p>
+        <h3 class="d">La lente decide qué está nítido.</h3>
+        <p>La lente es lo primero que elige un fotógrafo, porque define la perspectiva, el desenfoque y la sensación de calidad. En producto mandan dos parámetros: <code>macro lens</code> para el detalle milimétrico y la <strong>apertura</strong>.</p>
+        <p>Mueve el control y mira el fondo de la foto: es exactamente lo que pasa cuando cambias un número en tu prompt.</p>
+        <div class="ctl">
+          <div class="ctl-h"><label class="m" for="apert">Apertura</label><output id="apertOut" for="apert">f/8.0</output></div>
+          <input id="apert" type="range" min="18" max="80" step="1" value="80" aria-describedby="apertHelp">
+          <small id="apertHelp">Nitidez de lado a lado: la costura, el trenzado y el fondo, todo legible. Es la apertura del catálogo.</small>
+        </div>
+        <p class="warn"><b>Aviso:</b> los gran angulares (<code>14–24mm</code>) alargan y exageran, pero deforman. Para producto, nunca.</p>
+      </article>
+
+      <article class="step" id="step-3" data-l="3" data-key="luz">
+        <p class="step-n"><b>03</b> <span class="m">Luz</span></p>
+        <h3 class="d">De dónde viene y qué sombra deja.</h3>
+        <p>La luz esculpe el volumen y revela la textura. Y en esta foto puedes <strong>ver la fuente</strong>: ese rectángulo claro del borde izquierdo es el softbox. Lo hemos marcado.</p>
+        <p>De ahí salen los rayos, y por eso la sombra cae hacia la derecha, <strong>corta y difusa</strong> — la firma de una fuente grande y cercana. Una fuente pequeña y lejana daría una sombra larga y de borde duro.</p>
+        <p>Con <code>softbox lighting</code> pides luz envolvente sin sombras duras; el <code>beauty-dish rim</code> añade el filo de luz que despega el zapato del fondo.</p>
+      </article>
+
+      <article class="step" id="step-4" data-l="4" data-key="color">
+        <p class="step-n"><b>04</b> <span class="m">Película y color</span></p>
+        <h3 class="d">La capa secreta: la textura fotomecánica.</h3>
+        <p>Es el motivo por el que una imagen de IA «canta» a plástico. La ausencia de grano. La perfección absoluta es el delator número uno.</p>
+        <p>Abajo tienes la paleta muestreada de la propia foto: taupe, crepé, papel, sombra. En catálogo se pide <code>true colour accurate</code> porque el color del producto <strong>no es negociable</strong>; el <code>Ektar 100</code> pone vivacidad sin falsear.</p>
+        <p>Y el grano. Enciéndelo y apágalo. La diferencia es pequeña, y es justo la que tu ojo usa para decidir si esto es una foto.</p>
+        <button class="sw" type="button" id="grainBtn" aria-pressed="false"><i>[ ]</i> 35 mm film grain</button>
+      </article>
+
+      <article class="step" id="step-5" data-l="5" data-key="composicion">
+        <p class="step-n"><b>05</b> <span class="m">Composición</span></p>
+        <h3 class="d">Dejar sitio para lo que aún no existe.</h3>
+        <p>Dónde colocas la cámara cambia la lectura emocional: a ras de suelo, poder; a vista de pájaro, delicadeza. Aquí, <code>three-quarter view</code>: el ángulo que da volumen y enseña puntera y perfil a la vez.</p>
+        <p>Pero la decisión que salva la campaña es otra: el <strong>espacio negativo</strong> de arriba. No está vacío por casualidad — está reservado. Mira lo que acaba de aparecer ahí.</p>
+        <p class="warn"><b>La regla:</b> compón para la maqueta, no para la foto. El titular y el logo van a caer encima.</p>
+      </article>
+
+      <article class="step" id="step-6" data-l="6" data-key="realismo">
+        <p class="step-n"><b>06</b> <span class="m">Realismo</span></p>
+        <h3 class="d">En producto, la capa se invierte.</h3>
+        <p>Con personas buscas imperfección humana: <code>flyaway hairs</code>, <code>visible skin texture</code>, pecas. Con producto buscas <strong>limpieza clínica</strong>: <code>dust-free surface</code>, <code>sharp focus</code>. La capa es la misma; la intención cambia con el sujeto.</p>
+        <p>Lo que no cambia es la textura. Recorre la foto con el cursor y acércate al trenzado: se ve el <strong>pelo del ante</strong> y la fibra del crepé. Sin eso, el zapato parece de plástico moldeado.</p>
+      </article>
+
+      <article class="step" id="step-7" data-l="7" data-key="estilo">
+        <p class="step-n"><b>07</b> <span class="m">Estilo</span></p>
+        <h3 class="d">Una etiqueta que contrata a todo el equipo.</h3>
+        <p>Las etiquetas maestras invocan de golpe una tradición estética entera: luz, encuadre, pose y color coherentes entre sí. <code>high-end commercial photography</code> y <code>lookbook style</code> son el atajo más potente del prompting fotográfico.</p>
+        <p>Y con eso, la foto ya no es una imagen suelta: es una <strong>página de catálogo</strong>. El prompt está completo.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 4. PROMPT COMPLETO ═══════════════════════════════════════════ -->
+<section class="full dark">
+  <div class="page">
+    <div class="full-h m"><span>Prompt maestro · producto de calzado</span><span><b>7</b> capas · 1 frase</span></div>
+    <pre id="fullPrompt"><span>Commercial product photograph of a grey-taupe suede derby shoe with a woven vamp panel and a natural crepe sole, on a seamless off-white studio backdrop<sup>01</sup></span>, <span>macro lens, f/8 aperture for edge-to-edge sharpness<sup>02</sup></span>, <span>three-point softbox lighting with a beauty-dish rim from camera left<sup>03</sup></span>, <span>true colour accurate, Ektar 100 vibrancy, fine 35mm film grain<sup>04</sup></span>, <span>three-quarter view, generous negative space above the subject<sup>05</sup></span>, <span>dust-free surface, visible suede nap and crepe fibre, sharp focus<sup>06</sup></span>, <span>high-end commercial photography, lookbook style<sup>07</sup></span>.</pre>
+    <button class="copy" type="button" id="copyBtn">Copiar el prompt limpio</button>
+  </div>
+</section>
+
+<!-- ═══ 5. CONSISTENCIA ══════════════════════════════════════════════ -->
+<section class="serie page">
+  <div class="serie-h">
+    <h2 class="d">Congela seis capas.<br>Mueve solo una.</h2>
+    <p>Una marca no necesita una foto genial: necesita <strong>doce fotos que parezcan la misma campaña</strong>. Estas cuatro salen del prompt que acabas de leer. Debajo de cada una, la única línea que cambia.</p>
+  </div>
+  <div class="shots">
+    <figure class="shot">
+      <img src="assets/zapato-1-sq.jpg" alt="El derby en tres cuartos, con el borde del softbox visible a la izquierda.">
+      <figcaption><span class="m">Toma 01</span><b>Portada</b><span class="diff">+ softbox visible en encuadre<br>+ warm off-white backdrop</span></figcaption>
+    </figure>
+    <figure class="shot">
+      <img src="assets/zapato-2-sq.jpg" alt="El mismo derby, más frontal, con los cordones oscuros y luz plana.">
+      <figcaption><span class="m">Toma 02</span><b>Ficha</b><span class="diff">− softbox rim<br>+ flat catalogue lighting</span></figcaption>
+    </figure>
+    <figure class="shot">
+      <img src="assets/zapato-3-sq.jpg" alt="El derby desde un ángulo más bajo, con el softbox grande a la izquierda.">
+      <figcaption><span class="m">Toma 03</span><b>Detalle</b><span class="diff">+ low angle shot<br>+ larger key light, camera left</span></figcaption>
+    </figure>
+    <figure class="shot">
+      <img src="assets/zapato-4-sq.jpg" alt="El derby en plano abierto y algo cenital, con la lengüeta visible.">
+      <figcaption><span class="m">Toma 04</span><b>Apertura</b><span class="diff">+ slight high angle<br>+ wider framing, more negative space</span></figcaption>
+    </figure>
+  </div>
+  <div class="serie-note">
+    <p class="side m">La lección</p>
+    <p>Mismo sujeto, misma óptica, misma película, mismo estilo → cuatro fotos distintas pero <strong>inequívocamente de la misma marca</strong>. El despiece es lo que hace la consistencia <em>controlable</em>: sabes qué tocar y, sobre todo, qué no tocar.</p>
+  </div>
+</section>
+
+<!-- ═══ 6. COMPARACIÓN ═══════════════════════════════════════════════ -->
+<section class="vs">
+  <div class="page">
+    <div class="vs-grid">
+      <figure class="a">
+        <img src="assets/stock-generico.jpg" alt="Fotografía de banco de imágenes: unas botas de ante beige apoyadas sobre tablas de madera, con luz cálida de tarde.">
+        <figcaption class="m">[ – ] Banco de imágenes<b>No es tu zapato. Es el de todos.</b></figcaption>
+      </figure>
+      <figure class="b">
+        <span class="ph"><img src="assets/zapato-4.jpg" alt="El derby de ante gris-taupe generado con el prompt de la clase, sobre fondo infinito crudo."><span class="tag m"><b>[✓]</b> 7 capas · tu producto</span></span>
+        <figcaption class="m">Generada con el prompt de esta clase<b>Es tu zapato, en tu luz, con tu encuadre.</b></figcaption>
+      </figure>
+    </div>
+    <div class="notes">
+      <div class="note">
+        <h4>Fondo</h4>
+        <p>Madera cálida genérica frente a fondo infinito neutro. El primero decide la estética por ti; el segundo la deja en tus manos.</p>
+      </div>
+      <div class="note">
+        <h4>Luz</h4>
+        <p>Sol de tarde con sombras duras y direccionales frente a tres puntos de softbox. Uno es lo que había; el otro es lo que pediste.</p>
+      </div>
+      <div class="note">
+        <h4>Producto</h4>
+        <p>El stock no tiene tu panel trenzado, ni tu suela de crepé, ni tu taupe. Y ninguna de esas tres cosas es un detalle.</p>
+      </div>
+    </div>
+    <blockquote class="close-q">
+      <p>El texto informa,<br>pero <i>la imagen convierte</i>.</p>
+      <footer>Y ahora ya sabes escribir la imagen</footer>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ═══ 7. PRÁCTICA + PFC ════════════════════════════════════════════ -->
+<section class="prac page">
+  <h2 class="d">Tu catálogo fotográfico.</h2>
+  <ol class="ex">
+    <li><b>01</b><h4>Despiece inverso</h4><p>Elige una foto de campaña que admires en Lexica o PromptHero e identifica sus 7 capas. Escríbelas una a una.</p></li>
+    <li><b>02</b><h4>Plano de producto</h4><p>Genera una foto de estudio de tu zapato con el prompt maestro de arriba. Escala el resultado con Magnific.</p></li>
+    <li><b>03</b><h4>Serie consistente</h4><p>Congela seis capas y mueve solo una (luz o encuadre) para producir cuatro tomas de la misma campaña.</p></li>
+  </ol>
+
+  <div class="pfc">
+    <p class="m">PFC — Módulo 4 · Marca de zapatos</p>
+    <h3>Mini-catálogo fotorrealista</h3>
+    <p>Entrega una serie de producto de tu marca aplicando las siete capas. Marca lo que ya tengas listo.</p>
+    <ul>
+      <li><input type="checkbox" id="c1"><label for="c1"><span><strong>Plano de producto en estudio</strong> — 1 render limpio sobre fondo infinito.</span></label></li>
+      <li><input type="checkbox" id="c2"><label for="c2"><span><strong>Serie consistente (×4)</strong> — 4 tomas cambiando solo 1 capa.</span></label></li>
+      <li><input type="checkbox" id="c3"><label for="c3"><span><strong>Plano lifestyle / editorial</strong> — el zapato puesto, con contexto real.</span></label></li>
+      <li><input type="checkbox" id="c4"><label for="c4"><span><strong>Ficha de prompts</strong> — los prompts usados, despiezados por capas.</span></label></li>
+    </ul>
+    <p class="path">PFC_M3_Fotografia_[NombreMarca]/ → alimenta el catálogo final</p>
+  </div>
+</section>
+
+<footer class="foot m">
+  <p>[m].seny /academy · IA Generativa</p>
+  <p>Siguiente → M4 · C3 Vídeo generativo</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.js"></script>
+<script>
+(function(){
+  'use strict';
+  document.documentElement.classList.remove('no-js');
+  document.documentElement.classList.add('js');
+
+  var M = window.Motion || null;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var anim = function(el, kf, opt){
+    if(!M || !M.animate || reduce || !el) return null;
+    try{ return M.animate(el, kf, opt); }catch(e){ return null; }
+  };
+
+  var frame = document.getElementById('frame');
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
+  var rail  = Array.prototype.slice.call(document.querySelectorAll('.rail button'));
+  var frags = Array.prototype.slice.call(document.querySelectorAll('.frag'));
+  var counter = document.getElementById('promptLive') ? document.getElementById('counter') : null;
+  var live  = document.getElementById('promptLive');
+  var current = 0;
+
+  /* ── overlays: preparar el trazado ─────────────────────────────── */
+  var overlays = {};
+  Array.prototype.forEach.call(document.querySelectorAll('.ov'), function(svg){
+    overlays[svg.id.replace('ov-','')] = svg;
+    Array.prototype.forEach.call(svg.querySelectorAll('path,line,rect,circle,ellipse'), function(p){
+      if(!M || reduce) return;
+      var len = 0;
+      try{ len = p.getTotalLength ? p.getTotalLength() : 0; }catch(e){ len = 0; }
+      if(len > 0 && !p.classList.contains('dash')){ p.dataset.len = len; }
+    });
+  });
+
+  function drawIn(svg){
+    if(!svg) return;
+    var nodes = svg.querySelectorAll('path,line,circle,ellipse,rect,text');
+    anim(nodes, {opacity:[0,1], transform:['translateY(6px)','translateY(0px)']},
+         {duration:.55, delay: M && M.stagger ? M.stagger(.05) : 0, easing:[0.16,1,0.3,1]});
+  }
+
+  /* ── activar una capa ──────────────────────────────────────────── */
+  function setLayer(n){
+    if(n === current) return;
+    current = n;
+    var key = n > 0 ? steps[n-1].dataset.key : '';
+
+    // clase de estado en el marco (gobierna blur, lupa, titular…)
+    frame.className = 'frame' + (key ? ' is-' + key : '');
+
+    // overlays
+    Object.keys(overlays).forEach(function(k){
+      var on = (k === key);
+      overlays[k].classList.toggle('on', on);
+      if(on) drawIn(overlays[k]);
+    });
+
+    // pasos
+    steps.forEach(function(s,i){ s.classList.toggle('active', i === n-1); });
+
+    // raíl
+    rail.forEach(function(b,i){
+      b.setAttribute('aria-current', i === n-1 ? 'true' : 'false');
+      b.classList.toggle('done', i < n-1);
+    });
+
+    // fragmentos del prompt
+    frags.forEach(function(f){
+      var l = parseInt(f.dataset.l,10);
+      var isIn = l <= n;
+      var wasIn = f.classList.contains('in');
+      f.classList.toggle('in', isIn);
+      f.classList.toggle('now', l === n);
+      if(isIn && !wasIn && l === n && live){
+        // desplaza SOLO la tira (nunca la página) hasta el fragmento recién entrado
+        try{
+          var rf = f.getBoundingClientRect(), rc = live.getBoundingClientRect();
+          var delta = (rf.top - rc.top) - (rc.height - rf.height) / 2;
+          if(live.scrollTo){ live.scrollTo({top: live.scrollTop + delta, behavior: reduce ? 'auto' : 'smooth'}); }
+          else { live.scrollTop += delta; }
+        }catch(e){}
+      }
+    });
+    if(counter) counter.textContent = String(n);
+  }
+
+  /* ── observador: la capa que cruza el centro manda ─────────────── */
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting) setLayer(parseInt(e.target.dataset.l,10));
+      });
+    }, {rootMargin:'-48% 0px -48% 0px', threshold:0});
+    steps.forEach(function(s){ io.observe(s); });
+  }else{
+    setLayer(7); // sin IO: el prompt completo y todo visible
+  }
+
+  /* ── raíl clicable ─────────────────────────────────────────────── */
+  rail.forEach(function(b){
+    b.addEventListener('click', function(){
+      var t = document.getElementById('step-' + b.dataset.go);
+      if(t) t.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'center'});
+    });
+  });
+
+  /* ── 02 Óptica: la apertura mueve el desenfoque de verdad ──────── */
+  var apert = document.getElementById('apert');
+  var apertOut = document.getElementById('apertOut');
+  var apertHelp = document.getElementById('apertHelp');
+  if(apert){
+    var describe = function(f){
+      if(f >= 6.5) return 'Nitidez de lado a lado: la costura, el trenzado y el fondo, todo legible. Es la apertura del catálogo.';
+      if(f >= 3.5) return 'El fondo empieza a ceder. Suficiente para separar el producto sin perder la textura del ante.';
+      if(f >= 2.4) return 'El «sweet spot» de retrato: el sujeto entero enfocado y el fondo ya fundido.';
+      return 'Bokeh cremoso. Precioso para editorial, arriesgado para catálogo: puedes perder el filo de la suela.';
+    };
+    var onApert = function(){
+      var f = parseInt(apert.value,10) / 10;      // 1.8 … 8.0
+      var blur = Math.max(0, (8 - f) * 2.4);      // f/8 → 0px ; f/1.8 → ~15px
+      frame.style.setProperty('--bokeh', blur.toFixed(1) + 'px');
+      apertOut.textContent = 'f/' + f.toFixed(1);
+      apertHelp.textContent = describe(f);
+    };
+    apert.addEventListener('input', onApert);
+    onApert();
+  }
+
+  /* ── 04 Color: el grano ────────────────────────────────────────── */
+  var grainBtn = document.getElementById('grainBtn');
+  var grain = document.getElementById('grain');
+  if(grainBtn && grain){
+    grainBtn.addEventListener('click', function(){
+      var on = grainBtn.getAttribute('aria-pressed') === 'true';
+      grainBtn.setAttribute('aria-pressed', on ? 'false' : 'true');
+      grainBtn.querySelector('i').textContent = on ? '[ ]' : '[✓]';
+      grain.classList.toggle('on', !on);
+    });
+  }
+
+  /* ── 06 Realismo: la lupa sigue al puntero ─────────────────────── */
+  var loupe = document.getElementById('loupe');
+  if(loupe && frame){
+    var moveLoupe = function(ev){
+      if(!frame.classList.contains('is-realismo')) return;
+      var r = frame.getBoundingClientRect();
+      var x = Math.min(Math.max((ev.clientX - r.left) / r.width, 0), 1);
+      var y = Math.min(Math.max((ev.clientY - r.top) / r.height, 0), 1);
+      loupe.style.left = (x*100) + '%';
+      loupe.style.top  = (y*100) + '%';
+      loupe.style.backgroundPosition = (x*100) + '% ' + (y*100) + '%';
+    };
+    frame.addEventListener('pointermove', moveLoupe);
+    // posición de partida: el panel trenzado
+    loupe.style.backgroundPosition = '62% 52%';
+  }
+
+  /* ── Copiar el prompt limpio ───────────────────────────────────── */
+  var copyBtn = document.getElementById('copyBtn');
+  if(copyBtn){
+    copyBtn.addEventListener('click', function(){
+      var pre = document.getElementById('fullPrompt').cloneNode(true);
+      Array.prototype.forEach.call(pre.querySelectorAll('sup'), function(s){ s.remove(); });
+      var txt = pre.textContent.replace(/\s+/g,' ').trim();
+      var done = function(){
+        copyBtn.textContent = '[✓] Copiado al portapapeles';
+        setTimeout(function(){ copyBtn.textContent = 'Copiar el prompt limpio'; }, 2200);
+      };
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(txt).then(done, done);
+      }else{
+        var ta = document.createElement('textarea');
+        ta.value = txt; document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); }catch(e){}
+        document.body.removeChild(ta); done();
+      }
+    });
+  }
+
+  /* ── Comparación: las notas entran al llegar ───────────────────── */
+  var notes = Array.prototype.slice.call(document.querySelectorAll('.note'));
+  if(reduce || !('IntersectionObserver' in window)){
+    notes.forEach(function(n){ n.classList.add('seen'); });
+  }else{
+    var io2 = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(!e.isIntersecting) return;
+        var i = notes.indexOf(e.target);
+        e.target.classList.add('seen');
+        if(M){
+          anim(e.target, {opacity:[0,1], transform:['translateY(14px)','translateY(0px)']},
+               {duration:.6, delay: i*0.09, easing:[0.16,1,0.3,1]});
+        }
+        io2.unobserve(e.target);
+      });
+    }, {rootMargin:'0px 0px -12% 0px', threshold:0.2});
+    notes.forEach(function(n){ io2.observe(n); });
+    // salvavidas: si algo falla, se ven igual
+    setTimeout(function(){ notes.forEach(function(n){ n.classList.add('seen'); }); }, 6000);
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Temario · Curso IA Generativa — [m].seny /academy</title>
+<meta name="description" content="El temario del alumno como recorrido editorial: capítulos con peso visual según su estado, láminas reales y lo accionable arriba.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0b'/%3E%3Crect x='9' y='9' width='14' height='14' fill='%23c8f542'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Chivo+Mono:wght@300..600&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════════════════
+   Tokens [m].seny  (copiados de assets/theme.css; solo cambian los stacks
+   tipográficos, aquí servidos por Google Fonts).
+   ═════════════════════════════════════════════════════════════════════════ */
+:root{
+  color-scheme:light;
+  --color-ink:#0a0a0b;
+  --color-ink-soft:#151517;
+  --color-paper:#f7f6f2;
+  --color-paper-dim:#edebe3;
+  --color-accent:#c8f542;
+  --color-accent-deep:#0f766e;
+  --color-accent-ink:#253a06;
+  --color-muted:#5f5f66;
+  --color-mist:#a5a5ab;
+  --color-line:#e0ddd3;
+  --color-line-dark:#26262a;
+  --font-display:'Bricolage Grotesque',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Instrument Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'Chivo Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --ease-expo:cubic-bezier(.16,1,.3,1);
+  --gutter:clamp(20px,5.2vw,80px);
+  --edge:max(var(--gutter),(100vw - 1320px)/2);
+  --bar:60px;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{background:var(--color-paper);scroll-behavior:smooth;}
+body{
+  margin:0;background:var(--color-paper);color:var(--color-ink);
+  font-family:var(--font-body);font-size:1.0625rem;line-height:1.6;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%;height:auto;}
+a{color:inherit;text-decoration:none;}
+ol,ul{margin:0;padding:0;list-style:none;}
+h1,h2,h3,h4,p{margin:0;}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
+::selection{background:var(--color-accent);color:var(--color-accent-ink);}
+:focus-visible{outline:2px solid var(--color-accent-deep);outline-offset:3px;border-radius:2px;}
+.dark :focus-visible{outline-color:var(--color-accent);}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+.display{font-family:var(--font-display);font-weight:640;line-height:.98;letter-spacing:-.025em;text-wrap:balance;}
+.mono{font-family:var(--font-mono);font-weight:400;letter-spacing:.09em;text-transform:uppercase;font-size:.75rem;}
+.wrap{width:min(1320px,100% - var(--gutter)*2);margin-inline:auto;}
+
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--color-accent);color:var(--color-accent-ink);padding:12px 20px;font-weight:600;}
+.skip:focus{left:12px;top:12px;}
+
+/* ═══ 1. Barra: marca, cinta de progreso y salida ═════════════════════════ */
+.topbar{
+  position:sticky;top:0;z-index:30;height:var(--bar);
+  background:var(--color-ink);color:var(--color-paper);
+  display:flex;align-items:center;gap:clamp(16px,3vw,44px);
+  padding-inline:var(--gutter);
+  border-bottom:1px solid var(--color-line-dark);
+}
+.wm{font-family:var(--font-display);font-weight:600;font-size:1.02rem;letter-spacing:-.02em;white-space:nowrap;display:flex;align-items:baseline;gap:.35rem;}
+.wm b{font-weight:640;}
+.wm span{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;color:var(--color-accent);text-transform:none;}
+
+/* La cinta: 15 marcas, una por clase, agrupadas por módulo.
+   Es el progreso «de un vistazo» sin una sola barra de dashboard. */
+.ribbon{display:flex;align-items:flex-end;gap:11px;margin-left:auto;}
+.rgroup{display:flex;gap:3px;}
+.tick{display:block;width:4px;height:15px;background:rgba(247,246,242,.2);border-radius:1px;transform-origin:bottom;}
+.tick.seen{background:var(--color-accent);}
+.tick.here{background:var(--color-accent);height:23px;box-shadow:0 0 0 3px rgba(200,245,66,.16);}
+.tick.blocked{background:none;box-shadow:inset 0 0 0 1px rgba(247,246,242,.28);}
+.ribbon-n{font-family:var(--font-mono);font-size:.8rem;letter-spacing:.04em;white-space:nowrap;}
+.ribbon-n i{font-style:normal;color:var(--color-mist);}
+.topbar .out{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--color-mist);padding:12px 0;transition:color .3s ease;}
+.topbar .out:hover{color:var(--color-accent);}
+@media (max-width:900px){.ribbon{gap:7px;}.tick{width:3px;}.topbar .out{display:none;}}
+@media (max-width:560px){.ribbon-n{display:none;}}
+
+/* ═══ 2. Apertura: a sangre, asimétrica, la lámina se sale por la derecha ══ */
+.opening{background:var(--color-ink);color:var(--color-paper);position:relative;}
+.opening-grid{
+  display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,.78fr);
+  align-items:stretch;min-height:min(84vh,720px);
+}
+.opening-text{padding:clamp(44px,6vw,84px) clamp(36px,4.4vw,72px) clamp(44px,5vw,72px) var(--gutter);display:flex;flex-direction:column;justify-content:center;}
+.kicker{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--color-mist);}
+.kicker b{color:var(--color-paper);font-weight:400;}
+.opening h1{font-size:clamp(2.9rem,6.6vw,5.6rem);margin:.34em 0 0;max-width:14ch;}
+.opening h1 em{font-style:normal;color:var(--color-accent);}
+.lede{margin-top:1.1rem;max-width:46ch;font-size:clamp(1.02rem,1.25vw,1.2rem);color:#d8d6cf;}
+
+/* Lo accionable: un bloque de acción sobre filete lima, no una tarjeta */
+.resume{margin-top:clamp(30px,3.6vw,54px);border-top:2px solid var(--color-accent);padding-top:20px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px clamp(24px,3vw,52px);align-items:end;}
+.resume-k{font-family:var(--font-mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent);}
+.resume h2{font-size:clamp(1.35rem,2.15vw,1.95rem);margin-top:.42rem;max-width:22ch;}
+.resume-meta{font-family:var(--font-mono);font-size:.76rem;letter-spacing:.05em;color:var(--color-mist);margin-top:.6rem;}
+.resume-act{grid-row:1/3;grid-column:2;display:flex;flex-direction:column;align-items:flex-start;gap:14px;}
+.cta{
+  display:inline-flex;align-items:center;gap:.85rem;background:var(--color-accent);color:var(--color-accent-ink);
+  font-weight:700;border-radius:999px;padding:1.05rem 1.6rem 1.05rem 2rem;font-size:1.02rem;line-height:1;white-space:nowrap;
+  transition:box-shadow .4s var(--ease-expo);box-shadow:0 0 0 0 rgba(200,245,66,0);
+}
+.cta .arw{position:relative;width:22px;height:10px;overflow:hidden;flex:none;}
+.cta .arw svg{position:absolute;top:0;left:0;transition:transform .45s var(--ease-expo);}
+.cta .arw svg+svg{left:-26px;}
+.cta:hover{box-shadow:0 14px 34px -12px rgba(200,245,66,.7);}
+.cta:hover .arw svg{transform:translateX(26px);}
+.secondary{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;color:var(--color-mist);border-bottom:1px solid rgba(165,165,171,.4);padding-bottom:3px;transition:color .3s ease,border-color .3s ease;}
+.secondary:hover{color:var(--color-accent);border-color:var(--color-accent);}
+
+.opening-plate{margin:0;position:relative;overflow:hidden;}
+.opening-plate img{width:100%;height:100%;object-fit:cover;object-position:52% 42%;filter:grayscale(1) contrast(1.14) brightness(.82);}
+.opening-plate figcaption{
+  position:absolute;left:0;bottom:0;right:0;padding:22px var(--gutter) 22px 26px;
+  font-family:var(--font-mono);font-size:.7rem;line-height:1.65;letter-spacing:.05em;color:#e2e0d8;
+  background:linear-gradient(to top,rgba(10,10,11,.92),rgba(10,10,11,0));
+}
+.opening-plate figcaption b{color:var(--color-accent);font-weight:400;}
+@media (max-width:920px){
+  .opening-grid{grid-template-columns:1fr;min-height:0;}
+  .opening-text{padding:38px var(--gutter) 42px;}
+  .opening-plate{height:auto;aspect-ratio:4/3;}
+  .resume{grid-template-columns:1fr;}
+  .resume-act{grid-row:auto;grid-column:auto;flex-direction:row;align-items:center;flex-wrap:wrap;margin-top:8px;}
+}
+
+/* ═══ 3. Cabecera del temario + herramienta de filtro ═════════════════════ */
+.temario-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:clamp(52px,6vw,88px) 0 18px;}
+.temario-head h2{font-size:clamp(1.6rem,2.6vw,2.3rem);}
+.temario-head .sub{font-family:var(--font-mono);font-size:.76rem;letter-spacing:.07em;color:var(--color-muted);margin-top:.6rem;}
+.filter{display:flex;gap:4px;border:1px solid var(--color-line);border-radius:999px;padding:4px;}
+.filter button{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;padding:11px 18px;border-radius:999px;color:var(--color-muted);transition:background-color .3s ease,color .3s ease;min-height:44px;}
+.filter button[aria-pressed="true"]{background:var(--color-ink);color:var(--color-paper);}
+.filter button:hover{color:var(--color-ink);}
+.filter button[aria-pressed="true"]:hover{color:var(--color-paper);}
+
+/* ═══ 4. Capítulos ════════════════════════════════════════════════════════ */
+.chapters{padding-bottom:clamp(60px,7vw,110px);}
+
+/* Filete estructural que se dibuja al entrar (lo único que «aparece») */
+.rule{height:1px;background:var(--color-line);transform-origin:left center;}
+.rule.strong{height:2px;background:var(--color-ink);}
+.rule.lime{height:3px;background:var(--color-accent);}
+
+/* — 4a. Capítulo plegado (completado): poca altura, poco peso, expandible — */
+.fold-group-note .runhead{margin-bottom:0;padding-bottom:14px;}
+.fold-group-note .runhead .line{background:var(--color-ink);}
+.fold{border-bottom:1px solid var(--color-line);}
+.fold[open]{background:var(--color-paper-dim);}
+.fold summary{
+  list-style:none;cursor:pointer;position:relative;
+  display:grid;grid-template-columns:34px 52px minmax(0,auto) 1fr auto auto;
+  align-items:center;gap:0 16px;padding:14px 0;min-height:60px;
+}
+.fold summary::-webkit-details-marker{display:none;}
+.fold summary::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--color-accent);transform:scaleX(0);transform-origin:left;transition:transform .55s var(--ease-expo);}
+.fold summary:hover::after,.fold summary:focus-visible::after{transform:scaleX(1);}
+.fold-mark{font-family:var(--font-mono);font-size:.9rem;color:var(--color-accent-deep);}
+.fold-num{font-family:var(--font-display);font-weight:640;font-size:1.6rem;letter-spacing:-.02em;color:var(--color-muted);}
+.fold-title{font-family:var(--font-display);font-weight:640;font-size:clamp(1.05rem,1.5vw,1.32rem);letter-spacing:-.02em;color:var(--color-ink);transition:transform .45s var(--ease-expo);}
+.fold summary:hover .fold-title{transform:translateX(6px);}
+.fold-lead{border-bottom:1px dotted var(--color-line);transform:translateY(-.3em);min-width:20px;}
+.fold-meta{font-family:var(--font-mono);font-size:.73rem;letter-spacing:.06em;color:var(--color-muted);white-space:nowrap;}
+.fold-open{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-deep);white-space:nowrap;}
+.fold[open] .fold-open span::after{content:" −";}
+.fold:not([open]) .fold-open span::after{content:" +";}
+.fold-panel{padding:0 0 26px 102px;max-width:840px;}
+@media (max-width:760px){
+  .fold summary{grid-template-columns:28px 42px minmax(0,1fr) auto;gap:0 12px;}
+  .fold-lead,.fold-meta{display:none;}
+  .fold-panel{padding-left:0;}
+}
+
+/* — 4b. Índice de clases con puntos guía (aire de índice de libro) — */
+.toc li+li{margin-top:2px;}
+.toc a,.toc .noclick{display:flex;align-items:baseline;gap:12px;padding:12px 0;min-height:44px;}
+.toc .n{font-family:var(--font-mono);font-size:.74rem;letter-spacing:.06em;color:var(--color-muted);flex:none;width:2.4em;}
+.toc .t{font-weight:600;font-size:1rem;line-height:1.35;flex:0 1 auto;}
+.toc .dots{flex:1 1 46px;border-bottom:1px dotted var(--color-line);transform:translateY(-.32em);min-width:0;transition:border-color .35s ease;}
+.toc .d{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.05em;color:var(--color-muted);flex:none;}
+.toc .s{font-family:var(--font-mono);font-size:.8rem;color:var(--color-accent-deep);flex:none;width:2.2em;text-align:right;}
+.toc a:hover .dots{border-bottom-style:solid;border-color:var(--color-accent-deep);}
+.toc a:hover .t{color:var(--color-accent-deep);}
+.toc .seen .t{color:var(--color-muted);font-weight:400;}
+.toc .noclick{opacity:.55;cursor:not-allowed;}
+/* En estrecho el índice deja de ser «índice de libro»: sin puntos guía, el dato
+   baja bajo el título y la marca de estado se queda a la derecha. */
+@media (max-width:820px){
+  .toc a,.toc .noclick,.now .toc a,.ch-wide .toc a{
+    display:grid;grid-template-columns:2.6em minmax(0,1fr) auto;
+    grid-template-areas:"n t s" ". d s";column-gap:12px;row-gap:3px;align-items:start;
+  }
+  .toc .n{grid-area:n;} .toc .t{grid-area:t;} .toc .d{grid-area:d;}
+  .toc .s{grid-area:s;align-self:center;width:auto;text-align:right;}
+  .toc .dots{display:none;}
+}
+
+/* — 4c. Capítulo en curso: el momento de la página — */
+.now{background:var(--color-ink);color:var(--color-paper);margin-top:38px;}
+.now-grid{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.12fr);gap:0 clamp(38px,5vw,86px);align-items:start;padding-bottom:clamp(30px,3.4vw,52px);}
+.now .runhead{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;padding:26px 0 clamp(30px,4vw,52px);font-family:var(--font-mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent);}
+.now .runhead .line{flex:1;height:1px;background:var(--color-line-dark);}
+.now .runhead .r{color:var(--color-mist);letter-spacing:.06em;}
+
+.plate{position:sticky;top:calc(var(--bar) + 26px);margin:0;}
+/* La lámina se sale por el borde izquierdo: es el único bloque a sangre del temario */
+@media (min-width:921px){.plate{margin-left:calc(-1 * var(--edge));}.plate figcaption,.plate .plate-tags{margin-left:var(--edge);}}
+.plate-box{position:relative;aspect-ratio:4/5;overflow:hidden;background:#111;}
+.plate-box img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.plate-before{filter:grayscale(1) contrast(.92) brightness(.78);}
+/* --wipe: 0 = solo banco de imágenes · 1 = solo la generada en clase.
+   La generada entra por la derecha y se come el stock: a la izquierda del corte
+   queda siempre el «antes». Sin JS el valor por defecto deja las dos mitades. */
+.plate-box{--wipe:.52;}
+.plate-after{clip-path:inset(0 0 0 calc((1 - var(--wipe))*100%));}
+.seam{position:absolute;top:0;bottom:0;left:calc((1 - var(--wipe))*100%);width:2px;background:var(--color-accent);}
+.seam::after{content:"";position:absolute;top:50%;left:-4px;width:10px;height:10px;background:var(--color-accent);transform:translateY(-50%) rotate(45deg);}
+.plate-tags{display:flex;justify-content:space-between;gap:12px;margin-top:12px;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;}
+.plate-tags .a{color:var(--color-mist);}
+.plate-tags .b{color:var(--color-accent);}
+.plate figcaption{margin-top:14px;font-size:.86rem;line-height:1.6;color:#c9c7c0;max-width:38ch;}
+
+.now-num{font-family:var(--font-display);font-weight:640;font-size:clamp(4.6rem,10vw,9rem);line-height:.8;letter-spacing:-.045em;color:var(--color-accent);}
+.now h3{font-size:clamp(2rem,3.5vw,3.15rem);margin-top:.16em;max-width:16ch;}
+.now .desc{margin-top:1.15rem;max-width:52ch;color:#d5d3cc;font-size:1.06rem;}
+.now .tools{margin-top:1.5rem;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.05em;color:var(--color-mist);line-height:1.9;max-width:52ch;}
+.now .toc{margin-top:clamp(26px,3vw,42px);border-top:1px solid var(--color-line-dark);}
+.now .toc li{border-bottom:1px solid var(--color-line-dark);}
+.now .toc a{padding:20px 0;min-height:64px;align-items:center;}
+.now .toc .n{color:var(--color-mist);}
+.now .toc .t{font-family:var(--font-display);font-weight:640;letter-spacing:-.02em;font-size:clamp(1.1rem,1.7vw,1.42rem);line-height:1.15;}
+.now .toc .dots{border-color:var(--color-line-dark);}
+.now .toc .d{color:var(--color-mist);}
+.now .toc a:hover .t{color:var(--color-accent);}
+.now .toc a:hover .dots{border-color:var(--color-accent);}
+.now .toc .seen .t{color:#8d8b85;font-weight:400;font-family:var(--font-body);}
+.now .toc .s{color:var(--color-accent);}
+.vars{margin:clamp(28px,3.2vw,44px) 0 0;}
+.vars figcaption{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--color-mist);}
+.vars-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px;}
+.vars-grid img{width:100%;aspect-ratio:1;object-fit:cover;filter:saturate(.92);transition:filter .4s ease,transform .5s var(--ease-expo);}
+.vars-grid img:hover{filter:none;transform:scale(1.03);}
+.vars-note{margin-top:12px;font-size:.9rem;color:#bcbab4;max-width:46ch;}
+.badge-now{display:inline-block;margin-left:.7rem;vertical-align:.28em;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;background:var(--color-accent);color:var(--color-accent-ink);padding:5px 9px;border-radius:999px;}
+@media (max-width:920px){
+  .now-grid{grid-template-columns:1fr;gap:32px;}
+  .plate{position:static;}
+  .plate-box{aspect-ratio:4/3;}
+}
+
+/* — 4d. Capítulos pendientes: dos ritmos distintos — */
+.ch{padding:clamp(40px,4.6vw,70px) 0 clamp(34px,4vw,58px);border-bottom:1px solid var(--color-line);}
+.runhead{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--color-muted);margin-bottom:clamp(26px,3vw,44px);}
+.runhead .line{flex:1;height:1px;background:var(--color-line);}
+.runhead .r{letter-spacing:.06em;}
+
+/* narrow: número al margen, medida de lectura corta */
+.ch-narrow .body{display:grid;grid-template-columns:clamp(120px,13vw,210px) minmax(0,1fr);gap:0 clamp(24px,3vw,52px);}
+.ch-narrow .col-main{max-width:760px;}
+.ch-num{font-family:var(--font-display);font-weight:640;font-size:clamp(3.4rem,7vw,6.2rem);line-height:.78;letter-spacing:-.045em;color:var(--color-ink);}
+.ch h3{font-size:clamp(1.75rem,3vw,2.6rem);max-width:18ch;}
+.ch .desc{margin-top:1rem;color:var(--color-muted);max-width:54ch;}
+.note{font-family:var(--font-mono);font-size:.7rem;line-height:1.75;letter-spacing:.03em;color:var(--color-muted);border-left:2px solid var(--color-accent);padding-left:11px;margin-top:22px;max-width:24ch;}
+.ch .toc{margin-top:clamp(22px,2.6vw,38px);border-top:1px solid var(--color-line);}
+.ch .toc li{border-bottom:1px solid var(--color-line);}
+
+/* wide: una sola clase, así que va a medida ancha y con una entrada de mucho peso */
+.ch-wide .body{display:grid;grid-template-columns:clamp(120px,13vw,210px) minmax(0,1fr);gap:0 clamp(24px,3vw,52px);align-items:start;}
+.ch-wide h3{max-width:none;}
+.ch-wide .big{font-family:var(--font-display);font-weight:400;font-size:clamp(1.3rem,2.35vw,1.95rem);line-height:1.26;letter-spacing:-.02em;max-width:30ch;color:var(--color-ink);margin-top:1.1rem;text-wrap:balance;}
+.ch-wide .toc a{padding:22px 0;align-items:center;}
+.ch-wide .toc .t{font-family:var(--font-display);font-weight:640;letter-spacing:-.02em;font-size:clamp(1.15rem,1.8vw,1.5rem);line-height:1.15;}
+.ch-wide .toc .s{font-size:1.05rem;}
+@media (max-width:760px){
+  .ch-narrow .body,.ch-wide .body{grid-template-columns:1fr;gap:14px;}
+  .note{max-width:none;}
+}
+
+/* — 4e. Bloqueado: número en contorno, sin enlace — */
+.ch-locked{border-bottom:0;opacity:.92;}
+.ch-locked .ch-num{color:transparent;-webkit-text-stroke:1.5px var(--color-line);}
+.ch-locked h3{color:var(--color-muted);}
+.ch-locked .desc{color:var(--color-mist);}
+.locked-row{display:flex;align-items:baseline;gap:12px;padding:16px 0;border-top:1px dashed var(--color-line);margin-top:24px;font-family:var(--font-mono);font-size:.73rem;letter-spacing:.05em;color:var(--color-muted);}
+.locked-row .k{color:var(--color-mist);}
+.locked-row>span:first-child{white-space:nowrap;flex:none;}
+
+/* ═══ 5. Interludio: la cita, a sangre ════════════════════════════════════ */
+.interlude{background:var(--color-ink);color:var(--color-paper);padding:clamp(40px,4.6vw,74px) 0 clamp(56px,6.4vw,100px);}
+.interlude .inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.05fr);gap:0 clamp(24px,4vw,70px);align-items:start;}
+.interlude .src{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent);line-height:1.9;}
+.interlude .src span{display:block;color:var(--color-mist);letter-spacing:.05em;text-transform:none;}
+.interlude blockquote{margin:0;font-family:var(--font-display);font-weight:640;letter-spacing:-.028em;line-height:1.06;font-size:clamp(1.6rem,3.1vw,2.7rem);text-wrap:pretty;max-width:24ch;}
+.interlude blockquote em{font-style:normal;color:var(--color-accent);}
+@media (max-width:760px){.interlude .inner{grid-template-columns:1fr;gap:20px;}}
+
+/* ═══ 6. Pie ══════════════════════════════════════════════════════════════ */
+.foot{background:var(--color-ink);color:var(--color-mist);border-top:1px solid var(--color-line-dark);padding:26px 0 34px;}
+.foot .inner{display:flex;flex-wrap:wrap;gap:16px 32px;align-items:baseline;justify-content:space-between;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.07em;}
+.foot a{color:var(--color-paper);border-bottom:1px solid var(--color-line-dark);padding-bottom:2px;transition:border-color .3s ease;}
+.foot a:hover{border-color:var(--color-accent);}
+
+/* ═══ 7. Filtro «lo que me queda» ═════════════════════════════════════════ */
+.chapters.only-left .is-done{display:none;}
+.chapters.only-left .fold-group-note{display:none;}
+
+/* ═══ 8. Estados iniciales de animación (los pone el JS, nunca el CSS) ════ */
+[data-anim="rule"]{will-change:transform;}
+.num-mask{display:block;overflow:hidden;}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;}
+  .cta:hover .arw svg{transform:none;}
+  .fold summary:hover .fold-title{transform:none;}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#temario">Saltar al temario</a>
+
+<!-- ═══ Barra ═══════════════════════════════════════════════════════════ -->
+<header class="topbar dark">
+  <a class="wm" href="#"><b>[m]</b>.seny <span>/academy</span></a>
+
+  <p class="sr-only" id="ribbon-desc">Has visto 9 de las 14 clases publicadas · 1 bloqueada. Estás en el módulo 4, clase 2.</p>
+  <div class="ribbon" role="img" aria-labelledby="ribbon-desc" id="ribbon">
+    <span class="rgroup" title="M1 · El Paisaje de los LLMs — vista"><i class="tick seen"></i></span>
+    <span class="rgroup" title="M2 · Glosario y Fundamentos — vista"><i class="tick seen"></i></span>
+    <span class="rgroup" title="M3 · Estudio Creativo IA (Imagen) — 3 de 3 vistas"><i class="tick seen"></i><i class="tick seen"></i><i class="tick seen"></i></span>
+    <span class="rgroup" title="M4 · Automatización — 1 de 2 vistas, estás aquí"><i class="tick seen"></i><i class="tick here"></i></span>
+    <span class="rgroup" title="M6 · Claude suite — pendiente"><i class="tick"></i><i class="tick"></i><i class="tick"></i></span>
+    <span class="rgroup" title="M7 · Cerebros de IA — 3 de 3 vistas"><i class="tick seen"></i><i class="tick seen"></i><i class="tick seen"></i></span>
+    <span class="rgroup" title="M8 · Desarrollo de software — pendiente"><i class="tick"></i></span>
+    <span class="rgroup" title="M9 · MVP Empresarial — bloqueado"><i class="tick blocked"></i></span>
+  </div>
+  <p class="ribbon-n" aria-hidden="true">09<i>/15</i></p>
+  <a class="out" href="#">Salir →</a>
+</header>
+
+<!-- ═══ Apertura ════════════════════════════════════════════════════════ -->
+<section class="opening dark" aria-labelledby="h1">
+  <div class="opening-grid">
+    <div class="opening-text">
+      <p class="kicker">Curso IA Generativa · <b>Lottusse</b> · Marc</p>
+      <h1 class="display" id="h1">Vas por el capítulo <em>cuatro</em>.</h1>
+      <p class="lede">Nueve clases vistas de quince. Te queda una para cerrar Automatización, y luego el curso se abre hacia los cerebros de IA y el software propio.</p>
+
+      <div class="resume">
+        <div>
+          <p class="resume-k">Continúa aquí — M4 · Clase 2</p>
+          <h2 class="display">El prompt como objetivo: fotografía profesional con IA</h2>
+          <p class="resume-meta">Teórica · 90 min · Fotorrealismo y moda</p>
+        </div>
+        <div class="resume-act">
+          <a class="cta" href="modulo4-clase2.html">
+            Continuar
+            <span class="arw" aria-hidden="true">
+              <svg width="22" height="10" viewBox="0 0 22 10" fill="none"><path d="M0 5h20M16 1l4 4-4 4" stroke="#253a06" stroke-width="1.6"/></svg>
+              <svg width="22" height="10" viewBox="0 0 22 10" fill="none"><path d="M0 5h20M16 1l4 4-4 4" stroke="#253a06" stroke-width="1.6"/></svg>
+            </span>
+          </a>
+          <a class="secondary" href="#temario">Ver el temario</a>
+        </div>
+      </div>
+    </div>
+
+    <figure class="opening-plate">
+      <img src="assets/zapato-2.jpg" alt="Derby de ante gris-taupe con panel trenzado y suela de crepé, fotografiado en estudio." width="1000" height="1241" fetchpriority="high">
+      <figcaption>Tu última entrega, M4 · C1 — Derby de ante, panel trenzado, suela de crepé.<br><b>85 mm · f/2.8 · softbox lateral · Kodak Portra 400</b></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ═══ Temario ═════════════════════════════════════════════════════════ -->
+<main id="temario">
+
+  <div class="wrap temario-head">
+    <div>
+      <h2 class="display">Los ocho capítulos.</h2>
+      <p class="sub">14 clases publicadas · 1 bloqueada · Acceso completo · Último avance hace 3 días</p>
+    </div>
+    <div class="filter" role="group" aria-label="Filtrar el temario">
+      <button type="button" data-filter="all" aria-pressed="true">Todo · 8</button>
+      <button type="button" data-filter="left" aria-pressed="false">Lo que me queda · 4</button>
+    </div>
+  </div>
+
+  <div class="chapters" id="chapters">
+
+    <!-- ── Bloque plegado: los capítulos ya hechos ocupan poco ────────── -->
+    <div class="wrap fold-group-note">
+      <p class="runhead"><span>Capítulos uno a tres — vistos</span><span class="line" aria-hidden="true"></span><span class="r">plegados para que no estorben · ábrelos para repasar</span></p>
+    </div>
+
+    <div class="wrap is-done">
+      <details class="fold">
+        <summary>
+          <span class="fold-mark" aria-hidden="true">[✓]</span>
+          <span class="fold-num" aria-hidden="true">01</span>
+          <span class="fold-title">El Paisaje de los LLMs</span>
+          <span class="fold-lead" aria-hidden="true"></span>
+          <span class="fold-meta">1 clase · 1,5–2 h</span>
+          <span class="fold-open"><span>Repasar</span></span>
+        </summary>
+        <div class="fold-panel">
+          <ol class="toc">
+            <li class="seen"><a href="modulo1.html"><span class="n">C1</span><span class="t">El Paisaje de los LLMs</span><span class="dots" aria-hidden="true"></span><span class="d">Módulo completo · 1,5–2 h</span><span class="s" aria-hidden="true">[✓]</span></a></li>
+          </ol>
+        </div>
+      </details>
+    </div>
+
+    <div class="wrap is-done">
+      <details class="fold">
+        <summary>
+          <span class="fold-mark" aria-hidden="true">[✓]</span>
+          <span class="fold-num" aria-hidden="true">02</span>
+          <span class="fold-title">Glosario y Fundamentos</span>
+          <span class="fold-lead" aria-hidden="true"></span>
+          <span class="fold-meta">1 clase · 1,5 h</span>
+          <span class="fold-open"><span>Repasar</span></span>
+        </summary>
+        <div class="fold-panel">
+          <ol class="toc">
+            <li class="seen"><a href="modulo2.html"><span class="n">C1</span><span class="t">Glosario y Fundamentos</span><span class="dots" aria-hidden="true"></span><span class="d">Módulo completo · 1,5 h</span><span class="s" aria-hidden="true">[✓]</span></a></li>
+          </ol>
+        </div>
+      </details>
+    </div>
+
+    <div class="wrap is-done">
+      <details class="fold">
+        <summary>
+          <span class="fold-mark" aria-hidden="true">[✓]</span>
+          <span class="fold-num" aria-hidden="true">03</span>
+          <span class="fold-title">Estudio Creativo IA (Imagen)</span>
+          <span class="fold-lead" aria-hidden="true"></span>
+          <span class="fold-meta">3 clases · Los titanes del píxel, Krea, Magnific</span>
+          <span class="fold-open"><span>Repasar</span></span>
+        </summary>
+        <div class="fold-panel">
+          <ol class="toc">
+            <li class="seen"><a href="modulo3-clase1.html"><span class="n">C1</span><span class="t">Los titanes del píxel</span><span class="dots" aria-hidden="true"></span><span class="d">Teórica · 1 h</span><span class="s" aria-hidden="true">[✓]</span></a></li>
+            <li class="seen"><a href="modulo3-clase2.html"><span class="n">C2</span><span class="t">Composición y tiempo real</span><span class="dots" aria-hidden="true"></span><span class="d">Teórica · 1 h</span><span class="s" aria-hidden="true">[✓]</span></a></li>
+            <li class="seen"><a href="modulo3-clase3.html"><span class="n">C3</span><span class="t">Magnific AI: el ecosistema total</span><span class="dots" aria-hidden="true"></span><span class="d">Práctica · 45 + 60 min</span><span class="s" aria-hidden="true">[✓]</span></a></li>
+          </ol>
+        </div>
+      </details>
+    </div>
+
+    <!-- ── M4 · en curso: el capítulo que pesa ────────────────────────── -->
+    <section class="now dark" id="m4" aria-labelledby="m4-t">
+      <div class="wrap">
+        <p class="runhead">
+          <span>Capítulo en curso</span>
+          <span class="line" aria-hidden="true"></span>
+          <span class="r">1 de 2 vistas · 45 min por delante</span>
+        </p>
+
+        <div class="now-grid">
+          <!-- Lámina pegada: se despeja con el scroll y explica de qué va el módulo -->
+          <figure class="plate">
+            <div class="plate-box" id="plate">
+              <img class="plate-before" src="assets/stock-generico.jpg" alt="Foto de banco de imágenes: zapatos genéricos sobre una mesa de madera." loading="lazy" width="900" height="1208">
+              <img class="plate-after" src="assets/zapato-1.jpg" alt="Derby de ante gris-taupe generado en clase con el prompt de las siete capas." loading="lazy" width="1000" height="1241">
+              <span class="seam" aria-hidden="true"></span>
+            </div>
+            <div class="plate-tags" aria-hidden="true">
+              <span class="a">← Banco de imágenes</span>
+              <span class="b">Generada en M4 →</span>
+            </div>
+            <figcaption>Lo que separa las dos mitades es vocabulario: óptica, luz, película, composición. Baja y la imagen se acaba de cambiar.</figcaption>
+          </figure>
+
+          <div>
+            <p class="now-num display" aria-hidden="true">04</p>
+            <h3 class="display" id="m4-t">Estudio Creativo IA<br>(Automatización)</h3>
+            <p class="desc">De generar una imagen a producir un catálogo: nodos encadenados que trabajan en lote y prompts de grado profesional que repiten el mismo resultado tantas veces como haga falta.</p>
+            <p class="tools">Herramientas — Freepik Spaces · Magnific AI · PromptHero · Lexica · Civitai · PromptBase · Midjourney Explore</p>
+
+            <ol class="toc">
+              <li class="seen"><a href="modulo4-clase1.html">
+                <span class="n">C1</span>
+                <span class="t">Freepik Spaces: la anatomía de los nodos</span>
+                <span class="dots" aria-hidden="true"></span>
+                <span class="d">Práctica · 45 min</span>
+                <span class="s" aria-hidden="true">[✓]</span>
+              </a></li>
+              <li><a href="modulo4-clase2.html" aria-current="true">
+                <span class="n">C2</span>
+                <span class="t">El prompt como objetivo: fotografía profesional con IA<span class="badge-now">Aquí</span></span>
+                <span class="dots" aria-hidden="true"></span>
+                <span class="d">Teórica · 90 min</span>
+                <span class="s" aria-hidden="true">→</span>
+              </a></li>
+            </ol>
+
+            <!-- Lo que ya has sacado del capítulo: contenido, no decoración -->
+            <figure class="vars">
+              <figcaption>Tu lote de C1 — mismo prompt, misma semilla, cuatro encuadres</figcaption>
+              <div class="vars-grid">
+                <img src="assets/zapato-1-sq.jpg" alt="Variación 1: tres cuartos, luz lateral." loading="lazy" width="520" height="520">
+                <img src="assets/zapato-2-sq.jpg" alt="Variación 2: par completo, plano frontal." loading="lazy" width="520" height="520">
+                <img src="assets/zapato-3-sq.jpg" alt="Variación 3: perfil, fondo neutro." loading="lazy" width="520" height="520">
+                <img src="assets/zapato-4-sq.jpg" alt="Variación 4: cenital, detalle del trenzado." loading="lazy" width="520" height="520">
+              </div>
+              <p class="vars-note">En C2 aprendes a cambiar solo una capa del prompt —la óptica, la luz— y ver qué se mueve.</p>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Interludio: una frase del propio material ──────────────────── -->
+    <aside class="interlude dark">
+      <div class="wrap inner">
+        <p class="src">Frase clave<span>M4 · Clase 2 — El prompt como objetivo</span></p>
+        <blockquote>«La IA no falla por falta de talento, sino por falta de <em>vocabulario</em>. Cada término técnico que añades no describe la imagen: contrata a un miembro más de tu equipo de producción.»</blockquote>
+      </div>
+    </aside>
+
+    <!-- ── M6 · pendiente, ritmo estrecho ─────────────────────────────── -->
+    <section class="wrap ch ch-narrow" id="m6" aria-labelledby="m6-t">
+      <p class="runhead"><span>Capítulo seis</span><span class="line" aria-hidden="true"></span><span class="r">3 clases · pendiente</span></p>
+      <div class="body">
+        <div>
+          <p class="ch-num" aria-hidden="true">06</p>
+          <p class="note">Sin lámina: este módulo no produce imagen, produce sistema.</p>
+        </div>
+        <div class="col-main">
+          <h3 class="display" id="m6-t">Claude suite</h3>
+          <p class="desc">Claude como socio de trabajo: la app, Cowork y Claude Code. De la conversación suelta a un sistema con instrucciones, memoria y agentes que ejecutan.</p>
+          <ol class="toc">
+            <li><a href="modulo6-clase1.html"><span class="n">C1</span><span class="t">Claude: el asistente de IA como socio de trabajo</span><span class="dots" aria-hidden="true"></span><span class="d">Teórica · 40 + 50 min</span><span class="s" aria-hidden="true">→</span></a></li>
+            <li><a href="modulo6-clase2.html"><span class="n">C2</span><span class="t">Claude Cowork: guía de referencia</span><span class="dots" aria-hidden="true"></span><span class="d">Referencia · 45 min</span><span class="s" aria-hidden="true">→</span></a></li>
+            <li><a href="modulo6-clase3.html"><span class="n">C3</span><span class="t">Orquestación avanzada: pipelines multi-agente</span><span class="dots" aria-hidden="true"></span><span class="d">Práctica · 30 + 30 min</span><span class="s" aria-hidden="true">→</span></a></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── M7 · completado: vuelve a plegarse ─────────────────────────── -->
+    <div class="wrap is-done">
+      <details class="fold">
+        <summary>
+          <span class="fold-mark" aria-hidden="true">[✓]</span>
+          <span class="fold-num" aria-hidden="true">07</span>
+          <span class="fold-title">Cerebros de IA</span>
+          <span class="fold-lead" aria-hidden="true"></span>
+          <span class="fold-meta">3 clases · Obsidian, agentes, búsqueda semántica</span>
+          <span class="fold-open"><span>Repasar</span></span>
+        </summary>
+        <div class="fold-panel">
+          <ol class="toc">
+            <li class="seen"><a href="modulo7-clase1.html"><span class="n">C1</span><span class="t">El cerebro local autónomo</span><span class="dots" aria-hidden="true"></span><span class="d">Práctica · 50 min</span><span class="s" aria-hidden="true">[✓]</span></a></li>
+            <li class="seen"><a href="modulo7-clase2.html"><span class="n">C2</span><span class="t">El cerebro de empresa</span><span class="dots" aria-hidden="true"></span><span class="d">Teórica · 1 h 15 min</span><span class="s" aria-hidden="true">[✓]</span></a></li>
+            <li class="seen"><a href="modulo7-clase3.html"><span class="n">C3</span><span class="t">El cerebro que se busca y se teje solo</span><span class="dots" aria-hidden="true"></span><span class="d">Teórica · 45 min</span><span class="s" aria-hidden="true">[✓]</span></a></li>
+          </ol>
+        </div>
+      </details>
+    </div>
+
+    <!-- ── M8 · pendiente, ritmo ancho ────────────────────────────────── -->
+    <section class="wrap ch ch-wide" id="m8" aria-labelledby="m8-t">
+      <p class="runhead"><span>Capítulo ocho</span><span class="line" aria-hidden="true"></span><span class="r">1 clase · pendiente</span></p>
+      <div class="body">
+        <p class="ch-num" aria-hidden="true">08</p>
+        <div>
+          <h3 class="display" id="m8-t">Desarrollo de software</h3>
+          <p class="big">La puerta de entrada al cerebro: una web interna con paneles, tablero e ingesta de documentos que le encargas a Claude con el vocabulario correcto.</p>
+          <ol class="toc">
+            <li><a href="modulo8-clase1.html"><span class="n">C1</span><span class="t">Tu software propio: el portal de mando</span><span class="dots" aria-hidden="true"></span><span class="d">Teórica · 1 h 20 min</span><span class="s" aria-hidden="true">→</span></a></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── M9 · bloqueado ─────────────────────────────────────────────── -->
+    <section class="wrap ch ch-narrow ch-locked" id="m9" aria-labelledby="m9-t">
+      <p class="runhead"><span>Capítulo nueve</span><span class="line" aria-hidden="true"></span><span class="r">Proyecto final · bloqueado</span></p>
+      <div class="body">
+        <div>
+          <p class="ch-num" aria-hidden="true">09</p>
+          <p class="note">Se abre cuando cierres los ocho anteriores. Te faltan seis clases.</p>
+        </div>
+        <div class="col-main">
+          <h3 class="display" id="m9-t">MVP Empresarial (PFC)</h3>
+          <p class="desc">Aplicación transversal. Simulación de lanzamiento de una línea de negocio: desde el naming y el logo hasta la estrategia de go-to-market.</p>
+          <p class="locked-row"><span aria-hidden="true">[ – ]</span> <span class="k">C1 · AI Decision Hub: plan técnico y curricular · 20 min</span></p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="foot dark">
+  <div class="wrap inner">
+    <p>[m].seny /academy · Curso IA Generativa para Lottusse</p>
+    <p>8 módulos · 14 clases publicadas · 1 bloqueada · Acceso completo</p>
+    <p><a href="#">Salir de la cuenta →</a></p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   Todo lo de aquí es OPCIONAL. Sin JS (o sin la librería, o con
+   prefers-reduced-motion) la página ya está completa y en su sitio:
+   los filetes están dibujados, los números visibles y la lámina de M4
+   muestra sus dos mitades. El JS solo añade el movimiento que explica.
+   ═════════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+  var M = window.Motion;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var canMove = !!(M && M.animate) && !reduced;
+
+  /* ── 1. Filtro «lo que me queda» (funciona siempre, sin librería) ────── */
+  var chapters = document.getElementById('chapters');
+  var btns = Array.prototype.slice.call(document.querySelectorAll('[data-filter]'));
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      btns.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+      chapters.classList.toggle('only-left', b.dataset.filter === 'left');
+    });
+  });
+
+  /* ── 2. LA PIEZA DIDÁCTICA: la lámina de M4 cambia de imagen con el scroll.
+         A la izquierda del corte, la foto de banco (gris). A la derecha, la
+         generada en clase (color). Mientras la lámina está pegada y el texto
+         del capítulo avanza, el corte lima recorre la imagen: lo que separa
+         las dos mitades es el vocabulario que enseña el módulo.
+
+         Se mide con getBoundingClientRect en un rAF en lugar de con
+         Motion.scroll a propósito: así el corte sigue funcionando aunque el
+         CDN esté caído, y si el navegador no pinta fotogramas (pestaña en
+         segundo plano) la lámina se queda en su 52% por defecto, con las dos
+         mitades y las dos etiquetas visibles. ──────────────────────────── */
+  var plate = document.getElementById('plate');
+  var sec = document.getElementById('m4');
+  if (plate && sec && !reduced) {
+    var last = -1;
+    (function tick() {
+      var r = sec.getBoundingClientRect();
+      var vh = window.innerHeight || document.documentElement.clientHeight || 1;
+      var p = (vh - r.top) / (vh + r.height);          /* 0 al entrar, 1 al salir */
+      var v = Math.round(Math.min(1, Math.max(0, (p - 0.32) / 0.36)) * 1000) / 1000;
+      if (v !== last) { last = v; plate.style.setProperty('--wipe', v); }
+      requestAnimationFrame(tick);
+    })();
+  }
+
+  if (!canMove) return;
+
+  /* Nada se esconde hasta que sabemos que el navegador está pintando fotogramas.
+     Si la pestaña está en segundo plano, o la librería no arranca, este bloque
+     no llega a ejecutarse y la página se queda tal cual: completa y visible. */
+  requestAnimationFrame(function () {
+
+    /* prime(): pone el estado inicial, lo anima al entrar en pantalla y —pase lo
+       que pase— retira el estilo en línea al terminar. Es imposible que un bloque
+       se quede escondido. */
+    var fired = 0, primed = [];
+    function prime(el, watch, initial, props, dur, margin) {
+      el.style.transform = initial;
+      var done = false;
+      function settle() { if (done) return; done = true; el.style.transform = ''; }
+      primed.push(settle);
+      M.inView(watch, function () {
+        fired++;
+        var a = M.animate(el, props, { duration: dur, ease: [.16, 1, .3, 1] });
+        if (a && a.finished && a.finished.then) a.finished.then(settle, settle);
+        setTimeout(settle, dur * 1000 + 500);
+        return false;
+      }, { margin: margin });
+    }
+
+
+    /* ── 3. Los filetes se DIBUJAN al entrar (lo estructural, no las cajas) ─
+       Se observa el PADRE: en scaleX(0) la caja visual del filete mide cero y
+       el IntersectionObserver no la vería nunca. */
+    document.querySelectorAll('.runhead .line, [data-anim="rule"]').forEach(function (el) {
+      el.style.transformOrigin = 'left center';
+      prime(el, el.parentElement || el, 'scaleX(0)', { scaleX: [0, 1] }, .85, '0px 0px -8% 0px');
+    });
+
+    /* ── 4. Los números de capítulo se estampan desde debajo de su corte.
+       El del capítulo bloqueado NO: está en contorno, quieto, y ese contraste
+       de comportamiento es parte de lo que dice «aquí todavía no entras». */
+    document.querySelectorAll('.ch:not(.ch-locked) .ch-num, .now-num').forEach(function (n) {
+      var mask = document.createElement('span');
+      mask.className = 'num-mask';
+      n.parentNode.insertBefore(mask, n);
+      mask.appendChild(n);
+      prime(n, mask, 'translateY(105%)', { y: ['105%', '0%'] }, .8, '0px 0px -12% 0px');
+    });
+
+    /* ── 5. La cinta de progreso se rellena una vez, en orden de curso ───── */
+    var ticks = document.querySelectorAll('#ribbon .tick.seen, #ribbon .tick.here');
+    if (ticks.length) {
+      M.animate(ticks, { scaleY: [0, 1] },
+        { duration: .5, delay: M.stagger(.055, { startDelay: .25 }), ease: [.16, 1, .3, 1] });
+    }
+
+    /* Red de seguridad: los bloques de la primera pantalla disparan al instante.
+       Si a los dos segundos no ha disparado NI UNO, el observador no funciona en
+       este navegador: se destapa todo de golpe y la página queda completa. */
+    setTimeout(function () { if (!fired) primed.forEach(function (f) { f(); }); }, 2000);
+  });
+
+})();
+</script>
+</body>
+</html>
