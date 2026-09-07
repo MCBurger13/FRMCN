@@ -11,26 +11,103 @@
 <body data-class="m6c2">
 <main>
 
-  <header class="hero">
-    <h1 class="display">Claude Cowork: guía de referencia.</h1>
+  <header class="hero escena">
+    <h1 class="display">Claude Cowork: guía de <em>referencia</em>.</h1>
     <p class="sub">Todo lo que puedes crear para automatizar tu trabajo: componentes, diferencias y gestión de contexto avanzado.</p>
+    <ul class="esc-cifras">
+      <li><b>9</b> componentes</li>
+      <li><b>6</b> eventos</li>
+      <li><b>3</b> capas</li>
+    </ul>
     <div class="chips"><span class="chip">SKILL.md</span><span class="chip">AGENT.md</span><span class="chip">Hooks</span><span class="chip">Plugin</span><span class="chip">Context Window</span></div>
   </header>
 
   <div class="content">
 
     <!-- 1. El ecosistema -->
-    <section class="sec" id="ecosistema" data-label="Ecosistema">
+    <section class="sec sec-ancho" id="ecosistema" data-label="Ecosistema">
       <div class="sec-head"><span class="sec-num"></span><h2 class="display">El ecosistema completo.</h2></div>
       <p>Qué puede crear y configurar un usuario dentro del entorno operativo de Cowork. La jerarquía de complejidad va desde una simple instrucción (Skill) hasta la conexión con aplicaciones externas (Connector).</p>
+
+      <div class="despiece" data-despiece>
+        <div class="dp-media">
+          <ul class="dp-nav">
+            <li><button type="button" data-go="skill">01 <i>SKILL.md</i></button></li>
+            <li><button type="button" data-go="agent">02 <i>AGENT.md</i></button></li>
+            <li><button type="button" data-go="plugin">04 <i>Plugin</i></button></li>
+            <li><button type="button" data-go="connector">05 <i>Connector</i></button></li>
+            <li><button type="button" data-go="task">07 <i>Scheduled Task</i></button></li>
+          </ul>
+          <div class="dp-stage dp-esquema">
+            <svg viewBox="0 0 640 480" role="img" aria-label="Jerarquía de complejidad del ecosistema de Cowork: cinco escalones apilados sobre un mismo eje vertical, del más simple al más complejo — SKILL.md, AGENT.md, Plugin, Connector y Scheduled Task.">
+              <text class="lb b" x="96" y="26">La jerarquía de complejidad</text>
+              <line class="ln" x1="60" y1="44" x2="60" y2="418"/>
+              <g class="dp-capa" data-capa="skill">
+                <line class="ln ac" x1="60" y1="75" x2="96" y2="75"/>
+                <rect class="bx fill" x="96" y="44" width="520" height="62" rx="12"/>
+                <text class="ti" x="118" y="72">SKILL.md</text>
+                <text class="lb" x="118" y="94">instrucciones</text>
+                <text class="lb" x="594" y="72" text-anchor="end">01</text>
+              </g>
+              <g class="dp-capa" data-capa="agent">
+                <line class="ln ac" x1="60" y1="153" x2="96" y2="153"/>
+                <rect class="bx fill" x="96" y="122" width="520" height="62" rx="12"/>
+                <text class="ti" x="118" y="150">AGENT.md</text>
+                <text class="lb" x="118" y="172">instancia propia</text>
+                <text class="lb" x="594" y="150" text-anchor="end">02</text>
+              </g>
+              <g class="dp-capa" data-capa="plugin">
+                <line class="ln ac" x1="60" y1="231" x2="96" y2="231"/>
+                <rect class="bx fill" x="96" y="200" width="520" height="62" rx="12"/>
+                <text class="ti" x="118" y="228">Plugin (.plugin)</text>
+                <text class="lb" x="118" y="250">bundle de todo</text>
+                <text class="lb" x="594" y="228" text-anchor="end">04</text>
+              </g>
+              <g class="dp-capa" data-capa="connector">
+                <line class="ln ac" x1="60" y1="309" x2="96" y2="309"/>
+                <rect class="bx fill" x="96" y="278" width="520" height="62" rx="12"/>
+                <text class="ti" x="118" y="306">Connector (MCP)</text>
+                <text class="lb" x="118" y="328">acceso a apps externas</text>
+                <text class="lb" x="594" y="306" text-anchor="end">05</text>
+              </g>
+              <g class="dp-capa" data-capa="task">
+                <line class="ln ac" x1="60" y1="387" x2="96" y2="387"/>
+                <rect class="bx fill" x="96" y="356" width="520" height="62" rx="12"/>
+                <text class="ti" x="118" y="384">Scheduled Task</text>
+                <text class="lb" x="118" y="406">automatización temporal</text>
+                <text class="lb" x="594" y="384" text-anchor="end">07</text>
+              </g>
+            </svg>
+          </div>
+          <p class="dp-cap">La jerarquía de complejidad</p>
+        </div>
+        <ol class="dp-steps">
+          <li class="dp-step" data-capa="skill">
+            <p class="k">[ 01 ] Componente</p><h3>SKILL.md</h3>
+            <p>Instrucciones especializadas que Claude carga bajo demanda. El «manual de trabajo» para una tarea concreta.</p>
+          </li>
+          <li class="dp-step" data-capa="agent">
+            <p class="k">[ 02 ] Componente</p><h3>AGENT.md</h3>
+            <p>Subagente con su propio sistema de instrucciones, modelo y herramientas. Una instancia Claude separada con personalidad propia.</p>
+          </li>
+          <li class="dp-step" data-capa="plugin">
+            <p class="k">[ 04 ] Componente</p><h3>Plugin (.plugin)</h3>
+            <p>Paquete instalable que agrupa Skills + Agents + Hooks + MCP. Un módulo que amplía Cowork con nuevas capacidades.</p>
+          </li>
+          <li class="dp-step" data-capa="connector">
+            <p class="k">[ 05 ] Componente</p><h3>Connector (MCP)</h3>
+            <p>Conexión a una herramienta externa (Slack, Notion, HubSpot…). Da a Claude acceso real a tus datos y apps.</p>
+          </li>
+          <li class="dp-step" data-capa="task">
+            <p class="k">[ 07 ] Componente</p><h3>Scheduled Task</h3>
+            <p>Tarea que corre automáticamente según un calendario (cron). Claude ejecuta un prompt sin intervención del usuario.</p>
+          </li>
+        </ol>
+      </div>
+
       <div class="grid-cards">
-        <div class="card"><span class="k">[ 01 ]</span><h4>SKILL.md</h4><p>Instrucciones especializadas que Claude carga bajo demanda. El «manual de trabajo» para una tarea concreta.</p></div>
-        <div class="card"><span class="k">[ 02 ]</span><h4>AGENT.md</h4><p>Subagente con su propio sistema de instrucciones, modelo y herramientas. Una instancia Claude separada con personalidad propia.</p></div>
         <div class="card"><span class="k">[ 03 ]</span><h4>Hooks</h4><p>Automatizaciones que se disparan en eventos del sistema. El mecanismo real de «workflows» automáticos en Cowork.</p></div>
-        <div class="card"><span class="k">[ 04 ]</span><h4>Plugin (.plugin)</h4><p>Paquete instalable que agrupa Skills + Agents + Hooks + MCP. Un módulo que amplía Cowork con nuevas capacidades.</p></div>
-        <div class="card"><span class="k">[ 05 ]</span><h4>Connector (MCP)</h4><p>Conexión a una herramienta externa (Slack, Notion, HubSpot…). Da a Claude acceso real a tus datos y apps.</p></div>
         <div class="card"><span class="k">[ 06 ]</span><h4>Project / Workspace</h4><p>Carpeta local montada en Cowork. Claude puede leer y escribir todos los archivos que contiene de forma nativa.</p></div>
-        <div class="card"><span class="k">[ 07 ]</span><h4>Scheduled Task</h4><p>Tarea que corre automáticamente según un calendario (cron). Claude ejecuta un prompt sin intervención del usuario.</p></div>
         <div class="card"><span class="k">[ 08 ]</span><h4>Artifact</h4><p>Página HTML persistente con datos en vivo de conectores. Un dashboard que el usuario puede reabrir cuando quiera.</p></div>
         <div class="card"><span class="k">[ 09 ]</span><h4>Memory (CLAUDE.md)</h4><p>Archivo de memoria persistente entre sesiones. Almacena preferencias, contexto de equipo y hechos duraderos.</p></div>
       </div>

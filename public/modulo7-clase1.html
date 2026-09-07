@@ -11,9 +11,14 @@
 <body data-class="m7c1">
 <main>
 
-  <header class="hero">
-    <h1 class="display">El cerebro local autónomo: ingesta segura a Obsidian.</h1>
+  <header class="hero escena">
+    <h1 class="display">El cerebro <em>local</em> autónomo: ingesta segura a Obsidian.</h1>
     <p class="sub">Convierte tus Excels de ventas, exports del CRM, informes de campaña y facturación en una base de conocimiento privada, conectada y navegable — 100% en tu máquina, sin subir datos sensibles de clientes a otra nube.</p>
+    <ul class="esc-cifras">
+      <li><b>8</b> términos</li>
+      <li><b>4</b> piezas</li>
+      <li><b>3</b> pasos</li>
+    </ul>
     <div class="chips"><span class="chip">Obsidian Vault</span><span class="chip">MarkItDown</span><span class="chip">Tesseract OCR</span><span class="chip">Claude Code</span><span class="chip">Local-First</span></div>
   </header>
 
@@ -57,17 +62,66 @@
         <div class="card"><span class="k">[ 04 ]</span><h4>Claude Code + subagente — el cerebro</h4><p>El agente de terminal que orquesta el flujo y razona: detecta el archivo, añade metadatos y decide qué notas están relacionadas para inyectar los enlaces. Empaquetado como una <em>Skill</em> + un subagente enlazador.</p></div>
       </div>
       <div class="callout nota"><span class="k">[ Nota ]</span><p><strong>¿Y el «mapa» para que Claude navegue rápido?</strong></p><p>En lugar de instalar un paquete externo de dudosa procedencia (lo vemos en la sección 6), puedes pedirle a Claude un <strong>mapa del Vault con un script propio y transparente</strong>: un <code>GRAPH_REPORT.md</code> y un pequeño consultor que le permiten moverse por estructura sin leer todas las notas una a una.</p></div>
-      <div class="callout clave"><span class="k">[ Frase clave ]</span><p><strong>El ecosistema en una frase:</strong> MarkItDown convierte, Tesseract lee las imágenes, el agente de Claude interconecta, Obsidian almacena y dibuja, y nuestro mapa local es el GPS que hace al agente rápido y barato cuando hay muchas notas.</p></div>
+      <blockquote class="pull larga">
+        <p><strong>El ecosistema en una frase:</strong> MarkItDown convierte, Tesseract lee las imágenes, el agente de Claude interconecta, Obsidian almacena y dibuja, y nuestro mapa local es el GPS que hace al agente rápido y barato cuando hay muchas notas.</p>
+        <footer class="src">Frase clave · M7 · C1</footer>
+      </blockquote>
     </section>
 
     <!-- 4. Ingesta local -->
-    <section class="sec" id="ingesta" data-label="Ingesta">
+    <section class="sec sec-ancho" id="ingesta" data-label="Ingesta">
       <div class="sec-head"><span class="sec-num"></span><h2 class="display">El pipeline de ingesta: de un archivo suelto a una nota conectada.</h2></div>
       <p>El corazón del sistema es un flujo automático que vive en su propia carpeta (separada de tus proyectos). Dejas caer un archivo y el sistema hace el resto:</p>
-      <div class="flow">
-        <div class="node"><span class="k">01</span><h4>RAW/</h4><p>El buzón de entrada. Sueltas aquí tus Excels de ventas, exports del CRM, fichas de cliente, PDFs de facturación, informes de campaña…</p></div><span class="arrow" aria-hidden="true">→</span>
-        <div class="node ink"><span class="k">02</span><h4>Watcher + Conversión</h4><p>Un vigilante en Python (watchdog) detecta el archivo y lo convierte con MarkItDown (u OCR con Tesseract si es imagen).</p></div><span class="arrow" aria-hidden="true">→</span>
-        <div class="node"><span class="k">03</span><h4>_procesados/</h4><p>El original se archiva aquí (nunca se borra) y RAW/ queda vacía. El proceso se registra en un log.</p></div>
+      <div class="despiece" data-despiece>
+        <div class="dp-media">
+          <ul class="dp-nav">
+            <li><button type="button" data-go="raw">01 <i>RAW/</i></button></li>
+            <li><button type="button" data-go="watcher">02 <i>Watcher</i></button></li>
+            <li><button type="button" data-go="procesados">03 <i>_procesados/</i></button></li>
+          </ul>
+          <div class="dp-stage dp-esquema">
+            <svg viewBox="0 0 640 480" role="img" aria-label="Diagrama del pipeline de ingesta: tres cajas encadenadas de arriba abajo. La carpeta RAW recibe los archivos, el watcher los detecta y los convierte, y el original acaba archivado en la carpeta de procesados.">
+              <line class="ln" x1="44" y1="70" x2="44" y2="460"/>
+              <line class="ln" x1="332" y1="176" x2="332" y2="212"/>
+              <path class="ln ac" d="M324 204 l8 10 l8 -10"/>
+              <line class="ln" x1="332" y1="318" x2="332" y2="354"/>
+              <path class="ln ac" d="M324 346 l8 10 l8 -10"/>
+              <g class="dp-capa" data-capa="raw">
+                <rect class="bx fill" x="76" y="70" width="512" height="106" rx="12"/>
+                <text class="ti" x="104" y="106">01 · RAW/</text>
+                <text class="lb" x="104" y="130">El buzón de entrada</text>
+                <text class="lb b" x="104" y="152">Excels · exports del CRM · PDFs</text>
+              </g>
+              <g class="dp-capa" data-capa="watcher">
+                <rect class="bx fill" x="76" y="212" width="512" height="106" rx="12"/>
+                <text class="ti" x="104" y="248">02 · Watcher + Conversión</text>
+                <text class="lb" x="104" y="272">Un vigilante en Python (watchdog)</text>
+                <text class="lb b" x="104" y="294">MarkItDown · Tesseract si es imagen</text>
+              </g>
+              <g class="dp-capa" data-capa="procesados">
+                <rect class="bx fill" x="76" y="354" width="512" height="106" rx="12"/>
+                <text class="ti" x="104" y="390">03 · _procesados/</text>
+                <text class="lb" x="104" y="414">El original se archiva aquí</text>
+                <text class="lb b" x="104" y="436">Nunca se borra · queda en un log</text>
+              </g>
+            </svg>
+          </div>
+          <p class="dp-cap">De un archivo suelto a una nota conectada.</p>
+        </div>
+        <ol class="dp-steps">
+          <li class="dp-step" data-capa="raw" data-cap="Paso 01 · RAW/, el buzón de entrada">
+            <p class="k">[ 01 ] Paso</p><h3>RAW/</h3>
+            <p>El buzón de entrada. Sueltas aquí tus Excels de ventas, exports del CRM, fichas de cliente, PDFs de facturación, informes de campaña…</p>
+          </li>
+          <li class="dp-step" data-capa="watcher" data-cap="Paso 02 · El watcher detecta y convierte">
+            <p class="k">[ 02 ] Paso</p><h3>Watcher + Conversión</h3>
+            <p>Un vigilante en Python (watchdog) detecta el archivo y lo convierte con MarkItDown (u OCR con Tesseract si es imagen).</p>
+          </li>
+          <li class="dp-step" data-capa="procesados" data-cap="Paso 03 · El original se archiva">
+            <p class="k">[ 03 ] Paso</p><h3>_procesados/</h3>
+            <p>El original se archiva aquí (nunca se borra) y RAW/ queda vacía. El proceso se registra en un log.</p>
+          </li>
+        </ol>
       </div>
 
       <h3>La nota resultante: frontmatter YAML + cuerpo + enlaces</h3>

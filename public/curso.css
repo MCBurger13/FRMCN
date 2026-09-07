@@ -378,6 +378,11 @@ body[data-class]{overflow-x:clip;}
 /* Sección a ancho de escena (se sale de los 780 px de lectura) */
 .sec-ancho{margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);padding-left:max(24px,calc(50vw - var(--wide-w) / 2));padding-right:max(24px,calc(50vw - var(--wide-w) / 2));}
 .sec-dark.sec-ancho{padding-top:clamp(40px,5vw,64px);padding-bottom:clamp(44px,5.5vw,72px);}
+/* la sección se ensancha para que quepa el despiece, pero la prosa suelta
+   se queda en su medida de lectura: 1180 px de renglón no se leen */
+.sec-ancho > p,.sec-ancho > .sec-head,.sec-ancho > .callout,.sec-ancho > .code,
+.sec-ancho > blockquote,.sec-ancho > ul:not(.serie),.sec-ancho > ol:not(.dp-steps),
+.sec-ancho > .table-wrap,.sec-ancho > figure{max-width:var(--content-w);}
 
 /* ── Apertura ─────────────────────────────────────────────────────────── */
 .hero.escena{text-align:left;background:var(--color-ink);color:var(--color-paper);border-bottom:0;padding:clamp(34px,5vw,66px) clamp(20px,5vw,64px) clamp(38px,5vw,66px);display:grid;grid-template-columns:minmax(0,1fr);align-items:center;align-content:center;gap:0 clamp(22px,4vw,56px);grid-auto-rows:min-content;}
@@ -423,6 +428,8 @@ body[data-class]{overflow-x:clip;}
 /* ── Cita editorial ───────────────────────────────────────────────────── */
 .pull{margin:28px 0;padding-left:clamp(16px,2.6vw,28px);border-left:2px solid var(--color-accent-deep);}
 .pull p{margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(19px,2.4vw,27px);letter-spacing:-.02em;line-height:1.25;color:var(--color-ink);text-wrap:balance;}
+/* cita larga: deja de ser titular y se lee como entradilla */
+.pull.larga p{font-size:clamp(16.5px,1.6vw,19.5px);font-weight:500;line-height:1.5;}
 .pull footer{margin-top:10px;font-family:var(--font-mono);font-size:var(--mono-s);letter-spacing:.11em;text-transform:uppercase;color:var(--color-muted);}
 .sec-dark .pull{border-left-color:var(--color-accent);}
 .sec-dark .pull p{color:var(--color-paper);}

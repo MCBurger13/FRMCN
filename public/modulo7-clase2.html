@@ -11,9 +11,14 @@
 <body data-class="m7c2">
 <main>
 
-  <header class="hero">
-    <h1 class="display">El cerebro de empresa: agentes, departamentos y plugins.</h1>
+  <header class="hero escena">
+    <h1 class="display">El cerebro de <em>empresa</em>: agentes, departamentos y plugins.</h1>
     <p class="sub">Ya sabes montar un cerebro local para ti. Ahora lo escalamos a toda una empresa: varios proyectos, varios departamentos y varias personas trabajando sobre el mismo conocimiento, ordenado, conectado y siempre al día.</p>
+    <ul class="esc-cifras">
+      <li><b>4</b> retos</li>
+      <li><b>6</b> términos</li>
+      <li><b>4</b> agentes</li>
+    </ul>
     <div class="chips"><span class="chip">Vault de equipo</span><span class="chip">Agentes alineados</span><span class="chip">Plugins Obsidian</span><span class="chip">Dashboard</span><span class="chip">Git vs Sync</span></div>
   </header>
 
@@ -59,14 +64,100 @@
     </section>
 
     <!-- 2. Estructura -->
-    <section class="sec" id="estructura" data-label="Estructura">
+    <section class="sec sec-ancho" id="estructura" data-label="Estructura">
       <div class="sec-head"><span class="sec-num"></span><h2 class="display">Estructura: departamentos y proyectos como nodos y etiquetas.</h2></div>
 
       <p>La clase anterior trataba un cerebro local para <em>una</em> persona. El siguiente salto es una empresa con <strong>varios departamentos</strong> (ventas, marketing, producto, finanzas, RRHH…), <strong>varios proyectos</strong> a la vez y <strong>varias personas</strong> que tocan más de una cosa. El error típico es elegir <em>una sola</em> forma de ordenar: o todo por departamentos, o todo por proyectos. La buena noticia es que no hay que elegir. Se usan <strong>dos ejes complementarios</strong> al mismo tiempo: uno manda en las <strong>carpetas</strong> y el otro en las <strong>etiquetas</strong>.</p>
 
-      <div class="grid-cards two">
-        <div class="card dim"><span class="k">Eje 1</span><h4>Proyectos = carpetas</h4><p>Cada proyecto tiene su <strong>carpeta</strong>, y todas las carpetas comparten la <strong>misma estructura interna predecible</strong>: mapas, negocio, producto, técnico, diseño, calidad, decisiones, glosario y diario. ¿Por qué igual en todas? Porque así <em>cualquiera</em> sabe dónde mirar sin preguntar: «las decisiones de este proyecto están en la subcarpeta de decisiones», siempre, en todos. La predecibilidad es la que ahorra horas.</p></div>
-        <div class="card dim"><span class="k">Eje 2</span><h4>Departamentos = etiquetas</h4><p>Los departamentos no son carpetas: son <strong>etiquetas transversales</strong> que cruzan proyectos, del tipo <code>area/ventas</code>, <code>area/marketing</code> o <code>area/tecnico</code>. Una misma etiqueta de área aparece en notas de proyectos distintos. Y cada nota lleva también su <strong>etiqueta de proyecto</strong> (<code>proyecto/...</code>), para poder reagrupar por proyecto cuando haga falta. Dos etiquetas por nota: su disciplina y su proyecto.</p></div>
+      <div class="despiece" data-despiece>
+        <div class="dp-media">
+          <ul class="dp-nav">
+            <li><button type="button" data-go="carpetas">01 <i>Carpetas</i></button></li>
+            <li><button type="button" data-go="etiquetas">02 <i>Etiquetas</i></button></li>
+            <li><button type="button" data-go="color">03 <i>Color</i></button></li>
+            <li><button type="button" data-go="grupo">04 <i>Grupo</i></button></li>
+            <li><button type="button" data-go="filtro">05 <i>Filtro</i></button></li>
+          </ul>
+          <div class="dp-stage dp-esquema">
+            <svg viewBox="0 0 640 480" role="img" aria-label="Diagrama de los dos ejes de la estructura: arriba, dos bandas con los proyectos como carpetas y los departamentos como etiquetas; abajo, un grafo con dos clústeres de notas, cada uno agrupado alrededor de su etiqueta de proyecto, y con dos rellenos distintos que representan dos áreas.">
+              <line class="ln" x1="40" y1="222" x2="600" y2="222"/>
+              <rect class="bx" x="40" y="240" width="144" height="212" rx="16"/>
+              <rect class="bx" x="196" y="240" width="144" height="212" rx="16"/>
+              <g class="dp-capa" data-capa="carpetas">
+                <rect class="bx fill" x="40" y="36" width="560" height="78" rx="12"/>
+                <text class="ti" x="64" y="68">Eje 1 · Proyectos = carpetas</text>
+                <text class="lb" x="64" y="94">Cada proyecto, su carpeta · misma estructura</text>
+              </g>
+              <g class="dp-capa" data-capa="etiquetas">
+                <rect class="bx fill" x="40" y="126" width="560" height="78" rx="12"/>
+                <text class="ti" x="64" y="158">Eje 2 · Departamentos = etiquetas</text>
+                <text class="lb" x="64" y="184">area/ventas · area/marketing · area/tecnico</text>
+              </g>
+              <g class="dp-capa" data-capa="color">
+                <circle class="bx fill-ink" cx="78" cy="296" r="11"/>
+                <circle class="bx fill" cx="148" cy="288" r="11"/>
+                <circle class="bx fill" cx="76" cy="398" r="11"/>
+                <circle class="bx fill-ink" cx="150" cy="392" r="11"/>
+                <circle class="bx fill" cx="234" cy="292" r="11"/>
+                <circle class="bx fill-ink" cx="304" cy="300" r="11"/>
+                <circle class="bx fill-ink" cx="232" cy="396" r="11"/>
+                <circle class="bx fill" cx="306" cy="390" r="11"/>
+                <text class="ti" x="360" y="272">Color = área</text>
+                <text class="lb" x="360" y="296">Cada departamento</text>
+                <text class="lb" x="360" y="314">tiene su color</text>
+              </g>
+              <g class="dp-capa" data-capa="grupo">
+                <line class="ln" x1="112" y1="346" x2="78" y2="296"/>
+                <line class="ln" x1="112" y1="346" x2="148" y2="288"/>
+                <line class="ln" x1="112" y1="346" x2="76" y2="398"/>
+                <line class="ln" x1="112" y1="346" x2="150" y2="392"/>
+                <line class="ln" x1="268" y1="346" x2="234" y2="292"/>
+                <line class="ln" x1="268" y1="346" x2="304" y2="300"/>
+                <line class="ln" x1="268" y1="346" x2="232" y2="396"/>
+                <line class="ln" x1="268" y1="346" x2="306" y2="390"/>
+                <circle class="bx fill" cx="112" cy="346" r="9"/>
+                <circle class="bx fill" cx="268" cy="346" r="9"/>
+                <text class="lb b" x="112" y="472" text-anchor="middle">proyecto/...</text>
+                <text class="lb b" x="268" y="472" text-anchor="middle">proyecto/...</text>
+                <text class="ti" x="360" y="352">Grupo = proyecto</text>
+                <text class="lb" x="360" y="376">Cada clúster es</text>
+                <text class="lb" x="360" y="394">un proyecto</text>
+              </g>
+              <g class="dp-capa" data-capa="filtro">
+                <circle class="ln ac" cx="78" cy="296" r="19"/>
+                <circle class="ln ac" cx="150" cy="392" r="19"/>
+                <circle class="ln ac" cx="304" cy="300" r="19"/>
+                <circle class="ln ac" cx="232" cy="396" r="19"/>
+                <text class="ti" x="360" y="430">Filtro = foco</text>
+                <text class="lb" x="360" y="454">Su área en TODOS</text>
+                <text class="lb" x="360" y="472">los proyectos</text>
+              </g>
+            </svg>
+          </div>
+          <p class="dp-cap">Dos ejes a la vez: carpetas y etiquetas.</p>
+        </div>
+        <ol class="dp-steps">
+          <li class="dp-step" data-capa="carpetas" data-cap="Eje 1 · Cada proyecto, su carpeta">
+            <p class="k">Eje 1</p><h3>Proyectos = carpetas</h3>
+            <p>Cada proyecto tiene su <strong>carpeta</strong>, y todas las carpetas comparten la <strong>misma estructura interna predecible</strong>: mapas, negocio, producto, técnico, diseño, calidad, decisiones, glosario y diario. ¿Por qué igual en todas? Porque así <em>cualquiera</em> sabe dónde mirar sin preguntar: «las decisiones de este proyecto están en la subcarpeta de decisiones», siempre, en todos. La predecibilidad es la que ahorra horas.</p>
+          </li>
+          <li class="dp-step" data-capa="etiquetas" data-cap="Eje 2 · El área cruza los proyectos">
+            <p class="k">Eje 2</p><h3>Departamentos = etiquetas</h3>
+            <p>Los departamentos no son carpetas: son <strong>etiquetas transversales</strong> que cruzan proyectos, del tipo <code>area/ventas</code>, <code>area/marketing</code> o <code>area/tecnico</code>. Una misma etiqueta de área aparece en notas de proyectos distintos. Y cada nota lleva también su <strong>etiqueta de proyecto</strong> (<code>proyecto/...</code>), para poder reagrupar por proyecto cuando haga falta. Dos etiquetas por nota: su disciplina y su proyecto.</p>
+          </li>
+          <li class="dp-step" data-capa="color" data-cap="En el grafo · el color dice el área">
+            <p class="k">[ 01 ]</p><h3>Color = área</h3>
+            <p>Cada departamento tiene su color. Ventas, marketing, técnico… se distinguen a simple vista en todo el grafo.</p>
+          </li>
+          <li class="dp-step" data-capa="grupo" data-cap="En el grafo · el grupo dice el proyecto">
+            <p class="k">[ 02 ]</p><h3>Grupo = proyecto</h3>
+            <p>Al activar «Show tags», los nodos se apiñan alrededor de su etiqueta <code>proyecto/...</code>. Cada clúster es un proyecto.</p>
+          </li>
+          <li class="dp-step" data-capa="filtro" data-cap="En el grafo · filtrar para enfocar">
+            <p class="k">[ 03 ]</p><h3>Filtro = foco</h3>
+            <p>Marketing filtra <code>area/marketing</code> y ve su trabajo en TODOS los proyectos; el responsable de un proyecto ve su clúster entero.</p>
+          </li>
+        </ol>
       </div>
 
       <h3>Cómo se ve esto en el grafo</h3>
@@ -74,12 +165,6 @@
       <p>Aquí está la idea que conviene memorizar: en el grafo, el <strong>color</strong> de cada nodo dice de qué <strong>área</strong> (departamento) es, y la <strong>posición</strong> (el grupo donde queda) dice de qué <strong>proyecto</strong> es. Se configura pintando los nodos por su etiqueta de área, y al activar la vista de etiquetas (<em>«Show tags»</em>) cada proyecto se agrupa alrededor de su etiqueta-eje <code>proyecto/...</code>. El lema, para que no se olvide: <strong>«el color te dice de qué disciplina es; el grupo te dice de qué proyecto es»</strong>.</p>
 
       <div class="callout analogia"><span class="k">[ Analogía ]</span><p>Piensa en un <strong>edificio de oficinas</strong>. Cada <strong>planta</strong> es un proyecto. El <strong>color del distintivo</strong> que lleva cada persona es su departamento (marketing en rojo, técnico en azul, ventas en verde…). Una misma persona trabaja en una planta concreta, pero lleva siempre el color de su departamento. Cuando «enciendes las etiquetas», todos se colocan en su planta sin perder el color de su distintivo: ves de un vistazo quién trabaja en cada proyecto y de qué área es cada uno.</p></div>
-
-      <div class="grid-cards three">
-        <div class="card"><span class="k">[ 01 ]</span><h4>Color = área</h4><p>Cada departamento tiene su color. Ventas, marketing, técnico… se distinguen a simple vista en todo el grafo.</p></div>
-        <div class="card"><span class="k">[ 02 ]</span><h4>Grupo = proyecto</h4><p>Al activar «Show tags», los nodos se apiñan alrededor de su etiqueta <code>proyecto/...</code>. Cada clúster es un proyecto.</p></div>
-        <div class="card"><span class="k">[ 03 ]</span><h4>Filtro = foco</h4><p>Marketing filtra <code>area/marketing</code> y ve su trabajo en TODOS los proyectos; el responsable de un proyecto ve su clúster entero.</p></div>
-      </div>
 
       <div class="callout ok"><span class="k">[✓] Buena práctica</span><p><strong>Beneficio práctico:</strong> los dos ejes sirven a dos miradas distintas a la vez. Alguien de marketing filtra su etiqueta de área y ve, cruzando proyectos, todo lo que le toca; quien lidera un proyecto activa las etiquetas y ve su clúster completo. Mismo vault, misma información, dos lecturas sin duplicar ni una sola nota.</p></div>
 
@@ -148,7 +233,10 @@ tags:
 
 Todo en local. No metas datos personales sensibles (PII) en las notas.</pre></div>
 
-      <div class="callout clave"><span class="k">[ En una frase ]</span><p>Un cerebro de empresa sano no lo mantiene un solo agente todoterreno, sino un <strong>equipo pequeño y especializado</strong> que comparte objetivo y reglas. Cada uno hace su parte —escribir, conectar, verificar, mejorar al resto— y la regla de edición segura garantiza que, entre todos, el conocimiento se mantenga correcto, conectado y al día sin romperse por el camino.</p></div>
+      <blockquote class="pull larga">
+        <p>Un cerebro de empresa sano no lo mantiene un solo agente todoterreno, sino un <strong>equipo pequeño y especializado</strong> que comparte objetivo y reglas. Cada uno hace su parte —escribir, conectar, verificar, mejorar al resto— y la regla de edición segura garantiza que, entre todos, el conocimiento se mantenga correcto, conectado y al día sin romperse por el camino.</p>
+        <footer class="src">En una frase · M7 · C2</footer>
+      </blockquote>
     </section>
 
     <!-- 4. Plugins -->

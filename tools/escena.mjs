@@ -41,10 +41,10 @@ for (const file of files) {
   }
 
   /* la cita editorial */
-  for (const m of html.matchAll(/<blockquote class="pull">([\s\S]*?)<\/blockquote>/g)) {
+  for (const m of html.matchAll(/<blockquote class="pull[^"]*">([\s\S]*?)<\/blockquote>/g)) {
     if (!/<footer class="src">/.test(m[1])) err(file, 'una cita .pull sin <footer class="src">');
   }
-  if (/\[ Frase clave \]/.test(html) && /class="pull"/.test(html)) {
+  if (/\[ Frase clave \]/.test(html) && /class="pull[^"]*"/.test(html)) {
     warn(file, 'quedan a la vez un callout [ Frase clave ] y una cita .pull');
   }
 

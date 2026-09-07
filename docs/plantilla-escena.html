@@ -155,8 +155,14 @@
          geométrico y sobrio, con la geometría base SIEMPRE visible y cada
          pieza dentro de un <g class="dp-capa" data-capa="…"> que se atenúa
          al 20 % cuando no le toca. Clases: .bx (caja), .fill / .fill-ink
-         (relleno), .ti (título 16), .lb / .lb.b (etiqueta mono 13),
-         .ln / .ln.ac (conector). viewBox cómodo: 0 0 640 480. -->
+         (relleno), .ti (título 21), .lb / .lb.b (etiqueta mono 17),
+         .ln / .ln.ac (conector). viewBox cómodo: 0 0 640 480.
+         OJO CON EL ANCHO: la mono es más ancha de lo que sugiere su cuerpo.
+         Presupuesta ~11 unidades de viewBox por carácter en .lb y ~12 en .ti.
+         Si te pasas, el overflow:hidden del escenario recorta el rótulo sin
+         avisar: mídelo con getBBox antes de darlo por bueno. Si no cabe, deja
+         en el diagrama solo número y título; la descripción ya está, verbatim,
+         en el paso de la derecha. -->
     <section class="sec sec-ancho" id="flujo" data-label="Flujo">
       <div class="sec-head"><span class="sec-num"></span><h2 class="display">El flujo, pieza a pieza.</h2></div>
       <div class="despiece" data-despiece>

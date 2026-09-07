@@ -11,9 +11,14 @@
 <body data-class="m6c3">
 <main>
 
-  <header class="hero">
-    <h1 class="display">Orquestación avanzada: pipelines multi-agente.</h1>
+  <header class="hero escena">
+    <h1 class="display">Orquestación avanzada: pipelines <em>multi-agente</em>.</h1>
     <p class="sub">De hilos de chat aislados a redes complejas de especialistas coordinados en Claude Code y Claude Cowork.</p>
+    <ul class="esc-cifras">
+      <li><b>3</b> entornos</li>
+      <li><b>5</b> subagentes</li>
+      <li><b>10</b> preguntas</li>
+    </ul>
   </header>
 
   <div class="content">
@@ -131,7 +136,7 @@
     </section>
 
     <!-- 5. El pipeline visual de los 5 agentes -->
-    <section class="sec" id="pipeline-visual" data-label="Pipeline">
+    <section class="sec sec-ancho" id="pipeline-visual" data-label="Pipeline">
       <div class="sec-head"><span class="sec-num"></span><h2 class="display">Pipeline de inteligencia de marketing (caso de estudio).</h2></div>
       <p class="sec-intro">A continuación se muestra de forma gráfica y reactiva el pipeline de procesamiento multi-agente. Un orquestador central (Claude Opus) reparte y delega de manera secuencial a 5 subagentes especialistas, compartiendo una capa persistente de archivos e histórico de métricas.</p>
 
@@ -139,12 +144,78 @@
         <div class="node"><span class="k">Usuario</span><h4>Petición / Objetivo Global</h4></div><span class="arrow" aria-hidden="true">→</span>
         <div class="node ink"><span class="k">Orquestador (Opus)</span><h4>0. marketing-orchestrator</h4><p>Planifica · Delega · Consolida · Contexto limpio</p></div>
       </div>
-      <div class="flow">
-        <div class="node"><span class="k">Worker 1</span><h4>paid-media-analyzer</h4><p>Lee Drive y normaliza datos crudos</p></div><span class="arrow" aria-hidden="true">→</span>
-        <div class="node"><span class="k">Worker 2</span><h4>behavior-insights</h4><p>Saca patrones e histórico</p></div><span class="arrow" aria-hidden="true">→</span>
-        <div class="node"><span class="k">Worker 3</span><h4>report-builder</h4><p>Informes ejecutivos por campo</p></div><span class="arrow" aria-hidden="true">→</span>
-        <div class="node"><span class="k">Worker 4</span><h4>deck-dashboard</h4><p>Genera PPTX y dashboards</p></div><span class="arrow" aria-hidden="true">→</span>
-        <div class="node"><span class="k">Worker 5</span><h4>synergy-strategist</h4><p>Sinergias y decisiones cruzadas</p></div>
+      <div class="despiece" data-despiece>
+        <div class="dp-media">
+          <div class="dp-stage dp-esquema">
+            <svg viewBox="0 0 640 480" role="img" aria-label="Diagrama del pipeline multi-agente: del orquestador (Opus) baja un eje vertical que encadena cinco subagentes especialistas — paid-media-analyzer, behavior-insights, report-builder, deck-dashboard y synergy-strategist — hasta el entregable final.">
+              <line class="ln" x1="70" y1="28" x2="70" y2="452"/>
+              <line class="ln" x1="70" y1="28" x2="100" y2="28"/>
+              <rect class="bx fill" x="100" y="8" width="500" height="40" rx="10"/>
+              <text class="ti" x="122" y="34">Orquestador (Opus)</text>
+              <line class="ln" x1="70" y1="452" x2="100" y2="452"/>
+              <rect class="bx fill" x="100" y="432" width="500" height="40" rx="10"/>
+              <text class="ti" x="122" y="458">Entregable final</text>
+              <g class="dp-capa" data-capa="analyzer">
+                <line class="ln ac" x1="70" y1="91" x2="100" y2="91"/>
+                <rect class="bx fill" x="100" y="60" width="500" height="62" rx="12"/>
+                <text class="ti" x="122" y="88">paid-media-analyzer</text>
+                <text class="lb" x="122" y="110">Lee Drive y normaliza datos crudos</text>
+                <text class="lb" x="578" y="88" text-anchor="end">Worker 1</text>
+              </g>
+              <g class="dp-capa" data-capa="insights">
+                <line class="ln ac" x1="70" y1="165" x2="100" y2="165"/>
+                <rect class="bx fill" x="100" y="134" width="500" height="62" rx="12"/>
+                <text class="ti" x="122" y="162">behavior-insights</text>
+                <text class="lb" x="122" y="184">Saca patrones e histórico</text>
+                <text class="lb" x="578" y="162" text-anchor="end">Worker 2</text>
+              </g>
+              <g class="dp-capa" data-capa="informes">
+                <line class="ln ac" x1="70" y1="239" x2="100" y2="239"/>
+                <rect class="bx fill" x="100" y="208" width="500" height="62" rx="12"/>
+                <text class="ti" x="122" y="236">report-builder</text>
+                <text class="lb" x="122" y="258">Informes ejecutivos por campo</text>
+                <text class="lb" x="578" y="236" text-anchor="end">Worker 3</text>
+              </g>
+              <g class="dp-capa" data-capa="deck">
+                <line class="ln ac" x1="70" y1="313" x2="100" y2="313"/>
+                <rect class="bx fill" x="100" y="282" width="500" height="62" rx="12"/>
+                <text class="ti" x="122" y="310">deck-dashboard</text>
+                <text class="lb" x="122" y="332">Genera PPTX y dashboards</text>
+                <text class="lb" x="578" y="310" text-anchor="end">Worker 4</text>
+              </g>
+              <g class="dp-capa" data-capa="sinergias">
+                <line class="ln ac" x1="70" y1="387" x2="100" y2="387"/>
+                <rect class="bx fill" x="100" y="356" width="500" height="62" rx="12"/>
+                <text class="ti" x="122" y="384">synergy-strategist</text>
+                <text class="lb" x="122" y="406">Sinergias y decisiones cruzadas</text>
+                <text class="lb" x="578" y="384" text-anchor="end">Worker 5</text>
+              </g>
+            </svg>
+          </div>
+          <p class="dp-cap">El pipeline de procesamiento multi-agente</p>
+        </div>
+        <ol class="dp-steps">
+          <li class="dp-step" data-capa="analyzer">
+            <p class="k">Worker 1</p><h3>paid-media-analyzer</h3>
+            <p>Lee Drive y normaliza datos crudos</p>
+          </li>
+          <li class="dp-step" data-capa="insights">
+            <p class="k">Worker 2</p><h3>behavior-insights</h3>
+            <p>Saca patrones e histórico</p>
+          </li>
+          <li class="dp-step" data-capa="informes">
+            <p class="k">Worker 3</p><h3>report-builder</h3>
+            <p>Informes ejecutivos por campo</p>
+          </li>
+          <li class="dp-step" data-capa="deck">
+            <p class="k">Worker 4</p><h3>deck-dashboard</h3>
+            <p>Genera PPTX y dashboards</p>
+          </li>
+          <li class="dp-step" data-capa="sinergias">
+            <p class="k">Worker 5</p><h3>synergy-strategist</h3>
+            <p>Sinergias y decisiones cruzadas</p>
+          </li>
+        </ol>
       </div>
       <div class="flow">
         <div class="node"><span class="k">Capa compartida</span><h4>Archivos locales de proyecto</h4><p>historic-paidmedia.md · historic-crm.md · memoria persistente de sesión</p></div><span class="arrow" aria-hidden="true">→</span>

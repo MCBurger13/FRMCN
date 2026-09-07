@@ -11,9 +11,14 @@
 <body data-class="m3c2">
 <main>
 
-  <header class="hero">
-    <h1 class="display">Estudio creativo IA: composición y tiempo real.</h1>
+  <header class="hero escena">
+    <h1 class="display">Estudio creativo IA: <em>composición</em> y tiempo real.</h1>
     <p class="sub">El ecosistema de producción ágil. Generación modular, iteración y prototipado visual instantáneo.</p>
+    <ul class="esc-cifras">
+      <li><b>4</b> plataformas</li>
+      <li><b>6</b> modos</li>
+      <li><b>4</b> parámetros</li>
+    </ul>
   </header>
 
   <div class="content">
@@ -34,7 +39,10 @@
         <div class="card"><span class="k">[ 03 ]</span><h4>Iteración profesional</h4><p>Permite ajustar, remezclar y refinar cada elemento visual de forma independiente.</p></div>
       </div>
 
-      <div class="callout clave"><span class="k">[ Clave de esta clase ]</span><p>No se trata de qué modelo es «el mejor», sino de saber <em>qué herramienta usar en cada momento</em> del flujo creativo.</p></div>
+      <blockquote class="pull">
+        <p>No se trata de qué modelo es «el mejor», sino de saber <em>qué herramienta usar en cada momento</em> del flujo creativo.</p>
+        <footer class="src">Clave de esta clase · M3 · C2</footer>
+      </blockquote>
     </section>
 
     <!-- 2. Herramientas: las plataformas de referencia -->
@@ -99,19 +107,94 @@
     </section>
 
     <!-- 3. Terminología y conceptos clave -->
-    <section class="sec" id="terminologia" data-label="Terminología">
+    <section class="sec sec-ancho" id="terminologia" data-label="Terminología">
       <div class="sec-head"><span class="sec-num"></span><h2 class="display">Terminología esencial de IA visual.</h2></div>
       <p class="sec-intro">Dominar el vocabulario es el primer paso para comunicarte con precisión con las plataformas. Aprende los conceptos que definen la creación de imágenes con inteligencia artificial.</p>
 
-      <!-- Bloque A: modos de generación -->
+      <!-- Bloque A: modos de generación (despiece) -->
       <h3>Modos de generación</h3>
-      <div class="glossary">
-        <div class="row"><h3 class="term">Text2Img<small>Texto → Imagen</small></h3><p class="def">La operación más básica: describes con palabras lo que quieres y la IA lo genera desde cero. Es el punto de partida de todo flujo creativo. La calidad del output depende directamente de la calidad del prompt.</p></div>
-        <div class="row"><h3 class="term">Img2Img<small>Imagen → Imagen</small></h3><p class="def">Partes de una imagen de referencia y la IA la transforma según tus instrucciones. Permite mantener la composición o el estilo base mientras cambias otros elementos. Es la base del <em>style transfer</em> y la edición semántica.</p></div>
-        <div class="row"><h3 class="term">Img2Text<small>Imagen → Texto</small></h3><p class="def">El proceso inverso: la IA analiza una imagen y la describe en palabras. Es extremadamente útil para <strong>reverse-engineering</strong> de un estilo: sube una foto que te guste y obtén el prompt que la generaría.</p></div>
-        <div class="row"><h3 class="term">Inpainting<small>Pintura interna</small></h3><p class="def">Técnica que permite seleccionar (enmascarar) una zona concreta de la imagen y regenerarla sin tocar el resto. Es el equivalente IA del retoque fotográfico quirúrgico: cambias solo la camisa, conservando el fondo y el rostro.</p></div>
-        <div class="row"><h3 class="term">Outpainting<small>Expansión de lienzo</small></h3><p class="def">Lo contrario al inpainting: extiendes el lienzo más allá de los bordes de la imagen original y la IA rellena el espacio nuevo de forma coherente. Ideal para cambiar el ratio de aspecto de una foto sin perder el contenido central.</p></div>
-        <div class="row"><h3 class="term">ControlNet<small>Control de pose/forma</small></h3><p class="def">Sistema que permite usar estructuras guía (esqueletos de pose, bordes de un dibujo, mapas de profundidad) para controlar con precisión cómo la IA genera la imagen. Garantiza coherencia entre generaciones de un mismo personaje o composición.</p></div>
+      <div class="despiece" data-despiece>
+        <div class="dp-media">
+          <ul class="dp-nav">
+            <li><button type="button" data-go="text2img">01 <i>Text2Img</i></button></li>
+            <li><button type="button" data-go="img2img">02 <i>Img2Img</i></button></li>
+            <li><button type="button" data-go="img2text">03 <i>Img2Text</i></button></li>
+            <li><button type="button" data-go="inpainting">04 <i>Inpainting</i></button></li>
+            <li><button type="button" data-go="outpainting">05 <i>Outpainting</i></button></li>
+            <li><button type="button" data-go="controlnet">06 <i>ControlNet</i></button></li>
+          </ul>
+          <div class="dp-stage dp-esquema">
+            <svg viewBox="0 0 640 480" role="img" aria-label="Mapa de los seis modos de generación en una rejilla de seis celdas: de texto a imagen, de imagen a imagen, de imagen a texto, pintura interna, expansión de lienzo y control de pose.">
+              <rect class="bx" x="30" y="40" width="580" height="400" rx="14"/>
+              <line class="ln" x1="320" y1="40" x2="320" y2="440"/>
+              <line class="ln" x1="30" y1="173" x2="610" y2="173"/>
+              <line class="ln" x1="30" y1="306" x2="610" y2="306"/>
+
+              <g class="dp-capa" data-capa="text2img">
+                <line class="ln ac" x1="64" y1="68" x2="102" y2="68"/>
+                <line class="ln ac" x1="64" y1="78" x2="102" y2="78"/>
+                <line class="ln ac" x1="64" y1="88" x2="90" y2="88"/>
+                <line class="ln ac" x1="112" y1="78" x2="140" y2="78"/>
+                <path class="ln ac" d="M134 72 L142 78 L134 84"/>
+                <rect class="bx fill" x="150" y="58" width="40" height="40" rx="6"/>
+                <text class="ti" x="64" y="128">Text2Img</text>
+                <text class="lb" x="64" y="150">Texto → Imagen</text>
+              </g>
+
+              <g class="dp-capa" data-capa="img2img">
+                <rect class="bx fill" x="344" y="58" width="40" height="40" rx="6"/>
+                <line class="ln ac" x1="392" y1="78" x2="420" y2="78"/>
+                <path class="ln ac" d="M414 72 L422 78 L414 84"/>
+                <rect class="bx fill" x="430" y="58" width="40" height="40" rx="6"/>
+                <text class="ti" x="344" y="128">Img2Img</text>
+                <text class="lb" x="344" y="150">Imagen → Imagen</text>
+              </g>
+
+              <g class="dp-capa" data-capa="img2text">
+                <rect class="bx fill" x="64" y="191" width="40" height="40" rx="6"/>
+                <line class="ln ac" x1="112" y1="211" x2="140" y2="211"/>
+                <path class="ln ac" d="M134 205 L142 211 L134 217"/>
+                <line class="ln ac" x1="150" y1="201" x2="188" y2="201"/>
+                <line class="ln ac" x1="150" y1="211" x2="188" y2="211"/>
+                <line class="ln ac" x1="150" y1="221" x2="176" y2="221"/>
+                <text class="ti" x="64" y="261">Img2Text</text>
+                <text class="lb" x="64" y="283">Imagen → Texto</text>
+              </g>
+
+              <g class="dp-capa" data-capa="inpainting">
+                <rect class="bx fill" x="344" y="189" width="44" height="44" rx="6"/>
+                <rect class="fill-ink" x="358" y="203" width="16" height="16"/>
+                <text class="ti" x="344" y="261">Inpainting</text>
+                <text class="lb" x="344" y="283">Pintura interna</text>
+              </g>
+
+              <g class="dp-capa" data-capa="outpainting">
+                <rect class="bx" x="64" y="316" width="60" height="60" rx="6"/>
+                <rect class="bx fill" x="79" y="331" width="30" height="30" rx="4"/>
+                <text class="ti" x="64" y="394">Outpainting</text>
+                <text class="lb" x="64" y="416">Expansión de lienzo</text>
+              </g>
+
+              <g class="dp-capa" data-capa="controlnet">
+                <rect class="bx fill" x="344" y="324" width="44" height="44" rx="6"/>
+                <line class="ln ac" x1="355" y1="332" x2="355" y2="360"/>
+                <line class="ln ac" x1="366" y1="332" x2="366" y2="360"/>
+                <line class="ln ac" x1="377" y1="332" x2="377" y2="360"/>
+                <text class="ti" x="344" y="394">ControlNet</text>
+                <text class="lb" x="344" y="416">Control de pose/forma</text>
+              </g>
+            </svg>
+          </div>
+          <p class="dp-cap">Dominar el vocabulario.</p>
+        </div>
+        <ol class="dp-steps">
+          <li class="dp-step" data-capa="text2img"><p class="k">[ 01 ] Texto → Imagen</p><h3>Text2Img</h3><p>La operación más básica: describes con palabras lo que quieres y la IA lo genera desde cero. Es el punto de partida de todo flujo creativo. La calidad del output depende directamente de la calidad del prompt.</p></li>
+          <li class="dp-step" data-capa="img2img"><p class="k">[ 02 ] Imagen → Imagen</p><h3>Img2Img</h3><p>Partes de una imagen de referencia y la IA la transforma según tus instrucciones. Permite mantener la composición o el estilo base mientras cambias otros elementos. Es la base del <em>style transfer</em> y la edición semántica.</p></li>
+          <li class="dp-step" data-capa="img2text"><p class="k">[ 03 ] Imagen → Texto</p><h3>Img2Text</h3><p>El proceso inverso: la IA analiza una imagen y la describe en palabras. Es extremadamente útil para <strong>reverse-engineering</strong> de un estilo: sube una foto que te guste y obtén el prompt que la generaría.</p></li>
+          <li class="dp-step" data-capa="inpainting"><p class="k">[ 04 ] Pintura interna</p><h3>Inpainting</h3><p>Técnica que permite seleccionar (enmascarar) una zona concreta de la imagen y regenerarla sin tocar el resto. Es el equivalente IA del retoque fotográfico quirúrgico: cambias solo la camisa, conservando el fondo y el rostro.</p></li>
+          <li class="dp-step" data-capa="outpainting"><p class="k">[ 05 ] Expansión de lienzo</p><h3>Outpainting</h3><p>Lo contrario al inpainting: extiendes el lienzo más allá de los bordes de la imagen original y la IA rellena el espacio nuevo de forma coherente. Ideal para cambiar el ratio de aspecto de una foto sin perder el contenido central.</p></li>
+          <li class="dp-step" data-capa="controlnet"><p class="k">[ 06 ] Control de pose/forma</p><h3>ControlNet</h3><p>Sistema que permite usar estructuras guía (esqueletos de pose, bordes de un dibujo, mapas de profundidad) para controlar con precisión cómo la IA genera la imagen. Garantiza coherencia entre generaciones de un mismo personaje o composición.</p></li>
+        </ol>
       </div>
 
       <!-- Bloque B: parámetros técnicos -->

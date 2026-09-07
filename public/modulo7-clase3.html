@@ -33,9 +33,14 @@
 <body data-class="m7c3">
 <main>
 
-  <header class="hero">
-    <h1 class="display">El cerebro que se busca y se teje solo.</h1>
+  <header class="hero escena">
+    <h1 class="display">El cerebro que se busca y se <em>teje</em> solo.</h1>
     <p class="sub">Ya tienes un cerebro de notas. Ahora miramos debajo del capó: las tres piezas que convierten un montón de apuntes en un grafo vivo que se busca por significado y se enlaza solo. Y lo mejor: con tus propios scripts en local, sin plugins de pago.</p>
+    <ul class="esc-cifras">
+      <li><b>3</b> piezas</li>
+      <li><b>2</b> límites</li>
+      <li><b>2</b> prompts</li>
+    </ul>
     <div class="chips">
       <span class="chip">Vault</span>
       <span class="chip">Vectorizador (búsqueda por significado)</span>
@@ -48,17 +53,63 @@
   <div class="content">
 
     <!-- 1. Resumen -->
-    <section class="sec" id="resumen" data-label="Resumen">
+    <section class="sec sec-ancho" id="resumen" data-label="Resumen">
       <div class="sec-head"><span class="sec-num"></span><h2 class="display">Qué vamos a ver y cómo encaja todo.</h2></div>
 
       <p>En la clase anterior montamos el <strong>cerebro de empresa</strong>: notas ordenadas por proyectos y áreas, un equipo de agentes y un grafo sano. Hoy abrimos la caja y vemos <strong>cómo funciona por dentro</strong> lo que hace que ese cerebro sea de verdad útil. Hay herramientas comerciales (plugins de pago como <em>Smart Connections</em>, <em>Graphify</em> y compañía) que hacen esta magia. Nosotros vamos a entender qué hacen y luego a <strong>construir nuestra propia versión en local</strong>, gratis y bajo nuestro control, simplemente pidiéndoselo a Claude Code.</p>
 
       <p>Son <strong>tres piezas</strong> que trabajan en cadena, cada una apoyada en la anterior. No compiten: se pasan el testigo. Este es el mapa de toda la clase de un vistazo:</p>
 
-      <div class="flow">
-        <div class="node"><span class="k">01</span><h4>El Vault</h4><p>Guarda tus notas como <strong>archivos de texto</strong> y las enlazas a mano. Es la <em>memoria</em> en bruto: fiable y tuya, pero busca por <strong>palabra exacta</strong> y solo conecta lo que enlazas tú.</p></div><span class="arrow" aria-hidden="true">→</span>
-        <div class="node"><span class="k">02</span><h4>El Vectorizador</h4><p>Traduce cada nota a <strong>significado</strong> (números que capturan de qué habla). Con eso puedes buscar por <strong>idea</strong>, no por la palabra literal. Es el <em>oído fino</em> del cerebro.</p></div><span class="arrow" aria-hidden="true">→</span>
-        <div class="node"><span class="k">03</span><h4>El Tejedor</h4><p>Usa ese significado para <strong>enlazar solo</strong> las notas que hablan de lo mismo y <strong>rescatar huérfanas</strong>. Teje el grafo por ti. Es lo que haría un plugin tipo <em>Graphify</em>, pero en casa.</p></div>
+      <div class="despiece" data-despiece>
+        <div class="dp-media">
+          <ul class="dp-nav">
+            <li><button type="button" data-go="vault">01 <i>El Vault</i></button></li>
+            <li><button type="button" data-go="vectorizador">02 <i>El Vectorizador</i></button></li>
+            <li><button type="button" data-go="tejedor">03 <i>El Tejedor</i></button></li>
+          </ul>
+          <div class="dp-stage dp-esquema">
+            <svg viewBox="0 0 640 480" role="img" aria-label="Diagrama de la cadena de tres piezas: el Vault guarda las notas, el Vectorizador las traduce a significado y el Tejedor las enlaza. Cada caja se desplaza a la derecha de la anterior y una flecha le pasa el testigo.">
+              <line class="ln" x1="32" y1="462" x2="608" y2="462"/>
+              <line class="ln" x1="242" y1="152" x2="300" y2="190"/>
+              <path class="ln ac" d="M292 176 L300 190 L284 188"/>
+              <line class="ln" x1="300" y1="294" x2="358" y2="332"/>
+              <path class="ln ac" d="M350 318 L358 332 L342 330"/>
+              <g class="dp-capa" data-capa="vault">
+                <rect class="bx fill" x="32" y="48" width="460" height="104" rx="12"/>
+                <text class="ti" x="56" y="84">01 · El Vault</text>
+                <text class="lb" x="56" y="110">Guarda notas en texto plano</text>
+                <text class="lb b" x="56" y="132">Busca por palabra exacta</text>
+              </g>
+              <g class="dp-capa" data-capa="vectorizador">
+                <rect class="bx fill" x="90" y="190" width="460" height="104" rx="12"/>
+                <text class="ti" x="114" y="226">02 · El Vectorizador</text>
+                <text class="lb" x="114" y="252">Traduce cada nota a significado</text>
+                <text class="lb b" x="114" y="274">Busca por idea, no por letra</text>
+              </g>
+              <g class="dp-capa" data-capa="tejedor">
+                <rect class="bx fill" x="148" y="332" width="460" height="104" rx="12"/>
+                <text class="ti" x="172" y="368">03 · El Tejedor</text>
+                <text class="lb" x="172" y="394">Enlaza lo que habla de lo mismo</text>
+                <text class="lb b" x="172" y="416">Rescata las notas huérfanas</text>
+              </g>
+            </svg>
+          </div>
+          <p class="dp-cap">El Vault guarda · el Vectorizador entiende · el Tejedor conecta.</p>
+        </div>
+        <ol class="dp-steps">
+          <li class="dp-step" data-capa="vault" data-cap="Pieza 01 · La memoria en bruto">
+            <p class="k">[ 01 ] Pieza</p><h3>El Vault</h3>
+            <p>Guarda tus notas como <strong>archivos de texto</strong> y las enlazas a mano. Es la <em>memoria</em> en bruto: fiable y tuya, pero busca por <strong>palabra exacta</strong> y solo conecta lo que enlazas tú.</p>
+          </li>
+          <li class="dp-step" data-capa="vectorizador" data-cap="Pieza 02 · El oído fino del cerebro">
+            <p class="k">[ 02 ] Pieza</p><h3>El Vectorizador</h3>
+            <p>Traduce cada nota a <strong>significado</strong> (números que capturan de qué habla). Con eso puedes buscar por <strong>idea</strong>, no por la palabra literal. Es el <em>oído fino</em> del cerebro.</p>
+          </li>
+          <li class="dp-step" data-capa="tejedor" data-cap="Pieza 03 · Teje el grafo por ti">
+            <p class="k">[ 03 ] Pieza</p><h3>El Tejedor</h3>
+            <p>Usa ese significado para <strong>enlazar solo</strong> las notas que hablan de lo mismo y <strong>rescatar huérfanas</strong>. Teje el grafo por ti. Es lo que haría un plugin tipo <em>Graphify</em>, pero en casa.</p>
+          </li>
+        </ol>
       </div>
 
       <div class="callout analogia"><span class="k">[ Analogía — una biblioteca ]</span><p>El <strong>Vault</strong> son las <em>estanterías</em> con todos los libros guardados. El <strong>Vectorizador</strong> es el <em>bibliotecario que se ha leído todo</em> y, cuando le describes una idea con tus palabras, sabe exactamente qué libros tratan de eso (aunque no uses el título). Y <strong>El Tejedor</strong> es quien va poniendo <em>hilos entre los libros que se parecen</em>, para que nunca quede ninguno perdido en un rincón sin conexión con el resto.</p></div>
@@ -199,7 +250,10 @@ Prepáralo todo en un entorno virtual, déjame un README con el comando para rei
 
 Solo cuando dé el OK, añade los enlaces aprobados editando de forma quirúrgica (solo añades el enlace, sin tocar el resto de la nota), respetando el formato de cada nota y sin crear duplicados. Ponme un umbral de parecido configurable para no llenar el grafo de conexiones débiles. Todo en local.</pre></div>
 
-      <div class="callout clave"><span class="k">[ En una frase ]</span><p>El <strong>Vault</strong> guarda, el <strong>Vectorizador</strong> entiende y <strong>El Tejedor</strong> conecta. Las tres piezas que los plugins de pago venden por separado las tienes <strong>en local, gratis y bajo tu control</strong>, sin más que describírselas a Claude Code. Y la seguridad manda siempre: nada sale de tu equipo y tú apruebas cada cambio antes de que toque una nota.</p></div>
+      <blockquote class="pull larga">
+        <p>El <strong>Vault</strong> guarda, el <strong>Vectorizador</strong> entiende y <strong>El Tejedor</strong> conecta. Las tres piezas que los plugins de pago venden por separado las tienes <strong>en local, gratis y bajo tu control</strong>, sin más que describírselas a Claude Code. Y la seguridad manda siempre: nada sale de tu equipo y tú apruebas cada cambio antes de que toque una nota.</p>
+        <footer class="src">En una frase · M7 · C3</footer>
+      </blockquote>
     </section>
 
     <!-- 5. Práctica: reto y test (banda tinta) -->
