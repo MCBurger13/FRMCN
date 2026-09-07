@@ -445,7 +445,9 @@ body[data-class]{overflow-x:clip;}
 .sec-dark .dp-nav button{color:var(--color-mist);border-color:var(--color-line-dark);}
 .sec-dark .dp-nav button:hover{color:var(--color-paper);border-color:var(--color-accent);}
 .dp-stage{position:relative;border-radius:var(--r-xl);overflow:hidden;background:var(--color-ink-soft);border:1px solid var(--color-line-dark);}
-.dp-stage.dp-foto,.dp-stage.dp-esquema{height:clamp(280px,calc(100vh - 490px),500px);}
+.dp-stage.dp-foto{height:clamp(280px,calc(100vh - 490px),500px);}
+/* el esquema se ajusta a su propio dibujo: una caja fija le deja aire muerto */
+.dp-stage.dp-esquema{height:auto;}
 .dp-stage img.base{display:block;width:100%;height:100%;object-fit:contain;}
 .dp-cap{margin:0;font-family:var(--font-mono);font-size:var(--mono-s);letter-spacing:.09em;text-transform:uppercase;color:var(--color-muted);}
 .sec-dark .dp-cap{color:var(--color-mist);}
@@ -463,7 +465,7 @@ svg.dp-capa.on{opacity:1;}
 
 /* variante ESQUEMA: diagrama propio; las capas se atenúan, nunca desaparecen */
 .dp-esquema{background:var(--color-paper-dim);border-color:var(--color-line);}
-.dp-esquema svg{display:block;width:100%;height:100%;}
+.dp-esquema svg{display:block;width:100%;height:auto;max-height:clamp(240px,calc(100vh - 490px),480px);}
 .dp-esquema .dp-capa{opacity:.2;}
 .dp-esquema .dp-capa.on{opacity:1;}
 .dp-esquema .bx{fill:none;stroke:var(--color-line);stroke-width:1.5;}
@@ -518,7 +520,8 @@ svg.dp-capa.on{opacity:1;}
   .despiece{grid-template-columns:1fr;gap:14px;}
   .dp-media{top:56px;z-index:5;background:var(--surface-page);padding:10px 0 12px;}
   .sec-dark .dp-media{background:var(--color-ink);}
-  .dp-stage.dp-foto,.dp-stage.dp-esquema{height:clamp(180px,26vh,240px);}
+  .dp-stage.dp-foto{height:clamp(180px,26vh,240px);}
+  .dp-esquema svg{max-height:clamp(150px,24vh,220px);}
   .dp-pantalla{max-height:220px;}
   .dp-tira{max-height:104px;overflow:auto;}
   .dp-cap{display:none;}
