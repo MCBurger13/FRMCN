@@ -380,7 +380,9 @@ body[data-class]{overflow-x:clip;}
 .sec-dark.sec-ancho{padding-top:clamp(40px,5vw,64px);padding-bottom:clamp(44px,5.5vw,72px);}
 
 /* ── Apertura ─────────────────────────────────────────────────────────── */
-.hero.escena{text-align:left;background:var(--color-ink);color:var(--color-paper);border-bottom:0;padding:clamp(34px,5vw,66px) clamp(20px,5vw,64px) clamp(38px,5vw,66px);display:grid;grid-template-columns:minmax(0,1fr);align-items:center;gap:clamp(22px,4vw,56px);}
+.hero.escena{text-align:left;background:var(--color-ink);color:var(--color-paper);border-bottom:0;padding:clamp(34px,5vw,66px) clamp(20px,5vw,64px) clamp(38px,5vw,66px);display:grid;grid-template-columns:minmax(0,1fr);align-items:center;align-content:center;gap:0 clamp(22px,4vw,56px);grid-auto-rows:min-content;}
+/* la lámina abarca todas las filas, así que el hueco entre filas tiene que
+   ser cero: si no, las filas vacías del span inflan la apertura */
 /* con lámina, la apertura se parte en dos; sin ella, una sola columna */
 .hero.escena:has(.esc-fig){grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);}
 .hero.escena:not(:has(.esc-fig)) h1{max-width:20ch;}
