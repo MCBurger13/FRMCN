@@ -49,9 +49,16 @@ for (const file of files) {
   }
 
   /* el despiece */
+  /* Desde la auditoría de 2026-09-08, el despiece NO es obligatorio: solo se usa
+     cuando la pieza es una imagen real (fotografía o captura) con detalle que
+     señalar. Si la pieza hay que dibujarla y su contenido es texto, es una
+     figura, no un despiece. Una clase sin despiece es lo normal. */
   const dps = [...html.matchAll(/<div class="despiece"[^>]*data-despiece[^>]*>/g)];
   if (!dps.length) {
-    if (escena) warn(file, 'lleva apertura de escena pero no tiene despiece');
+    /* pero no puede quedar andamiaje suelto */
+    for (const resto of ['dp-media', 'dp-steps', 'dp-step', 'dp-nav', 'dp-cap', 'dp-tira', 'dp-stage', 'dp-capa']) {
+      if (html.includes(resto)) err(file, `queda "${resto}" pero ya no hay despiece`);
+    }
     continue;
   }
   conDespiece += 1;
@@ -80,6 +87,8 @@ for (const file of files) {
   if (!stage) err(file, 'despiece sin .dp-stage');
   else if (!/dp-foto|dp-esquema|dp-pantalla/.test(stage[1])) {
     err(file, '.dp-stage sin variante (dp-foto / dp-esquema / dp-pantalla)');
+  } else if (/dp-esquema/.test(stage[1])) {
+    warn(file, 'el despiece va sobre un diagrama dibujado: la regla dice que eso es una figura, no un despiece');
   }
   const sec = html.slice(0, html.indexOf('class="despiece"')).match(/<section class="sec([^"]*)" id="([^"]+)"[^>]*>(?![\s\S]*<section)/);
   if (sec && !/ sec-ancho/.test(sec[1])) warn(file, `la sección #${sec[2]} lleva el despiece pero no sec-ancho`);

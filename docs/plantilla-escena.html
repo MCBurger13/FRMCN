@@ -18,13 +18,24 @@
     2. APERTURA — la clase abre en tinta, alineada a la izquierda, con cifras.
     3. LECTURA — prosa con nota al margen y cita editorial.
 
+  CUÁNDO SE USA UN DESPIECE (regla añadida el 8 sep 2026, tras auditar las 15 clases)
+  Solo cuando la pieza es una IMAGEN REAL —una fotografía o una captura de pantalla— con
+  detalle que señalar, y los pasos apuntan a partes distintas de esa misma imagen.
+  Si la pieza hay que dibujarla y su contenido es texto, NO es un despiece: es una FIGURA.
+  Un diagrama que repite el rótulo del paso que estás leyendo no señala nada, triplica el
+  scroll de la sección y apaga los demás pasos al 62 %, así que impide comparar de un
+  vistazo justo donde el bloque original servía para comparar. Se probó en 15 clases y
+  solo aguantó en una: la que tenía una fotografía debajo.
+  Corolario: ya NO hay «una clase, un despiece». Lo normal es que una clase no lleve
+  ninguno. Y un buen diagrama no se tira: se queda como <figure class="figure"> ancha,
+  con todas sus capas al 100 %, encima del bloque que explica.
+
   REGLAS DURAS
   A. El contenido no cambia. El despiece se construye SIEMPRE con textos que
      ya estaban en la clase (una rejilla de cards, un stepper, un glosario…).
      Nada de inventar pasos, ejemplos ni cifras. `node tools/parity.mjs` tiene
      que seguir dando 0 % de pérdida.
-  B. Una clase lleva UN despiece, el de su sección más enumerativa. Dos
-     despieces en la misma página cansan y rompen el ritmo.
+  B. Como mucho UN despiece por clase, y solo si pasa la regla de arriba.
   C. Máximo dos fondos por pantalla: papel + tinta. La apertura y la banda
      final ya son tinta; la sección del despiece se queda en papel.
   D. Sin librerías. El movimiento lo lleva wireDespiece() de curso.js.
