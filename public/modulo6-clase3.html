@@ -136,91 +136,71 @@
     </section>
 
     <!-- 5. El pipeline visual de los 5 agentes -->
-    <section class="sec sec-ancho" id="pipeline-visual" data-label="Pipeline">
+    <section class="sec" id="pipeline-visual" data-label="Pipeline">
       <div class="sec-head"><span class="sec-num"></span><h2 class="display">Pipeline de inteligencia de marketing (caso de estudio).</h2></div>
       <p class="sec-intro">A continuación se muestra de forma gráfica y reactiva el pipeline de procesamiento multi-agente. Un orquestador central (Claude Opus) reparte y delega de manera secuencial a 5 subagentes especialistas, compartiendo una capa persistente de archivos e histórico de métricas.</p>
 
-      <div class="flow">
-        <div class="node"><span class="k">Usuario</span><h4>Petición / Objetivo Global</h4></div><span class="arrow" aria-hidden="true">→</span>
-        <div class="node ink"><span class="k">Orquestador (Opus)</span><h4>0. marketing-orchestrator</h4><p>Planifica · Delega · Consolida · Contexto limpio</p></div>
-      </div>
-      <div class="despiece" data-despiece>
-        <div class="dp-media">
-          <div class="dp-stage dp-esquema">
-            <svg viewBox="0 0 640 480" role="img" aria-label="Diagrama del pipeline multi-agente: del orquestador (Opus) baja un eje vertical que encadena cinco subagentes especialistas — paid-media-analyzer, behavior-insights, report-builder, deck-dashboard y synergy-strategist — hasta el entregable final.">
-              <line class="ln" x1="70" y1="28" x2="70" y2="452"/>
-              <line class="ln" x1="70" y1="28" x2="100" y2="28"/>
-              <rect class="bx fill" x="100" y="8" width="500" height="40" rx="10"/>
-              <text class="ti" x="122" y="34">Orquestador (Opus)</text>
-              <line class="ln" x1="70" y1="452" x2="100" y2="452"/>
-              <rect class="bx fill" x="100" y="432" width="500" height="40" rx="10"/>
-              <text class="ti" x="122" y="458">Entregable final</text>
-              <g class="dp-capa" data-capa="analyzer">
-                <line class="ln ac" x1="70" y1="91" x2="100" y2="91"/>
-                <rect class="bx fill" x="100" y="60" width="500" height="62" rx="12"/>
-                <text class="ti" x="122" y="88">paid-media-analyzer</text>
-                <text class="lb" x="122" y="110">Lee Drive y normaliza datos crudos</text>
-                <text class="lb" x="578" y="88" text-anchor="end">Worker 1</text>
-              </g>
-              <g class="dp-capa" data-capa="insights">
-                <line class="ln ac" x1="70" y1="165" x2="100" y2="165"/>
-                <rect class="bx fill" x="100" y="134" width="500" height="62" rx="12"/>
-                <text class="ti" x="122" y="162">behavior-insights</text>
-                <text class="lb" x="122" y="184">Saca patrones e histórico</text>
-                <text class="lb" x="578" y="162" text-anchor="end">Worker 2</text>
-              </g>
-              <g class="dp-capa" data-capa="informes">
-                <line class="ln ac" x1="70" y1="239" x2="100" y2="239"/>
-                <rect class="bx fill" x="100" y="208" width="500" height="62" rx="12"/>
-                <text class="ti" x="122" y="236">report-builder</text>
-                <text class="lb" x="122" y="258">Informes ejecutivos por campo</text>
-                <text class="lb" x="578" y="236" text-anchor="end">Worker 3</text>
-              </g>
-              <g class="dp-capa" data-capa="deck">
-                <line class="ln ac" x1="70" y1="313" x2="100" y2="313"/>
-                <rect class="bx fill" x="100" y="282" width="500" height="62" rx="12"/>
-                <text class="ti" x="122" y="310">deck-dashboard</text>
-                <text class="lb" x="122" y="332">Genera PPTX y dashboards</text>
-                <text class="lb" x="578" y="310" text-anchor="end">Worker 4</text>
-              </g>
-              <g class="dp-capa" data-capa="sinergias">
-                <line class="ln ac" x1="70" y1="387" x2="100" y2="387"/>
-                <rect class="bx fill" x="100" y="356" width="500" height="62" rx="12"/>
-                <text class="ti" x="122" y="384">synergy-strategist</text>
-                <text class="lb" x="122" y="406">Sinergias y decisiones cruzadas</text>
-                <text class="lb" x="578" y="384" text-anchor="end">Worker 5</text>
-              </g>
-            </svg>
-          </div>
-          <p class="dp-cap">El pipeline de procesamiento multi-agente</p>
-        </div>
-        <ol class="dp-steps">
-          <li class="dp-step" data-capa="analyzer">
-            <p class="k">Worker 1</p><h3>paid-media-analyzer</h3>
-            <p>Lee Drive y normaliza datos crudos</p>
-          </li>
-          <li class="dp-step" data-capa="insights">
-            <p class="k">Worker 2</p><h3>behavior-insights</h3>
-            <p>Saca patrones e histórico</p>
-          </li>
-          <li class="dp-step" data-capa="informes">
-            <p class="k">Worker 3</p><h3>report-builder</h3>
-            <p>Informes ejecutivos por campo</p>
-          </li>
-          <li class="dp-step" data-capa="deck">
-            <p class="k">Worker 4</p><h3>deck-dashboard</h3>
-            <p>Genera PPTX y dashboards</p>
-          </li>
-          <li class="dp-step" data-capa="sinergias">
-            <p class="k">Worker 5</p><h3>synergy-strategist</h3>
-            <p>Sinergias y decisiones cruzadas</p>
-          </li>
-        </ol>
-      </div>
-      <div class="flow">
-        <div class="node"><span class="k">Capa compartida</span><h4>Archivos locales de proyecto</h4><p>historic-paidmedia.md · historic-crm.md · memoria persistente de sesión</p></div><span class="arrow" aria-hidden="true">→</span>
-        <div class="node ink"><span class="k">Entregable final</span><h4>Informes + Deck PPTX + Dashboard + Sinergias</h4></div>
-      </div>
+      <figure class="figure esquema" style="max-width:var(--read-w)">
+        <svg viewBox="0 0 700 764" role="img" aria-label="Diagrama del pipeline multi-agente sobre un eje vertical: de la petición del usuario arranca la línea del orquestador (Opus, 0. marketing-orchestrator, que planifica, delega, consolida y mantiene el contexto limpio) y de ella cuelgan en orden los cinco subagentes especialistas — paid-media-analyzer, que lee Drive y normaliza los datos crudos; behavior-insights, que saca patrones e histórico; report-builder, que redacta informes ejecutivos por campo; deck-dashboard, que genera PPTX y dashboards; y synergy-strategist, que cruza sinergias y decisiones — antes de pasar por la capa compartida de archivos locales de proyecto y terminar en el entregable final.">
+          <line class="ln ac" x1="70" y1="32" x2="70" y2="719"/>
+
+          <line class="ln" x1="70" y1="32" x2="100" y2="32"/>
+          <rect class="bx fill" x="100" y="8" width="560" height="48" rx="10"/>
+          <text class="ti" x="122" y="39">Petición / Objetivo Global</text>
+          <text class="lb" x="638" y="39" text-anchor="end">Usuario</text>
+
+          <line class="ln" x1="70" y1="113" x2="100" y2="113"/>
+          <rect class="bx fill on-bx" x="100" y="68" width="560" height="90" rx="10"/>
+          <text class="ti" x="122" y="98">0. marketing-orchestrator</text>
+          <text class="lb" x="638" y="98" text-anchor="end">Orquestador (Opus)</text>
+          <text class="lb" x="122" y="122">Planifica · Delega · Consolida</text>
+          <text class="lb" x="122" y="144">Contexto limpio</text>
+
+          <line class="ln" x1="70" y1="205" x2="100" y2="205"/>
+          <rect class="bx fill" x="100" y="170" width="560" height="70" rx="12"/>
+          <text class="ti" x="122" y="200">paid-media-analyzer</text>
+          <text class="lb" x="638" y="200" text-anchor="end">Worker 1</text>
+          <text class="lb" x="122" y="224">Lee Drive y normaliza datos crudos</text>
+
+          <line class="ln" x1="70" y1="287" x2="100" y2="287"/>
+          <rect class="bx fill" x="100" y="252" width="560" height="70" rx="12"/>
+          <text class="ti" x="122" y="282">behavior-insights</text>
+          <text class="lb" x="638" y="282" text-anchor="end">Worker 2</text>
+          <text class="lb" x="122" y="306">Saca patrones e histórico</text>
+
+          <line class="ln" x1="70" y1="369" x2="100" y2="369"/>
+          <rect class="bx fill" x="100" y="334" width="560" height="70" rx="12"/>
+          <text class="ti" x="122" y="364">report-builder</text>
+          <text class="lb" x="638" y="364" text-anchor="end">Worker 3</text>
+          <text class="lb" x="122" y="388">Informes ejecutivos por campo</text>
+
+          <line class="ln" x1="70" y1="451" x2="100" y2="451"/>
+          <rect class="bx fill" x="100" y="416" width="560" height="70" rx="12"/>
+          <text class="ti" x="122" y="446">deck-dashboard</text>
+          <text class="lb" x="638" y="446" text-anchor="end">Worker 4</text>
+          <text class="lb" x="122" y="470">Genera PPTX y dashboards</text>
+
+          <line class="ln" x1="70" y1="533" x2="100" y2="533"/>
+          <rect class="bx fill" x="100" y="498" width="560" height="70" rx="12"/>
+          <text class="ti" x="122" y="528">synergy-strategist</text>
+          <text class="lb" x="638" y="528" text-anchor="end">Worker 5</text>
+          <text class="lb" x="122" y="552">Sinergias y decisiones cruzadas</text>
+
+          <line class="ln" x1="70" y1="625" x2="100" y2="625"/>
+          <rect class="bx fill" x="100" y="580" width="560" height="90" rx="10"/>
+          <text class="ti" x="122" y="610">Archivos locales de proyecto</text>
+          <text class="lb" x="638" y="610" text-anchor="end">Capa compartida</text>
+          <text class="lb" x="122" y="634">historic-paidmedia.md · historic-crm.md</text>
+          <text class="lb" x="122" y="656">memoria persistente de sesión</text>
+
+          <line class="ln" x1="70" y1="719" x2="100" y2="719"/>
+          <rect class="bx fill on-bx" x="100" y="682" width="560" height="74" rx="10"/>
+          <text class="ti" x="122" y="712">Informes + Deck PPTX +</text>
+          <text class="lb" x="638" y="712" text-anchor="end">Entregable final</text>
+          <text class="ti" x="122" y="739">Dashboard + Sinergias</text>
+        </svg>
+        <figcaption>[ Diagrama ] El pipeline de procesamiento multi-agente</figcaption>
+      </figure>
     </section>
 
     <!-- 6. Despiece de los agentes e instrucciones de configuración -->

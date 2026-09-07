@@ -37,75 +37,63 @@
     </section>
 
     <!-- 2. Arquitectura .MD (archivos de configuración automática) -->
-    <section class="sec sec-ancho" id="arquitectura" data-label="Arquitectura .MD">
+    <section class="sec" id="arquitectura" data-label="Arquitectura .MD">
       <p class="sec-eyebrow">[ Automatización de contexto ]</p>
       <div class="sec-head"><span class="sec-num"></span><h2 class="display">La arquitectura «.MD» (el cerebro permanente).</h2></div>
       <p class="sec-intro">El mayor error productivo es escribir: <em>«Actúa como un experto de mi marca, lee este PDF de estilo y haz X»</em>, cada vez que abres un chat. Claude Code y los entornos avanzados automatizan esto usando <strong>archivos de configuración en la raíz de tu proyecto</strong>.</p>
 
-      <h3>El framework de archivos agentic</h3>
-      <div class="despiece" data-despiece>
-        <div class="dp-media">
-          <ul class="dp-nav">
-            <li><button type="button" data-go="claude">01 <i>CLAUDE.md</i></button></li>
-            <li><button type="button" data-go="soul">02 <i>SOUL.md</i></button></li>
-            <li><button type="button" data-go="skill">03 <i>SKILL.md</i></button></li>
-            <li><button type="button" data-go="workflow">04 <i>WORKFLOW.md</i></button></li>
-            <li><button type="button" data-go="agent">05 <i>AGENT.md</i></button></li>
-          </ul>
-          <div class="dp-stage dp-esquema">
-            <svg viewBox="0 0 640 480" role="img" aria-label="Diagrama de la arquitectura .MD: CLAUDE.md es el punto de entrada; de él cuelgan SOUL.md, SKILL.md y WORKFLOW.md; y los tres desembocan en AGENT.md, el archivo maestro que los orquesta.">
-              <!-- geometría base: el cableado entre los cinco archivos, siempre visible -->
-              <line class="ln" x1="320" y1="108" x2="320" y2="148"/>
-              <line class="ln" x1="112" y1="148" x2="528" y2="148"/>
-              <line class="ln" x1="112" y1="148" x2="112" y2="190"/>
-              <line class="ln" x1="320" y1="148" x2="320" y2="190"/>
-              <line class="ln" x1="528" y1="148" x2="528" y2="190"/>
-              <line class="ln" x1="112" y1="282" x2="112" y2="320"/>
-              <line class="ln" x1="320" y1="282" x2="320" y2="320"/>
-              <line class="ln" x1="528" y1="282" x2="528" y2="320"/>
-              <line class="ln" x1="112" y1="320" x2="528" y2="320"/>
-              <line class="ln" x1="320" y1="320" x2="320" y2="364"/>
-              <g class="dp-capa" data-capa="claude">
-                <rect class="bx fill" x="200" y="36" width="240" height="72" rx="12"/>
-                <text class="ti" x="224" y="68">CLAUDE.md</text>
-                <text class="lb" x="224" y="92">El punto de entrada</text>
-              </g>
-              <g class="dp-capa" data-capa="soul">
-                <rect class="bx fill" x="22" y="190" width="180" height="92" rx="12"/>
-                <text class="ti" x="36" y="228">SOUL.md</text>
-                <text class="lb" x="36" y="252">El alma / La marca</text>
-              </g>
-              <g class="dp-capa" data-capa="skill">
-                <rect class="bx fill" x="230" y="190" width="180" height="92" rx="12"/>
-                <text class="ti" x="244" y="228">SKILL.md</text>
-                <text class="lb" x="244" y="252">Las habilidades</text>
-              </g>
-              <g class="dp-capa" data-capa="workflow">
-                <rect class="bx fill" x="438" y="190" width="180" height="92" rx="12"/>
-                <text class="ti" x="452" y="228">WORKFLOW.md</text>
-                <text class="lb" x="452" y="252">El proceso (SOP)</text>
-              </g>
-              <g class="dp-capa" data-capa="agent">
-                <rect class="bx fill" x="200" y="364" width="240" height="80" rx="12"/>
-                <text class="ti" x="224" y="400">AGENT.md</text>
-                <text class="lb" x="224" y="424">La orquestación</text>
-              </g>
-            </svg>
-          </div>
-          <p class="dp-cap">Cinco archivos, un mismo cerebro.</p>
+      <figure class="figure esquema">
+        <svg viewBox="0 0 640 356" role="img" aria-label="Diagrama de la arquitectura .MD: CLAUDE.md es el punto de entrada; de él cuelgan SOUL.md, SKILL.md y WORKFLOW.md; y los tres desembocan en AGENT.md, el archivo maestro que los orquesta.">
+          <!-- el cableado entre los cinco archivos -->
+          <line class="ln" x1="320" y1="84" x2="320" y2="116"/>
+          <line class="ln" x1="116" y1="116" x2="524" y2="116"/>
+          <line class="ln" x1="116" y1="116" x2="116" y2="148"/>
+          <line class="ln" x1="320" y1="116" x2="320" y2="148"/>
+          <line class="ln" x1="524" y1="116" x2="524" y2="148"/>
+          <line class="ln" x1="116" y1="208" x2="116" y2="240"/>
+          <line class="ln" x1="320" y1="208" x2="320" y2="240"/>
+          <line class="ln" x1="524" y1="208" x2="524" y2="240"/>
+          <line class="ln" x1="116" y1="240" x2="524" y2="240"/>
+          <line class="ln" x1="320" y1="240" x2="320" y2="272"/>
+          <g>
+            <rect class="bx fill" x="210" y="24" width="220" height="60" rx="12"/>
+            <text class="ti" x="320" y="61" text-anchor="middle">CLAUDE.md</text>
+          </g>
+          <g>
+            <rect class="bx fill" x="22" y="148" width="188" height="60" rx="12"/>
+            <text class="ti" x="116" y="185" text-anchor="middle">SOUL.md</text>
+          </g>
+          <g>
+            <rect class="bx fill" x="226" y="148" width="188" height="60" rx="12"/>
+            <text class="ti" x="320" y="185" text-anchor="middle">SKILL.md</text>
+          </g>
+          <g>
+            <rect class="bx fill" x="430" y="148" width="188" height="60" rx="12"/>
+            <text class="ti" x="524" y="185" text-anchor="middle">WORKFLOW.md</text>
+          </g>
+          <g>
+            <rect class="bx fill" x="210" y="272" width="220" height="60" rx="12"/>
+            <text class="ti" x="320" y="309" text-anchor="middle">AGENT.md</text>
+          </g>
+        </svg>
+        <figcaption>[ Diagrama ] Cinco archivos, un mismo cerebro.</figcaption>
+      </figure>
+
+      <div class="grid-cards">
+        <div class="card ink">
+          <span class="k">[ 01 · El punto de entrada ]</span>
+          <h3>CLAUDE.md</h3>
+          <p>Cuando ejecutas Claude en una carpeta (vía CLI o Cowork), busca automáticamente un archivo llamado <code>CLAUDE.md</code>. Si lo encuentra, lo lee de forma invisible antes de que tú digas «Hola».</p>
+          <p>Este archivo contiene las reglas globales del proyecto, el tono de marca y, lo más importante, <strong>apunta a otros archivos especializados</strong> para que Claude sepa dónde buscar la información técnica sin saturar su memoria.</p>
         </div>
-        <ol class="dp-steps">
-          <li class="dp-step" data-capa="claude" data-cap="Archivo 01 · CLAUDE.md">
-            <p class="k">[ Archivo · El punto de entrada ]</p>
-            <h3>CLAUDE.md</h3>
-            <p>Cuando ejecutas Claude en una carpeta (vía CLI o Cowork), busca automáticamente un archivo llamado <code>CLAUDE.md</code>. Si lo encuentra, lo lee de forma invisible antes de que tú digas «Hola».</p>
-            <p>Este archivo contiene las reglas globales del proyecto, el tono de marca y, lo más importante, <strong>apunta a otros archivos especializados</strong> para que Claude sepa dónde buscar la información técnica sin saturar su memoria.</p>
-          </li>
-          <li class="dp-step" data-capa="soul" data-cap="Archivo 02 · SOUL.md"><p class="k">[ El alma / La marca ]</p><h3>SOUL.md</h3><p>Define <strong>quién</strong> es el agente. Contiene el tono de voz, la ética corporativa, las restricciones de marca y el <em>Brand Guidelines</em>. Determina su «personalidad».</p></li>
-          <li class="dp-step" data-capa="skill" data-cap="Archivo 03 · SKILL.md"><p class="k">[ Las habilidades ]</p><h3>SKILL.md</h3><p>Define <strong>qué</strong> sabe hacer. Contiene instrucciones técnicas exactas: cómo usar una API específica, cómo dar formato a un informe financiero o cómo escribir código.</p></li>
-          <li class="dp-step" data-capa="workflow" data-cap="Archivo 04 · WORKFLOW.md"><p class="k">[ El proceso (SOP) ]</p><h3>WORKFLOW.md</h3><p>Define el <strong>paso a paso</strong>. «1. Lee los emails. 2. Extrae quejas. 3. Clasifícalas. 4. Genera el JSON». Evita que la IA se salte pasos importantes.</p></li>
-          <li class="dp-step" data-capa="agent" data-cap="Archivo 05 · AGENT.md"><p class="k">[ La orquestación ]</p><h3>AGENT.md</h3><p>El archivo maestro. Conecta el Soul, el Skill y el Workflow para una tarea autónoma concreta. Es el «script» que lee un <em>Scheduled Task</em> (Tarea Programada).</p></li>
-        </ol>
+      </div>
+
+      <h3>El framework de archivos agentic</h3>
+      <div class="grid-cards">
+        <div class="card"><span class="k">[ 02 · El alma / La marca ]</span><h4>SOUL.md</h4><p>Define <strong>quién</strong> es el agente. Contiene el tono de voz, la ética corporativa, las restricciones de marca y el <em>Brand Guidelines</em>. Determina su «personalidad».</p></div>
+        <div class="card"><span class="k">[ 03 · Las habilidades ]</span><h4>SKILL.md</h4><p>Define <strong>qué</strong> sabe hacer. Contiene instrucciones técnicas exactas: cómo usar una API específica, cómo dar formato a un informe financiero o cómo escribir código.</p></div>
+        <div class="card"><span class="k">[ 04 · El proceso (SOP) ]</span><h4>WORKFLOW.md</h4><p>Define el <strong>paso a paso</strong>. «1. Lee los emails. 2. Extrae quejas. 3. Clasifícalas. 4. Genera el JSON». Evita que la IA se salte pasos importantes.</p></div>
+        <div class="card"><span class="k">[ 05 · La orquestación ]</span><h4>AGENT.md</h4><p>El archivo maestro. Conecta el Soul, el Skill y el Workflow para una tarea autónoma concreta. Es el «script» que lee un <em>Scheduled Task</em> (Tarea Programada).</p></div>
       </div>
     </section>
 

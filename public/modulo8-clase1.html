@@ -390,60 +390,15 @@ Mantén el estilo del resto del portal y dime qué archivos has tocado.</pre></d
     </section>
 
     <!-- 7. Ingesta y salida -->
-    <section class="sec sec-ancho" id="ingesta" data-label="Ingesta">
+    <section class="sec" id="ingesta" data-label="Ingesta">
       <div class="sec-head"><span class="sec-num"></span><h2 class="display">Pantalla 3 — Ingesta y salida: cerrar el bucle.</h2></div>
 
       <p>Hasta aquí, el portal <strong>lee</strong> el cerebro. Falta el bucle completo: que también lo <strong>alimente</strong> (ingesta) y que los resultados puedan <strong>salir</strong> hacia el mundo (salida). La ingesta acepta lo que de verdad circula por un negocio — <strong>PDF, Word, Excel y PowerPoint</strong>, además de texto — y el ciclo de vida tiene tres paradas: la <strong>bandeja de entrada</strong> (lo que sueltas), <code>procesados/</code> (los originales ya convertidos en notas, archivados con su fecha) y <code>salidas/</code> (los documentos que el portal genera). El portal se convierte así en la <strong>membrana</strong> del cerebro: todo lo que entra pasa por ella, todo lo que sale lleva su sello.</p>
 
-      <div class="despiece" data-despiece>
-        <div class="dp-media">
-          <ul class="dp-nav">
-            <li><button type="button" data-go="entra">01 <i>Entra</i></button></li>
-            <li><button type="button" data-go="cerebro">02 <i>Cerebro</i></button></li>
-            <li><button type="button" data-go="sale">03 <i>Sale</i></button></li>
-          </ul>
-          <div class="dp-stage dp-esquema">
-            <svg viewBox="0 0 640 480" role="img" aria-label="Diagrama vertical del bucle de la ingesta en tres paradas encadenadas: arriba, el archivo que entra por la ingesta; en el centro, el cerebro, donde la nota aterriza en su carpeta y el original se archiva en procesados; abajo, los resultados, que salen por el chat o como documentos en salidas.">
-              <line class="ln" x1="320" y1="150" x2="320" y2="186"/>
-              <path class="ln" d="M310 176 L320 186 L330 176"/>
-              <line class="ln" x1="320" y1="296" x2="320" y2="332"/>
-              <path class="ln" d="M310 322 L320 332 L330 322"/>
-              <g class="dp-capa" data-capa="entra">
-                <rect class="bx fill" x="70" y="40" width="500" height="110" rx="14"/>
-                <text class="lb" x="100" y="76">Entra</text>
-                <text class="ti" x="100" y="104">La ingesta</text>
-                <text class="lb" x="100" y="128">PDF · Word · Excel · PowerPoint · texto</text>
-              </g>
-              <g class="dp-capa" data-capa="cerebro">
-                <rect class="bx fill" x="70" y="186" width="500" height="110" rx="14"/>
-                <text class="lb" x="100" y="222">Cerebro</text>
-                <text class="ti" x="100" y="250">El cerebro</text>
-                <text class="lb" x="100" y="274">La nota en su carpeta · el original a procesados/</text>
-              </g>
-              <g class="dp-capa" data-capa="sale">
-                <rect class="bx fill" x="70" y="332" width="500" height="110" rx="14"/>
-                <text class="lb" x="100" y="368">Sale</text>
-                <text class="ti" x="100" y="396">Los resultados</text>
-                <text class="lb" x="100" y="420">En el chat · documentos en salidas/</text>
-              </g>
-            </svg>
-          </div>
-          <p class="dp-cap">El bucle completo: entra, se hace nota, sale.</p>
-        </div>
-        <ol class="dp-steps">
-          <li class="dp-step" data-capa="entra" data-cap="Parada 01 · La bandeja de entrada">
-            <p class="k">[ 01 ] Entra</p><h3>La ingesta</h3>
-            <p>Una zona de <strong>arrastrar y soltar</strong> para PDF, Word, Excel y PowerPoint (y .md/.txt), más una caja para pegar texto. Claude analiza el contenido y redacta notas <em>según las convenciones de tu vault</em>: frontmatter, etiquetas y enlaces.</p>
-          </li>
-          <li class="dp-step" data-capa="cerebro" data-cap="Parada 02 · La nota y el original archivado">
-            <p class="k">[ 02 ] Cerebro</p><h3>El cerebro</h3>
-            <p>La nota aterriza en su carpeta, el <strong>enlazador</strong> la conecta y el <strong>tejedor</strong> vigila que no quede huérfana. El original se archiva en <code>procesados/</code> con su fecha: queda constancia, y los accionables pueden releerlo.</p>
-          </li>
-          <li class="dp-step" data-capa="sale" data-cap="Parada 03 · El chat y las salidas">
-            <p class="k">[ 03 ] Sale</p><h3>Los resultados</h3>
-            <p>Los accionables leen el vault y <code>procesados/</code>, y responden de dos formas: <strong>en el chat</strong> (respuestas al momento) o generando <strong>documentos</strong> que aterrizan en <code>salidas/</code> — visibles en pantalla y descargables.</p>
-          </li>
-        </ol>
+      <div class="flow">
+        <div class="node"><span class="k">Entra</span><h4>La ingesta</h4><p>Una zona de <strong>arrastrar y soltar</strong> para PDF, Word, Excel y PowerPoint (y .md/.txt), más una caja para pegar texto. Claude analiza el contenido y redacta notas <em>según las convenciones de tu vault</em>: frontmatter, etiquetas y enlaces.</p></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="node ink"><span class="k">Cerebro</span><h4>El cerebro</h4><p>La nota aterriza en su carpeta, el <strong>enlazador</strong> la conecta y el <strong>tejedor</strong> vigila que no quede huérfana. El original se archiva en <code>procesados/</code> con su fecha: queda constancia, y los accionables pueden releerlo.</p></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="node"><span class="k">Sale</span><h4>Los resultados</h4><p>Los accionables leen el vault y <code>procesados/</code>, y responden de dos formas: <strong>en el chat</strong> (respuestas al momento) o generando <strong>documentos</strong> que aterrizan en <code>salidas/</code> — visibles en pantalla y descargables.</p></div>
       </div>
 
       <div class="callout analogia"><span class="k">[ Analogía ]</span><p><strong>Analogía — la aduana:</strong> en una aduana nada cruza sin registrarse: lo que entra se inspecciona y se etiqueta; lo que sale lleva su documentación. La ingesta es exactamente eso — la <strong>vista previa</strong> es el inspector (Claude te enseña las notas que <em>propone</em> crear y <strong>no escribe nada hasta que tú apruebas</strong>) y <code>procesados/</code> es el registro: el original queda archivado y sellado con su fecha. La regla de edición segura del módulo, aplicada a la puerta de entrada.</p></div>

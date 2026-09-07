@@ -460,7 +460,6 @@ body[data-class]{overflow-x:clip;}
 .dp-stage{position:relative;border-radius:var(--r-xl);overflow:hidden;background:var(--color-ink-soft);border:1px solid var(--color-line-dark);}
 .dp-stage.dp-foto{height:clamp(280px,calc(100vh - 490px),500px);}
 /* el esquema se ajusta a su propio dibujo: una caja fija le deja aire muerto */
-.dp-stage.dp-esquema{height:auto;}
 .dp-stage img.base{display:block;width:100%;height:100%;object-fit:contain;}
 .dp-cap{margin:0;font-family:var(--font-mono);font-size:var(--mono-s);letter-spacing:.09em;text-transform:uppercase;color:var(--color-muted);}
 .sec-dark .dp-cap{color:var(--color-mist);}
@@ -476,28 +475,35 @@ svg.dp-capa.on{opacity:1;}
 .dp-stage text{font-family:var(--font-mono);font-size:38px;letter-spacing:.05em;fill:var(--color-accent-deep);font-weight:500;}
 .dp-stage .dot{fill:var(--color-accent-deep);stroke:none;}
 
-/* variante ESQUEMA: diagrama propio; las capas se atenúan, nunca desaparecen */
-.dp-esquema{background:var(--color-paper-dim);border-color:var(--color-line);}
-.dp-esquema svg{display:block;width:100%;height:auto;max-height:clamp(240px,calc(100vh - 490px),480px);}
-.dp-esquema .dp-capa{opacity:.2;}
-.dp-esquema .dp-capa.on{opacity:1;}
-.dp-esquema .bx{fill:none;stroke:var(--color-line);stroke-width:1.5;}
-.dp-esquema .bx.on-bx{stroke:var(--color-accent-deep);}
-.dp-esquema .fill{fill:var(--color-paper);}
-.dp-esquema .fill-ink{fill:var(--color-ink);}
-.dp-esquema .lb{font-family:var(--font-mono);font-size:17px;letter-spacing:.06em;fill:var(--color-muted);}
-.dp-esquema .lb.b{fill:var(--color-ink);}
-.dp-esquema .ti{font-family:var(--font-display);font-weight:600;font-size:21px;letter-spacing:-.01em;fill:var(--color-ink);}
-.dp-esquema .ln{stroke:var(--color-muted);stroke-width:1.2;fill:none;}
-.dp-esquema .ln.ac{stroke:var(--color-accent-deep);}
-.sec-dark .dp-esquema{background:var(--color-ink-soft);border-color:var(--color-line-dark);}
-.sec-dark .dp-esquema .bx{stroke:var(--color-line-dark);}
-.sec-dark .dp-esquema .bx.on-bx{stroke:var(--color-accent);}
-.sec-dark .dp-esquema .fill{fill:var(--color-ink);}
-.sec-dark .dp-esquema .lb{fill:var(--color-mist);}
-.sec-dark .dp-esquema .lb.b,.sec-dark .dp-esquema .ti{fill:var(--color-paper);}
-.sec-dark .dp-esquema .ln{stroke:var(--color-mist);}
-.sec-dark .dp-esquema .ln.ac{stroke:var(--color-accent);}
+/* ── Diagrama propio, como figura ──────────────────────────────────────
+   Un diagrama no es un despiece: no hay nada que señalar paso a paso en un
+   dibujo cuyo contenido es texto. Vive dentro de una <figure class="figure
+   esquema"> y se ve entero de una vez. Dos cosas que aprendimos al sacarlo
+   de la pieza pegajosa: no puede heredar un techo de altura atado a la
+   ventana, y no puede encogerse por debajo de donde sus rótulos se leen —
+   el tamaño del texto de un SVG escala con el ancho del dibujo, así que por
+   debajo de 560 px scrollea dentro de su caja en vez de achicarse. */
+.esquema{background:var(--color-paper-dim);border-color:var(--color-line);}
+.figure.esquema{overflow-x:auto;}
+.figure.esquema svg{display:block;width:100%;min-width:560px;height:auto;}
+.figure.esquema figcaption{position:sticky;left:0;}
+.esquema .bx{fill:none;stroke:var(--color-line);stroke-width:1.5;}
+.esquema .bx.on-bx{stroke:var(--color-accent-deep);}
+.esquema .fill{fill:var(--color-paper);}
+.esquema .fill-ink{fill:var(--color-ink);}
+.esquema .lb{font-family:var(--font-mono);font-size:17px;letter-spacing:.06em;fill:var(--color-muted);}
+.esquema .lb.b{fill:var(--color-ink);}
+.esquema .ti{font-family:var(--font-display);font-weight:600;font-size:21px;letter-spacing:-.01em;fill:var(--color-ink);}
+.esquema .ln{stroke:var(--color-muted);stroke-width:1.2;fill:none;}
+.esquema .ln.ac{stroke:var(--color-accent-deep);}
+.sec-dark .esquema{background:var(--color-ink-soft);border-color:var(--color-line-dark);}
+.sec-dark .esquema .bx{stroke:var(--color-line-dark);}
+.sec-dark .esquema .bx.on-bx{stroke:var(--color-accent);}
+.sec-dark .esquema .fill{fill:var(--color-ink);}
+.sec-dark .esquema .lb{fill:var(--color-mist);}
+.sec-dark .esquema .lb.b,.sec-dark .esquema .ti{fill:var(--color-paper);}
+.sec-dark .esquema .ln{stroke:var(--color-mist);}
+.sec-dark .esquema .ln.ac{stroke:var(--color-accent);}
 
 /* variante PANTALLA: un archivo o una terminal que se ilumina por bloques */
 .dp-pantalla{max-height:430px;overflow:auto;background:var(--color-ink);border-color:var(--color-line-dark);padding:clamp(15px,2vw,24px) clamp(15px,2vw,24px) clamp(15px,2vw,24px) clamp(22px,2.6vw,32px);}
@@ -534,7 +540,6 @@ svg.dp-capa.on{opacity:1;}
   .dp-media{top:56px;z-index:5;background:var(--surface-page);padding:10px 0 12px;}
   .sec-dark .dp-media{background:var(--color-ink);}
   .dp-stage.dp-foto{height:clamp(200px,30vh,280px);}
-  .dp-esquema svg{max-height:clamp(190px,32vh,280px);}
   .dp-pantalla{max-height:220px;}
   .dp-tira{max-height:104px;overflow:auto;}
   .dp-cap{font-size:10px;letter-spacing:.06em;}

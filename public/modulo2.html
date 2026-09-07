@@ -43,98 +43,76 @@
     </section>
 
     <!-- 2. Diccionario I: Cerebro y Memoria -->
-    <section class="sec sec-ancho" id="memoria" data-label="Cerebro/Memoria">
+    <section class="sec" id="memoria" data-label="Cerebro/Memoria">
       <div class="sec-head"><span class="sec-num"></span><h2 class="display">Diccionario ejecutivo (I): cerebro y memoria.</h2></div>
       <p class="sec-intro">Estos términos explican cómo «piensa», «recuerda» y «percibe» la máquina. Impactan directamente en tu facturación y en la calidad de tu trabajo.</p>
 
-      <div class="despiece" data-despiece>
-        <div class="dp-media">
-          <ul class="dp-nav">
-            <li><button type="button" data-go="token">A <i>Token</i></button></li>
-            <li><button type="button" data-go="ventana">B <i>Ventana</i></button></li>
-            <li><button type="button" data-go="temperatura">C <i>Temperatura</i></button></li>
-            <li><button type="button" data-go="multimodalidad">D <i>Multimodalidad</i></button></li>
-          </ul>
-          <div class="dp-stage dp-esquema">
-            <svg viewBox="0 0 640 480" role="img" aria-label="Diagrama de la máquina: por arriba entra el texto troceado en tokens; dentro, una barra marca cuánto ocupa la ventana de contexto; por la izquierda entran las cuatro señales multimodales y, a la derecha, el Deep Think se abre en tres cadenas lógicas paralelas antes de responder; debajo, una escala gradúa la temperatura de lo lógico a lo creativo.">
-              <rect class="bx fill" x="228" y="176" width="184" height="128" rx="12"/>
-              <text class="lb" x="320" y="252" text-anchor="middle">La máquina</text>
-              <path class="ln" d="M416 240 H 548"/>
-              <path class="ln" d="M534 232 L 548 240 L 534 248"/>
+      <figure class="figure esquema">
+        <svg viewBox="0 0 700 290" role="img" aria-label="Diagrama de la máquina: por la izquierda entran texto, imagen, audio y código, y todo se mide en tokens que entran en la ventana de contexto, dentro de la máquina; arriba, una escala gradúa la temperatura de lo lógico a lo creativo y baja hasta la máquina; dentro, el Deep Think se abre en tres cadenas lógicas paralelas antes de responder.">
+          <rect class="bx fill" x="340" y="80" width="320" height="180" rx="12"/>
+          <text class="lb" x="644" y="250" text-anchor="end">La máquina</text>
 
-              <g class="dp-capa" data-capa="token">
-                <text class="lb b" x="214" y="54">1,000 tokens ≈ 750 palabras</text>
-                <rect class="fill-ink" x="214" y="70" width="18" height="26"/>
-                <rect class="fill-ink" x="238" y="70" width="18" height="26"/>
-                <rect class="fill-ink" x="262" y="70" width="18" height="26"/>
-                <rect class="fill-ink" x="286" y="70" width="18" height="26"/>
-                <rect class="fill-ink" x="310" y="70" width="18" height="26"/>
-                <rect class="fill-ink" x="334" y="70" width="18" height="26"/>
-                <rect class="fill-ink" x="358" y="70" width="18" height="26"/>
-                <rect class="fill-ink" x="382" y="70" width="18" height="26"/>
-                <path class="ln ac" d="M320 106 V 168"/>
-                <path class="ln ac" d="M312 154 L 320 168 L 328 154"/>
-              </g>
+          <text class="lb b" x="334" y="56" text-anchor="end">Temperatura</text>
+          <text class="lb" x="350" y="36">0.0 Lógico</text>
+          <text class="lb" x="650" y="36" text-anchor="end">1.0 Creativo</text>
+          <path class="ln ac" d="M350 52 H 650"/>
+          <path class="ln ac" d="M350 44 V 60"/>
+          <path class="ln ac" d="M650 44 V 60"/>
+          <circle class="fill-ink" cx="470" cy="52" r="7"/>
+          <path class="ln ac" d="M470 59 V 72"/>
+          <path class="ln ac" d="M463 66 L 470 80 L 477 66"/>
 
-              <g class="dp-capa" data-capa="ventana">
-                <rect class="bx" x="248" y="192" width="144" height="24" rx="6"/>
-                <rect class="fill-ink" x="252" y="196" width="104" height="16"/>
-                <line class="ln ac" x1="392" y1="204" x2="418" y2="204"/>
-                <text class="lb b" x="426" y="200">Ventana</text>
-                <text class="lb b" x="426" y="218">de contexto</text>
-              </g>
+          <text class="lb b" x="358" y="122">Ventana de contexto</text>
+          <rect class="bx" x="358" y="132" width="250" height="26" rx="6"/>
 
-              <g class="dp-capa" data-capa="temperatura">
-                <line class="ln ac" x1="320" y1="306" x2="320" y2="376"/>
-                <line class="ln ac" x1="180" y1="384" x2="460" y2="384"/>
-                <line class="ln ac" x1="180" y1="376" x2="180" y2="392"/>
-                <line class="ln ac" x1="460" y1="376" x2="460" y2="392"/>
-                <circle class="fill-ink" cx="320" cy="384" r="8"/>
-                <text class="lb b" x="180" y="356">Temperatura</text>
-                <text class="lb" x="180" y="416">0.0 Lógico</text>
-                <text class="lb" x="460" y="416" text-anchor="end">1.0 Creativo</text>
-              </g>
+          <path class="ln ac" d="M486 158 V 206"/>
+          <text class="lb b" x="358" y="212">Deep Think</text>
+          <path class="ln ac" d="M486 206 L 516 186"/>
+          <path class="ln ac" d="M486 206 H 516"/>
+          <path class="ln ac" d="M486 206 L 516 226"/>
+          <path class="ln ac" d="M516 186 H 584"/>
+          <path class="ln ac" d="M516 206 H 584"/>
+          <path class="ln ac" d="M516 226 H 584"/>
+          <path class="ln ac" d="M584 186 L 614 206"/>
+          <path class="ln ac" d="M584 206 H 614"/>
+          <path class="ln ac" d="M584 226 L 614 206"/>
+          <path class="ln ac" d="M614 206 H 682"/>
+          <path class="ln ac" d="M674 199 L 682 206 L 674 213"/>
 
-              <g class="dp-capa" data-capa="multimodalidad">
-                <text class="lb b" x="108" y="194" text-anchor="end">texto</text>
-                <text class="lb b" x="108" y="220" text-anchor="end">imagen</text>
-                <text class="lb b" x="108" y="246" text-anchor="end">audio</text>
-                <text class="lb b" x="108" y="272" text-anchor="end">código</text>
-                <line class="ln ac" x1="120" y1="190" x2="228" y2="190"/>
-                <line class="ln ac" x1="120" y1="216" x2="228" y2="216"/>
-                <line class="ln ac" x1="120" y1="242" x2="228" y2="242"/>
-                <line class="ln ac" x1="120" y1="268" x2="228" y2="268"/>
-                <path class="ln ac" d="M412 268 H 478 V 344"/>
-                <path class="ln ac" d="M478 300 H 590"/>
-                <path class="ln ac" d="M478 322 H 590"/>
-                <path class="ln ac" d="M478 344 H 590"/>
-                <text class="lb b" x="590" y="284" text-anchor="end">Deep Think</text>
-              </g>
-            </svg>
-          </div>
-          <p class="dp-cap">Cómo piensa, recuerda y percibe la máquina.</p>
-        </div>
-        <ol class="dp-steps">
-          <li class="dp-step" data-capa="token" data-cap="A · La unidad: el token">
-            <p class="k">[ A ] La Moneda/Ladrillo</p><h3>Token</h3>
-            <p>La unidad básica de información. La IA no lee palabras, lee fragmentos (Tokens). En español, 1,000 tokens ≈ 750 palabras. Todo en la IA se cobra y mide en tokens.</p>
-            <div class="callout analogia"><span class="k">[ Analogía ]</span><p>Es el «megabyte» de la era IA. Debes saber que tu manual pesa 100k tokens.</p></div>
-          </li>
-          <li class="dp-step" data-capa="ventana" data-cap="B · La memoria: la ventana de contexto">
-            <p class="k">[ B ] Memoria RAM</p><h3>Ventana de Contexto</h3>
-            <p>Cantidad máxima de tokens que la IA mantiene «en mente» en un solo chat. Si la superas, sufre amnesia y olvida las primeras instrucciones.</p>
-            <div class="callout analogia"><span class="k">[ Analogía ]</span><p>Modelos antiguos tenían una «mesa de avión» (1 folio). Gemini 1.5 tiene una «mesa de conferencias» (1.500 páginas a la vez).</p></div>
-          </li>
-          <li class="dp-step" data-capa="temperatura" data-cap="C · El mando: la temperatura">
-            <p class="k">[ C ] Termostato Creativo</p><h3>Temperatura</h3>
-            <p>Parámetro (0.0 a 1.0) que controla la aleatoriedad.<br><strong>0.0:</strong> Lógico, predecible (Finanzas/Código).<br><strong>1.0:</strong> Creativo, impredecible (Marketing/Ideas).</p>
-            <div class="callout nota"><span class="k">[ Clave ]</span><p>Baja la temperatura si buscas la verdad; súbela si buscas ideas disruptivas.</p></div>
-          </li>
-          <li class="dp-step" data-capa="multimodalidad" data-cap="D · Los sentidos: multimodalidad y Deep Think">
-            <p class="k">[ D ]</p><h3>Multimodalidad &amp; Deep Think</h3>
-            <p><strong>Multimodalidad:</strong> Capacidad de procesar texto, imagen, audio y código simultáneamente (como la percepción humana).<br><strong>Deep Think:</strong> Modelos (ej. O1) que «pausan» para simular múltiples cadenas lógicas antes de responder (para matemáticas o lógica compleja).</p>
-          </li>
-        </ol>
+          <text class="lb b" x="19" y="72">Multimodalidad</text>
+          <text class="lb b" x="86" y="112" text-anchor="end">texto</text>
+          <text class="lb b" x="86" y="138" text-anchor="end">imagen</text>
+          <text class="lb b" x="86" y="164" text-anchor="end">audio</text>
+          <text class="lb b" x="86" y="190" text-anchor="end">código</text>
+          <path class="ln" d="M96 106 H 132"/>
+          <path class="ln" d="M96 132 H 132"/>
+          <path class="ln" d="M96 158 H 132"/>
+          <path class="ln" d="M96 184 H 132"/>
+          <path class="ln" d="M132 106 V 184"/>
+          <path class="ln ac" d="M132 145 H 152"/>
+          <path class="ln ac" d="M152 138 L 160 145 L 152 152"/>
+
+          <text class="lb b" x="237" y="96" text-anchor="middle">1,000 tokens</text>
+          <text class="lb b" x="237" y="116" text-anchor="middle">≈ 750 palabras</text>
+          <rect class="fill-ink" x="160" y="132" width="15" height="26"/>
+          <rect class="fill-ink" x="180" y="132" width="15" height="26"/>
+          <rect class="fill-ink" x="200" y="132" width="15" height="26"/>
+          <rect class="fill-ink" x="220" y="132" width="15" height="26"/>
+          <rect class="fill-ink" x="240" y="132" width="15" height="26"/>
+          <rect class="fill-ink" x="260" y="132" width="15" height="26"/>
+          <rect class="fill-ink" x="280" y="132" width="15" height="26"/>
+          <rect class="fill-ink" x="300" y="132" width="15" height="26"/>
+          <path class="ln ac" d="M323 145 H 350"/>
+          <path class="ln ac" d="M350 138 L 358 145 L 350 152"/>
+        </svg>
+        <figcaption>[ Diagrama ] Cómo piensa, recuerda y percibe la máquina</figcaption>
+      </figure>
+
+      <div class="glossary">
+        <div class="row"><h3 class="term">Token<small>A · La Moneda/Ladrillo</small></h3><p class="def">La unidad básica de información. La IA no lee palabras, lee fragmentos (Tokens). En español, 1,000 tokens ≈ 750 palabras. Todo en la IA se cobra y mide en tokens. <span class="an">[ Analogía ] Es el «megabyte» de la era IA. Debes saber que tu manual pesa 100k tokens.</span></p></div>
+        <div class="row"><h3 class="term">Ventana de Contexto<small>B · Memoria RAM</small></h3><p class="def">Cantidad máxima de tokens que la IA mantiene «en mente» en un solo chat. Si la superas, sufre amnesia y olvida las primeras instrucciones. <span class="an">[ Analogía ] Modelos antiguos tenían una «mesa de avión» (1 folio). Gemini 1.5 tiene una «mesa de conferencias» (1.500 páginas a la vez).</span></p></div>
+        <div class="row"><h3 class="term">Temperatura<small>C · Termostato Creativo</small></h3><p class="def">Parámetro (0.0 a 1.0) que controla la aleatoriedad.<br><strong>0.0:</strong> Lógico, predecible (Finanzas/Código).<br><strong>1.0:</strong> Creativo, impredecible (Marketing/Ideas). <span class="an">[ Clave ] Baja la temperatura si buscas la verdad; súbela si buscas ideas disruptivas.</span></p></div>
+        <div class="row"><h3 class="term">Multimodalidad &amp; Deep Think<small>D</small></h3><p class="def"><strong>Multimodalidad:</strong> Capacidad de procesar texto, imagen, audio y código simultáneamente (como la percepción humana).<br><strong>Deep Think:</strong> Modelos (ej. O1) que «pausan» para simular múltiples cadenas lógicas antes de responder (para matemáticas o lógica compleja).</p></div>
       </div>
     </section>
 

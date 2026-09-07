@@ -45,54 +45,16 @@
     </section>
 
     <!-- 3. Nodo Upscaler -->
-    <section class="sec sec-ancho" id="upscaler" data-label="Upscaler">
+    <section class="sec" id="upscaler" data-label="Upscaler">
       <div class="sec-head"><span class="sec-num"></span><h2 class="display">El nodo Upscaler (tecnología Magnific).</h2></div>
       <p class="sec-intro">A diferencia de la web de Magnific donde puedes encadenar escalados enormes libremente, el nodo en Spaces está optimizado para flujos continuos y posee límites de seguridad.</p>
       <div class="callout aviso"><span class="k">[ ! ] Límites de escalado</span><p>El factor está limitado a opciones predefinidas (habitualmente <strong>2x</strong> o <strong>4x</strong>) dependiendo de la resolución original, acotando el tope máximo para que el lienzo no colapse durante el procesamiento.</p></div>
 
       <h3>Sliders del motor</h3>
-      <div class="despiece" data-despiece>
-        <div class="dp-media">
-          <ul class="dp-nav">
-            <li><button type="button" data-go="creativity">01 <i>Creativity</i></button></li>
-            <li><button type="button" data-go="hdr">02 <i>HDR</i></button></li>
-            <li><button type="button" data-go="resemblance">03 <i>Resemblance</i></button></li>
-          </ul>
-          <div class="dp-stage dp-esquema">
-            <svg viewBox="0 0 640 480" role="img" aria-label="Diagrama del nodo Upscaler: la imagen entra por la izquierda, atraviesa los tres sliders del motor —Creativity, HDR y Resemblance— y sale escalada por la derecha.">
-              <!-- geometría base: el nodo, su cabecera y los conectores de entrada y salida -->
-              <rect class="bx fill" x="96" y="48" width="448" height="384" rx="14"/>
-              <text class="ti" x="124" y="88">Upscaler</text>
-              <text class="lb" x="124" y="110">Sliders del motor</text>
-              <line class="ln" x1="96" y1="130" x2="544" y2="130"/>
-              <line class="ln" x1="28" y1="240" x2="96" y2="240"/>
-              <polyline class="ln" points="84,232 96,240 84,248"/>
-              <line class="ln" x1="544" y1="240" x2="612" y2="240"/>
-              <polyline class="ln" points="600,232 612,240 600,248"/>
-              <g class="dp-capa" data-capa="creativity">
-                <rect class="bx fill" x="124" y="156" width="392" height="76" rx="10"/>
-                <text class="lb" x="148" y="186">[ 01 ]</text>
-                <text class="ti" x="148" y="212">Creativity</text>
-              </g>
-              <g class="dp-capa" data-capa="hdr">
-                <rect class="bx fill" x="124" y="248" width="392" height="76" rx="10"/>
-                <text class="lb" x="148" y="278">[ 02 ]</text>
-                <text class="ti" x="148" y="304">HDR</text>
-              </g>
-              <g class="dp-capa" data-capa="resemblance">
-                <rect class="bx fill" x="124" y="340" width="392" height="76" rx="10"/>
-                <text class="lb" x="148" y="370">[ 03 ]</text>
-                <text class="ti" x="148" y="396">Resemblance</text>
-              </g>
-            </svg>
-          </div>
-          <p class="dp-cap">Un nodo. Tres sliders.</p>
-        </div>
-        <ol class="dp-steps">
-          <li class="dp-step" data-capa="creativity" data-cap="Slider 01 · Creativity"><p class="k">[ 01 ] Slider</p><h3>Creativity</h3><p>Define cuánta libertad tiene la IA para inventar e interpretar detalles nuevos que no estaban en la imagen original.</p></li>
-          <li class="dp-step" data-capa="hdr" data-cap="Slider 02 · HDR"><p class="k">[ 02 ] Slider</p><h3>HDR</h3><p>Parámetro fundamental en Magnific. Controla el microcontraste y la agresividad visual de las texturas resultantes.</p></li>
-          <li class="dp-step" data-capa="resemblance" data-cap="Slider 03 · Resemblance"><p class="k">[ 03 ] Slider</p><h3>Resemblance</h3><p>Fuerza a la IA a mantenerse estrictamente fiel a la paleta de colores y las formas base de la imagen de entrada.</p></li>
-        </ol>
+      <div class="grid-cards three">
+        <div class="card"><span class="k">[ 01 ]</span><h4>Creativity</h4><p>Define cuánta libertad tiene la IA para inventar e interpretar detalles nuevos que no estaban en la imagen original.</p></div>
+        <div class="card"><span class="k">[ 02 ]</span><h4>HDR</h4><p>Parámetro fundamental en Magnific. Controla el microcontraste y la agresividad visual de las texturas resultantes.</p></div>
+        <div class="card"><span class="k">[ 03 ]</span><h4>Resemblance</h4><p>Fuerza a la IA a mantenerse estrictamente fiel a la paleta de colores y las formas base de la imagen de entrada.</p></div>
       </div>
 
       <div class="callout nota"><span class="k">[ Presets y prompts ]</span><p>Cuenta con un menú «Optimize for» (Portraits, Art, Nature, Films…) y una caja de <strong>Prompt Interno</strong> para guiar directamente el escalado sin necesitar conectar un nodo de texto externo.</p></div>

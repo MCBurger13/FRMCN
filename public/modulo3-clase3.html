@@ -136,72 +136,56 @@
     </section>
 
     <!-- 4. Ingeniería de prompts avanzada -->
-    <section class="sec sec-ancho" id="prompting" data-label="Prompting">
+    <section class="sec" id="prompting" data-label="Prompting">
       <p class="sec-eyebrow">[ Precisión corporativa ]</p>
       <div class="sec-head"><span class="sec-num"></span><h2 class="display">Estructura avanzada: consistencia de texto.</h2></div>
       <p class="sec-intro">Crear imágenes de productos es fácil; mantener la legibilidad de la marca y la consistencia de los logos pequeños sin que se deformen es el verdadero reto.</p>
 
       <h3>Positive Prompt (la jerarquía estricta)</h3>
       <p>Para asegurar resultados estables (ej. con Nano Banana Pro), debes escribir el prompt siguiendo exactamente este orden de prioridades:</p>
-      <div class="despiece" data-despiece>
-        <div class="dp-media">
-          <ul class="dp-nav">
-            <li><button type="button" data-go="composicion">01 <i>Composición</i></button></li>
-            <li><button type="button" data-go="identidad">02 <i>Identidad</i></button></li>
-            <li><button type="button" data-go="tipografia">03 <i>Tipografía</i></button></li>
-            <li><button type="button" data-go="color">04 <i>Color</i></button></li>
-            <li><button type="button" data-go="optica">05 <i>Iluminación</i></button></li>
-          </ul>
-          <div class="dp-stage dp-esquema">
-            <svg viewBox="0 0 640 480" role="img" aria-label="Diagrama de la jerarquía del prompt: un mismo prompt dividido en cinco bloques ordenados por prioridad, de la composición visual a la iluminación y el control óptico.">
-              <rect class="bx" x="26" y="20" width="596" height="440" rx="16"/>
-              <line class="ln" x1="46" y1="60" x2="46" y2="420"/>
-              <g class="dp-capa" data-capa="composicion">
-                <rect class="fill-ink" x="40" y="66" width="12" height="12"/>
-                <line class="ln ac" x1="52" y1="72" x2="64" y2="72"/>
-                <rect class="bx fill" x="64" y="40" width="544" height="64" rx="10"/>
-                <text class="lb b" x="84" y="78">01</text>
-                <text class="ti" x="122" y="78">Composición Visual</text>
-              </g>
-              <g class="dp-capa" data-capa="identidad">
-                <rect class="fill-ink" x="40" y="150" width="12" height="12"/>
-                <line class="ln ac" x1="52" y1="156" x2="64" y2="156"/>
-                <rect class="bx fill" x="64" y="124" width="544" height="64" rx="10"/>
-                <text class="lb b" x="84" y="162">02</text>
-                <text class="ti" x="122" y="162">Identidad Exacta del Producto</text>
-              </g>
-              <g class="dp-capa" data-capa="tipografia">
-                <rect class="fill-ink" x="40" y="234" width="12" height="12"/>
-                <line class="ln ac" x1="52" y1="240" x2="64" y2="240"/>
-                <rect class="bx fill" x="64" y="208" width="544" height="64" rx="10"/>
-                <text class="lb b" x="84" y="246">03</text>
-                <text class="ti" x="122" y="246">Bloque Dedicado a la Tipografía</text>
-              </g>
-              <g class="dp-capa" data-capa="color">
-                <rect class="fill-ink" x="40" y="318" width="12" height="12"/>
-                <line class="ln ac" x1="52" y1="324" x2="64" y2="324"/>
-                <rect class="bx fill" x="64" y="292" width="544" height="64" rx="10"/>
-                <text class="lb b" x="84" y="330">04</text>
-                <text class="ti" x="122" y="330">Precisión de Color y Materiales</text>
-              </g>
-              <g class="dp-capa" data-capa="optica">
-                <rect class="fill-ink" x="40" y="402" width="12" height="12"/>
-                <line class="ln ac" x1="52" y1="408" x2="64" y2="408"/>
-                <rect class="bx fill" x="64" y="376" width="544" height="64" rx="10"/>
-                <text class="lb b" x="84" y="414">05</text>
-                <text class="ti" x="122" y="414">Iluminación y Control Óptico</text>
-              </g>
-            </svg>
-          </div>
-          <p class="dp-cap">La jerarquía estricta.</p>
-        </div>
-        <ol class="dp-steps">
-          <li class="dp-step" data-capa="composicion"><p class="k">[ 01 ] Prioridad</p><h3>Composición Visual</h3><p>Define el lienzo antes que el producto.</p></li>
-          <li class="dp-step" data-capa="identidad"><p class="k">[ 02 ] Prioridad</p><h3>Identidad Exacta del Producto</h3><p>Bloquea la reinterpretación o deformación de la silueta.</p></li>
-          <li class="dp-step" data-capa="tipografia"><p class="k">[ 03 ] Prioridad</p><h3>Bloque Dedicado a la Tipografía</h3><p>No lo mezcles con el resto, trátalo como un ancla prioritaria.</p></li>
-          <li class="dp-step" data-capa="color"><p class="k">[ 04 ] Prioridad</p><h3>Precisión de Color y Materiales</h3><p>Usa terminología técnica para reducir el margen de error.</p></li>
-          <li class="dp-step" data-capa="optica"><p class="k">[ 05 ] Prioridad</p><h3>Iluminación y Control Óptico</h3><p>Define el enfoque, la profundidad de campo y la luz.</p></li>
-        </ol>
+      <figure class="figure esquema">
+        <svg viewBox="0 0 600 170" role="img" aria-label="Diagrama de la jerarquía del prompt: un mismo prompt dividido en cinco bloques consecutivos, numerados del 01 al 05 dentro de un único marco.">
+          <rect class="bx on-bx" x="20" y="20" width="560" height="130" rx="12"/>
+          <line class="ln" x1="20" y1="85" x2="580" y2="85"/>
+          <g>
+            <rect class="bx fill" x="40" y="40" width="96" height="90" rx="8"/>
+            <text class="lb b" x="53" y="68">01</text>
+            <line class="ln" x1="53" y1="90" x2="123" y2="90"/>
+            <line class="ln" x1="53" y1="106" x2="98" y2="106"/>
+          </g>
+          <g>
+            <rect class="bx fill" x="146" y="40" width="96" height="90" rx="8"/>
+            <text class="lb b" x="159" y="68">02</text>
+            <line class="ln" x1="159" y1="90" x2="229" y2="90"/>
+            <line class="ln" x1="159" y1="106" x2="204" y2="106"/>
+          </g>
+          <g>
+            <rect class="bx fill" x="252" y="40" width="96" height="90" rx="8"/>
+            <text class="lb b" x="265" y="68">03</text>
+            <line class="ln" x1="265" y1="90" x2="335" y2="90"/>
+            <line class="ln" x1="265" y1="106" x2="310" y2="106"/>
+          </g>
+          <g>
+            <rect class="bx fill" x="358" y="40" width="96" height="90" rx="8"/>
+            <text class="lb b" x="371" y="68">04</text>
+            <line class="ln" x1="371" y1="90" x2="441" y2="90"/>
+            <line class="ln" x1="371" y1="106" x2="416" y2="106"/>
+          </g>
+          <g>
+            <rect class="bx fill" x="464" y="40" width="96" height="90" rx="8"/>
+            <text class="lb b" x="477" y="68">05</text>
+            <line class="ln" x1="477" y1="90" x2="547" y2="90"/>
+            <line class="ln" x1="477" y1="106" x2="522" y2="106"/>
+          </g>
+        </svg>
+        <figcaption>[ Diagrama ] Un solo prompt partido en cinco bloques consecutivos</figcaption>
+      </figure>
+      <div class="stepper vertical">
+        <div class="step"><span class="n">01</span><h4>Composición Visual</h4><p>Define el lienzo antes que el producto.</p></div>
+        <div class="step"><span class="n">02</span><h4>Identidad Exacta del Producto</h4><p>Bloquea la reinterpretación o deformación de la silueta.</p></div>
+        <div class="step final"><span class="n">03</span><h4>Bloque Dedicado a la Tipografía</h4><p>No lo mezcles con el resto, trátalo como un ancla prioritaria.</p></div>
+        <div class="step"><span class="n">04</span><h4>Precisión de Color y Materiales</h4><p>Usa terminología técnica para reducir el margen de error.</p></div>
+        <div class="step"><span class="n">05</span><h4>Iluminación y Control Óptico</h4><p>Define el enfoque, la profundidad de campo y la luz.</p></div>
       </div>
 
       <h3>Negative Prompt (el escudo protector)</h3>

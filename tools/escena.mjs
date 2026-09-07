@@ -85,10 +85,8 @@ for (const file of files) {
   /* la pieza y su sección */
   const stage = html.match(/<div class="dp-stage([^"]*)"/);
   if (!stage) err(file, 'despiece sin .dp-stage');
-  else if (!/dp-foto|dp-esquema|dp-pantalla/.test(stage[1])) {
-    err(file, '.dp-stage sin variante (dp-foto / dp-esquema / dp-pantalla)');
-  } else if (/dp-esquema/.test(stage[1])) {
-    warn(file, 'el despiece va sobre un diagrama dibujado: la regla dice que eso es una figura, no un despiece');
+  else if (!/dp-foto|dp-pantalla/.test(stage[1])) {
+    err(file, '.dp-stage sin variante (dp-foto / dp-pantalla)');
   }
   const sec = html.slice(0, html.indexOf('class="despiece"')).match(/<section class="sec([^"]*)" id="([^"]+)"[^>]*>(?![\s\S]*<section)/);
   if (sec && !/ sec-ancho/.test(sec[1])) warn(file, `la sección #${sec[2]} lleva el despiece pero no sec-ancho`);

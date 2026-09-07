@@ -127,111 +127,72 @@
     </section>
 
     <!-- 5. Cerebro y Contexto -->
-    <section class="sec sec-ancho" id="cerebro" data-label="Cerebro">
+    <section class="sec" id="cerebro" data-label="Cerebro">
       <div class="sec-head"><span class="sec-num"></span><h2 class="display">El concepto de «cerebro».</h2></div>
       <p class="sec-intro">El error número uno en las empresas es usar un solo chat continuo como si fuera un buscador web.</p>
 
-      <div class="despiece" data-despiece>
-        <div class="dp-media">
-          <ul class="dp-nav">
-            <li><button type="button" data-go="tokens">01 <i>Tokens</i></button></li>
-            <li><button type="button" data-go="medio">02 <i>Medio</i></button></li>
-            <li><button type="button" data-go="cerebro">03 <i>Cerebro</i></button></li>
-            <li><button type="button" data-go="contaminacion">04 <i>Contaminación</i></button></li>
-          </ul>
-          <div class="dp-stage dp-esquema">
-            <svg viewBox="0 0 640 480" role="img" aria-label="Diagrama de la memoria de un chat: arriba, la ventana de contexto de un solo chat continuo, que se llena de tokens y expulsa por la izquierda las primeras instrucciones, con la atención alta al principio y al final y baja en el medio; abajo, un chat por proyecto alimentado con tus materiales al que llega, desde la derecha, un encargo de otro departamento.">
-              <text class="lb" x="64" y="30">Un solo chat continuo</text>
-              <rect class="bx fill" x="64" y="118" width="512" height="64" rx="12"/>
-              <line class="ln" x1="64" y1="234" x2="576" y2="234"/>
-              <text class="lb" x="64" y="266">Nuevo Proyecto = Nuevo Chat</text>
-              <rect class="bx fill" x="200" y="286" width="240" height="86" rx="12"/>
+      <h3>[ ! ] Limitaciones técnicas</h3>
 
-              <g class="dp-capa" data-capa="tokens">
-                <rect class="fill-ink" x="78" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="102" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="126" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="150" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="174" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="198" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="222" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="246" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="270" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="294" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="318" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="342" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="366" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="390" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="414" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="438" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="462" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="486" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="510" y="136" width="18" height="28"/>
-                <rect class="fill-ink" x="534" y="136" width="18" height="28"/>
-                <path class="ln ac" d="M60 150 H 22"/>
-                <path class="ln ac" d="M36 142 L 22 150 L 36 158"/>
-                <text class="lb b" x="64" y="206">Olvida las primeras instrucciones</text>
-              </g>
+      <figure class="figure esquema">
+        <svg viewBox="0 0 960 300" role="img" aria-label="Diagrama de la ventana de contexto de un solo chat continuo: la caja se llena de tokens y expulsa por la izquierda las primeras instrucciones; encima, sobre el mismo eje horizontal, la atención es alta al principio y al final y baja en el medio.">
+          <text class="lb" x="96" y="45">Un solo chat continuo</text>
 
-              <g class="dp-capa" data-capa="medio">
-                <text class="lb b" x="64" y="52">Principio</text>
-                <text class="lb" x="320" y="52" text-anchor="middle">Medio</text>
-                <text class="lb b" x="576" y="52" text-anchor="end">Final</text>
-                <rect class="fill-ink" x="78" y="62" width="20" height="48"/>
-                <rect class="fill-ink" x="120" y="66" width="20" height="44"/>
-                <rect class="fill-ink" x="162" y="74" width="20" height="36"/>
-                <rect class="fill-ink" x="204" y="86" width="20" height="24"/>
-                <rect class="fill-ink" x="246" y="94" width="20" height="16"/>
-                <rect class="fill-ink" x="288" y="100" width="20" height="10"/>
-                <rect class="fill-ink" x="330" y="100" width="20" height="10"/>
-                <rect class="fill-ink" x="372" y="96" width="20" height="14"/>
-                <rect class="fill-ink" x="414" y="88" width="20" height="22"/>
-                <rect class="fill-ink" x="456" y="78" width="20" height="32"/>
-                <rect class="fill-ink" x="498" y="68" width="20" height="42"/>
-                <rect class="fill-ink" x="540" y="60" width="20" height="50"/>
-              </g>
+          <g>
+            <text class="lb b" x="96" y="78">Principio</text>
+            <text class="lb" x="480" y="78" text-anchor="middle">Medio</text>
+            <text class="lb b" x="864" y="78" text-anchor="end">Final</text>
+            <rect class="fill-ink" x="117" y="93" width="30" height="72"/>
+            <rect class="fill-ink" x="180" y="99" width="30" height="66"/>
+            <rect class="fill-ink" x="243" y="111" width="30" height="54"/>
+            <rect class="fill-ink" x="306" y="129" width="30" height="36"/>
+            <rect class="fill-ink" x="369" y="141" width="30" height="24"/>
+            <rect class="fill-ink" x="432" y="150" width="30" height="15"/>
+            <rect class="fill-ink" x="495" y="150" width="30" height="15"/>
+            <rect class="fill-ink" x="558" y="144" width="30" height="21"/>
+            <rect class="fill-ink" x="621" y="132" width="30" height="33"/>
+            <rect class="fill-ink" x="684" y="117" width="30" height="48"/>
+            <rect class="fill-ink" x="747" y="102" width="30" height="63"/>
+            <rect class="fill-ink" x="810" y="90" width="30" height="75"/>
+          </g>
 
-              <g class="dp-capa" data-capa="cerebro">
-                <text class="lb b" x="170" y="300" text-anchor="end">tono de marca</text>
-                <text class="lb b" x="170" y="326" text-anchor="end">PDFs</text>
-                <text class="lb b" x="170" y="352" text-anchor="end">contexto</text>
-                <line class="ln ac" x1="178" y1="296" x2="200" y2="296"/>
-                <line class="ln ac" x1="178" y1="322" x2="200" y2="322"/>
-                <line class="ln ac" x1="178" y1="348" x2="200" y2="348"/>
-                <text class="ti" x="216" y="320">Nuevo Chat</text>
-                <text class="lb" x="216" y="344">Lanzamiento Q3</text>
-                <text class="lb b" x="200" y="398">Asistente de Lanzamiento</text>
-              </g>
+          <rect class="bx fill" x="96" y="177" width="768" height="96" rx="18"/>
+          <g>
+            <rect class="fill-ink" x="117" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="153" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="189" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="225" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="261" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="297" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="333" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="369" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="405" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="441" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="477" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="513" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="549" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="585" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="621" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="657" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="693" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="729" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="765" y="204" width="27" height="42"/>
+            <rect class="fill-ink" x="801" y="204" width="27" height="42"/>
+            <path class="ln ac" d="M90 225 H 33"/>
+            <path class="ln ac" d="M54 213 L 33 225 L 54 237"/>
+          </g>
+        </svg>
+        <figcaption>[ Diagrama ] La ventana de contexto y la atención, del principio al final.</figcaption>
+      </figure>
 
-              <g class="dp-capa" data-capa="contaminacion">
-                <text class="lb b" x="576" y="300" text-anchor="end">Informe legal</text>
-                <path class="ln ac" d="M566 322 H 478"/>
-                <path class="ln ac" d="M492 314 L 478 322 L 492 330"/>
-                <path class="ln ac" d="M440 310 L 464 334 M464 310 L 440 334"/>
-                <text class="lb" x="576" y="358" text-anchor="end">Colisionan</text>
-              </g>
-            </svg>
-          </div>
-          <p class="dp-cap">Una memoria finita. Un chat por proyecto.</p>
-        </div>
-        <ol class="dp-steps">
-          <li class="dp-step" data-capa="tokens" data-cap="Límite 01 · La memoria temporal se llena">
-            <p class="k">[ 01 ] Limitaciones técnicas</p><h3>Los «tokens» (efecto pez dorado)</h3>
-            <p>La IA lee fragmentos de texto (tokens) y tiene un límite de memoria temporal. Si llenas esa memoria chateando meses sobre lo mismo, empieza a olvidar las primeras instrucciones para hacer hueco.</p>
-          </li>
-          <li class="dp-step" data-capa="medio" data-cap="Límite 02 · La atención cae por el medio">
-            <p class="k">[ 02 ] Limitaciones técnicas</p><h3>Lost in the Middle</h3>
-            <p>Al procesar documentos inmensos, la IA presta total atención al principio y al final, pero suele ignorar matices del medio. <strong>Solución:</strong> Repite siempre tus directrices vitales al final del prompt.</p>
-          </li>
-          <li class="dp-step" data-capa="cerebro" data-cap="Estrategia 01 · Un chat educado por proyecto">
-            <p class="k">[ 03 ] Estrategia del usuario</p><h3>Crear un «cerebro» especializado</h3>
-            <p>Un «Nuevo Chat» es un consultor con amnesia. Si lo educas sobre «Lanzamiento Q3» (dándole tono de marca, PDFs y contexto), ese chat se convierte de forma perenne en tu <strong>Asistente de Lanzamiento</strong>.</p>
-          </li>
-          <li class="dp-step" data-capa="contaminacion" data-cap="Estrategia 02 · Cada departamento, en su chat">
-            <p class="k">[ 04 ] Estrategia del usuario</p><h3>Evitar la contaminación</h3>
-            <p>Si en el chat de «Lanzamiento Q3» pides un informe legal, los conceptos colisionarán y la IA «alucinará» inventando datos.</p>
-          </li>
-        </ol>
+      <div class="grid-cards two">
+        <div class="card dim"><h4>Los «tokens» (efecto pez dorado)</h4><p>La IA lee fragmentos de texto (tokens) y tiene un límite de memoria temporal. Si llenas esa memoria chateando meses sobre lo mismo, empieza a olvidar las primeras instrucciones para hacer hueco.</p></div>
+        <div class="card dim"><h4>Lost in the Middle</h4><p>Al procesar documentos inmensos, la IA presta total atención al principio y al final, pero suele ignorar matices del medio. <strong>Solución:</strong> Repite siempre tus directrices vitales al final del prompt.</p></div>
+      </div>
+
+      <h3>[ → ] Estrategia del usuario</h3>
+      <div class="grid-cards two">
+        <div class="card"><h4>Crear un «cerebro» especializado</h4><p>Un «Nuevo Chat» es un consultor con amnesia. Si lo educas sobre «Lanzamiento Q3» (dándole tono de marca, PDFs y contexto), ese chat se convierte de forma perenne en tu <strong>Asistente de Lanzamiento</strong>.</p></div>
+        <div class="card"><h4>Evitar la contaminación</h4><p>Si en el chat de «Lanzamiento Q3» pides un informe legal, los conceptos colisionarán y la IA «alucinará» inventando datos.</p></div>
       </div>
 
       <div class="callout regla"><span class="k">[ Regla de oro ]</span><p>«Nuevo Proyecto = Nuevo Chat.»</p><p>«Nuevo Departamento = Nuevo Chat.»</p></div>

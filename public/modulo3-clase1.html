@@ -54,73 +54,15 @@
     </section>
 
     <!-- 3. Flujo de trabajo -->
-    <section class="sec sec-ancho" id="flujo" data-label="Flujo">
+    <section class="sec" id="flujo" data-label="Flujo">
       <div class="sec-head"><span class="sec-num"></span><h2 class="display">Flujo de trabajo en IA generativa.</h2></div>
       <p class="sec-intro">Crear una imagen profesional rara vez es fruto de un solo «clic». Un flujo de trabajo industrial maduro implica iteración y control riguroso:</p>
-
-      <div class="despiece" data-despiece>
-        <div class="dp-media">
-          <ul class="dp-nav">
-            <li><button type="button" data-go="ideacion">01 <i>Ideación</i></button></li>
-            <li><button type="button" data-go="base">02 <i>Fijar base</i></button></li>
-            <li><button type="button" data-go="iteracion">03 <i>Iteración</i></button></li>
-            <li><button type="button" data-go="refinamiento">04 <i>Refinamiento</i></button></li>
-            <li><button type="button" data-go="acabado">✓ <i>Acabado final</i></button></li>
-          </ul>
-          <div class="dp-stage dp-esquema">
-            <svg viewBox="0 0 640 480" role="img" aria-label="Diagrama del flujo de trabajo: cinco pasos encadenados sobre un eje vertical, de la ideación al acabado final.">
-              <line class="ln" x1="72" y1="46" x2="72" y2="400"/>
-              <g class="dp-capa" data-capa="ideacion">
-                <rect class="fill-ink" x="66" y="57" width="12" height="12"/>
-                <line class="ln ac" x1="78" y1="63" x2="104" y2="63"/>
-                <rect class="bx fill" x="104" y="32" width="496" height="62" rx="12"/>
-                <text class="lb b" x="126" y="58">01</text>
-                <text class="ti" x="166" y="58">Ideación</text>
-                <text class="lb" x="126" y="80">Prompt inicial para explorar opciones.</text>
-              </g>
-              <g class="dp-capa" data-capa="base">
-                <rect class="fill-ink" x="66" y="137" width="12" height="12"/>
-                <line class="ln ac" x1="78" y1="143" x2="104" y2="143"/>
-                <rect class="bx fill" x="104" y="112" width="496" height="62" rx="12"/>
-                <text class="lb b" x="126" y="138">02</text>
-                <text class="ti" x="166" y="138">Fijar base</text>
-                <text class="lb" x="126" y="160">Guardar el Seed al llegar al 80%.</text>
-              </g>
-              <g class="dp-capa" data-capa="iteracion">
-                <rect class="fill-ink" x="66" y="217" width="12" height="12"/>
-                <line class="ln ac" x1="78" y1="223" x2="104" y2="223"/>
-                <rect class="bx fill" x="104" y="192" width="496" height="62" rx="12"/>
-                <text class="lb b" x="126" y="218">03</text>
-                <text class="ti" x="166" y="218">Iteración</text>
-                <text class="lb" x="126" y="240">Cambios sutiles usando el mismo Seed.</text>
-              </g>
-              <g class="dp-capa" data-capa="refinamiento">
-                <rect class="fill-ink" x="66" y="297" width="12" height="12"/>
-                <line class="ln ac" x1="78" y1="303" x2="104" y2="303"/>
-                <rect class="bx fill" x="104" y="272" width="496" height="62" rx="12"/>
-                <text class="lb b" x="126" y="298">04</text>
-                <text class="ti" x="166" y="298">Refinamiento</text>
-                <text class="lb" x="126" y="320">Uso de In-painting local.</text>
-              </g>
-              <g class="dp-capa" data-capa="acabado">
-                <rect class="fill-ink" x="66" y="377" width="12" height="12"/>
-                <line class="ln ac" x1="78" y1="383" x2="104" y2="383"/>
-                <rect class="bx fill" x="104" y="352" width="496" height="62" rx="12"/>
-                <text class="lb b" x="126" y="378">✓</text>
-                <text class="ti" x="166" y="378">Acabado final</text>
-                <text class="lb" x="126" y="400">Aplicación de Upscaling.</text>
-              </g>
-            </svg>
-          </div>
-          <p class="dp-cap">Iteración y control riguroso.</p>
-        </div>
-        <ol class="dp-steps">
-          <li class="dp-step" data-capa="ideacion"><p class="k">[ 01 ] Paso</p><h3>Ideación</h3><p>Prompt inicial para explorar opciones.</p></li>
-          <li class="dp-step" data-capa="base"><p class="k">[ 02 ] Paso</p><h3>Fijar base</h3><p>Guardar el <em>Seed</em> al llegar al 80%.</p></li>
-          <li class="dp-step" data-capa="iteracion"><p class="k">[ 03 ] Paso</p><h3>Iteración</h3><p>Cambios sutiles usando el mismo Seed.</p></li>
-          <li class="dp-step" data-capa="refinamiento"><p class="k">[ 04 ] Paso</p><h3>Refinamiento</h3><p>Uso de <em>In-painting</em> local.</p></li>
-          <li class="dp-step" data-capa="acabado"><p class="k">[ ✓ ] Paso</p><h3>Acabado final</h3><p>Aplicación de <em>Upscaling</em>.</p></li>
-        </ol>
+      <div class="stepper vertical">
+        <div class="step"><span class="n">01</span><h4>Ideación</h4><p>Prompt inicial para explorar opciones.</p></div>
+        <div class="step"><span class="n">02</span><h4>Fijar base</h4><p>Guardar el <em>Seed</em> al llegar al 80%.</p></div>
+        <div class="step"><span class="n">03</span><h4>Iteración</h4><p>Cambios sutiles usando el mismo Seed.</p></div>
+        <div class="step"><span class="n">04</span><h4>Refinamiento</h4><p>Uso de <em>In-painting</em> local.</p></div>
+        <div class="step final"><span class="n">[✓]</span><h4>Acabado final</h4><p>Aplicación de <em>Upscaling</em>.</p></div>
       </div>
     </section>
 

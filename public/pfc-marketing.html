@@ -107,133 +107,93 @@
     </section>
 
     <!-- 4. Roadmap curricular -->
-    <section class="sec sec-ancho" id="roadmap" data-label="Roadmap">
+    <section class="sec" id="roadmap" data-label="Roadmap">
       <p class="sec-eyebrow">[ Currículo propuesto ]</p>
       <div class="sec-head"><span class="sec-num"></span><h2 class="display">Plan de formación: 5 clases.</h2></div>
       <p class="sec-intro">Al final del programa, el alumno dispondrá de un MVP completamente funcional del AI Decision Hub.</p>
 
-      <div class="despiece" data-despiece>
-        <div class="dp-media">
-          <ul class="dp-nav">
-            <li><button type="button" data-go="motor">01 <i>Motor AI</i></button></li>
-            <li><button type="button" data-go="datos">02 <i>Ingesta Datos</i></button></li>
-            <li><button type="button" data-go="orquestacion">03 <i>Orquestación</i></button></li>
-            <li><button type="button" data-go="produccion">04 <i>Producción</i></button></li>
-            <li><button type="button" data-go="interfaz">05 <i>UI Negocio</i></button></li>
+      <div class="stepper vertical">
+
+        <div class="step">
+          <span class="n">01</span>
+          <h4>Clase 1: Fundamentos — Claude API como Motor de Decisión</h4>
+          <p><strong>Concepto Central:</strong> Claude no es un chatbot, es un motor de razonamiento que consume datos estructurados y produce decisiones.</p>
+          <p><strong>Qué aprende el alumno:</strong></p>
+          <ul class="list-mono check">
+            <li>Diferencia entre prompt naïve vs. prompt de sistema estructurado.</li>
+            <li>Arquitectura de llamada a Claude API con rol analítico.</li>
+            <li>Pasar KPIs como contexto estructurado (JSON) y recibir Insight/Diagnóstico.</li>
+            <li>Uso de Pydantic schemas para validar respuestas de la IA.</li>
           </ul>
-          <div class="dp-stage dp-esquema">
-            <svg viewBox="0 0 640 480" role="img" aria-label="Diagrama vertical de la secuencia del programa: cinco cajas encadenadas de arriba abajo, una por clase — motor de IA, ingesta de datos, orquestación, producción e interfaz de negocio.">
-              <line class="ln" x1="320" y1="96" x2="320" y2="120"/>
-              <path class="ln" d="M312 112 L320 120 L328 112"/>
-              <line class="ln" x1="320" y1="184" x2="320" y2="208"/>
-              <path class="ln" d="M312 200 L320 208 L328 200"/>
-              <line class="ln" x1="320" y1="272" x2="320" y2="296"/>
-              <path class="ln" d="M312 288 L320 296 L328 288"/>
-              <line class="ln" x1="320" y1="360" x2="320" y2="384"/>
-              <path class="ln" d="M312 376 L320 384 L328 376"/>
-              <g class="dp-capa" data-capa="motor">
-                <rect class="bx fill" x="170" y="32" width="300" height="64" rx="12"/>
-                <text class="lb" x="198" y="58">C1</text>
-                <text class="ti" x="198" y="82">Motor AI</text>
-              </g>
-              <g class="dp-capa" data-capa="datos">
-                <rect class="bx fill" x="170" y="120" width="300" height="64" rx="12"/>
-                <text class="lb" x="198" y="146">C2</text>
-                <text class="ti" x="198" y="170">Ingesta Datos</text>
-              </g>
-              <g class="dp-capa" data-capa="orquestacion">
-                <rect class="bx fill" x="170" y="208" width="300" height="64" rx="12"/>
-                <text class="lb" x="198" y="234">C3</text>
-                <text class="ti" x="198" y="258">Orquestación</text>
-              </g>
-              <g class="dp-capa" data-capa="produccion">
-                <rect class="bx fill" x="170" y="296" width="300" height="64" rx="12"/>
-                <text class="lb" x="198" y="322">C4</text>
-                <text class="ti" x="198" y="346">Producción</text>
-              </g>
-              <g class="dp-capa" data-capa="interfaz">
-                <rect class="bx fill" x="170" y="384" width="300" height="64" rx="12"/>
-                <text class="lb" x="198" y="410">C5</text>
-                <text class="ti" x="198" y="434">UI Negocio</text>
-              </g>
-            </svg>
-          </div>
-          <p class="dp-cap">Secuencia lógica del programa</p>
+          <div class="callout ok"><span class="k">[ Práctica ]</span><p>Construir función Python que reciba un <em>dict</em> con KPIs (revenue, traffic, cr) y devuelva el insight estructurado.</p></div>
         </div>
 
-        <ol class="dp-steps">
+        <div class="step">
+          <span class="n">02</span>
+          <h4>Clase 2: Ingesta de Datos Reales — Sheets + GA4 API</h4>
+          <p><strong>Concepto Central:</strong> El pipeline empieza con datos reales, no mocks. Conectar las fuentes del MVP.</p>
+          <p><strong>Qué aprende el alumno:</strong></p>
+          <ul class="list-mono check">
+            <li>Autenticación con Google Cloud (Service Account, OAuth2).</li>
+            <li>Sheets API (como hub de datos para el equipo no-técnico) y GA4 Data API.</li>
+            <li>Construcción de una capa DataCollector en Python.</li>
+            <li>Cálculo automático de desviaciones (actual - target).</li>
+          </ul>
+          <div class="callout ok"><span class="k">[ Práctica ]</span><p>Pipeline que extrae datos de GA4 + Sheets (revenue SAP) y produce un JSON consolidado listo para procesar.</p></div>
+        </div>
 
-          <li class="dp-step" data-capa="motor" data-cap="C1 · Motor AI">
-            <p class="k">[ 01 ] Clase</p>
-            <h3>Clase 1: Fundamentos — Claude API como Motor de Decisión</h3>
-            <p><strong>Concepto Central:</strong> Claude no es un chatbot, es un motor de razonamiento que consume datos estructurados y produce decisiones.</p>
-            <p><strong>Qué aprende el alumno:</strong></p>
-            <ul class="list-mono check">
-              <li>Diferencia entre prompt naïve vs. prompt de sistema estructurado.</li>
-              <li>Arquitectura de llamada a Claude API con rol analítico.</li>
-              <li>Pasar KPIs como contexto estructurado (JSON) y recibir Insight/Diagnóstico.</li>
-              <li>Uso de Pydantic schemas para validar respuestas de la IA.</li>
-            </ul>
-            <div class="callout ok"><span class="k">[ Práctica ]</span><p>Construir función Python que reciba un <em>dict</em> con KPIs (revenue, traffic, cr) y devuelva el insight estructurado.</p></div>
-          </li>
+        <div class="step">
+          <span class="n">03</span>
+          <h4>Clase 3: Gemini + Arquitectura Multi-AI</h4>
+          <p><strong>Concepto Central:</strong> Orquestar múltiples IAs según sus fortalezas nativas.</p>
+          <p><strong>Qué aprende el alumno:</strong></p>
+          <ul class="list-mono check">
+            <li>Gemini API: Procesamiento de contexto amplio y lectura de PDFs largos.</li>
+            <li>LangChain: Orquestar llamadas secuenciales (Gemini extrae → Claude razona).</li>
+            <li>Chain of Thought prompting y manejo de errores (alucinaciones).</li>
+            <li>Introducción a LangSmith para observabilidad del modelo.</li>
+          </ul>
+          <div class="callout ok"><span class="k">[ Práctica ]</span><p>Pipeline completo: Gemini extrae KPIs de un PDF → Claude genera diagnóstico → Pydantic valida.</p></div>
+        </div>
 
-          <li class="dp-step" data-capa="datos" data-cap="C2 · Ingesta Datos">
-            <p class="k">[ 02 ] Clase</p>
-            <h3>Clase 2: Ingesta de Datos Reales — Sheets + GA4 API</h3>
-            <p><strong>Concepto Central:</strong> El pipeline empieza con datos reales, no mocks. Conectar las fuentes del MVP.</p>
-            <p><strong>Qué aprende el alumno:</strong></p>
-            <ul class="list-mono check">
-              <li>Autenticación con Google Cloud (Service Account, OAuth2).</li>
-              <li>Sheets API (como hub de datos para el equipo no-técnico) y GA4 Data API.</li>
-              <li>Construcción de una capa DataCollector en Python.</li>
-              <li>Cálculo automático de desviaciones (actual - target).</li>
-            </ul>
-            <div class="callout ok"><span class="k">[ Práctica ]</span><p>Pipeline que extrae datos de GA4 + Sheets (revenue SAP) y produce un JSON consolidado listo para procesar.</p></div>
-          </li>
+        <div class="step">
+          <span class="n">04</span>
+          <h4>Clase 4: Backend FastAPI + Scheduler + DB</h4>
+          <p><strong>Concepto Central:</strong> Pasar de script Python a sistema productivo con API, persistencia y ejecución automática.</p>
+          <p><strong>Qué aprende el alumno:</strong></p>
+          <ul class="list-mono check">
+            <li>Estructurar FastAPI con endpoints: <code>/run-pipeline</code>, <code>/reports</code>.</li>
+            <li>APScheduler para ejecución automática (Ej. lunes 6am).</li>
+            <li>Supabase / PostgreSQL: Persistencia de reportes e histórico.</li>
+            <li>Sistemas de alertas automatizadas y Deploy en Cloud Run (Docker).</li>
+          </ul>
+          <div class="callout ok"><span class="k">[ Práctica ]</span><p>Backend programado que corre el pipeline, guarda en BD y envía email resumen a los directivos.</p></div>
+        </div>
 
-          <li class="dp-step" data-capa="orquestacion" data-cap="C3 · Orquestación">
-            <p class="k">[ 03 ] Clase</p>
-            <h3>Clase 3: Gemini + Arquitectura Multi-AI</h3>
-            <p><strong>Concepto Central:</strong> Orquestar múltiples IAs según sus fortalezas nativas.</p>
-            <p><strong>Qué aprende el alumno:</strong></p>
-            <ul class="list-mono check">
-              <li>Gemini API: Procesamiento de contexto amplio y lectura de PDFs largos.</li>
-              <li>LangChain: Orquestar llamadas secuenciales (Gemini extrae → Claude razona).</li>
-              <li>Chain of Thought prompting y manejo de errores (alucinaciones).</li>
-              <li>Introducción a LangSmith para observabilidad del modelo.</li>
-            </ul>
-            <div class="callout ok"><span class="k">[ Práctica ]</span><p>Pipeline completo: Gemini extrae KPIs de un PDF → Claude genera diagnóstico → Pydantic valida.</p></div>
-          </li>
+        <div class="step">
+          <span class="n">05</span>
+          <h4>Clase 5: Frontend Next.js — El Hub de Decisión</h4>
+          <p><strong>Concepto Central:</strong> UI que convierte datos en decisiones visibles para directivos no-técnicos.</p>
+          <p><strong>Qué aprende el alumno:</strong></p>
+          <ul class="list-mono check">
+            <li>Arquitectura Next.js 14 App Router.</li>
+            <li>Consumir FastAPI desde el frontend con React Query.</li>
+            <li>Visualización de KPIs con Recharts (target vs actual, semáforos).</li>
+            <li>Sistema «Human-in-the-loop»: botón para aprobar recomendaciones AI.</li>
+          </ul>
+          <div class="callout ok"><span class="k">[ Práctica ]</span><p>Dashboard UI completo desplegado en Vercel con tarjetas estructuradas, insights y acciones aprobables.</p></div>
+        </div>
 
-          <li class="dp-step" data-capa="produccion" data-cap="C4 · Producción">
-            <p class="k">[ 04 ] Clase</p>
-            <h3>Clase 4: Backend FastAPI + Scheduler + DB</h3>
-            <p><strong>Concepto Central:</strong> Pasar de script Python a sistema productivo con API, persistencia y ejecución automática.</p>
-            <p><strong>Qué aprende el alumno:</strong></p>
-            <ul class="list-mono check">
-              <li>Estructurar FastAPI con endpoints: <code>/run-pipeline</code>, <code>/reports</code>.</li>
-              <li>APScheduler para ejecución automática (Ej. lunes 6am).</li>
-              <li>Supabase / PostgreSQL: Persistencia de reportes e histórico.</li>
-              <li>Sistemas de alertas automatizadas y Deploy en Cloud Run (Docker).</li>
-            </ul>
-            <div class="callout ok"><span class="k">[ Práctica ]</span><p>Backend programado que corre el pipeline, guarda en BD y envía email resumen a los directivos.</p></div>
-          </li>
+      </div>
 
-          <li class="dp-step" data-capa="interfaz" data-cap="C5 · UI Negocio">
-            <p class="k">[ 05 ] Clase</p>
-            <h3>Clase 5: Frontend Next.js — El Hub de Decisión</h3>
-            <p><strong>Concepto Central:</strong> UI que convierte datos en decisiones visibles para directivos no-técnicos.</p>
-            <p><strong>Qué aprende el alumno:</strong></p>
-            <ul class="list-mono check">
-              <li>Arquitectura Next.js 14 App Router.</li>
-              <li>Consumir FastAPI desde el frontend con React Query.</li>
-              <li>Visualización de KPIs con Recharts (target vs actual, semáforos).</li>
-              <li>Sistema «Human-in-the-loop»: botón para aprobar recomendaciones AI.</li>
-            </ul>
-            <div class="callout ok"><span class="k">[ Práctica ]</span><p>Dashboard UI completo desplegado en Vercel con tarjetas estructuradas, insights y acciones aprobables.</p></div>
-          </li>
-
-        </ol>
+      <!-- Resumen: secuencia lógica -->
+      <h3>Secuencia lógica del programa</h3>
+      <div class="flow five">
+        <div class="node"><span class="k">C1</span><h4>Motor AI</h4></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="node"><span class="k">C2</span><h4>Ingesta Datos</h4></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="node"><span class="k">C3</span><h4>Orquestación</h4></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="node"><span class="k">C4</span><h4>Producción</h4></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="node ink"><span class="k">C5</span><h4>UI Negocio</h4></div>
       </div>
     </section>
 
