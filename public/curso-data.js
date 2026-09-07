@@ -22,7 +22,7 @@
       classes: [
         { id: 'm1c1', file: 'modulo1.html', num: 1, kind: 'módulo completo', duration: '1,5–2 h', topic: 'Estrategia de modelos',
           title: 'El Paisaje de los LLMs', short: 'El Paisaje de los LLMs',
-          tools: ['Claude', 'Gemini', 'ChatGPT', 'Grok', 'Perplexity', 'Higgsfield AI', 'Freepik AI'] }
+          tools: ['Claude', 'Gemini', 'ChatGPT', 'Grok', 'Perplexity'] }
       ]
     },
     {
@@ -31,7 +31,7 @@
       classes: [
         { id: 'm2c1', file: 'modulo2.html', num: 1, kind: 'módulo completo', duration: '1,5 h', topic: 'Glosario ejecutivo',
           title: 'Glosario y Fundamentos', short: 'Glosario y Fundamentos',
-          tools: ['Perplexity AI', 'Gemini', 'Gems', 'NotebookLM', 'Google AI Studio', 'ChatGPT', 'GPTs personalizados'] }
+          tools: ['Perplexity', 'Gemini', 'Gems', 'NotebookLM', 'Google AI Studio', 'ChatGPT'] }
       ]
     },
     {
@@ -40,50 +40,68 @@
       classes: [
         { id: 'm3c1', file: 'modulo3-clase1.html', num: 1, kind: 'teórica', duration: '1 h', topic: 'Fotografía y mockups',
           title: 'Estudio creativo IA: los titanes del píxel', short: 'Los titanes del píxel',
-          tools: ['Gemini Nano Banana 2', 'ChatGPT Images 2.0', 'Mixboard', 'Gems de Gemini', 'Opal'] },
+          tools: ['Gemini Nano Banana 2', 'ChatGPT Images 2.0', 'Mixboard'] },
         { id: 'm3c2', file: 'modulo3-clase2.html', num: 2, kind: 'teórica', duration: '1 h', topic: 'Flujo de trabajo avanzado',
           title: 'Estudio creativo IA: composición y tiempo real', short: 'Composición y tiempo real',
           tools: ['Krea AI', 'Pomelli', 'Genspark', 'Higgsfield'] },
         { id: 'm3c3', file: 'modulo3-clase3.html', num: 3, kind: 'práctica', duration: 'Teoría 45 min · Práctica 60 min', topic: 'Suite de edición',
           title: 'Magnific AI: el ecosistema total', short: 'Magnific AI: el ecosistema total',
-          tools: ['Freepik', 'Magnific AI', 'Magnific Spaces', 'Mystic', 'Nano Banana', 'Flux', 'GPT Image', 'Seedream', 'Ideogram', 'Qwen Image', 'Recraft', 'Veo', 'Sora', 'Runway', 'Kling'] },
-        { id: 'm3c4', file: 'modulo3-clase4.html', num: 4, kind: 'práctica', duration: '45 min', topic: 'Procesamiento en lote',
-          title: 'Freepik Spaces: la anatomía de los nodos', short: 'Freepik Spaces: la anatomía de los nodos',
-          tools: ['Freepik Spaces', 'Magnific', 'Mystic', 'Flux', 'Nano Banana', 'Luma', 'Kling', 'Runway', 'MiniMax'] },
-        { id: 'm3c5', file: 'modulo3-clase5.html', num: 5, kind: 'teórica', duration: '90 min', topic: 'Fotorrealismo y moda',
-          title: 'El prompt como objetivo: fotografía profesional con IA', short: 'El prompt como objetivo',
-          tools: ['PromptHero', 'Lexica', 'Midjourney Explore', 'Freepik / Pikaso', 'PromptBase', 'Civitai', 'Magnific'] }
+          tools: ['Magnific AI', 'Freepik'] }
       ]
     },
-    { id: 'm4', num: 4, title: 'Estudio Creativo 2 (Vídeo)', short: 'Vídeo', desc: '', classes: [] },
-    { id: 'm5', num: 5, title: 'Automatización de Imágenes', short: 'Automatización', desc: '', classes: [] },
-    { id: 'm6', num: 6, title: 'Docs Inteligente & Google', short: 'Docs & Google', desc: '', classes: [] },
-    { id: 'm7', num: 7, title: 'Programación Web y Scraping', short: 'Web & Scraping', desc: '', classes: [] },
     {
-      id: 'm8', num: 8, title: 'Agentes Autónomos', short: 'Agentes',
-      desc: 'Introducción a sistemas que no solo responden, sino que ejecutan. IAs capaces de planificar tareas, navegar por la web y realizar secuencias complejas.',
+      id: 'm4', num: 4, title: 'Estudio Creativo IA (Automatización)', short: 'Automatización',
+      desc: 'De generar una imagen a producir un catálogo: nodos encadenados que trabajan en lote y prompts de grado profesional que repiten el mismo resultado tantas veces como haga falta.',
       classes: [
-        { id: 'm8c1', file: 'modulo8-clase1.html', num: 1, kind: 'teórica', duration: 'Teoría 40 min · Práctica 50 min', topic: 'Claude como socio de trabajo',
+        { id: 'm4c1', file: 'modulo4-clase1.html', num: 1, kind: 'práctica', duration: '45 min', topic: 'Procesamiento en lote',
+          title: 'Freepik Spaces: la anatomía de los nodos', short: 'Freepik Spaces: la anatomía de los nodos',
+          tools: ['Freepik Spaces', 'Magnific AI'] },
+        { id: 'm4c2', file: 'modulo4-clase2.html', num: 2, kind: 'teórica', duration: '90 min', topic: 'Fotorrealismo y moda',
+          title: 'El prompt como objetivo: fotografía profesional con IA', short: 'El prompt como objetivo',
+          tools: ['PromptHero', 'Lexica', 'Civitai', 'PromptBase', 'Freepik / Pikaso', 'Midjourney Explore'] }
+      ]
+    },
+
+    /* M5 — hueco libre. Cuando haya contenido, añade aquí el módulo con num: 5
+       y sus clases; aparece en la web con solo rellenar `classes`. */
+
+    {
+      id: 'm6', num: 6, title: 'Claude suite', short: 'Claude suite',
+      desc: 'Claude como socio de trabajo: la app, Cowork y Claude Code. De la conversación suelta a un sistema con instrucciones, memoria y agentes que ejecutan.',
+      classes: [
+        { id: 'm6c1', file: 'modulo6-clase1.html', num: 1, kind: 'teórica', duration: 'Teoría 40 min · Práctica 50 min', topic: 'Claude como socio de trabajo',
           title: 'Claude: el asistente de IA como socio de trabajo', short: 'Claude: el asistente de IA como socio de trabajo',
-          tools: ['claude.ai', 'Claude Cowork', 'Claude Design', 'Claude Code'] },
-        { id: 'm8c2', file: 'modulo8-clase2.html', num: 2, kind: 'referencia', duration: '45 min', topic: 'Skills, agentes y hooks',
+          tools: ['claude.ai', 'Claude Cowork', 'Claude Code', 'Claude Design'] },
+        { id: 'm6c2', file: 'modulo6-clase2.html', num: 2, kind: 'referencia', duration: '45 min', topic: 'Skills, agentes y hooks',
           title: 'Claude Cowork: guía de referencia', short: 'Claude Cowork: guía de referencia',
-          tools: ['Claude Cowork', 'Claude', 'LibreOffice'] },
-        { id: 'm8c3', file: 'modulo8-clase3.html', num: 3, kind: 'práctica', duration: 'Teoría 30 min · Práctica 30 min', topic: 'Pipelines multi-agente',
+          tools: ['Claude Cowork'] },
+        { id: 'm6c3', file: 'modulo6-clase3.html', num: 3, kind: 'práctica', duration: 'Teoría 30 min · Práctica 30 min', topic: 'Pipelines multi-agente',
           title: 'Orquestación avanzada: pipelines multi-agente', short: 'Orquestación avanzada: pipelines multi-agente',
-          tools: ['Claude Code', 'Claude Cowork', 'MCP', 'Google Drive', 'Slack', 'Notion', 'HubSpot', 'GA4', 'Google Ads', 'Meta Ads'] },
-        { id: 'm8c4', file: 'modulo8-clase4.html', num: 4, kind: 'práctica', duration: '50 min', topic: 'Ingesta local a Obsidian',
+          tools: ['Claude Code', 'Claude Cowork', 'MCP'] }
+      ]
+    },
+    {
+      id: 'm7', num: 7, title: 'Cerebros de IA', short: 'Cerebros IA',
+      desc: 'Tu conocimiento convertido en un cerebro consultable: ingesta local y privada a Obsidian, estructura para toda la empresa y búsqueda por significado que se enlaza sola.',
+      classes: [
+        { id: 'm7c1', file: 'modulo7-clase1.html', num: 1, kind: 'práctica', duration: '50 min', topic: 'Ingesta local a Obsidian',
           title: 'El cerebro local autónomo: ingesta segura a Obsidian', short: 'El cerebro local autónomo',
-          tools: ['Obsidian', 'MarkItDown', 'Tesseract OCR', 'Claude Code', 'Python'] },
-        { id: 'm8c5', file: 'modulo8-clase5.html', num: 5, kind: 'teórica', duration: '1 h 15 min', topic: 'Agentes, departamentos y plugins',
+          tools: ['Obsidian', 'Claude Code', 'MarkItDown', 'Tesseract OCR', 'Python'] },
+        { id: 'm7c2', file: 'modulo7-clase2.html', num: 2, kind: 'teórica', duration: '1 h 15 min', topic: 'Agentes, departamentos y plugins',
           title: 'El cerebro de empresa: agentes, departamentos y plugins', short: 'El cerebro de empresa',
-          tools: ['Obsidian', 'Git', 'Obsidian Sync', 'Google Drive', 'Dropbox', 'Syncthing'] },
-        { id: 'm8c6', file: 'modulo8-clase6.html', num: 6, kind: 'teórica', duration: '45 min', topic: 'Búsqueda semántica y auto-enlaces',
+          tools: ['Obsidian', 'Obsidian Sync', 'Git'] },
+        { id: 'm7c3', file: 'modulo7-clase3.html', num: 3, kind: 'teórica', duration: '45 min', topic: 'Búsqueda semántica y auto-enlaces',
           title: 'El cerebro que se busca y se teje solo', short: 'El cerebro que se busca y se teje solo',
-          tools: ['Obsidian', 'Claude Code', 'Smart Connections', 'Graphify', 'bge-m3', 'LanceDB', 'MCP', 'Python'] },
-        { id: 'm8c7', file: 'modulo8-clase7.html', num: 7, kind: 'teórica', duration: '1 h 20 min', topic: 'Tu software sobre el cerebro',
+          tools: ['Obsidian', 'Claude Code', 'Smart Connections', 'Graphify', 'LanceDB', 'bge-m3'] }
+      ]
+    },
+    {
+      id: 'm8', num: 8, title: 'Desarrollo de software', short: 'Software',
+      desc: 'La puerta de entrada al cerebro: una web interna con paneles, tablero e ingesta de documentos que le encargas a Claude con el vocabulario correcto.',
+      classes: [
+        { id: 'm8c1', file: 'modulo8-clase1.html', num: 1, kind: 'teórica', duration: '1 h 20 min', topic: 'Tu software sobre el cerebro',
           title: 'Tu software propio: el portal de mando', short: 'Tu software propio: el portal de mando',
-          tools: ['Claude', 'Claude Code', 'API de Claude', 'Obsidian', 'Next.js', 'Tailwind CSS'] }
+          tools: ['Claude', 'Claude Code', 'API de Claude', 'Next.js', 'Tailwind CSS', 'Obsidian'] }
       ]
     },
     {
@@ -92,22 +110,27 @@
       classes: [
         { id: 'm9c1', file: 'pfc-marketing.html', num: 1, kind: 'práctica', duration: '20 min', topic: 'Plan técnico y curricular',
           title: 'AI Decision Hub: plan técnico y curricular', short: 'AI Decision Hub: plan técnico y curricular',
-          tools: ['Python', 'FastAPI', 'LangChain', 'Next.js', 'Supabase', 'Redis', 'Google Cloud Run', 'Vercel', 'Claude', 'Gemini', 'GA4', 'Zoho CRM', 'Connectif'] }
+          tools: ['FastAPI', 'LangChain', 'Next.js', 'Supabase', 'Claude', 'Gemini'] }
       ]
     }
   ];
 
   /* Niveles de acceso. El nivel del alumno viaja en el JWT de Supabase como
-     user_metadata.access_level ('diseno' | 'marketing' | 'finanzas' | 'completo').
-     Compatibilidad: si no hay access_level se usa DEFAULT_LEVEL (hoy: completo,
-     que equivale al comportamiento anterior; M9 está bloqueado para todos).
-     REPARTO PROVISIONAL — pendiente de que Marc confirme qué módulos ve cada nivel. */
+     user_metadata.access_level ('completo' | 'diseno' | 'marketing' | 'finanzas').
+     Se edita en Supabase, en Authentication > Users > User Metadata.
+     Sin access_level se aplica DEFAULT_LEVEL, hoy 'completo', para que ningún
+     alumno antiguo se quede fuera mientras se reparten los niveles.
+     Nota: m9 lleva `locked: true`, así que hoy no entra nadie aunque figure en
+     la lista de un nivel; al quitar ese flag se abrirá solo para marketing. */
   var levels = {
-    diseno:    { label: 'Diseño',    modules: ['m1', 'm2', 'm3'] },
-    marketing: { label: 'Marketing', modules: ['m1', 'm2', 'm3', 'm8'] },
-    finanzas:  { label: 'Finanzas',  modules: ['m1', 'm2', 'm8'] },
-    completo:  { label: 'Completo',  modules: '*' }
+    completo:  { label: 'Acceso completo', modules: '*' },
+    diseno:    { label: 'Diseño',    modules: ['m1', 'm2', 'm3', 'm4'] },
+    marketing: { label: 'Marketing', modules: ['m1', 'm2', 'm6', 'm7', 'm8', 'm9'] },
+    /* Finanzas: hoy solo la base; M6 y M8 se le abrirán más adelante
+       (añade 'm6', 'm8' a esta lista cuando toque). */
+    finanzas:  { label: 'Finanzas',  modules: ['m1', 'm2'] }
   };
+
   var DEFAULT_LEVEL = 'completo';
 
   /* ── helpers puros (sin DOM) ─────────────────────────────────────────── */

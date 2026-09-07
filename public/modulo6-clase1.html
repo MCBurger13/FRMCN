@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M6 · Clase 1 — Claude: el asistente de IA como socio de trabajo · [m].seny /academy</title>
+<meta name="description" content="De la interfaz de chat al ecosistema agentic autónomo. Profundizando en el modelo más humano y analítico de Anthropic.">
+<link rel="stylesheet" href="/theme.css">
+<link rel="stylesheet" href="/curso.css">
+</head>
+<body data-class="m6c1">
+<main>
+
+  <header class="hero">
+    <h1 class="display">Claude: el asistente de IA como socio de trabajo.</h1>
+    <p class="sub">De la interfaz de chat al ecosistema agentic autónomo. Profundizando en el modelo más humano y analítico de Anthropic.</p>
+    <div class="chips"><span class="chip">claude.ai</span><span class="chip">Claude Cowork</span><span class="chip">Claude Design</span><span class="chip">Claude Code</span></div>
+  </header>
+
+  <div class="content">
+
+    <!-- 1. Introducción y ecosistema -->
+    <section class="sec" id="intro" data-label="Ecosistema Claude">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">El ecosistema Claude (2026).</h2></div>
+      <p>Claude es el modelo fundacional de IA desarrollado por <strong>Anthropic</strong>. A diferencia de ChatGPT (versátil) o Gemini (integrado en Workspace), Claude destaca por su extrema naturalidad en la redacción, su razonamiento ético (Constitutional AI) y su capacidad inigualable para codificar y no perderse en documentos masivos.</p>
+      <div class="grid-cards two">
+        <div class="card"><span class="k">[ 01 ]</span><h4>Web / Mobile</h4><p>La interfaz clásica (claude.ai). Ideal para consultas rápidas, redacción y análisis de PDFs subidos manualmente. No tiene acceso a tus archivos locales.</p></div>
+        <div class="card dim"><span class="k">[ 02 · Pro ]</span><h4>Claude Cowork</h4><p>El agente de escritorio. Con permisos, puede leer carpetas locales, aplicaciones y actuar como un verdadero compañero de trabajo en tu sistema operativo.</p></div>
+        <div class="card dim"><span class="k">[ 03 · UI / UX ]</span><h4>Claude Design</h4><p>El entorno visual. Te permite generar código (HTML/React), renderizar interfaces y previsualizar prototipos web interactivos en tiempo real.</p></div>
+        <div class="card ink"><span class="k">[ 04 ]</span><h4>Claude Code</h4><p>Interfaz de Terminal (CLI) para tareas <em>agentic</em>. Lee repositorios, ejecuta scripts y modifica archivos de forma autónoma sin interfaz gráfica.</p></div>
+      </div>
+    </section>
+
+    <!-- 2. Arquitectura .MD (archivos de configuración automática) -->
+    <section class="sec" id="arquitectura" data-label="Arquitectura .MD">
+      <p class="sec-eyebrow">[ Automatización de contexto ]</p>
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">La arquitectura «.MD» (el cerebro permanente).</h2></div>
+      <p class="sec-intro">El mayor error productivo es escribir: <em>«Actúa como un experto de mi marca, lee este PDF de estilo y haz X»</em>, cada vez que abres un chat. Claude Code y los entornos avanzados automatizan esto usando <strong>archivos de configuración en la raíz de tu proyecto</strong>.</p>
+
+      <div class="grid-cards">
+        <div class="card ink">
+          <span class="k">[ Archivo · El punto de entrada ]</span>
+          <h3>CLAUDE.md</h3>
+          <p>Cuando ejecutas Claude en una carpeta (vía CLI o Cowork), busca automáticamente un archivo llamado <code>CLAUDE.md</code>. Si lo encuentra, lo lee de forma invisible antes de que tú digas «Hola».</p>
+          <p>Este archivo contiene las reglas globales del proyecto, el tono de marca y, lo más importante, <strong>apunta a otros archivos especializados</strong> para que Claude sepa dónde buscar la información técnica sin saturar su memoria.</p>
+        </div>
+      </div>
+
+      <h3>El framework de archivos agentic</h3>
+      <div class="grid-cards two">
+        <div class="card"><span class="k">[ El alma / La marca ]</span><h4>SOUL.md</h4><p>Define <strong>quién</strong> es el agente. Contiene el tono de voz, la ética corporativa, las restricciones de marca y el <em>Brand Guidelines</em>. Determina su «personalidad».</p></div>
+        <div class="card"><span class="k">[ Las habilidades ]</span><h4>SKILL.md</h4><p>Define <strong>qué</strong> sabe hacer. Contiene instrucciones técnicas exactas: cómo usar una API específica, cómo dar formato a un informe financiero o cómo escribir código.</p></div>
+        <div class="card"><span class="k">[ El proceso (SOP) ]</span><h4>WORKFLOW.md</h4><p>Define el <strong>paso a paso</strong>. «1. Lee los emails. 2. Extrae quejas. 3. Clasifícalas. 4. Genera el JSON». Evita que la IA se salte pasos importantes.</p></div>
+        <div class="card"><span class="k">[ La orquestación ]</span><h4>AGENT.md</h4><p>El archivo maestro. Conecta el Soul, el Skill y el Workflow para una tarea autónoma concreta. Es el «script» que lee un <em>Scheduled Task</em> (Tarea Programada).</p></div>
+      </div>
+    </section>
+
+    <!-- 3. Memoria, comandos y continuidad -->
+    <section class="sec" id="memoria" data-label="Memoria &amp; Autonomía">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">La memoria: el arte de no olvidar (ni saturar).</h2></div>
+      <p class="sec-intro">Hablar con un Agente IA no es como hablar con un humano. Su memoria RAM se satura rápido y cuesta dinero. Para que Claude sea un compañero útil a largo plazo, debemos enseñarle a recordar de forma eficiente.</p>
+
+      <h3>1. El control manual (comandos)</h3>
+      <div class="grid-cards two">
+        <div class="card dim">
+          <span class="k">[ Comando ]</span>
+          <h4><code>/compact</code> — El botón de comprimir</h4>
+          <p><strong>El problema:</strong> Tras horas de chat, la ventana de memoria se satura, Claude se vuelve lento y te cuesta dinero por cada mensaje.</p>
+          <p><strong>La solución:</strong> Al usar <code>/compact</code>, detienes la IA. Claude hace un resumen ultradenso de todo lo hablado, borra el historial gigante y usa ese pequeño resumen como su nueva «memoria base».</p>
+        </div>
+        <div class="card dim">
+          <span class="k">[ Comando ]</span>
+          <h4><code>/clear</code> — Hacer borrón y cuenta nueva</h4>
+          <p>Borra todo el contexto y la memoria de la sesión actual al instante. Indispensable cuando cambias de tarea radicalmente dentro del mismo proyecto para evitar que la IA confunda instrucciones (contaminación cruzada).</p>
+        </div>
+      </div>
+
+      <h3>2. La continuidad diaria (el diario de a bordo)</h3>
+      <p><strong>El problema:</strong> El «Chat del Martes» no sabe lo que hablasteis en el «Chat del Lunes». Intentar mantener vivo un solo chat durante un mes cuesta muchísimo dinero en tokens.</p>
+      <p><strong>La solución (el truco de <code>context.md</code>):</strong> En lugar de depender de la memoria del chat, usamos un archivo físico de «memoria transaccional».</p>
+      <div class="stepper vertical">
+        <div class="step"><span class="n">01</span><p>Creas un archivo vacío llamado <code>context.md</code> en tu proyecto.</p></div>
+        <div class="step"><span class="n">02</span><p>En tu configuración inicial (<code>CLAUDE.md</code>), añades la regla de oro: <em>«Antes de hacer nada, lee context.md para saber qué hicimos ayer. Cuando terminemos de trabajar hoy, actualiza context.md con un resumen de tus progresos.»</em></p></div>
+        <div class="step final"><span class="n">[✓]</span><h4>El resultado</h4><p>Puedes apagar el ordenador, volver al día siguiente, abrir un chat totalmente nuevo (limpio y barato) y Claude retomará el trabajo exactamente donde lo dejó leyendo su propio diario.</p></div>
+      </div>
+
+      <h3>3. Mantenimiento autónomo (Auto Dream)</h3>
+      <h4><code>/dream</code> — El sueño REM para tu agente</h4>
+      <p>La función más inteligente y silenciosa de Claude Code en 2026.</p>
+      <div class="grid-cards two">
+        <div class="card dim">
+          <span class="k">[ ! ] El problema</span>
+          <h4>El escritorio caótico</h4>
+          <p>Hace meses, Claude incorporó «Auto Memory» (se escribía pequeñas notas a sí mismo sobre cómo te gusta trabajar). En teoría era genial.</p>
+          <p>En la práctica, tras 20 sesiones de trabajo, su archivo de memoria se convertía en un escritorio lleno de <em>post-its</em> contradictorios, reglas antiguas y desorden. El agente colapsaba por exceso de ruido cognitivo y empezaba a fallar.</p>
+        </div>
+        <div class="card ink">
+          <span class="k">[✓] La solución</span>
+          <h4>El turno de noche</h4>
+          <p>Auto Dream (<code>/dream</code>) imita cómo el cerebro humano limpia la memoria durante el sueño. Se ejecuta <strong>solo, en segundo plano</strong> (tras 24 horas inactivo o 5 sesiones) y hace de «servicio de limpieza»:</p>
+        </div>
+      </div>
+      <div class="grid-cards three">
+        <div class="card"><span class="k">[ 01 ]</span><h4>Refactoriza</h4><p>Elimina y tira a la basura las memorias contradictorias o reglas viejas obsoletas.</p></div>
+        <div class="card"><span class="k">[ 02 ]</span><h4>Consolida</h4><p>Organiza cientos de notas dispersas de varias sesiones en un solo índice limpio y estructurado.</p></div>
+        <div class="card"><span class="k">[ 03 ]</span><h4>Contextualiza</h4><p>Cambia notas vagas como «Ayer falló la base de datos» por fechas exactas como «El 12 de Mayo falló la base de datos».</p></div>
+      </div>
+      <div class="callout nota"><span class="k">[ Operación en la sombra ]</span><p>Se activa solo sin interrumpir tu trabajo. Actúa en modo de <em>solo lectura</em> en el código de tu proyecto, pero tiene acceso de escritura a sus propios archivos de memoria para auto-optimizarse.</p></div>
+    </section>
+
+    <!-- 4. Economía de tokens en Claude -->
+    <section class="sec" id="economia" data-label="Economía de tokens">
+      <p class="sec-eyebrow">[ Gestión financiera ]</p>
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Economía de tokens en entornos de producción.</h2></div>
+      <p class="sec-intro">Cuando tu IA analiza repositorios enteros o libros legales repetidamente, la factura de la API puede dispararse. Así es como la reducimos drásticamente.</p>
+      <div class="grid-cards two">
+        <div class="card"><span class="k">[ 01 ]</span><h4>Prompt Caching (nativo)</h4><p>La funcionalidad clave de Anthropic. Si subes un PDF de 100 páginas, la primera vez pagas el 100%. Pero Claude «guarda en caché» ese documento (hasta 1 hora). Si le haces 10 preguntas seguidas sobre ese PDF, las siguientes 9 preguntas te costarán un <strong>90% menos de dinero</strong> y se responderán al instante.</p></div>
+        <div class="card"><span class="k">[ 02 ]</span><h4>Optimización vía SKILLS.md</h4><p>Los LLMs son «educados» por defecto y gastan tokens en saludos largos («Claro, estaré encantado de ayudarte…»). Crear un <code>SKILLS.md</code> que le enseñe la habilidad de «Concisión Extrema» o el uso de abreviaturas técnicas de tu empresa, ahorra cientos de tokens de salida inútiles en cada interacción diaria.</p></div>
+        <div class="card"><span class="k">[ 03 ]</span><h4>Compresión de historial</h4><p>El coste invisible: cada vez que envías un nuevo mensaje en un chat largo, la IA te cobra por «re-leer» todo el historial anterior para poder contestarte. Utilizar el comando <code>/compact</code> visto anteriormente corta esta hemorragia financiera de raíz.</p></div>
+        <div class="card"><span class="k">[ 04 ]</span><h4>Tareas modulares</h4><p>Nunca pidas a un solo Agente que «Investigue, escriba y programe». Eso satura el contexto. Divide: un Agente barato busca datos. Un Agente experto (Opus) redacta el informe. Un Agente codificador (Sonnet) programa.</p></div>
+      </div>
+    </section>
+
+    <!-- 5. Práctica (banda tinta) -->
+    <section class="sec sec-dark" id="practica" data-label="Práctica">
+      <p class="sec-eyebrow">[ Parte práctica ]</p>
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Laboratorio de arquitectura agentic.</h2></div>
+      <p class="sec-intro">Vamos a escribir el código fundacional (los archivos .md) para parametrizar a Claude como nuestro socio operativo.</p>
+
+      <ol class="exercises">
+        <li>
+          <h4>El cerebro (CLAUDE.md)</h4>
+          <p>Este es el archivo raíz que la IA lee automáticamente. Define el flujo general y le enseña dónde buscar su personalidad y su memoria (el contexto).</p>
+          <div class="code wrap"><div class="ch"><span class="k">[ Archivo · CLAUDE.md ]</span><button type="button" class="btn-ghost" data-copy>Copiar</button></div><pre># CLAUDE.md - Proyecto Alpha
+## Reglas Globales
+- Eres el asistente operativo principal del proyecto.
+- Idioma base: Español técnico de negocios.
+- Evita párrafos introductorios ("Claro, aquí tienes"). Ve directo al dato.
+
+## Flujo de Trabajo Obligatorio
+1. Antes de iniciar cualquier tarea, lee `SOUL.md` para adoptar nuestro tono corporativo.
+2. Revisa siempre `context.md` para saber en qué punto se quedó el equipo de humanos ayer.
+3. Antes de dar por finalizada una tarea, actualiza `context.md` con un log de tus decisiones.</pre></div>
+        </li>
+        <li>
+          <h4>La personalidad (SOUL.md)</h4>
+          <p>Aquí inyectamos el ADN de la empresa. Separar la personalidad del archivo principal evita que el <code>CLAUDE.md</code> se vuelva ilegible y pesado.</p>
+          <div class="code wrap"><div class="ch"><span class="k">[ Archivo · SOUL.md ]</span><button type="button" class="btn-ghost" data-copy>Copiar</button></div><pre># SOUL.md - Identidad Corporativa
+
+## Tono de Voz
+- Eres directo, altamente analítico y ligeramente irreverente.
+- Nos dirigimos al cliente de 'tú', con respeto pero sin servilismo corporativo.
+- **Prohibido:** Usar jerga vacía de marketing (evita palabras como "sinergias", "revolucionario", "paradigma").
+
+## Valores Innegociables
+- Priorizas la exactitud matemática sobre la complacencia.
+- Si una idea del equipo humano carece de sentido lógico, debes señalarlo frontalmente proponiendo una alternativa basada en datos.</pre></div>
+        </li>
+        <li>
+          <h4>Test de despliegue</h4>
+          <p>Abre tu entorno de Claude, arrastra tus archivos recién creados (<code>CLAUDE.md</code> y <code>SOUL.md</code>) al área de trabajo y dale una única instrucción simple:</p>
+          <div class="code prompt"><div class="ch"><span class="k">[ Prompt ]</span><button type="button" class="btn-ghost" data-copy data-copy-mode="strip-chevron">Copiar</button></div><pre>&gt; «Inicia operaciones, analízame brevemente tu rol y dime qué dice nuestro archivo de contexto hoy.»</pre></div>
+        </li>
+      </ol>
+
+      <div class="callout ok"><span class="k">[✓] Resultado esperado</span><p>Observarás cómo Claude absorbe automáticamente tu tono «irreverente y directo» y respeta las reglas de estructuración sin que hayas tenido que escribir un prompt kilométrico en el chat. Has creado un agente parametrizado.</p></div>
+    </section>
+
+  </div><!-- /.content -->
+  <!-- nav inferior y pie: los genera curso.js -->
+</main>
+
+<script src="/curso-data.js"></script>
+<script src="/curso.js"></script>
+</body>
+</html>

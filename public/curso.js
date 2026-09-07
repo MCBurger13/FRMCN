@@ -401,6 +401,10 @@
 
   /* ── home ───────────────────────────────────────────────────────────────── */
   var MARK = { done: '[✓]', current: '→', pending: '[ ]', locked: '[ – ]', viewed: '[✓]', next: '→' };
+  /* La fila de clase usa su propio juego: el chip lleva ya la flecha, así que la
+     siguiente se marca con [·] y no se repiten dos → en la misma fila. */
+  var ROWMARK = { viewed: '[✓]', next: '[·]', pending: '[ ]', locked: '[ – ]' };
+  var TOOLS_MAX = 12;   /* pills visibles antes de cortar con «+N más» */
   function initHome() {
     var u = user();
     Progress.init(u.sub);
@@ -433,11 +437,32 @@
       return (m.state === 'current' ? 'En curso · ' : '') + m.total + ' ' + plural(m.total, 'clase', 'clases') + (m.seen ? ' · ' + m.seen + '/' + m.total : '');
     }
     function rowHtml(c) {
-      var mark = MARK[c.st];
       var meta = c.st === 'locked' ? 'Bloqueada' : [c.kind, c.duration].filter(Boolean).join(' · ');
-      var inner = '<span class="mark" aria-hidden="true">' + mark + '</span><span class="num">C' + c.num + '</span><span class="name">' + esc(c.short) + (c.st === 'next' ? '<span class="pill">En curso</span>' : '') + '</span><span class="meta">' + esc(meta) + '</span><span class="arrow" aria-hidden="true">→</span>';
+      var inner =
+        '<span class="idx" aria-hidden="true"><span class="mark">' + ROWMARK[c.st] + '</span><span class="num">C' + c.num + '</span></span>' +
+        '<span class="body"><span class="name">' + esc(c.short) + (c.st === 'next' ? '<span class="pill">En curso</span>' : '') + '</span>' +
+        '<span class="meta">' + esc(meta) + '</span></span>' +
+        '<span class="go" aria-hidden="true">' + (c.st === 'locked' ? '–' : '→') + '</span>';
       if (c.st === 'locked') return '<li><span class="clase locked" aria-disabled="true">' + inner + '</span></li>';
-      return '<li><a class="clase ' + c.st + '" href="' + c.file + '" aria-label="Clase ' + c.num + ': ' + esc(c.short) + (c.st === 'viewed' ? ' (vista)' : '') + '"' + (c.st === 'next' ? ' aria-current="true"' : '') + '>' + inner + '</a></li>';
+      return '<li><a class="clase ' + c.st + '" href="' + c.file + '" aria-label="Clase ' + c.num + ': ' + esc(c.short) +
+        (c.st === 'viewed' ? ' (vista)' : '') + '"' + (c.st === 'next' ? ' aria-current="true"' : '') + '>' + inner + '</a></li>';
+    }
+    /* Filete que abre el índice de clases: [ Clases ] a la izquierda, avance a la derecha. */
+    function ruleHtml(m) {
+      var solo = m.total === 1 && m.rows[0] && m.rows[0].kind === 'módulo completo';
+      var count = m.state === 'locked' ? 'Bloqueado' : m.seen + ' de ' + m.total + ' ' + plural(m.total, 'vista', 'vistas');
+      return '<div class="mod-rule"><p class="rk">[ ' + (solo ? 'Módulo completo' : 'Clases') + ' ]</p><span class="rc">' + esc(count) + '</span></div>';
+    }
+    /* Colofón: las herramientas del módulo como pills, con la caja original del
+       nombre de producto («bge-m3», «claude.ai»). Nunca son clicables. */
+    function toolsHtml(m) {
+      var t = m.tools || [];
+      if (!t.length) return '';
+      var shown = t.length > TOOLS_MAX ? t.slice(0, TOOLS_MAX) : t;
+      var rest = t.length - shown.length;
+      return '<div class="mod-tools"><p class="k">[ Herramientas ]</p><ul class="pills">' +
+        shown.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') +
+        (rest ? '<li class="more">+' + rest + ' más</li>' : '') + '</ul></div>';
     }
     function render() {
       var M = model();
@@ -474,12 +499,19 @@
       $$('details.mod[open]').forEach(function (d) { openIds[d.dataset.mod] = 1; });
       var first = !$('details.mod');
       var hashMod = (location.hash || '').slice(1);
+      /* Orden del panel: entradilla -> (banda) -> filete + índice -> herramientas.
+         Lo accionable arriba; el inventario, de cierre. */
       $('#mods').innerHTML = M.mods.map(function (m) {
         var open = first ? (hashMod ? m.id === hashMod : m.state === 'current') : !!openIds[m.id];
         var body = m.total ? '<ol class="clases">' + m.rows.map(rowHtml).join('') + '</ol>' : '<p class="empty">Este módulo aún no tiene clases publicadas.</p>';
-        var extra = (m.desc ? '<p class="mod-desc">' + esc(m.desc) + '</p>' : '') + (m.tools.length ? '<p class="mod-tools"><span class="k">[ Herramientas ]</span> ' + m.tools.slice(0, 14).map(esc).join(' · ') + (m.tools.length > 14 ? ' · +' + (m.tools.length - 14) + ' más' : '') + '</p>' : '');
         var band = m.state === 'locked' ? '<p class="band">[ ! ] ' + (m.locked ? 'Este módulo se abre al final del curso, cuando el resto esté completado.' : 'Este módulo no está incluido en tu nivel de acceso.') + '</p>' : '';
-        return '<details class="mod ' + m.state + '" id="' + m.id + '" data-mod="' + m.id + '"' + (open ? ' open' : '') + '><summary class="mod-head"><span class="mod-num">M' + m.num + '</span><span class="mod-body"><h3 class="mod-title">' + esc(m.title) + '</h3><p class="mod-meta">' + esc(modMeta(m)) + '</p></span><span class="mod-bar" aria-hidden="true"><i style="width:' + m.pct + '%"></i></span><span class="mod-toggle" aria-hidden="true">+</span></summary>' + extra + body + band + '</details>';
+        var panel = '<div class="mod-panel">' + (m.desc ? '<p class="mod-desc">' + esc(m.desc) + '</p>' : '') + band +
+          (m.total ? ruleHtml(m) : '') + body + toolsHtml(m) + '</div>';
+        return '<details class="mod ' + m.state + '" id="' + m.id + '" data-mod="' + m.id + '"' + (open ? ' open' : '') + '>' +
+          '<summary class="mod-head"><span class="mod-num">M' + m.num + '</span>' +
+          '<span class="mod-body"><h3 class="mod-title">' + esc(m.title) + '</h3><p class="mod-meta">' + esc(modMeta(m)) + '</p></span>' +
+          '<span class="mod-bar" aria-hidden="true"><i style="width:' + m.pct + '%"></i></span>' +
+          '<span class="mod-toggle" aria-hidden="true">+</span></summary>' + panel + '</details>';
       }).join('');
     }
     document.addEventListener('click', function (e) {

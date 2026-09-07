@@ -7,7 +7,7 @@
 
 create table if not exists public.academy_progress (
   user_id     uuid        not null references auth.users (id) on delete cascade,
-  class_id    text        not null,                 -- id de curso-data.js (m3c1, m8c7, …)
+  class_id    text        not null,                 -- id de curso-data.js (m3c1, m7c2, …)
   seen_at     timestamptz,                          -- null = no vista
   score       integer,                              -- mejor nota del test de la clase
   score_total integer,

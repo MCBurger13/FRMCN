@@ -21,9 +21,34 @@ Web del alumno del curso «IA Generativa» de [m].seny. Páginas HTML planas en 
 | `design_handoff_curso_mseny/` | Handoff de diseño (prototipos, tokens, plan y mockup del temario). No se sirve. |
 | `_archivo/` | Material antiguo fuera de `public/` (ignorado por git). |
 
+## Módulos
+
+| Módulo | Clases | Archivos |
+|---|---|---|
+| M1 · El Paisaje de los LLMs | 1 | `modulo1.html` |
+| M2 · Glosario y Fundamentos | 1 | `modulo2.html` |
+| M3 · Estudio Creativo IA (Imagen) | 3 | `modulo3-clase1..3.html` |
+| M4 · Estudio Creativo IA (Automatización) | 2 | `modulo4-clase1..2.html` |
+| M5 | — | hueco libre para contenido futuro |
+| M6 · Claude suite | 3 | `modulo6-clase1..3.html` |
+| M7 · Cerebros de IA | 3 | `modulo7-clase1..3.html` |
+| M8 · Desarrollo de software | 1 | `modulo8-clase1.html` |
+| M9 · MVP Empresarial (PFC) | 1 | `pfc-marketing.html` (bloqueado) |
+
+Un módulo aparece en la web en cuanto su lista `classes` de `curso-data.js` tiene contenido; sin clases, no se pinta.
+
 ## Niveles de acceso
 
-El nivel viaja en el JWT de Supabase como `user_metadata.access_level`: `diseno`, `marketing`, `finanzas` o `completo` (sin valor = `completo`). Se edita en Supabase → Authentication → Users → *User Metadata*. Qué módulos ve cada nivel se define en `levels` dentro de `public/curso-data.js`. M9 está bloqueado para todos (`locked: true` en el módulo).
+El nivel viaja en el JWT de Supabase como `user_metadata.access_level` y se edita en Supabase → Authentication → Users → *User Metadata*. Sin valor se aplica `completo`, para que ningún alumno antiguo se quede fuera.
+
+| `access_level` | Ve los módulos |
+|---|---|
+| `completo` | todos |
+| `diseno` | M1, M2, M3, M4 |
+| `marketing` | M1, M2, M6, M7, M8, M9 |
+| `finanzas` | M1, M2 (M6 y M8 más adelante) |
+
+Qué módulos ve cada nivel se define en `levels` dentro de `public/curso-data.js`; es el único sitio que hay que tocar, porque de ahí beben la home, las páginas de clase y el middleware. Un módulo fuera de tu nivel se ve en el temario pero bloqueado. M9 lleva además `locked: true`, así que hoy no entra nadie.
 
 ## Añadir o editar una clase
 
