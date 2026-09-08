@@ -62,6 +62,67 @@
       </div>
     </section>
 
+    <!-- 2. Orígenes: de dónde sale esto y cómo se cría -->
+    <section class="sec" id="origenes" data-label="Orígenes">
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">De bebé a compañero de trabajo.</h2></div>
+      <p class="sec-intro">Un modelo no se programa: se cría. Bebé, colegio, universidad, herramientas: en ese orden, y no es una metáfora.</p>
+
+      <p>La pieza básica es de 1943: McCulloch y Pitts describen la neurona artificial, una unidad que suma señales y decide si se activa. En 1957 Rosenblatt diseña el perceptrón: una máquina que no se programa, se entrena. La idea es vieja; faltaba la máquina. Por el camino, dos inviernos —los setenta, finales de los ochenta— por prometer de más.</p>
+
+      <h3>Por qué ahora y no entonces</h3>
+      <p>Faltaban dos cosas. El hardware: la tarjeta gráfica de los videojuegos hace millones de multiplicaciones a la vez, justo lo que pide una red neuronal. Y la arquitectura: hasta 2017 un modelo de lenguaje leía la frase palabra a palabra y en orden, así que la frase no se podía repartir entre chips. El Transformer mira todas las palabras a la vez y decide cuáles pesan para entender cada una: eso es la «atención», una ponderación matemática, no una imitación del cerebro. De ahí salen el «cerebro» y la ventana de contexto que verás más adelante.</p>
+      <p>Desde 2010 el cómputo de entrenamiento crece unas cuatro veces al año, según Epoch AI. Los algoritmos también mejoraron, pero el cálculo pesó más.</p>
+
+      <div class="stats">
+        <div class="stat"><span class="v">1943</span><span class="l">La neurona artificial, sobre papel</span></div>
+        <div class="stat"><span class="v">2017</span><span class="l">El Transformer: la frase se reparte entre chips</span></div>
+        <div class="stat"><span class="v">3,5 días</span><span class="l">Entrenar el modelo grande del artículo del Transformer, ocho GPUs</span></div>
+      </div>
+
+      <h3>Las cuatro etapas</h3>
+      <p>Comparar el modelo con una persona que crece no es un adorno: es el orden de fabricación.</p>
+
+      <div class="stepper vertical">
+
+        <div class="step">
+          <span class="n">01</span>
+          <h4>El bebé: preentrenamiento</h4>
+          <p>Una montaña de texto y un objetivo mecánico: adivinar el fragmento siguiente. Nadie etiqueta nada; la respuesta correcta es lo que venía después. GPT-3 se entrenó en 2020 con 300.000 millones de tokens, los trozos en que se parte el texto; Llama 3, en 2024, con 15,6 billones. Es la fase cara: hay que pasar por todo.</p>
+        </div>
+
+        <div class="step">
+          <span class="n">02</span>
+          <h4>El colegio: ejemplos y preferencias</h4>
+          <p>Al salir de ahí el modelo no obedece, completa texto. Personas contratadas escriben a mano la respuesta ideal (unos 13.000 ejemplos, en 2022) y luego ordenan respuestas en unas 33.000 preguntas. Ahí entran también conversaciones que sus usuarios cedieron. Un modelo de 1.300 millones de parámetros gustó más a los evaluadores que GPT-3, de 175.000 millones. Pero se optimiza lo que gusta, no lo que es cierto. Por eso te da la razón.</p>
+        </div>
+
+        <div class="step">
+          <span class="n">03</span>
+          <h4>La universidad: expertos y exámenes corregibles</h4>
+          <p>Dos frentes. Material caro, escrito y auditado por profesionales: ahí aparece la hiperespecialización. Y lo nuevo, exámenes que se corrigen solos, donde se premia lo comprobable: un resultado matemático, un test que pasa. DeepSeek-R1-Zero pasó del 15,6 % al 71,0 % de aciertos en el examen de matemáticas AIME de 2024 solo con ese método, y le salieron solos comportamientos que nadie programó: releerse, verificarse, cambiar de estrategia.</p>
+        </div>
+
+        <div class="step">
+          <span class="n">04</span>
+          <h4>Las herramientas: conectores, MCP, memoria</h4>
+          <p>Los pesos —los números que el modelo ajustó al aprender— están congelados; conectores, archivos de memoria y servidores MCP son cañerías que le acercan datos y le dejan pedir acciones. El modelo nunca ejecuta nada: pide que se ejecute. Por eso enchufarlo a tus sistemas es una decisión de seguridad. MCP, el estándar abierto que los conecta, es de noviembre de 2024.</p>
+        </div>
+
+        <div class="step final">
+          <span class="n">[✓]</span>
+          <h4>Hoy: trabaja a tu lado</h4>
+          <p>«Senior» es una comparación de conveniencia, no un hecho medido. Lo medido son tareas acotadas y verificables, donde los mejores modelos se acercan al profesional sin superarlo. Senior en conocimiento general, becario en el contexto de tu empresa.</p>
+        </div>
+
+      </div>
+
+      <div class="callout aviso"><span class="k">[ ! ] Aviso</span><p>Aquí se rompe la analogía. <strong>Uno:</strong> los pesos se congelan al acabar el entrenamiento, así que el modelo no aprende de tu conversación; lo que llamamos «memoria» son archivos que alguien le vuelve a poner delante cada vez. Si quieres que recuerde algo, escríbelo. <strong>Dos:</strong> un niño domina su lengua con menos de cien millones de palabras; a un modelo le hacen falta billones de tokens. <strong>Tres:</strong> al reentrenarlo con material nuevo pierde capacidades que ya tenía.</p></div>
+
+      <div class="callout nota"><span class="k">[ Nota ]</span><p>El colegio pasa en el laboratorio del fabricante, con datos cedidos, no en tu chat de trabajo. Anthropic entrena con las conversaciones de sus planes de particulares salvo que se desactive; la API y los productos de empresa quedan fuera, y OpenAI mantiene la misma frontera. Un interruptor lo cambia cualquiera: lo auditable es el contrato.</p></div>
+
+      <p>Entrenar y usar son dos facturas opuestas. Entrenar pasa una vez, en casa del fabricante, y es donde está la energía: en Irlanda los centros de datos se llevaron el 23 % de la electricidad medida del país en 2025. Y no todo eso es IA: en 2024, los servidores de IA fueron el 15 % del consumo mundial de los centros de datos, según la Agencia Internacional de la Energía. Usar es barato: Google midió 0,24 Wh por prompt de texto en Gemini.</p>
+    </section>
+
     <!-- 2. Mercado -->
     <section class="sec" id="mercado" data-label="Mercado">
       <div class="sec-head"><span class="sec-num"></span><h2 class="display">El mapa del mercado actual.</h2></div>
