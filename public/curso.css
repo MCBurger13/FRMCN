@@ -14,9 +14,9 @@ html{overflow-x:clip;}
 
 /* ── Escalas locales ─────────────────────────────────────────────────────── */
 :root{
-  --content-w:1020px;   /* ancho de la caja de la clase */
-  --read-w:760px;       /* ancho del renglón: ~80 caracteres, el tope cómodo */
-  --wide-w:1320px;      /* ancho de las secciones de escena */
+  --content-w:min(1360px,100vw - 80px);  /* ancho de la caja de la clase */
+  --wide-w:min(1560px,100vw - 48px);     /* ancho de las secciones de figura */
+  --aire:28px;          /* salto entre un texto y el bloque que viene detrás */
   --r-xl:24px; --r-lg:16px; --r-md:14px; --r-pill:999px;
   --mono-xs:10px; --mono-s:10.5px; --mono-m:11px; --mono-l:12px;
 }
@@ -55,29 +55,33 @@ html{overflow-x:clip;}
 @media (max-width:760px){.hero{padding:36px 20px 28px;}}
 
 /* ── Contenido y secciones ───────────────────────────────────────────────── */
-.content{max-width:var(--content-w);margin:0 auto;padding:48px 24px 64px;display:flex;flex-direction:column;gap:52px;}
-@media (max-width:760px){.content{padding:32px 16px 48px;gap:44px;}}
+.content{max-width:var(--content-w);margin:0 auto;padding:56px 24px 80px;display:flex;flex-direction:column;gap:68px;}
+@media (max-width:760px){.content{padding:32px 16px 48px;gap:52px;}}
 .sec{scroll-margin-top:70px;min-width:0;}
-/* La prosa se queda en la medida de lectura aunque la caja sea ancha.
-   Lo que gana ancho es lo que lo aprovecha: tarjetas, tablas, pasos,
-   código, diagramas y el despiece. */
-.sec > p,.sec > .sec-intro,.sec > ul:not(.serie),.sec > ol:not(.exercises),
-.sec > .callout,.sec > blockquote,.sec > .lectura,.sec > .formula{max-width:var(--read-w);}
-.sec-ancho > p,.sec-ancho > .sec-head,.sec-ancho > .callout,.sec-ancho > .code,
-.sec-ancho > blockquote,.sec-ancho > ul:not(.serie),.sec-ancho > ol:not(.dp-steps),
-.sec-ancho > .table-wrap,.sec-ancho > figure{max-width:var(--read-w);}
-.sec-head{display:flex;align-items:baseline;gap:14px;margin:0 0 14px;}
+/* Todo lo que va dentro de una sección ocupa el ancho de la sección: sin
+   topes por bloque, que es lo que hacía que un párrafo pareciera sangrado
+   respecto a las tarjetas que tenía debajo. */
+.sec > *{max-width:100%;}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin:0 0 20px;}
 .sec-num{font-family:var(--font-mono);font-size:14px;color:var(--color-accent-deep);flex:none;}
-.sec-head h2{margin:0;font-size:32px;color:var(--color-ink);}
+.sec-head h2{margin:0;font-size:36px;color:var(--color-ink);}
 .content .sec-eyebrow,.sec-eyebrow{margin:0 0 10px;font-family:var(--font-mono);font-size:var(--mono-s);letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-deep);}
-.content .sec-intro,.sec-intro{margin:0 0 20px;font-size:17px;line-height:1.65;color:var(--color-muted);}
-.sec h3{margin:28px 0 10px;font-family:var(--font-display);font-weight:600;font-size:22px;letter-spacing:-.02em;line-height:1.2;color:var(--color-ink);}
-.sec h4{margin:18px 0 8px;font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-.015em;color:var(--color-ink);}
+.content .sec-intro,.sec-intro{margin:0 0 24px;font-size:19px;line-height:1.65;color:var(--color-muted);}
+.sec h3{margin:36px 0 12px;font-family:var(--font-display);font-weight:600;font-size:25px;letter-spacing:-.02em;line-height:1.2;color:var(--color-ink);}
+.sec h4{margin:22px 0 10px;font-family:var(--font-display);font-weight:600;font-size:20px;letter-spacing:-.015em;color:var(--color-ink);}
 
 /* Prosa */
-.content p{margin:0 0 16px;font-size:18.5px;line-height:1.7;color:var(--color-ink);}
+.content p{margin:0 0 20px;font-size:21px;line-height:1.65;color:var(--color-ink);text-align:justify;text-justify:inter-word;hyphens:auto;}
+/* La justificación pide guionado o salen ríos de blanco; el documento va en
+   español, así que el navegador puede partir palabras. En bloques estrechos
+   (nodos de flujo, cifras, mono) se queda en bandera. */
+.content .sec-intro,.callout p,.exercises p,.glossary .def,.tool p{text-align:justify;hyphens:auto;}
+/* En una tarjeta de rejilla la columna baja de 450 px y justificar abre calles
+   de blanco entre palabras: ahí el texto se queda en bandera. */
+.grid-cards .card p,.grid-cards .card li{text-align:left;hyphens:none;}
+.flow .node p,.esc-cifras,.dp-cap,.serie .k,pre,code,.mono{text-align:left;hyphens:none;}
 .content p:last-child{margin-bottom:0;}
-.content ul,.content ol{margin:0 0 16px;padding-left:1.25em;font-size:17.5px;line-height:1.65;}
+.content ul,.content ol{margin:0 0 20px;padding-left:1.25em;font-size:19.5px;line-height:1.65;}
 .content li{margin:0 0 6px;}
 .content strong{font-weight:600;}
 .content em{font-style:italic;}
@@ -88,7 +92,7 @@ hr.rule{border:0;border-top:1px solid var(--color-line);margin:8px 0 24px;}
 
 /* Listas con motivo [ ] */
 .list-mono{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:8px;}
-.list-mono li{position:relative;padding-left:2.4em;font-size:17px;line-height:1.55;}
+.list-mono li{position:relative;padding-left:2.4em;font-size:18px;line-height:1.6;}
 .list-mono li::before{content:'[·]';position:absolute;left:0;top:.1em;font-family:var(--font-mono);font-size:13px;color:var(--color-accent-deep);}
 .list-mono.check li::before{content:'[✓]';}
 .list-mono.cross li::before{content:'[×]';color:var(--color-muted);}
@@ -114,11 +118,11 @@ hr.rule{border:0;border-top:1px solid var(--color-line);margin:8px 0 24px;}
 .ba .after h4{color:var(--color-paper);}
 
 /* Callout con etiqueta mono: .callout.analogia | .nota | .aviso | .regla | .ok | .clave */
-.callout{border:1px solid var(--color-line);border-radius:var(--r-lg);padding:20px 22px;background:rgba(255,255,255,.5);margin:0 0 16px;}
+.callout{margin-top:4px;border:1px solid var(--color-line);border-radius:var(--r-lg);padding:20px 22px;background:rgba(255,255,255,.5);margin:0 0 16px;}
 .callout .k{display:block;font-family:var(--font-mono);font-size:var(--mono-s);letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-deep);margin:0 0 8px;}
-.callout p{margin:0;font-size:16.5px;line-height:1.6;color:var(--color-ink);}
+.callout p{margin:0;font-size:18px;line-height:1.6;color:var(--color-ink);}
 .callout p + p{margin-top:8px;}
-.callout.clave p{font-size:18.5px;font-weight:500;line-height:1.55;}
+.callout.clave p{font-size:20px;font-weight:500;line-height:1.55;}
 .callout.analogia{background:var(--color-paper-dim);border-color:transparent;}
 .callout.aviso{border-color:var(--color-ink);}
 .callout.aviso .k{color:var(--color-ink);}
@@ -134,7 +138,7 @@ hr.rule{border:0;border-top:1px solid var(--color-line);margin:8px 0 24px;}
 .glossary .row:first-child{border-top:1px solid var(--color-line);}
 .glossary .term{margin:0;width:180px;flex:none;font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-.02em;color:var(--color-ink);line-height:1.2;}
 .glossary .term small{display:block;margin-top:4px;font-family:var(--font-mono);font-weight:400;font-size:var(--mono-xs);letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-deep);}
-.glossary .def{margin:0;flex:1;min-width:240px;font-size:16px;line-height:1.55;color:var(--color-muted);}
+.glossary .def{margin:0;flex:1;min-width:240px;font-size:17.5px;line-height:1.6;color:var(--color-muted);}
 .glossary .def .an{display:block;margin-top:6px;font-family:var(--font-mono);font-size:var(--mono-l);letter-spacing:.02em;color:var(--color-ink);}
 
 /* Stepper (horizontal por defecto, .vertical para pasos largos) */
@@ -159,7 +163,7 @@ hr.rule{border:0;border-top:1px solid var(--color-line);margin:8px 0 24px;}
 .formula .head{display:flex;align-items:baseline;gap:12px;margin:0 0 18px;flex-wrap:wrap;}
 .formula .head .eyebrow{color:color-mix(in srgb,var(--color-accent) 90%,transparent);font-size:13px;}
 .formula .head span:not(.eyebrow){font-size:13px;color:var(--color-mist);}
-.formula .tiles{display:flex;flex-wrap:wrap;gap:12px;}
+.formula .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;}
 .formula .tile{flex:1 1 150px;background:var(--color-ink-soft);border-radius:var(--r-lg);padding:14px;min-width:0;}
 .formula .tile .l{display:block;font-family:var(--font-display);font-weight:640;letter-spacing:-.025em;font-size:24px;line-height:1;color:var(--color-accent);}
 .formula .tile .t{display:block;margin:6px 0 4px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-paper);}
@@ -189,13 +193,17 @@ hr.rule{border:0;border-top:1px solid var(--color-line);margin:8px 0 24px;}
 .table-wrap tbody tr:hover td{background:var(--color-paper-dim);}
 
 /* Grid de cards y comparativas */
-.grid-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:0 0 16px;}
-.grid-cards.two{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
-.grid-cards.three{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
+/* Columnas fijas. Con `auto-fit` el número de columnas dependía del ancho:
+   cuatro tarjetas salían en 3+1, y la última fila nunca llenaba. */
+.grid-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:0 0 var(--aire);}
+.grid-cards.two{grid-template-columns:repeat(2,minmax(0,1fr));}
+.grid-cards.three{grid-template-columns:repeat(3,minmax(0,1fr));}
+@media (max-width:1000px){.grid-cards,.grid-cards.two,.grid-cards.three{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media (max-width:620px){.grid-cards,.grid-cards.two,.grid-cards.three{grid-template-columns:minmax(0,1fr);}}
 .card{border:1px solid var(--color-line);border-radius:var(--r-lg);background:rgba(255,255,255,.5);padding:18px;min-width:0;}
 .card .k{display:block;margin:0 0 6px;font-family:var(--font-mono);font-size:var(--mono-xs);letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-deep);}
-.card h4,.card h3{margin:0 0 6px;font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-.02em;color:var(--color-ink);line-height:1.2;}
-.card p{margin:0;font-size:16px;line-height:1.6;color:var(--color-muted);}
+.card h4,.card h3{margin:0 0 8px;font-family:var(--font-display);font-weight:600;font-size:20px;letter-spacing:-.02em;color:var(--color-ink);line-height:1.2;}
+.card p{margin:0;font-size:17.5px;line-height:1.6;color:var(--color-muted);}
 .card p + p{margin-top:6px;}
 .card .list-mono{margin:10px 0 0;gap:5px;}
 .card .list-mono li{font-size:15.5px;}
@@ -213,7 +221,7 @@ hr.rule{border:0;border-top:1px solid var(--color-line);margin:8px 0 24px;}
 .tool{border:1px solid var(--color-line);border-radius:var(--r-xl);padding:24px;background:rgba(255,255,255,.5);margin:0 0 16px;}
 .tool .k{margin:0 0 4px;font-family:var(--font-mono);font-size:var(--mono-xs);letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-deep);}
 .tool h3{margin:0 0 10px;font-size:22px;}
-.tool p{margin:0 0 10px;font-size:16.5px;line-height:1.6;color:var(--color-ink);}
+.tool p{margin:0 0 12px;font-size:18px;line-height:1.6;color:var(--color-ink);}
 .tool .use{margin:0 0 14px;font-size:13px;color:var(--color-muted);}
 .tool .use strong{color:var(--color-ink);}
 .tool .links{display:flex;flex-wrap:wrap;gap:8px;}
@@ -221,7 +229,7 @@ hr.rule{border:0;border-top:1px solid var(--color-line);margin:8px 0 24px;}
 .tool .feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:12px 0 0;}
 .tool .feats > div{background:var(--color-paper-dim);border-radius:12px;padding:10px 12px;font-size:12.5px;line-height:1.45;color:var(--color-muted);}
 .tool .feats b{display:block;font-family:var(--font-mono);font-weight:400;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-deep);margin-bottom:3px;}
-.tools{display:flex;flex-direction:column;gap:16px;margin:0 0 16px;}
+.tools{display:flex;flex-direction:column;gap:20px;margin:0 0 var(--aire);}
 .tools .tool{margin:0;}
 
 /* Ejercicios y checklist */
@@ -230,7 +238,7 @@ hr.rule{border:0;border-top:1px solid var(--color-line);margin:8px 0 24px;}
 .exercises > li::before{content:counter(ex,decimal-leading-zero);grid-row:1 / span 9;font-family:var(--font-mono);font-size:13px;color:var(--color-accent-deep);padding-top:3px;}
 .exercises > li > *{grid-column:2;}
 .exercises h4,.exercises h3{margin:0 0 4px;font-family:var(--font-display);font-weight:600;font-size:18.5px;letter-spacing:-.02em;color:var(--color-ink);}
-.exercises p{margin:0;font-size:16px;line-height:1.55;color:var(--color-muted);}
+.exercises p{margin:0;font-size:17.5px;line-height:1.6;color:var(--color-muted);}
 .exercises .code{margin:10px 0 0;}
 .checklist{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:6px;}
 .checklist li{display:flex;align-items:flex-start;gap:12px;}
@@ -281,9 +289,9 @@ hr.rule{border:0;border-top:1px solid var(--color-line);margin:8px 0 24px;}
 .quiz .q{padding:18px 0;border-top:1px solid var(--color-line);}
 .quiz .q .qn{display:flex;align-items:baseline;gap:12px;margin:0 0 12px;}
 .quiz .q .qn .n{font-family:var(--font-mono);font-size:12px;color:var(--color-accent-deep);flex:none;}
-.quiz .q .qn p{margin:0;font-size:17.5px;font-weight:600;line-height:1.4;color:var(--color-ink);}
+.quiz .q .qn p{margin:0;font-size:19.5px;font-weight:600;line-height:1.4;color:var(--color-ink);}
 .quiz .opts{display:flex;flex-direction:column;gap:10px;}
-.quiz .opt{display:flex;gap:10px;align-items:baseline;text-align:left;border-radius:var(--r-lg);border:1px solid var(--color-line);background:transparent;padding:13px 16px;font-family:var(--font-body);font-size:16.5px;line-height:1.45;color:var(--color-muted);cursor:pointer;width:100%;min-height:44px;transition:border-color .3s ease,background-color .3s ease;}
+.quiz .opt{display:flex;gap:10px;align-items:baseline;text-align:left;border-radius:var(--r-lg);border:1px solid var(--color-line);background:transparent;padding:14px 18px;font-family:var(--font-body);font-size:18px;line-height:1.45;color:var(--color-muted);cursor:pointer;width:100%;min-height:44px;transition:border-color .3s ease,background-color .3s ease;}
 .quiz .opt .m{font-family:var(--font-mono);font-size:13px;flex:none;}
 .quiz .opt:hover{border-color:var(--color-accent-deep);color:var(--color-ink);}
 .quiz .opt[aria-pressed=true]{border-color:var(--color-ink);color:var(--color-ink);}
@@ -398,7 +406,9 @@ body[data-class]{overflow-x:clip;}
 
 
 /* ── Apertura ─────────────────────────────────────────────────────────── */
-.hero.escena{text-align:left;background:var(--color-ink);color:var(--color-paper);border-bottom:0;padding:clamp(34px,5vw,66px) clamp(20px,5vw,64px) clamp(38px,5vw,66px);display:grid;grid-template-columns:minmax(0,1fr);align-items:center;align-content:center;gap:0 clamp(22px,4vw,56px);grid-auto-rows:min-content;}
+/* La apertura se alinea con el contenido de la página: antes empezaba en el
+   borde de la ventana y el texto de debajo arrancaba 150 px más adentro. */
+.hero.escena{text-align:left;background:var(--color-ink);color:var(--color-paper);border-bottom:0;padding-block:clamp(40px,5vw,72px);padding-inline:max(24px,calc(50% - var(--content-w) / 2 + 24px));display:grid;grid-template-columns:minmax(0,1fr);align-items:center;align-content:center;gap:0 clamp(22px,4vw,56px);grid-auto-rows:min-content;}
 /* la lámina abarca todas las filas, así que el hueco entre filas tiene que
    ser cero: si no, las filas vacías del span inflan la apertura */
 /* con lámina, la apertura se parte en dos; sin ella, una sola columna */
@@ -423,7 +433,7 @@ body[data-class]{overflow-x:clip;}
 .esc-fig figcaption{font-family:var(--font-mono);font-size:var(--mono-s);letter-spacing:.1em;text-transform:uppercase;color:var(--color-mist);}
 .esc-fig figcaption b{color:var(--color-accent);font-weight:400;}
 @media (max-width:860px){
-  .hero.escena{grid-template-columns:1fr;padding:30px 20px 34px;gap:22px;}
+  .hero.escena{grid-template-columns:1fr;padding-block:32px 36px;padding-inline:16px;gap:22px;}
   .hero.escena > *{grid-column:1;}
   .hero.escena > .esc-fig{grid-column:1;grid-row:auto;order:9;}
   .esc-fig img,.esc-fig svg{max-height:320px;}
@@ -440,7 +450,7 @@ body[data-class]{overflow-x:clip;}
 
 /* ── Cita editorial ───────────────────────────────────────────────────── */
 .pull{margin:28px 0;padding-left:clamp(16px,2.6vw,28px);border-left:2px solid var(--color-accent-deep);}
-.pull p{margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(19px,2.4vw,27px);letter-spacing:-.02em;line-height:1.25;color:var(--color-ink);text-wrap:balance;}
+.pull p{text-align:left;hyphens:none;margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(19px,2.4vw,27px);letter-spacing:-.02em;line-height:1.25;color:var(--color-ink);text-wrap:balance;}
 /* cita larga: deja de ser titular y se lee como entradilla */
 .pull.larga p{font-size:clamp(16.5px,1.6vw,19.5px);font-weight:500;line-height:1.5;}
 .pull footer{margin-top:10px;font-family:var(--font-mono);font-size:var(--mono-s);letter-spacing:.11em;text-transform:uppercase;color:var(--color-muted);}
