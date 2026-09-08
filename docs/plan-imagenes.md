@@ -28,6 +28,19 @@ serían relleno.
 
 ## Lo que podemos producir nosotros
 
+**Hecho el 8 de septiembre de 2026** (660 créditos de Magnific, 11 generaciones para
+quedarnos con 5):
+
+- `m4c2-zapatilla.jpg` — la foto que se despieza en M4·C2, generada con el prompt de
+  calzado que la propia clase da con botón de copiar. Las siete capas se redibujaron
+  sobre ella. Retiradas las cuatro del derby, que venían de un prompt del mockup.
+- `m3c1-scie/pepa/meta/capa.jpg` — una por fórmula, cada una con el prompt de ejemplo
+  que M3·C1 imprime encima. Van como lámina de apertura y como hoja de contactos al
+  final de la sección de fórmulas.
+- Los dos diagramas: los tres formatos en M2 y las tres capas del Hub en M9.
+
+### El detalle de cada una
+
 ### M3·C1 · `apertura` — generada con Magnific
 
 Lámina .esc-fig a ancho completo bajo el titular: el derby de ante gris-taupe generado con el prompt S.C.I.E. de esta misma clase. Pie mono: «Generada · con la fórmula S.C.I.E. de esta clase». Generación nueva: las m4c2-derby-*.jpg salen de otro prompt y decir que son S.C.I.E. sería falso.
