@@ -494,6 +494,8 @@ svg.dp-capa.on{opacity:1;}
 .esquema .lb{font-family:var(--font-mono);font-size:17px;letter-spacing:.06em;fill:var(--color-muted);}
 .esquema .lb.b{fill:var(--color-ink);}
 .esquema .ti{font-family:var(--font-display);font-weight:600;font-size:21px;letter-spacing:-.01em;fill:var(--color-ink);}
+.esquema .on-dark{fill:var(--color-paper);}
+.esquema .on-dark.soft{fill:var(--color-mist);}
 .esquema .ln{stroke:var(--color-muted);stroke-width:1.2;fill:none;}
 .esquema .ln.ac{stroke:var(--color-accent-deep);}
 .sec-dark .esquema{background:var(--color-ink-soft);border-color:var(--color-line-dark);}
