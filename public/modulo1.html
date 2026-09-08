@@ -7,14 +7,6 @@
 <meta name="description" content="De la estrategia conceptual a la ejecución técnica. Entendiendo la nueva mesa de operaciones empresarial.">
 <link rel="stylesheet" href="/theme.css">
 <link rel="stylesheet" href="/curso.css">
-<style>
-  /* Calculadora de tokens (widget propio de esta clase): solo tokens del DS */
-  .tk-input{display:block;width:100%;box-sizing:border-box;min-height:120px;resize:vertical;margin:0 0 14px;padding:14px 16px;border:1px solid var(--color-line);border-radius:var(--r-md);background:var(--color-paper);font-family:var(--font-body);font-size:15px;line-height:1.5;color:var(--color-ink);outline:none;transition:border-color .3s ease;}
-  .tk-input:focus{border-color:var(--color-accent-deep);}
-  .tk-input::placeholder{color:var(--color-muted);}
-  .tk-result{margin:18px 0 0;}
-  .tk-result .stats{margin:0;}
-</style>
 </head>
 <body data-class="m1c1">
 <main>
@@ -315,16 +307,31 @@ Rutas;IA Predictiva;-15% tiempos</pre></div>
         </div>
       </div>
 
+      <h3>Los tokens: la unidad en la que se mide y se cobra todo</h3>
+      <p>Un modelo no lee palabras ni letras: lee <strong>tokens</strong>, trozos de texto de tamaño irregular. «Empresa» es un token. «Hiperespecialización» son cinco o seis. Los acentos, los nombres propios y los tecnicismos se parten en más pedazos que las palabras corrientes, así que <strong>el mismo texto en español gasta más tokens que en inglés</strong>: entre un 20 % y un 50 % más, según el texto. Como regla de servilleta, en español mil tokens son unas setecientas cincuenta palabras.</p>
+      <p>Esto importa por dos motivos muy concretos, y los dos acaban en tu factura o en tu calidad de trabajo. El primero: <strong>la ventana de contexto se mide en tokens</strong>, así que los tokens deciden cuánto cabe de una vez antes de que el modelo empiece a olvidar. El segundo: <strong>los modelos se cobran por token</strong>, y no todos valen lo mismo.</p>
+
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tipo de token</th><th>Qué es</th><th>Qué conviene saber</th></tr></thead>
+        <tbody>
+          <tr><td>Entrada (input)</td><td>Todo lo que le mandas: tu pregunta, el documento adjunto, las instrucciones de sistema y <em>toda la conversación anterior</em>.</td><td>Es el que se dispara sin que te des cuenta: cada mensaje reenvía el historial entero.</td></tr>
+          <tr><td>Salida (output)</td><td>Lo que el modelo escribe.</td><td>El caro. Suele costar entre tres y cinco veces la entrada.</td></tr>
+          <tr><td>Entrada en caché</td><td>Un bloque que repites mucho (un manual, un prompt de sistema) y que el proveedor mantiene caliente.</td><td>Se lee mucho más barato. Guardarlo la primera vez puede costar más que una entrada normal.</td></tr>
+          <tr><td>Razonamiento</td><td>Lo que el modelo «piensa» antes de contestar, en los modelos de razonamiento.</td><td>No lo ves, pero se factura como salida. Una respuesta corta puede salir cara.</td></tr>
+          <tr><td>Multimodal</td><td>Imágenes, audio y vídeo, convertidos también a tokens.</td><td>Tienen su propia tarifa. Una imagen puede valer lo que varias páginas de texto.</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="callout nota"><span class="k">[ Nota ]</span><p>Dos tarifas reales de septiembre de 2026 para ver la proporción: <strong>Gemini 3.8 Flash</strong> cobra 0,75 $ por millón de tokens de entrada y 3,75 $ por millón de salida. <strong>Grok 4.6</strong> cobra 2 $ de entrada, 6 $ de salida y 0,50 $ si esa entrada ya estaba en caché. La salida cuesta cinco y tres veces la entrada; la caché la divide por cuatro.</p></div>
+
       <div class="card">
-        <span class="k">[ Calculadora de tokens ]</span>
-        <h4>Calculadora de tokens (estimación)</h4>
-        <p>Pega aquí el texto de tu documento o prompt para calcular su peso en la «memoria» de la IA.</p>
-        <textarea id="tokenInput" class="tk-input" rows="4" placeholder="Ej: Pega aquí los párrafos que quieres analizar…"></textarea>
-        <button type="button" class="btn-accent" onclick="calculateTokens()">Calcular tokens <span aria-hidden="true">→</span></button>
-        <div id="tokenResult" class="tk-result" hidden>
-          <div class="stats"><div class="stat"><span class="v"><span id="tokenCount">0</span></span><span class="l">Tokens aprox. · Impacto en la ventana de contexto</span><span class="d" id="tokenAdvice"></span></div></div>
-        </div>
+        <span class="k">[ Herramienta ]</span>
+        <h4>TikTokenizer: mira el corte real</h4>
+        <p>Antes de pelearte con estimaciones, pega tu texto en TikTokenizer. Enseña el número exacto de tokens y, sobre todo, <strong>dónde corta</strong>: cada trozo aparece coloreado. Pega el mismo párrafo en español y en inglés y verás la diferencia de precio con tus propios ojos.</p>
+        <div class="links"><a class="btn-ghost" href="https://tiktokenizer.vercel.app/" target="_blank" rel="noopener">tiktokenizer.vercel.app →</a></div>
       </div>
+
+      <div class="callout regla"><span class="k">[ Regla de oro ]</span><p>Si una conversación se alarga, no es solo que el modelo empiece a olvidar: es que cada mensaje nuevo cuesta más que el anterior, porque arrastra todo lo hablado.</p></div>
     </section>
 
     <!-- 7. Casos de Uso -->
@@ -472,39 +479,6 @@ Marketing;Generación Automatizada;+25% conversión</pre></div>
 <script src="/curso-data.js"></script>
 <script src="/curso.js"></script>
 <script>
-  // Calculadora de tokens (widget propio de la clase). Lógica original; solo cambia el markup del resultado.
-  function calculateTokens() {
-    const text = document.getElementById('tokenInput').value;
-    const resultDiv = document.getElementById('tokenResult');
-    const countSpan = document.getElementById('tokenCount');
-    const adviceSpan = document.getElementById('tokenAdvice');
-
-    if (!text.trim()) {
-      countSpan.textContent = '0';
-      adviceSpan.textContent = '[ ! ] Por favor, introduce algún texto primero.';
-      resultDiv.hidden = false;
-      return;
-    }
-
-    // Aproximación estándar: 1 token ≈ 4 caracteres / 0.75 palabras en inglés o español.
-    const estimatedTokens = Math.ceil(text.split(/\s+/).length / 0.75);
-
-    countSpan.textContent = estimatedTokens.toLocaleString('es-ES');
-
-    // Lógica de consejos sobre la ventana de contexto
-    if (estimatedTokens < 2000) {
-      adviceSpan.innerHTML = '<strong>[✓] Excelente:</strong> Muy ligero. Cabrá perfectamente en la memoria de cualquier modelo y responderá rápido.';
-    } else if (estimatedTokens < 30000) {
-      adviceSpan.innerHTML = '<strong>[·] Moderado:</strong> Tamaño adecuado. Funciona bien en Claude, ChatGPT o Gemini.';
-    } else if (estimatedTokens < 100000) {
-      adviceSpan.innerHTML = '<strong>[ ! ] Grande:</strong> Necesitarás usar modelos con gran ventana de contexto (Claude Opus o Gemini Pro). Puede que la IA sufra el efecto «Lost in the Middle».';
-    } else {
-      adviceSpan.innerHTML = '<strong>[×] Masivo:</strong> Supera el límite de memoria a corto plazo de la mayoría de modelos base. Te sugerimos dividir el texto o usar específicamente Gemini 3.1 Pro.';
-    }
-
-    resultDiv.hidden = false;
-  }
-
   // Preguntas del test: verbatim de la página original. a = índice de la opción correcta.
   const quizData = [
     {
