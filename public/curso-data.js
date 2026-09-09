@@ -152,11 +152,21 @@
     if (lv && levels[lv]) return lv;
     return DEFAULT_LEVEL;
   }
+  /* Dos preguntas distintas. `inLevel` decide si el módulo se le enseña al
+     alumno: lo que queda fuera de su nivel no aparece en el temario, ni
+     bloqueado ni de ninguna otra forma. `canAccess` decide si además puede
+     abrirlo ahora, y es la que usa el middleware. Un módulo con `locked` sigue
+     a la vista de quien lo tiene en su nivel, pero todavía no se abre. */
+  function inLevel(level, moduleId) {
+    var m = moduleById(moduleId);
+    if (!m) return false;
+    var lv = levels[level] || levels[DEFAULT_LEVEL];
+    return lv.modules === '*' || lv.modules.indexOf(moduleId) !== -1;
+  }
   function canAccess(level, moduleId) {
     var m = moduleById(moduleId);
     if (!m || m.locked) return false;
-    var lv = levels[level] || levels[DEFAULT_LEVEL];
-    return lv.modules === '*' || lv.modules.indexOf(moduleId) !== -1;
+    return inLevel(level, moduleId);
   }
   function moduleById(id) { for (var i = 0; i < modules.length; i++) if (modules[i].id === id) return modules[i]; return null; }
   function classById(id) {
@@ -197,7 +207,7 @@
   return {
     modules: modules, levels: levels, DEFAULT_LEVEL: DEFAULT_LEVEL,
     published: published, visibleModules: visibleModules, levelFromPayload: levelFromPayload,
-    canAccess: canAccess, moduleById: moduleById, classById: classById, classByFile: classByFile,
+    inLevel: inLevel, canAccess: canAccess, moduleById: moduleById, classById: classById, classByFile: classByFile,
     orderedClasses: orderedClasses, prevNext: prevNext, moduleOfFile: moduleOfFile, toolsOf: toolsOf
   };
 });

@@ -51,7 +51,9 @@ El nivel viaja en el JWT de Supabase como `user_metadata.access_level` y se edit
 
 **Da siempre un `access_level` al crear un usuario.** Quien no lo lleve cae en `sin_asignar` y solo ve M1. Es deliberado: antes el valor por defecto era `completo` y un alta sin nivel regalaba el curso entero.
 
-Qué módulos ve cada nivel se define en `levels` dentro de `public/curso-data.js`; es el único sitio que hay que tocar, porque de ahí beben la home, las páginas de clase y el middleware. Un módulo fuera de tu nivel se ve en el temario pero bloqueado. M9 lleva además `locked: true`, así que hoy no entra nadie.
+Qué módulos ve cada nivel se define en `levels` dentro de `public/curso-data.js`; es el único sitio que hay que tocar, porque de ahí beben la home, las páginas de clase y el middleware. Un módulo fuera de tu nivel **no aparece** en el temario: no se muestra bloqueado, sencillamente no está. M9 lleva además `locked: true`, así que sí se ve —para quien lo tenga en su nivel— pero todavía no se abre.
+
+Son dos preguntas distintas y conviene no mezclarlas: `inLevel()` decide qué se enseña y `canAccess()` decide qué se puede abrir. El middleware usa `canAccess()`, de modo que esconder un módulo es una mejora de presentación, no la barrera: la barrera sigue estando en el borde.
 
 ## Añadir o editar una clase
 

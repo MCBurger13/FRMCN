@@ -468,7 +468,7 @@
     var lv = $('#rail .level'); if (lv) lv.textContent = levelLabel ? 'Acceso · ' + levelLabel : '';
 
     function model() {
-      var mods = C.visibleModules();
+      var mods = C.visibleModules().filter(function (m) { return C.inLevel(u.level, m.id); });
       var accessible = function (m) { return C.canAccess(u.level, m.id); };
       var classes = C.orderedClasses(u.level);
       var next = Progress.nextClass(u.level);
@@ -488,7 +488,7 @@
     }
     function modMeta(m) {
       if (m.state === 'done') return m.total + ' ' + plural(m.total, 'clase', 'clases') + ' · Completado [✓]';
-      if (m.state === 'locked') return m.total + ' ' + plural(m.total, 'clase', 'clases') + ' · ' + (m.locked ? 'Se abre al final del curso' : 'No incluido en tu acceso') + ' [ – ]';
+      if (m.state === 'locked') return m.total + ' ' + plural(m.total, 'clase', 'clases') + ' · Se abre al final del curso [ – ]';
       return (m.state === 'current' ? 'En curso · ' : '') + m.total + ' ' + plural(m.total, 'clase', 'clases') + (m.seen ? ' · ' + m.seen + '/' + m.total : '');
     }
     function rowHtml(c) {
@@ -558,7 +558,7 @@
       $('#mods').innerHTML = M.mods.map(function (m) {
         var open = first ? (hashMod ? m.id === hashMod : m.state === 'current') : !!openIds[m.id];
         var body = m.total ? '<ol class="clases">' + m.rows.map(rowHtml).join('') + '</ol>' : '<p class="empty">Este módulo aún no tiene clases publicadas.</p>';
-        var band = m.state === 'locked' ? '<p class="band">[ ! ] ' + (m.locked ? 'Este módulo se abre al final del curso, cuando el resto esté completado.' : 'Este módulo no está incluido en tu nivel de acceso.') + '</p>' : '';
+        var band = m.state === 'locked' ? '<p class="band">[ ! ] Este módulo se abre al final del curso, cuando el resto esté completado.</p>' : '';
         var panel = '<div class="mod-panel">' + (m.desc ? '<p class="mod-desc">' + esc(m.desc) + '</p>' : '') + quoteHtml(m) + band + body + toolsHtml(m) + '</div>';
         return '<details class="mod ' + m.state + '" id="' + m.id + '" data-mod="' + m.id + '"' + (open ? ' open' : '') + '>' +
           '<summary class="mod-head"><span class="mod-num"><span class="g" aria-hidden="true">' + MARK[m.state] + '</span><span>M' + m.num + '</span></span>' +
