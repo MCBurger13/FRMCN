@@ -124,22 +124,24 @@
   ];
 
   /* Niveles de acceso. El nivel del alumno viaja en el JWT de Supabase como
-     user_metadata.access_level ('completo' | 'diseno' | 'marketing' | 'finanzas').
-     Se edita en Supabase, en Authentication > Users > User Metadata.
-     Sin access_level se aplica DEFAULT_LEVEL, hoy 'completo', para que ningún
-     alumno antiguo se quede fuera mientras se reparten los niveles.
+     user_metadata.access_level. Se edita en Supabase, en Authentication >
+     Users > User Metadata.
      Nota: m9 lleva `locked: true`, así que hoy no entra nadie aunque figure en
-     la lista de un nivel; al quitar ese flag se abrirá solo para marketing. */
+     la lista de un nivel. */
   var levels = {
     completo:  { label: 'Acceso completo', modules: '*' },
     diseno:    { label: 'Diseño',    modules: ['m1', 'm2', 'm3', 'm4'] },
-    marketing: { label: 'Marketing', modules: ['m1', 'm2', 'm6', 'm7', 'm8', 'm9'] },
-    /* Finanzas: hoy solo la base; M6 y M8 se le abrirán más adelante
-       (añade 'm6', 'm8' a esta lista cuando toque). */
-    finanzas:  { label: 'Finanzas',  modules: ['m1', 'm2'] }
+    marketing: { label: 'Marketing', modules: ['m1', 'm2', 'm6', 'm7', 'm8'] },
+    /* Finanzas abre por goteo: hoy solo M1, y Marc va sumando módulos a esta
+       lista a medida que avanza el curso. */
+    finanzas:  { label: 'Finanzas',  modules: ['m1'] },
+    /* Red de seguridad, no un nivel que se reparta. Si a alguien se le olvida
+       el access_level en Supabase, cae aquí y ve el mínimo, no el curso entero.
+       Antes el defecto era 'completo' y un alta sin nivel regalaba todo. */
+    sin_asignar: { label: 'Sin nivel asignado', modules: ['m1'] }
   };
 
-  var DEFAULT_LEVEL = 'completo';
+  var DEFAULT_LEVEL = 'sin_asignar';
 
   /* ── helpers puros (sin DOM) ─────────────────────────────────────────── */
   function published(m) { return m.classes.length > 0; }

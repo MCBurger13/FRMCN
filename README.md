@@ -39,14 +39,17 @@ Un módulo aparece en la web en cuanto su lista `classes` de `curso-data.js` tie
 
 ## Niveles de acceso
 
-El nivel viaja en el JWT de Supabase como `user_metadata.access_level` y se edita en Supabase → Authentication → Users → *User Metadata*. Sin valor se aplica `completo`, para que ningún alumno antiguo se quede fuera.
+El nivel viaja en el JWT de Supabase como `user_metadata.access_level` y se edita en Supabase → Authentication → Users → *User Metadata*.
 
 | `access_level` | Ve los módulos |
 |---|---|
 | `completo` | todos |
 | `diseno` | M1, M2, M3, M4 |
-| `marketing` | M1, M2, M6, M7, M8, M9 |
-| `finanzas` | M1, M2 (M6 y M8 más adelante) |
+| `marketing` | M1, M2, M6, M7, M8 |
+| `finanzas` | M1 (se le abren más módulos según avanza el curso) |
+| *(sin valor)* | M1 — red de seguridad, ver abajo |
+
+**Da siempre un `access_level` al crear un usuario.** Quien no lo lleve cae en `sin_asignar` y solo ve M1. Es deliberado: antes el valor por defecto era `completo` y un alta sin nivel regalaba el curso entero.
 
 Qué módulos ve cada nivel se define en `levels` dentro de `public/curso-data.js`; es el único sitio que hay que tocar, porque de ahí beben la home, las páginas de clase y el middleware. Un módulo fuera de tu nivel se ve en el temario pero bloqueado. M9 lleva además `locked: true`, así que hoy no entra nadie.
 
