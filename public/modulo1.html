@@ -64,63 +64,60 @@
 
     <!-- 2. Orígenes: de dónde sale esto y cómo se cría -->
     <section class="sec" id="origenes" data-label="Orígenes">
-      <div class="sec-head"><span class="sec-num"></span><h2 class="display">De bebé a compañero de trabajo.</h2></div>
-      <p class="sec-intro">Un modelo no se programa: se cría. Bebé, colegio, universidad, herramientas: en ese orden, y no es una metáfora.</p>
-
-      <p>La pieza básica es de 1943: McCulloch y Pitts describen la neurona artificial, una unidad que suma señales y decide si se activa. En 1957 Rosenblatt diseña el perceptrón: una máquina que no se programa, se entrena. La idea es vieja; faltaba la máquina. Por el camino, dos inviernos —los setenta, finales de los ochenta— por prometer de más.</p>
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Origen y formación de los modelos actuales.</h2></div>
+      <p class="sec-intro">La idea tiene más de ochenta años. Lo reciente es la máquina capaz de sostenerla.</p>
 
       <h3>Por qué ahora y no entonces</h3>
-      <p>Faltaban dos cosas. El hardware: la tarjeta gráfica de los videojuegos hace millones de multiplicaciones a la vez, justo lo que pide una red neuronal. Y la arquitectura: hasta 2017 un modelo de lenguaje leía la frase palabra a palabra y en orden, así que la frase no se podía repartir entre chips. El Transformer mira todas las palabras a la vez y decide cuáles pesan para entender cada una: eso es la «atención», una ponderación matemática, no una imitación del cerebro. De ahí salen el «cerebro» y la ventana de contexto que verás más adelante.</p>
-      <p>Desde 2010 el cómputo de entrenamiento crece unas cuatro veces al año, según Epoch AI. Los algoritmos también mejoraron, pero el cálculo pesó más.</p>
+      <p>La neurona artificial se describe en 1943 y el perceptrón, la primera máquina que se entrena en lugar de programarse, es de 1957. La teoría no era el obstáculo: faltaban dos piezas materiales. La primera es el hardware, porque la tarjeta gráfica concebida para videojuegos resuelve millones de multiplicaciones simultáneas, que es justo lo que exige una red neuronal. La segunda es la arquitectura, porque hasta 2017 un modelo leía la frase palabra por palabra y en orden, de modo que el trabajo no podía repartirse entre procesadores. El Transformer resuelve ese cuello de botella con la «atención»: una ponderación matemática que evalúa todas las palabras a la vez y determina cuáles pesan para interpretar cada una. Desde 2010 el cómputo dedicado al entrenamiento se multiplica por cuatro cada año, según Epoch AI.</p>
 
       <div class="stats">
-        <div class="stat"><span class="v">1943</span><span class="l">La neurona artificial, sobre papel</span></div>
-        <div class="stat"><span class="v">2017</span><span class="l">El Transformer: la frase se reparte entre chips</span></div>
-        <div class="stat"><span class="v">3,5 días</span><span class="l">Entrenar el modelo grande del artículo del Transformer, ocho GPUs</span></div>
+        <div class="stat"><span class="v">1943</span><span class="l">Se describe la neurona artificial</span></div>
+        <div class="stat"><span class="v">1957</span><span class="l">El perceptrón: se entrena, no se programa</span></div>
+        <div class="stat"><span class="v">2017</span><span class="l">El Transformer reparte la frase entre procesadores</span></div>
       </div>
 
-      <h3>Las cuatro etapas</h3>
-      <p>Comparar el modelo con una persona que crece no es un adorno: es el orden de fabricación.</p>
+      <h3>Las cuatro fases de la formación</h3>
+      <p>Un modelo no se programa: se forma por etapas, y cada una añade una capacidad que la anterior no tenía. La comparación con una persona que crece es solo un apoyo para recordar el orden.</p>
 
       <div class="stepper vertical">
 
         <div class="step">
           <span class="n">01</span>
-          <h4>El bebé: preentrenamiento</h4>
-          <p>Una montaña de texto y un objetivo mecánico: adivinar el fragmento siguiente. Nadie etiqueta nada; la respuesta correcta es lo que venía después. GPT-3 se entrenó en 2020 con 300.000 millones de tokens, los trozos en que se parte el texto; Llama 3, en 2024, con 15,6 billones. Es la fase cara: hay que pasar por todo.</p>
+          <h4>Preentrenamiento</h4>
+          <p><em>Equivale a la primera infancia: observar sin criterio.</em> El modelo recibe una cantidad enorme de texto con un único objetivo mecánico, predecir el fragmento siguiente. Nadie etiqueta nada, porque la respuesta correcta es lo que venía después. GPT-3 se entrenó en 2020 con 300.000 millones de tokens; Llama 3, en 2024, con 15,6 billones. Es la fase más costosa.</p>
         </div>
 
         <div class="step">
           <span class="n">02</span>
-          <h4>El colegio: ejemplos y preferencias</h4>
-          <p>Al salir de ahí el modelo no obedece, completa texto. Personas contratadas escriben a mano la respuesta ideal (unos 13.000 ejemplos, en 2022) y luego ordenan respuestas en unas 33.000 preguntas. Ahí entran también conversaciones que sus usuarios cedieron. Un modelo de 1.300 millones de parámetros gustó más a los evaluadores que GPT-3, de 175.000 millones. Pero se optimiza lo que gusta, no lo que es cierto. Por eso te da la razón.</p>
+          <h4>Ajuste por instrucciones y preferencias</h4>
+          <p><em>La etapa escolar: alguien corrige.</em> Al salir del preentrenamiento el modelo completa texto, pero no obedece instrucciones. Un equipo de personas redacta respuestas modelo y después ordena por calidad las que produce el sistema. El efecto es notable: un modelo de 1.300 millones de parámetros llegó a gustar más a los evaluadores que GPT-3, de 175.000 millones. Conviene entender el precio: se optimiza lo que agrada, no necesariamente lo que es cierto.</p>
         </div>
 
         <div class="step">
           <span class="n">03</span>
-          <h4>La universidad: expertos y exámenes corregibles</h4>
-          <p>Dos frentes. Material caro, escrito y auditado por profesionales: ahí aparece la hiperespecialización. Y lo nuevo, exámenes que se corrigen solos, donde se premia lo comprobable: un resultado matemático, un test que pasa. DeepSeek-R1-Zero pasó del 15,6 % al 71,0 % de aciertos en el examen de matemáticas AIME de 2024 solo con ese método, y le salieron solos comportamientos que nadie programó: releerse, verificarse, cambiar de estrategia.</p>
+          <h4>Especialización y refuerzo</h4>
+          <p><em>La etapa universitaria: material experto y exámenes.</em> Por un lado, contenido escrito y auditado por profesionales. Por otro, ejercicios de corrección automática en los que solo se premia lo comprobable, como un resultado matemático o un test que pasa. DeepSeek-R1-Zero pasó del 15,6 % al 71,0 % de aciertos en el examen AIME de 2024 con este método, y desarrolló por su cuenta conductas que nadie programó: releerse, verificarse y cambiar de estrategia.</p>
         </div>
 
         <div class="step">
           <span class="n">04</span>
-          <h4>Las herramientas: conectores, MCP, memoria</h4>
-          <p>Los pesos —los números que el modelo ajustó al aprender— están congelados; conectores, archivos de memoria y servidores MCP son cañerías que le acercan datos y le dejan pedir acciones. El modelo nunca ejecuta nada: pide que se ejecute. Por eso enchufarlo a tus sistemas es una decisión de seguridad. MCP, el estándar abierto que los conecta, es de noviembre de 2024.</p>
+          <h4>Acceso a herramientas</h4>
+          <p><em>El instrumental de trabajo.</em> Los pesos, los números que el modelo fijó al aprender, quedan congelados. Los conectores, los archivos de memoria y los servidores MCP —estándar abierto publicado en noviembre de 2024— no modifican el modelo: le acercan datos y le permiten solicitar acciones. Nunca ejecuta nada por sí mismo, lo pide. Por eso conectarlo a los sistemas de la empresa es una decisión de seguridad.</p>
         </div>
 
         <div class="step final">
           <span class="n">[✓]</span>
-          <h4>Hoy: trabaja a tu lado</h4>
-          <p>«Senior» es una comparación de conveniencia, no un hecho medido. Lo medido son tareas acotadas y verificables, donde los mejores modelos se acercan al profesional sin superarlo. Senior en conocimiento general, becario en el contexto de tu empresa.</p>
+          <h4>Situación actual</h4>
+          <p>Llamarlo «senior» es una comparación cómoda, no una medición. Lo medido son tareas acotadas y verificables, donde los mejores modelos se aproximan al profesional sin superarlo. Senior en conocimiento general, recién llegado en el contexto de tu empresa.</p>
         </div>
 
       </div>
 
-      <div class="callout aviso"><span class="k">[ ! ] Aviso</span><p>Aquí se rompe la analogía. <strong>Uno:</strong> los pesos se congelan al acabar el entrenamiento, así que el modelo no aprende de tu conversación; lo que llamamos «memoria» son archivos que alguien le vuelve a poner delante cada vez. Si quieres que recuerde algo, escríbelo. <strong>Dos:</strong> un niño domina su lengua con menos de cien millones de palabras; a un modelo le hacen falta billones de tokens. <strong>Tres:</strong> al reentrenarlo con material nuevo pierde capacidades que ya tenía.</p></div>
+      <div class="callout aviso"><span class="k">[ ! ] Dónde falla la analogía</span><p><strong>Uno:</strong> los pesos se congelan al terminar el entrenamiento, de modo que el modelo no aprende de tu conversación; lo que llamamos «memoria» son archivos que se le vuelven a mostrar cada vez. Si quieres que recuerde algo, escríbelo. <strong>Dos:</strong> un niño domina su lengua con menos de cien millones de palabras, mientras que un modelo necesita billones de tokens. <strong>Tres:</strong> al reentrenarlo con material nuevo pierde capacidades que ya tenía.</p></div>
 
-      <div class="callout nota"><span class="k">[ Nota ]</span><p>El colegio pasa en el laboratorio del fabricante, con datos cedidos, no en tu chat de trabajo. Anthropic entrena con las conversaciones de sus planes de particulares salvo que se desactive; la API y los productos de empresa quedan fuera, y OpenAI mantiene la misma frontera. Un interruptor lo cambia cualquiera: lo auditable es el contrato.</p></div>
+      <div class="callout nota"><span class="k">[ Nota ]</span><p>La segunda fase ocurre en el laboratorio del fabricante y con datos cedidos, no en tu chat de trabajo. Anthropic entrena con las conversaciones de sus planes de particulares salvo que se desactive; la API y los productos de empresa quedan fuera, y OpenAI mantiene la misma frontera. Un interruptor lo cambia cualquiera: lo auditable es el contrato.</p></div>
 
-      <p>Entrenar y usar son dos facturas opuestas. Entrenar pasa una vez, en casa del fabricante, y es donde está la energía: en Irlanda los centros de datos se llevaron el 23 % de la electricidad medida del país en 2025. Y no todo eso es IA: en 2024, los servidores de IA fueron el 15 % del consumo mundial de los centros de datos, según la Agencia Internacional de la Energía. Usar es barato: Google midió 0,24 Wh por prompt de texto en Gemini.</p>
+      <p>Conviene separar dos facturas de signo opuesto. Entrenar ocurre una sola vez, en las instalaciones del fabricante, y es donde se concentra el consumo: en Irlanda los centros de datos absorbieron el 23 % de la electricidad medida del país en 2025, aunque no todo ello sea IA, ya que los servidores de IA supusieron el 15 % del consumo mundial de los centros de datos en 2024, según la Agencia Internacional de la Energía. Usar el modelo, en cambio, es barato: Google midió 0,24 Wh por consulta de texto en Gemini.</p>
     </section>
 
     <!-- 2. Mercado -->
@@ -200,66 +197,88 @@
 
     <!-- 5. Cerebro y Contexto -->
     <section class="sec" id="cerebro" data-label="Cerebro">
-      <div class="sec-head"><span class="sec-num"></span><h2 class="display">El concepto de «cerebro».</h2></div>
+      <div class="sec-head"><span class="sec-num"></span><h2 class="display">Un chat por proyecto.</h2></div>
       <p class="sec-intro">El error número uno en las empresas es usar un solo chat continuo como si fuera un buscador web.</p>
 
-      <h3>[ ! ] Limitaciones técnicas</h3>
+      <p>Los dos límites que vienen a continuación no son defectos del modelo, sino consecuencias de cómo lee. Todo lo que tiene delante —tus instrucciones, los documentos y la conversación entera— vive en la ventana de contexto, un espacio de tamaño fijo que se mide en tokens. De ahí salen los dos problemas, y de ahí sale también la estrategia para esquivarlos.</p>
+
+      <h3>[ ! ] Límite uno: el efecto pez dorado</h3>
 
       <figure class="figure esquema">
-        <svg viewBox="0 0 960 300" role="img" aria-label="Diagrama de la ventana de contexto de un solo chat continuo: la caja se llena de tokens y expulsa por la izquierda las primeras instrucciones; encima, sobre el mismo eje horizontal, la atención es alta al principio y al final y baja en el medio.">
-          <text class="lb" x="96" y="45">Un solo chat continuo</text>
+        <svg viewBox="0 0 960 215" role="img" aria-label="La ventana de contexto llena: cada token nuevo que entra por la derecha desplaza al más antiguo, que sale por la izquierda.">
+          <text class="ti" x="40" y="42">La ventana se llena y expulsa lo más antiguo</text>
+          <text class="lb" x="40" y="72">Cabe un número fijo de tokens. Al llenarse, lo nuevo empuja a lo primero.</text>
 
+          <rect class="fill-ink" x="46" y="120" width="22" height="40" opacity=".3"/>
+          <path class="ln ac" d="M142 140 H 84"/>
+          <path class="ln ac" d="M104 128 L 84 140 L 104 152"/>
+
+          <rect class="bx fill" x="150" y="104" width="660" height="72" rx="16"/>
           <g>
-            <text class="lb b" x="96" y="78">Principio</text>
-            <text class="lb" x="480" y="78" text-anchor="middle">Medio</text>
-            <text class="lb b" x="864" y="78" text-anchor="end">Final</text>
-            <rect class="fill-ink" x="117" y="93" width="30" height="72"/>
-            <rect class="fill-ink" x="180" y="99" width="30" height="66"/>
-            <rect class="fill-ink" x="243" y="111" width="30" height="54"/>
-            <rect class="fill-ink" x="306" y="129" width="30" height="36"/>
-            <rect class="fill-ink" x="369" y="141" width="30" height="24"/>
-            <rect class="fill-ink" x="432" y="150" width="30" height="15"/>
-            <rect class="fill-ink" x="495" y="150" width="30" height="15"/>
-            <rect class="fill-ink" x="558" y="144" width="30" height="21"/>
-            <rect class="fill-ink" x="621" y="132" width="30" height="33"/>
-            <rect class="fill-ink" x="684" y="117" width="30" height="48"/>
-            <rect class="fill-ink" x="747" y="102" width="30" height="63"/>
-            <rect class="fill-ink" x="810" y="90" width="30" height="75"/>
+            <rect class="fill-ink" x="166" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="198" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="230" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="262" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="294" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="326" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="358" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="390" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="422" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="454" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="486" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="518" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="550" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="582" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="614" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="646" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="678" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="710" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="742" y="120" width="22" height="40"/>
+            <rect class="fill-ink" x="774" y="120" width="22" height="40"/>
           </g>
 
-          <rect class="bx fill" x="96" y="177" width="768" height="96" rx="18"/>
-          <g>
-            <rect class="fill-ink" x="117" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="153" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="189" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="225" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="261" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="297" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="333" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="369" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="405" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="441" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="477" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="513" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="549" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="585" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="621" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="657" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="693" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="729" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="765" y="204" width="27" height="42"/>
-            <rect class="fill-ink" x="801" y="204" width="27" height="42"/>
-            <path class="ln ac" d="M90 225 H 33"/>
-            <path class="ln ac" d="M54 213 L 33 225 L 54 237"/>
-          </g>
+          <path class="ln ac" d="M916 140 H 830"/>
+          <path class="ln ac" d="M850 128 L 830 140 L 850 152"/>
+
+          <text class="lb b" x="40" y="203">Sale lo primero que dijiste</text>
+          <text class="lb b" x="920" y="203" text-anchor="end">Entra lo último</text>
         </svg>
-        <figcaption>[ Diagrama ] La ventana de contexto y la atención, del principio al final.</figcaption>
+        <figcaption>[ Diagrama 1 ] La ventana es finita: lo último que entra desplaza a lo primero.</figcaption>
       </figure>
 
-      <div class="grid-cards two">
-        <div class="card dim"><h4>Los «tokens» (efecto pez dorado)</h4><p>La IA lee fragmentos de texto (tokens) y tiene un límite de memoria temporal. Si llenas esa memoria chateando meses sobre lo mismo, empieza a olvidar las primeras instrucciones para hacer hueco.</p></div>
-        <div class="card dim"><h4>Lost in the Middle</h4><p>Al procesar documentos inmensos, la IA presta total atención al principio y al final, pero suele ignorar matices del medio. <strong>Solución:</strong> Repite siempre tus directrices vitales al final del prompt.</p></div>
-      </div>
+      <p>La IA lee fragmentos de texto (tokens) y tiene un límite de memoria temporal. Si llenas esa memoria chateando meses sobre lo mismo, empieza a olvidar las primeras instrucciones para hacer hueco.</p>
+
+      <h3>[ ! ] Límite dos: lost in the middle</h3>
+
+      <figure class="figure esquema">
+        <svg viewBox="0 0 960 230" role="img" aria-label="La atención del modelo sobre un documento largo: alta al principio y al final, y mucho más baja en el centro.">
+          <text class="ti" x="40" y="42">La atención cae en el centro</text>
+          <text class="lb" x="40" y="72">En un documento largo atiende bien los extremos y se pierde en el medio.</text>
+
+          <g>
+            <rect class="fill-ink" x="60" y="98" width="46" height="92"/>
+            <rect class="fill-ink" x="136" y="106" width="46" height="84"/>
+            <rect class="fill-ink" x="212" y="122" width="46" height="68"/>
+            <rect class="fill-ink" x="288" y="144" width="46" height="46"/>
+            <rect class="fill-ink" x="364" y="160" width="46" height="30"/>
+            <rect class="fill-ink" x="440" y="171" width="46" height="19"/>
+            <rect class="fill-ink" x="516" y="171" width="46" height="19"/>
+            <rect class="fill-ink" x="592" y="163" width="46" height="27"/>
+            <rect class="fill-ink" x="668" y="148" width="46" height="42"/>
+            <rect class="fill-ink" x="744" y="129" width="46" height="61"/>
+            <rect class="fill-ink" x="820" y="110" width="46" height="80"/>
+            <rect class="fill-ink" x="896" y="94" width="46" height="96"/>
+          </g>
+          <path class="ln" d="M50 190 H 950"/>
+
+          <text class="lb b" x="60" y="218">Principio</text>
+          <text class="lb" x="501" y="218" text-anchor="middle">Medio</text>
+          <text class="lb b" x="942" y="218" text-anchor="end">Final</text>
+        </svg>
+        <figcaption>[ Diagrama 2 ] La atención no se reparte por igual: los extremos pesan más que el centro.</figcaption>
+      </figure>
+
+      <p>Al procesar documentos inmensos, la IA presta total atención al principio y al final, pero suele ignorar matices del medio. <strong>Solución:</strong> Repite siempre tus directrices vitales al final del prompt.</p>
 
       <h3>[ → ] Estrategia del usuario</h3>
       <div class="grid-cards two">
